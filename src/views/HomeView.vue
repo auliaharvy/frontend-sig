@@ -41,7 +41,7 @@ export default {
     step :1
   }),
 props: {
-  source: string
+  source: String
 }
 }
 </script>
