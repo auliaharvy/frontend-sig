@@ -16,3 +16,9 @@ export default {
   }),
 };
 </script>
+
+<style>
+app {
+  background: red;
+}
+</style>
