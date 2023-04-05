@@ -23,7 +23,7 @@
                   prepend-icon="mdi-lock" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" @click:append="handleIcon" v-model="user.password" />
                 </v-card-text>
                 <v-card-actions>
-                  <v-btn block color="success" @click="handleLogin" :disabled="!valid">Masuk</v-btn>
+                  <v-btn v-for="login in logins" router :to="login.route" block color="success" @click="handleLogin" :disabled="!valid">Masuk</v-btn>
                 </v-card-actions>
               </v-form>
             </v-col>
@@ -51,7 +51,10 @@ export default {
       pwRules: [
         v => v != '' || 'Password is Required'
       ],
-      valid: false
+      valid: false,
+      logins :[
+           {route: '/dashboard'},
+       ],
     }
   },
   methods:{
