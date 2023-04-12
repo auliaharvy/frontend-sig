@@ -6,6 +6,7 @@
         PALLET MANAGEMENT SYSTEM
       </v-toolbar-title>
       <v-spacer></v-spacer>
+      <LocaleSwitcher />
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-btn text v-on="on">
@@ -138,6 +139,8 @@
   </nav>
 </template>
  <script>
+import LocaleSwitcher from "@/components/LocaleSwitcher";
+
 export default {
   data: () => ({
     drawer: true,
@@ -194,7 +197,9 @@ export default {
     ],
     logouts: [{ icon: "logout", text: "Keluar", route: "/" }],
   }),
-  components: {},
+  components: {
+    LocaleSwitcher,
+  },
 };
 </script>
  <style scoped>
