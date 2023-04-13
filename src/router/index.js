@@ -23,16 +23,6 @@ const routes = [
     name: 'test',
     component: () => import('../views/data-transaksi/TestView.vue')
   },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('../views/LoginViewTest.vue')
-  },
-  {
-    path: '/18',
-    name: '18',
-    component: () => import('../components/HelloI18n.vue')
-  }
 ]
 
 const router = new VueRouter({

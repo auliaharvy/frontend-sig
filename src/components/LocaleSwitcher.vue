@@ -2,7 +2,7 @@
  <div class="change-language">
   <img class="change-icon" src="~@/assets/change-lang.png" alt="change-language">
     <select class="select" v-model="selectedLanguage">
-      <option value="id">Bahasa Indonesia</option>
+      <option value="id">Indonesia</option>
       <option value="en">English</option>
     </select>
   </div>
@@ -14,7 +14,7 @@ export default {
   data() {
     return {
        locales: ["id", "en"],
-       selectedLanguage: 'id'
+        selectedLanguage: 'id'
        };
   },
   watch: {
@@ -39,10 +39,11 @@ export default {
 .select {
   height: 30px;
   border-radius: 8px;
-  border: 1px solid #2c3e50;
+  border: 1px solid #ffffff;
   padding: 4px;
-  color: #2c3e50;
+  color: #ffffff;
   font-weight: bold;
   font-size: 15px;
+  background-color: #e90e01;
 }
 </style>

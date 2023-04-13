@@ -127,7 +127,6 @@
               </v-card-actions>
             </v-card>
           </v-flex>
-          <p>{{ $t("message") }}</p>
         </v-layout>
       </v-container>
     </div>

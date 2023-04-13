@@ -1,3 +1,41 @@
 {
-  "message": "halo i18n !!"
+  "login" : 
+    {
+      "judul" : "Masuk ke Pallet Management System",
+      "ingat" : "Ingat Saya",
+      "masuk" : "Masuk",
+      "lupa" : "Lupa Kata Sandi?"
+    },
+    "sidebar" : 
+    {
+      "halamanutama" : "Halaman Utama",
+      "manajemensjp" : "Manajemen SJP",
+      "sjpstatus" : "SJP Status",
+      "suratjalanpallet" : "Surat Jalan Pallet",
+      "manajemenpallet" : " Manajemen Pallet",
+      "mutasipallet" : "Mutasi Pallet",
+      "klaimpallet" : "Klaim Pallet",
+      "perubahankuotapallet" : "Perubahan Kuota Pallet",
+      "palletbaru" : "Pallet Baru",
+      "palletrusak" : "Pallet Rusak",
+      "palletdiperbaiki" : "Pallet Diperbaiki",
+      "penyewaanpallet" : "Penyewaan Pallet",
+      "penyesuaianekspedisi" : "Penyesuaian Ekspedisi",
+      "manajemenperusahaan" : "Manajemen Perusahaan",
+      "laporan" : "Laporan",
+      "dasbororganisasi" : "Dasbor Organisasi",
+      "pergerakanpallet" : "Pergerakan Pallet",
+      "datatransaksi" : "Data Transaksi",
+      "pengaturan" : "Pengaturan",
+      "organisasi" : "Organisasi",
+      "perandanizin" : "Peran & Izin",
+      "manajemenpengguna" : "Manajemen Pengguna",
+      "kendaraan" : "Kendaraan",
+      "pengendara" : "Pengendara",
+      "keluar" : "Keluar"
+    },
+    "menu" : 
+    {
+      "menu" : "Menu Transaksi"
+    }
 }

@@ -24,8 +24,9 @@
                 ></v-img>
                 <v-card-title
                   style="font-size: 15px; margin-top: -20px; margin-left: 25px"
-                  >Masuk ke Pallet Management System
+                  > {{ $t("login.judul") }}
                 </v-card-title>
+                <LocaleSwitcher />
                 <v-form v-model="valid" style="margin-top: -20px">
                   <v-card-text>
                     <v-text-field
@@ -45,7 +46,7 @@
                     />
                   </v-card-text>
                   <v-checkbox
-                    label="Ingat Saya"
+                    :label="$t('login.ingat')"
                     class="mt-n1"
                     color="blue"
                     style="margin-left: 18px"
@@ -60,13 +61,10 @@
                       color="success"
                       @click="handleLogin"
                       :disabled="!valid"
-                      >Masuk</v-btn
+                      >{{ $t ("login.masuk") }}</v-btn
                     >
                   </v-card-actions>
-                  <v-row>
-                    <p class=" ">Lupa kata sandi?</p>
-                    <LocaleSwitcher />
-                  </v-row>
+                    <p class=" ">{{ $t ("login.lupa") }}</p>
                 </v-form>
               </v-card>
             </v-card>
@@ -86,14 +84,15 @@
               >
                 <v-img
                   src="../assets/logo-sig.png"
-                  max-heigth="200"
-                  max-width="400"
+                  max-heigth="170"
+                  max-width="340"
                   style="margin-top: -40px"
                 ></v-img>
                 <v-card-title
                   style="font-size: 15px; margin-top: -20px; margin-left: 50px"
-                  >Masuk ke Pallet Management System
+                  >{{ $t("login.judul") }}
                 </v-card-title>
+                <LocaleSwitcher />
                 <v-form v-model="valid" style="margin-top: -20px">
                   <v-card-text>
                     <v-text-field
@@ -113,7 +112,7 @@
                     />
                   </v-card-text>
                   <v-checkbox
-                    label="Ingat Saya"
+                  :label="$t('login.ingat')"
                     class="mt-n1"
                     color="blue"
                     style="margin-left: 18px"
@@ -128,13 +127,10 @@
                       color="success"
                       @click="handleLogin"
                       :disabled="!valid"
-                      >Masuk</v-btn
+                      >{{ $t ("login.masuk") }}</v-btn
                     >
                   </v-card-actions>
-                  <v-row>
-                    <p class=" ">Lupa kata sandi?</p>
-                    <LocaleSwitcher />
-                  </v-row>
+                    <p class=" ">{{ $t ("login.lupa") }}</p>
                 </v-form>
               </v-card>
             </v-card>
@@ -149,14 +145,15 @@
             >
               <v-img
                 src="../assets/logo-sig.png"
-                max-heigth="200"
-                max-width="400"
+                max-heigth="170"
+                max-width="340"
                 style="margin-top: -60px"
               ></v-img>
               <v-card-title
                 style="font-size: 13px; margin-top: -20px; margin-left: 75px;"
-                >Masuk ke Pallet Management System
+                >{{ $t("login.judul") }}
               </v-card-title>
+                <LocaleSwitcher />
               <v-form v-model="valid">
                 <v-card-text>
                   <v-text-field
@@ -176,7 +173,7 @@
                   />
                 </v-card-text>
                 <v-checkbox
-                  label="Ingat Saya"
+                :label="$t('login.ingat')"
                   class="mt-n1"
                   color="blue"
                   style="margin-left: 17px"
@@ -191,10 +188,10 @@
                     color="success"
                     @click="handleLogin"
                     :disabled="!valid"
-                    >Masuk</v-btn
+                    >{{ $t ("login.masuk") }}</v-btn
                   >
                 </v-card-actions>
-                <p class=" ">Lupa kata sandi?</p>
+                <p class=" ">{{ $t ("login.lupa") }}</p>
               </v-form>
             </v-card>
           </v-col>
@@ -205,6 +202,8 @@
 </template>
 
 <script>
+import en from "@/locales/en.json";
+import id from "@/locales/id.json";
 import LocaleSwitcher from "../components/LocaleSwitcher.vue"
 export default {
   name: "LoginView",
