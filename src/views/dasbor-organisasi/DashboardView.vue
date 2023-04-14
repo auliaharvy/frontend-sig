@@ -137,6 +137,8 @@
 <script>
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import en from "@/locales/en.json";
+import id from "@/locales/id.json";
 // @ is an alias to /src
 export default {
   name: "team",
