@@ -1,5 +1,5 @@
 {
-  "message": "hello i18n !!",
+  "language": "Select Language",
   "login" : 
     {
       "judul" : "Login to Pallet Management System",
@@ -21,7 +21,7 @@
       "palletrusak" : "Broken Pallet",
       "palletdiperbaiki" : "Repaired Pallet",
       "penyewaanpallet" : "Rental Pallet",
-      "penyesuaianekspedisi" : "Expedition Adjustments",
+      "penyesuaianekspeditur" : "Shipping Adjustments",
       "manajemenperusahaan" : "Company Management",
       "laporan" : "Report",
       "dasbororganisasi" : "Organization Dashboard",
