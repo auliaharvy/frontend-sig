@@ -5,6 +5,9 @@
       "judul" : "Masuk ke Pallet Management System",
       "ingat" : "Ingat Saya",
       "masuk" : "Masuk",
+      "namapengguna" : "Nama Pengguna",
+      "katasandi" : "Kata Sandi",
+      "kembali" : "Kembali",
       "lupa" : "Lupa Kata Sandi?"
     },
     "sidebar" : 
@@ -38,5 +41,18 @@
     "menu" : 
     {
       "menu" : "Menu Transaksi"
+    },
+    "manajemenpengguna" : 
+    {
+      "pengguna" : "Pengguna",
+      "tambah" : "Tambah Pengguna",
+      "sunting" : "Sunting",
+      "cari" : "Cari",
+      "kirim" : "Kirim",
+      "namalengkap" : "Nama Lengkap",
+      "unduh" : "Unduh Data",
+      "email" : "Email",
+      "edit" : "Sunting Pengguna",
+      "hapus" : "Hapus"
     }
 }

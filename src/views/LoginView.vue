@@ -97,13 +97,13 @@
                   <v-card-text>
                     <v-text-field
                       :rules="userRules"
-                      label="Username"
+                      :label="$t('login.namapengguna')"
                       prepend-icon="mdi-account-circle"
                       v-model="user.username"
                     />
                     <v-text-field
                       :rules="pwRules"
-                      label="Password"
+                      :label="$t('login.katasandi')"
                       :type="showPassword ? 'text' : 'password'"
                       prepend-icon="mdi-lock"
                       :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -163,13 +163,13 @@
                   <v-card-text>
                     <v-text-field
                       :rules="userRules"
-                      label="Username"
+                      :label="$t('login.namapengguna')"
                       prepend-icon="mdi-account-circle"
                       v-model="user.username"
                     />
                     <v-text-field
                       :rules="pwRules"
-                      label="Password"
+                      :label="$t('login.katasandi')"
                       :type="showPassword ? 'text' : 'password'"
                       prepend-icon="mdi-lock"
                       :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -224,13 +224,13 @@
                 <v-card-text>
                   <v-text-field
                     :rules="userRules"
-                    label="Username"
+                    :label="$t('login.namapengguna')"
                     prepend-icon="mdi-account-circle"
                     v-model="user.username"
                   />
                   <v-text-field
                     :rules="pwRules"
-                    label="Password"
+                    :label="$t('login.katasandi')"
                     :type="showPassword ? 'text' : 'password'"
                     prepend-icon="mdi-lock"
                     :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"

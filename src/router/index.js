@@ -44,6 +44,15 @@ const routes = [
     component: () => import('../views/manajemen-pengguna/IndexView.vue')
   },
   {
+    path: '/tambah-pengguna',
+    name: 'tambah-pengguna',
+    component: () => import('../views/manajemen-pengguna/AddView.vue')
+  },{
+    path: '/edit-pengguna',
+    name: 'edit-pengguna',
+    component: () => import('../views/manajemen-pengguna/EditView.vue')
+  },
+  {
     path: '/manajemen-perusahaan',
     name: 'manajemen-perusahaan',
     component: () => import('../views/manajemen-perusahaan/IndexView.vue')

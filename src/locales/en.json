@@ -5,6 +5,9 @@
       "judul" : "Login to Pallet Management System",
       "ingat" : "Remember Me",
       "masuk" : "Login",
+      "namapengguna" : "Username",
+      "katasandi" : "Password",
+      "kembali" : "Back",
       "lupa" : "Forgot Your Password?"
     },
   "sidebar" : 
@@ -38,5 +41,18 @@
   "menu" : 
     {
       "menu" : "Transaction Menu"
+    },
+    "manajemenpengguna" : 
+    {
+      "pengguna" : "User",
+      "tambah" : "Add User",
+      "sunting" : "Edit",
+      "cari" : "Search",
+      "kirim" : "Submit",
+      "namalengkap" : "Fullname",
+      "unduh" : "Download Data",
+      "email" : "Email",
+      "edit" : "Edit User",
+      "hapus" : "Delete"
     }
 }
