@@ -55,6 +55,17 @@
       "edit" : "Sunting Pengguna",
       "hapus" : "Hapus"
     },
+    "organisasi" : 
+    {
+      "organisasi" : "Organisasi",
+      "tambah" : "Tambah Organisasi",
+      "nama" : "Nama Organisasi",
+      "alamat" : "Alamat Organisasi",
+      "kota" : "Kota Organisasi",
+      "nomor" : "Nomor Organisasi",
+      "dibuat" : "Dibuat Oleh",
+      "diperbarui" : "Diperbarui Saat"
+    },
     "perandanizin" : 
     {
       "peran" : "Peran",

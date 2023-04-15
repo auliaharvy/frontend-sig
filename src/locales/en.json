@@ -55,6 +55,17 @@
       "edit" : "Edit User",
       "hapus" : "Delete"
     },
+    "organisasi" : 
+    {
+      "organisasi" : "Organization",
+      "tambah" : "Add Organization",
+      "nama" : "Organization Name",
+      "alamat" : "Organization Address",
+      "kota" : "Organizational City",
+      "nomor" : "Organization Number",
+      "dibuat" : "Created By",
+      "diperbarui" : "Updated At"
+    },
     "perandanizin" : 
     {
       "peran" : "Role",
