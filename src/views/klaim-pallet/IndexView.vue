@@ -2,8 +2,9 @@
   <v-app>
     <Navbar />
     <div class="team">
-      <h1 class="subheading grey--text">Dashboard</h1>
       <v-container>
+        <h1 class="heading black--text">{{ $t("sidebar.klaimpallet") }}</h1>
+        <v-spacer></v-spacer>
         <v-layout row wrap>
           <v-flex sm6 xs12 md6 lg3>
             <v-card class="ma-3">
@@ -135,16 +136,18 @@
 </template>
 
 <script>
+import Breadcomp from "@/components/Breadcrumb.vue";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import en from "@/locales/en.json";
 import id from "@/locales/id.json";
 // @ is an alias to /src
 export default {
-  name: "team",
+  name: "Dashboard",
   components: {
     Navbar,
     Footer,
+    Breadcomp
   },
   data: () => ({
     team: [

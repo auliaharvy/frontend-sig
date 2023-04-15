@@ -128,58 +128,58 @@ import LocaleSwitcher from "@/components/LocaleSwitcher";
 export default {
   data: () => ({
     drawer: true,
-    links: [{ icon: "dashboard", title: "sidebar.halamanutama", route: "/dashboard" }],
+    links: [{ icon: "home", title: "sidebar.halamanutama", route: "/dashboard" }],
     mgms: [
       {
         action: "mdi-file",
-        items: [
-          { title:  "sidebar.suratjalanpallet" }, 
-        { title:  "sidebar.sjpstatus" }
-      ],
         title:  "sidebar.manajemensjp",
+        items: [
+          { title:  "sidebar.suratjalanpallet", route: "/surat-jalan-pallet" }, 
+          { title:  "sidebar.sjpstatus",route: "/sjp-status" }
+      ],
       },
       {
         action: "mdi-silverware-fork-knife",
-        items: [
-          { title: "sidebar.mutasipallet" },
-          { title: "sidebar.klaimpallet" },
-          { title: "sidebar.perubahankuotapallet" },
-          { title: "sidebar.palletbaru" },
-          { title: "sidebar.palletrusak" },
-          { title: "sidebar.palletdiperbaiki" },
-          { title: "sidebar.penyewaanpallet" },
-        ],
         title: "sidebar.manajemenpallet",
+        items: [
+          { title: "sidebar.mutasipallet" , route: "/mutasi-pallet" },
+          { title: "sidebar.klaimpallet", route: "/klaim-pallet" },
+          { title: "sidebar.perubahankuotapallet" , route: "/perubahan-kuota-pallet" },
+          { title: "sidebar.palletbaru" , route: "/pallet-baru" },
+          { title: "sidebar.palletrusak" , route: "/pallet-rusak" },
+          { title: "sidebar.palletdiperbaiki" , route: "/pallet-diperbaiki" },
+          { title: "sidebar.penyewaanpallet" , route: "/penyewaan-pallet" },
+        ],
       },
     ],
     pemps: [
       {
         icon: "dashboard",
-        title: "sidebar.penyesuaianekspedisi",
-        route: "/dashboard",
+        title: "sidebar.penyesuaianekspeditur",
+        route: "/penyesuaian-ekspeditur",
       },
-      { icon: "dashboard", title: "sidebar.manajemenperusahaan", route: "/dashboard" },
+      { icon: "dashboard", title: "sidebar.manajemenperusahaan", route: "/manajemen-perusahaan" },
     ],
     lps: [
       {
-        action: "mdi-school",
-        items: [
-          { title: "sidebar.dasbororganisasi" },
-          { title: "sidebar.pergerakanpallet" },
-          { title: "sidebar.datatransaksi" },
-        ],
+        action: "mdi-file",
         title: "sidebar.laporan",
+        items: [
+          { title: "sidebar.dasbororganisasi",  route: "/dashboard" },
+          { title: "sidebar.pergerakanpallet", route: "/pergerakan-pallet" },
+          { title: "sidebar.datatransaksi",  route:"/data-transaksi" },
+        ],
       },
       {
-        action: "mdi-human-male-female-child",
-        items: [
-          { title: "sidebar.organisasi" },
-          { title: "sidebar.perandanizin" },
-          { title: "sidebar.manajemenpengguna" },
-          { title: "sidebar.kendaraan" },
-          { title: "sidebar.pengendara" },
-        ],
+        action: "mdi-cog",
         title: "sidebar.pengaturan",
+        items: [
+          { title: "sidebar.organisasi", route: "/organisasi" },
+          { title: "sidebar.perandanizin" , route:"/peran-dan-izin" },
+          { title: "sidebar.manajemenpengguna" , route: "/manajemen-pengguna" },
+          { title: "sidebar.kendaraan" , route: "/kendaraan" },
+          { title: "sidebar.pengendara" , route: "/pengendara" },
+        ],
       },
     ],
     logouts: [{ icon: "logout", title: "sidebar.keluar", route: "/" }],

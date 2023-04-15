@@ -1,10 +1,13 @@
 {
-  "message": "hello i18n !!",
+  "language": "Select Language",
   "login" : 
     {
       "judul" : "Login to Pallet Management System",
       "ingat" : "Remember Me",
       "masuk" : "Login",
+      "namapengguna" : "Username",
+      "katasandi" : "Password",
+      "kembali" : "Back",
       "lupa" : "Forgot Your Password?"
     },
   "sidebar" : 
@@ -21,7 +24,7 @@
       "palletrusak" : "Broken Pallet",
       "palletdiperbaiki" : "Repaired Pallet",
       "penyewaanpallet" : "Rental Pallet",
-      "penyesuaianekspedisi" : "Expedition Adjustments",
+      "penyesuaianekspeditur" : "Shipping Adjustments",
       "manajemenperusahaan" : "Company Management",
       "laporan" : "Report",
       "dasbororganisasi" : "Organization Dashboard",
@@ -38,5 +41,39 @@
   "menu" : 
     {
       "menu" : "Transaction Menu"
+    },
+    "manajemenpengguna" : 
+    {
+      "pengguna" : "User",
+      "tambah" : "Add User",
+      "sunting" : "Edit",
+      "cari" : "Search",
+      "kirim" : "Submit",
+      "namalengkap" : "Fullname",
+      "unduh" : "Download Data",
+      "email" : "Email",
+      "edit" : "Edit User",
+      "hapus" : "Delete"
+    },
+    "organisasi" : 
+    {
+      "organisasi" : "Organization",
+      "tambah" : "Add Organization",
+      "nama" : "Organization Name",
+      "alamat" : "Organization Address",
+      "kota" : "Organizational City",
+      "nomor" : "Organization Number",
+      "dibuat" : "Created By",
+      "diperbarui" : "Updated At"
+    },
+    "perandanizin" : 
+    {
+      "peran" : "Role",
+      "menetapkanperan" : "Assign Role To User",
+      "perusahaan" : "Company",
+      "aturperan" : "Set Role",
+      "aturizin" : "Set Permission",
+      "cek" : "Check",
+      "izin" : "Permission"
     }
 }

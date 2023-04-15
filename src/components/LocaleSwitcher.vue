@@ -13,9 +13,13 @@ export default {
   name: "LocaleSwitcher",
   data() {
     return {
-       locales: ["id", "en"],
-        selectedLanguage: 'id'
-       };
+    options: [
+      { value: 'id', text: 'Indonesia' },
+      { value: 'en', text: 'English' },
+      // Tambahkan opsi bahasa lain sesuai kebutuhan
+    ],
+    selectedLanguage: 'id', // Menyimpan nilai bahasa yang dipilih
+  };
   },
   watch: {
     selectedLanguage (payload) {

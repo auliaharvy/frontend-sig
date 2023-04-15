@@ -1,9 +1,13 @@
 {
+  "language": "Pilih Bahasa",
   "login" : 
     {
       "judul" : "Masuk ke Pallet Management System",
       "ingat" : "Ingat Saya",
       "masuk" : "Masuk",
+      "namapengguna" : "Nama Pengguna",
+      "katasandi" : "Kata Sandi",
+      "kembali" : "Kembali",
       "lupa" : "Lupa Kata Sandi?"
     },
     "sidebar" : 
@@ -20,7 +24,7 @@
       "palletrusak" : "Pallet Rusak",
       "palletdiperbaiki" : "Pallet Diperbaiki",
       "penyewaanpallet" : "Penyewaan Pallet",
-      "penyesuaianekspedisi" : "Penyesuaian Ekspedisi",
+      "penyesuaianekspeditur" : "Penyesuaian Ekspeditur",
       "manajemenperusahaan" : "Manajemen Perusahaan",
       "laporan" : "Laporan",
       "dasbororganisasi" : "Dasbor Organisasi",
@@ -37,5 +41,39 @@
     "menu" : 
     {
       "menu" : "Menu Transaksi"
+    },
+    "manajemenpengguna" : 
+    {
+      "pengguna" : "Pengguna",
+      "tambah" : "Tambah Pengguna",
+      "sunting" : "Sunting",
+      "cari" : "Cari",
+      "kirim" : "Kirim",
+      "namalengkap" : "Nama Lengkap",
+      "unduh" : "Unduh Data",
+      "email" : "Email",
+      "edit" : "Sunting Pengguna",
+      "hapus" : "Hapus"
+    },
+    "organisasi" : 
+    {
+      "organisasi" : "Organisasi",
+      "tambah" : "Tambah Organisasi",
+      "nama" : "Nama Organisasi",
+      "alamat" : "Alamat Organisasi",
+      "kota" : "Kota Organisasi",
+      "nomor" : "Nomor Organisasi",
+      "dibuat" : "Dibuat Oleh",
+      "diperbarui" : "Diperbarui Saat"
+    },
+    "perandanizin" : 
+    {
+      "peran" : "Peran",
+      "menetapkanperan" : "Menetapkan Peran Ke Pengguna",
+      "perusahaan" : "Perusahaan",
+      "aturperan" : "Atur Peran",
+      "aturizin" : "Atur Izin",
+      "cek" : "Cek",
+      "izin" : "Izin"
     }
 }
