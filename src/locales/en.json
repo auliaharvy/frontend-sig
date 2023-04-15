@@ -54,5 +54,15 @@
       "email" : "Email",
       "edit" : "Edit User",
       "hapus" : "Delete"
+    },
+    "perandanizin" : 
+    {
+      "peran" : "Role",
+      "menetapkanperan" : "Assign Role To User",
+      "perusahaan" : "Company",
+      "aturperan" : "Set Role",
+      "aturizin" : "Set Permission",
+      "cek" : "Check",
+      "izin" : "Permission"
     }
 }

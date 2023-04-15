@@ -54,5 +54,15 @@
       "email" : "Email",
       "edit" : "Sunting Pengguna",
       "hapus" : "Hapus"
+    },
+    "perandanizin" : 
+    {
+      "peran" : "Peran",
+      "menetapkanperan" : "Menetapkan Peran Ke Pengguna",
+      "perusahaan" : "Perusahaan",
+      "aturperan" : "Atur Peran",
+      "aturizin" : "Atur Izin",
+      "cek" : "Cek",
+      "izin" : "Izin"
     }
 }

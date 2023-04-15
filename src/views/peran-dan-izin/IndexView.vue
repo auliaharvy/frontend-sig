@@ -1,135 +1,89 @@
 <template>
   <v-app>
     <Navbar />
-    <div class="team">
-      <v-container>
+      <v-container fluid>
         <h1 class="heading black--text">{{ $t("sidebar.perandanizin") }}</h1>
-        <v-layout row wrap>
-          <v-flex sm6 xs12 md6 lg3>
-            <v-card class="ma-3">
-              <v-list-item>
-                <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet color="green" width="80" height="80" elevation="10">
-                    <v-icon dark large>store</v-icon>
-                  </v-sheet>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <div class="overline text-right">Article</div>
-                  <v-list-item-title class="headline mb-1 text-right"
-                    >523614</v-list-item-title
-                  >
-                  <div><v-divider></v-divider></div>
-                </v-list-item-content>
-              </v-list-item>
-              <v-card-actions>
-                <v-icon text class="ma-2">person</v-icon>
-                <div class="overline">Iyad</div>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-          <v-flex sm6 xs12 md6 lg3>
-            <v-card class="ma-3">
-              <v-list-item>
-                <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet
-                    color="#F44336"
-                    width="80"
-                    height="80"
-                    elevation="10"
-                  >
-                    <v-icon dark large>subscriptions</v-icon>
-                  </v-sheet>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <div class="overline text-right">Abonné</div>
-                  <v-list-item-title class="headline mb-1 text-right"
-                    >+700</v-list-item-title
-                  >
-                  <div><v-divider></v-divider></div>
-                </v-list-item-content>
-              </v-list-item>
-              <v-card-actions>
-                <v-icon text class="ma-2">subscriptions</v-icon>
-                <div class="overline">AAE IdeaPro</div>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-          <v-flex sm6 xs12 md6 lg3>
-            <v-card class="ma-3">
-              <v-list-item>
-                <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet
-                    color="#03A9F4"
-                    width="80"
-                    height="80"
-                    elevation="10"
-                  >
-                    <v-icon dark large>add_shopping_cart</v-icon>
-                  </v-sheet>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <div class="overline text-right">Shopping</div>
-                  <v-list-item-title class="headline mb-1 text-right"
-                    >$34,245</v-list-item-title
-                  >
-                  <div><v-divider></v-divider></div>
-                </v-list-item-content>
-              </v-list-item>
-              <v-card-actions>
-                <v-icon text class="ma-2">credit_card</v-icon>
-                <div class="overline">VISA Card</div>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-          <v-flex sm6 xs12 md6 lg3>
-            <v-card class="ma-3">
-              <v-list-item>
-                <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet
-                    color="#FFC107"
-                    width="80"
-                    height="80"
-                    elevation="10"
-                  >
-                    <v-icon dark large>folder_shared</v-icon>
-                  </v-sheet>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <div class="overline text-right">Folder shared</div>
-                  <v-list-item-title class="headline mb-1 text-right"
-                    >1730</v-list-item-title
-                  >
-                  <div><v-divider></v-divider></div>
-                </v-list-item-content>
-              </v-list-item>
-              <v-card-actions>
-                <v-icon text class="ma-2">folder</v-icon>
-                <div class="overline">Prodect</div>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-          <v-flex xs12 sm6 md4 lg3 v-for="person in team" :key="person.name">
-            <v-card class="text-center ma-3">
-              <v-responsive class="pt-4">
-                <v-avatar size="100" class="red lighten-2">
-                  <img :src="person.avatar" alt="" />
-                </v-avatar>
-              </v-responsive>
-              <v-card-text>
-                <div class="subheading">{{ person.name }}</div>
-                <div class="grey--text">{{ person.role }}</div>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn outlined color="orange">
-                  <v-icon small left>message</v-icon>
-                  <span>Message</span>
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
+        <v-col cols="12" sm="12" md="12">
+        <v-row>
+          <v-col cols="12" sm="12" md="5">
+                <v-card>
+                  <v-card-title>
+                    {{ $t("perandanizin.menetapkanperan") }}
+                  </v-card-title>
+                  <v-card-text>
+                    <v-form>
+                      <v-select outlined
+                      :label="$t('perandanizin.peran')">
+                    </v-select>
+                    </v-form>
+                    <v-form>
+                      <v-select outlined
+                      :label="$t('manajemenpengguna.pengguna')">
+                    </v-select>
+                    </v-form>
+                    <v-form>
+                      <v-select outlined
+                      :label="$t('perandanizin.perusahaan')">
+                    </v-select>
+                    </v-form>
+                    <v-form>
+                      <v-btn class="success">
+                        {{ $t("perandanizin.aturperan") }}
+                    </v-btn>
+                    </v-form>
+                    </v-card-text>
+                  </v-card>
+              </v-col>
+              <v-col cols="12" sm="12" md="7">
+                <v-card >
+                  <v-card-title>
+                    {{ $t("perandanizin.aturizin") }}
+                  </v-card-title>
+                  <v-card-text>
+                    <v-form>
+                      <v-select outlined
+                      :label="$t('perandanizin.peran')">
+                    </v-select>
+                    </v-form>
+                    <v-form>
+                      <v-btn color="secondary">
+                        {{ $t("perandanizin.cek") }}
+                    </v-btn>
+                    </v-form>
+                    <v-form style="margin-top: 20px;">
+                      <v-card>
+                        <v-card-title>
+                          {{ $t("perandanizin.izin") }}
+                        </v-card-title>
+                        <v-card-text style="height: 300px; overflow-y: auto;">
+                          <v-container>
+                            <v-row>
+                              <v-col
+                                cols="12"
+                                v-for="permission in Object.keys(izin)"
+                                :key="permission"
+                              >
+                                <v-checkbox
+                                  v-model="izin[permission.toLowerCase()]"
+                                  :label="`Izin ${permission}`"
+                                ></v-checkbox>
+                              </v-col>
+                            </v-row>
+                          </v-container>
+                        </v-card-text>
+                      </v-card>
+                    </v-form>
+                    <v-form style="margin-top: 20px;">
+                      <v-btn class="success">
+                        {{ $t("perandanizin.aturizin") }}
+                    </v-btn>
+                    </v-form>
+                    </v-card-text>
+                  </v-card>
+              </v-col>
+          </v-row>
+      </v-col>
       </v-container>
-    </div>
     <Footer />
   </v-app>
 </template>
@@ -146,13 +100,18 @@ export default {
     Navbar,
     Footer,
   },
-  data: () => ({
-    team: [
-      { name: "Iyad", role: "web developer", avatar: "/img1.png" },
-      { name: "Reda", role: "Graphic designer", avatar: "/img2.png" },
-      { name: "Zineb", role: "web developer", avatar: "/img3.png" },
-      { name: "Hu TechGroup", role: "Desktop developer", avatar: "/img4.png" },
-    ],
-  }),
+  data() {
+    return {
+      izin: {
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false,
+        6: false,
+        7: false,
+      },
+    };
+  },
 };
 </script>
