@@ -35,8 +35,6 @@
                     >
                     <template v-slot:item.edit="{ item }">
                       <v-btn color="yellow" small @click="editData(item)"
-                      v-for="edit in edits"
-                      router :to="edit.route"
                       ><v-icon>mdi-pencil</v-icon></v-btn>
                     </template>
                     <template v-slot:item.hapus="{ item }">
@@ -79,7 +77,6 @@ export default {
             ],
             search: '',
             adds: [{ route: "/tambah-pengguna" }],
-            edits: [{ route: "/edit-pengguna" }],
 
         }
     },
@@ -87,6 +84,7 @@ export default {
     editData(item) {
       // Logika untuk mengedit data
       console.log('Mengedit data:', item);
+      this.$router.push({ path: "/edit-pengguna" });
     },
     hapusData(item) {
       // Logika untuk menghapus data

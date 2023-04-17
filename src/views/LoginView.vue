@@ -57,7 +57,7 @@
                     <v-btn
                       block
                       color="success"
-                      :disabled="!valid"
+                      :disabled="isDisabled"
         @click="login"
                       >{{ $t("login.masuk") }}</v-btn
                     >
@@ -120,73 +120,9 @@
                     <v-btn
                       block
                       color="success"
-                      :disabled="!valid"
-        @click="login"
-                      >{{ $t("login.masuk") }}</v-btn
-                    >
-                  </v-card-actions>
-                  <p class=" ">{{ $t("login.lupa") }}</p>
-                </v-form>
-              </v-card>
-            </v-card>
-          </v-col>
-          <v-col
-            v-else-if="$vuetify.breakpoint.xl"
-            md="12"
-            align="center"
-            justify="center"
-          >
-            <v-card style="height: 466px; border-radius: 20px" class="login">
-              <v-card
-                style="height: 466px; margin-left: 310px"
-                max-width="400"
-                justify="center"
-                align="center"
-              >
-                <v-img
-                  src="../assets/logo-sig.png"
-                  max-heigth="170"
-                  max-width="340"
-                  style="margin-top: -40px"
-                ></v-img>
-                <v-card-title
-                  style="font-size: 15px; margin-top: -20px; margin-left: 50px"
-                  >{{ $t("login.judul") }}
-                </v-card-title>
-                <LocaleSwitcher />
-                <v-form v-model="valid" style="margin-top: -20px" @submit.prevent="login">
-                  <v-card-text>
-                    <v-text-field
-                      :rules="userRules"
-                      :label="$t('login.namapengguna')"
-                      prepend-icon="mdi-account-circle"
-                      v-model="user.username"
-                    />
-                    <v-text-field
-                      :rules="pwRules"
-                      :label="$t('login.katasandi')"
-                      :type="showPassword ? 'text' : 'password'"
-                      prepend-icon="mdi-lock"
-                      :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                      @click:append="handleIcon"
-                      v-model="user.password"
-                    />
-                  </v-card-text>
-                  <v-checkbox
-                    :label="$t('login.ingat')"
-                    class="mt-n1"
-                    color="blue"
-                    style="margin-left: 18px"
-                  >
-                  </v-checkbox>
-                  <v-card-actions>
-                    <v-btn
-                      block
-                      color="success"
-                      :disabled="!valid"
-        @click="login"
-                      >{{ $t("login.masuk") }}</v-btn
-                    >
+                      :disabled="isDisabled"
+                       @click="login"
+                      >{{ $t("login.masuk") }}</v-btn>
                   </v-card-actions>
                   <p class=" ">{{ $t("login.lupa") }}</p>
                 </v-form>
@@ -238,7 +174,7 @@
       <v-btn
         block
         color="success"
-        :disabled="!valid"
+        :disabled="isDisabled"
         @click="login"
       >{{ $t("login.masuk") }}</v-btn
       >
@@ -273,7 +209,7 @@ export default {
     };
   },
   methods: {
-    handleIcon() {
+      handleIcon() {
       this.showPassword = !this.showPassword;
     },
     login() {
@@ -292,6 +228,11 @@ export default {
             });
         }
       },
+  computed: {
+      isDisabled() {
+      return !this.valid; // Calculate the disabled attribute value based on valid
+    }
+  },
   components: {
     LocaleSwitcher,
   },
