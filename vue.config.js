@@ -4,12 +4,16 @@ module.exports = defineConfig({
     'vuetify'
   ],
 
+  devServer: {
+    port : 5000
+  },
+
   lintOnSave:false,
 
   pluginOptions: {
     i18n: {
-      locale: 'en',
-      fallbackLocale: 'en',
+      locale: 'id',
+      fallbackLocale: 'id',
       localeDir: 'locales',
       enableInSFC: false,
       includeLocales: false,

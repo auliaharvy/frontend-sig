@@ -24,10 +24,11 @@
                 ></v-img>
                 <v-card-title
                   style="font-size: 15px; margin-top: -20px; margin-left: 25px"
-                  > {{ $t("login.judul") }}
+                >
+                  {{ $t("login.judul") }}
                 </v-card-title>
                 <LocaleSwitcher />
-                <v-form v-model="valid" style="margin-top: -20px">
+                <v-form v-model="valid" style="margin-top: -20px" @submit.prevent="login">
                   <v-card-text>
                     <v-text-field
                       :rules="userRules"
@@ -54,17 +55,14 @@
                   </v-checkbox>
                   <v-card-actions>
                     <v-btn
-                      v-for="login in logins"
-                      router
-                      :to="login.route"
                       block
                       color="success"
-                      @click="handleLogin"
                       :disabled="!valid"
-                      >{{ $t ("login.masuk") }}</v-btn
+        @click="login"
+                      >{{ $t("login.masuk") }}</v-btn
                     >
                   </v-card-actions>
-                    <p class=" ">{{ $t ("login.lupa") }}</p>
+                  <p class=" ">{{ $t("login.lupa") }}</p>
                 </v-form>
               </v-card>
             </v-card>
@@ -93,7 +91,7 @@
                   >{{ $t("login.judul") }}
                 </v-card-title>
                 <LocaleSwitcher />
-                <v-form v-model="valid" style="margin-top: -20px">
+                <v-form v-model="valid" style="margin-top: -20px" @submit.prevent="login">
                   <v-card-text>
                     <v-text-field
                       :rules="userRules"
@@ -112,7 +110,7 @@
                     />
                   </v-card-text>
                   <v-checkbox
-                  :label="$t('login.ingat')"
+                    :label="$t('login.ingat')"
                     class="mt-n1"
                     color="blue"
                     style="margin-left: 18px"
@@ -120,17 +118,14 @@
                   </v-checkbox>
                   <v-card-actions>
                     <v-btn
-                      v-for="login in logins"
-                      router
-                      :to="login.route"
                       block
                       color="success"
-                      @click="handleLogin"
                       :disabled="!valid"
-                      >{{ $t ("login.masuk") }}</v-btn
+        @click="login"
+                      >{{ $t("login.masuk") }}</v-btn
                     >
                   </v-card-actions>
-                    <p class=" ">{{ $t ("login.lupa") }}</p>
+                  <p class=" ">{{ $t("login.lupa") }}</p>
                 </v-form>
               </v-card>
             </v-card>
@@ -159,7 +154,7 @@
                   >{{ $t("login.judul") }}
                 </v-card-title>
                 <LocaleSwitcher />
-                <v-form v-model="valid" style="margin-top: -20px">
+                <v-form v-model="valid" style="margin-top: -20px" @submit.prevent="login">
                   <v-card-text>
                     <v-text-field
                       :rules="userRules"
@@ -178,7 +173,7 @@
                     />
                   </v-card-text>
                   <v-checkbox
-                  :label="$t('login.ingat')"
+                    :label="$t('login.ingat')"
                     class="mt-n1"
                     color="blue"
                     style="margin-left: 18px"
@@ -186,28 +181,22 @@
                   </v-checkbox>
                   <v-card-actions>
                     <v-btn
-                      v-for="login in logins"
-                      router
-                      :to="login.route"
                       block
                       color="success"
-                      @click="handleLogin"
                       :disabled="!valid"
-                      >{{ $t ("login.masuk") }}</v-btn
+        @click="login"
+                      >{{ $t("login.masuk") }}</v-btn
                     >
                   </v-card-actions>
-                    <p class=" ">{{ $t ("login.lupa") }}</p>
+                  <p class=" ">{{ $t("login.lupa") }}</p>
                 </v-form>
               </v-card>
             </v-card>
           </v-col>
-          <v-col v-else cols="12"
-          justify="center"
-              align="center">
+          <v-col v-else cols="12" justify="center" align="center">
             <v-card
-              style="height: 480px; border-radius: 20px; margin-top: 60px;"
+              style="height: 480px; border-radius: 20px; margin-top: 60px"
               max-width="400"
-              
             >
               <v-img
                 src="../assets/logo-sig.png"
@@ -216,49 +205,46 @@
                 style="margin-top: -60px"
               ></v-img>
               <v-card-title
-                style="font-size: 13px; margin-top: -20px; margin-left: 75px;"
+                style="font-size: 13px; margin-top: -20px; margin-left: 75px"
                 >{{ $t("login.judul") }}
               </v-card-title>
-                <LocaleSwitcher />
-              <v-form v-model="valid">
-                <v-card-text>
-                  <v-text-field
-                    :rules="userRules"
-                    :label="$t('login.namapengguna')"
-                    prepend-icon="mdi-account-circle"
-                    v-model="user.username"
-                  />
-                  <v-text-field
-                    :rules="pwRules"
-                    :label="$t('login.katasandi')"
-                    :type="showPassword ? 'text' : 'password'"
-                    prepend-icon="mdi-lock"
-                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                    @click:append="handleIcon"
-                    v-model="user.password"
-                  />
-                </v-card-text>
-                <v-checkbox
-                :label="$t('login.ingat')"
-                  class="mt-n1"
-                  color="blue"
-                  style="margin-left: 17px"
-                >
-                </v-checkbox>
-                <v-card-actions>
-                  <v-btn
-                    v-for="login in logins"
-                    router
-                    :to="login.route"
-                    block
-                    color="success"
-                    @click="handleLogin"
-                    :disabled="!valid"
-                    >{{ $t ("login.masuk") }}</v-btn
-                  >
-                </v-card-actions>
-                <p class=" ">{{ $t ("login.lupa") }}</p>
-              </v-form>
+              <LocaleSwitcher />
+              <v-form v-model="valid" @submit.prevent="login">
+    <v-card-text>
+      <v-text-field
+        :rules="userRules"
+        :label="$t('login.namapengguna')"
+        prepend-icon="mdi-account-circle"
+        v-model="user.username"
+      />
+      <v-text-field
+        :rules="pwRules"
+        :label="$t('login.katasandi')"
+        :type="showPassword ? 'text' : 'password'"
+        prepend-icon="mdi-lock"
+        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+        @click:append="handleIcon"
+        v-model="user.password"
+      />
+    </v-card-text>
+    <v-checkbox
+      :label="$t('login.ingat')"
+      class="mt-n1"
+      color="blue"
+      style="margin-left: 17px"
+    >
+    </v-checkbox>
+    <v-card-actions>
+      <v-btn
+        block
+        color="success"
+        :disabled="!valid"
+        @click="login"
+      >{{ $t("login.masuk") }}</v-btn
+      >
+    </v-card-actions>
+    <p class=" ">{{ $t("login.lupa") }}</p>
+  </v-form>
             </v-card>
           </v-col>
         </v-flex>
@@ -268,9 +254,10 @@
 </template>
 
 <script>
+import axios from "axios";
 import en from "@/locales/en.json";
 import id from "@/locales/id.json";
-import LocaleSwitcher from "../components/LocaleSwitcher.vue"
+import LocaleSwitcher from "../components/LocaleSwitcher.vue";
 export default {
   name: "LoginView",
   data() {
@@ -283,25 +270,31 @@ export default {
       userRules: [(v) => v != "" || "Username is Required"],
       pwRules: [(v) => v != "" || "Password is Required"],
       valid: false,
-      logins: [{ route: "/dashboard" }],
     };
   },
   methods: {
     handleIcon() {
       this.showPassword = !this.showPassword;
     },
-    handleLogin() {
-      console.log(this.user);
-      this.user = {
-        username: "",
-        password: "",
-      };
-      router.push({ path: "/dashboard" });
-    },
-  },
+    login() {
+      axios.post('https://localhost:3000/api/users/login', this.user)
+      .then(response => {
+        console.log(response);
+        if (response.data.success) {
+          console.log('Login berhasil');
+          this.$router.push({ path: "/dashboard" });
+        } else {
+          console.error('Login gagal: ' + response.data.message);
+          }
+            })
+        .catch(error => {
+          console.error('Terjadi kesalahan saat mengirim permintaan: ' + error.message);
+            });
+        }
+      },
   components: {
     LocaleSwitcher,
-  }
+  },
 };
 </script>
 
