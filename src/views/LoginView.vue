@@ -196,10 +196,12 @@ import id from "@/locales/id.json";
 import LocaleSwitcher from "../components/LocaleSwitcher.vue";
 export default {
   name: "LoginView",
-  data() {
+  data() 
+  {
     return {
       showPassword: false,
-      user: {
+      user:
+      {
         username: "",
         password: "",
       },
@@ -208,30 +210,39 @@ export default {
       valid: false,
     };
   },
-  methods: {
-      handleIcon() {
+  methods: 
+  {
+    handleIcon() 
+    {
       this.showPassword = !this.showPassword;
     },
-    login() {
+    login() 
+    {
       axios.post('https://localhost:3000/api/users/login', this.user)
-      .then(response => {
+      .then(response => 
+      {
         console.log(response);
-        if (response.data.success) {
+        if (response.data.success) 
+        {
           console.log('Login berhasil');
           this.$router.push({ path: "/dashboard" });
-        } else {
+        } else 
+        {
           console.error('Login gagal: ' + response.data.message);
-          }
-            })
-        .catch(error => {
-          console.error('Terjadi kesalahan saat mengirim permintaan: ' + error.message);
-            });
         }
-      },
-  computed: {
-      isDisabled() {
-      return !this.valid; // Calculate the disabled attribute value based on valid
+      })
+      .catch(error => 
+      {
+        console.error('Terjadi kesalahan saat mengirim permintaan: ' + error.message);
+      }
+      );
     }
+  },
+  computed: {
+      isDisabled() 
+      {
+      return !this.valid; // Calculate the disabled attribute value based on valid
+      }
   },
   components: {
     LocaleSwitcher,
