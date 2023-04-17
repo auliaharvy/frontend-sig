@@ -28,7 +28,7 @@
                   {{ $t("login.judul") }}
                 </v-card-title>
                 <LocaleSwitcher />
-                <v-form v-model="valid" style="margin-top: -20px" @submit.prevent="login">
+                <v-form v-model="valid" style="margin-top: -20px" @submit.prevent="login" @keyup.enter.native="login">
                   <v-card-text>
                     <v-text-field
                       :rules="userRules"
@@ -91,7 +91,7 @@
                   >{{ $t("login.judul") }}
                 </v-card-title>
                 <LocaleSwitcher />
-                <v-form v-model="valid" style="margin-top: -20px" @submit.prevent="login">
+                <v-form v-model="valid" style="margin-top: -20px" @submit.prevent="login" @keyup.enter.native="login">
                   <v-card-text>
                     <v-text-field
                       :rules="userRules"
@@ -145,7 +145,7 @@
                 >{{ $t("login.judul") }}
               </v-card-title>
               <LocaleSwitcher />
-              <v-form v-model="valid" @submit.prevent="login">
+              <v-form v-model="valid" @submit.prevent="login" @keyup.enter.native="login">
                 <v-card-text>
                   <v-text-field
                     :rules="userRules"
@@ -190,6 +190,7 @@
 </template>
 
 <script>
+import vueaxios from "axios";
 import axios from "axios";
 import en from "@/locales/en.json";
 import id from "@/locales/id.json";
