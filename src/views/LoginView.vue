@@ -200,8 +200,7 @@ export default {
   {
     return {
       showPassword: false,
-      user:
-      {
+      user: {
         username: "",
         password: "",
       },
@@ -212,36 +211,28 @@ export default {
   },
   methods: 
   {
-    handleIcon() 
-    {
+    handleIcon() {
       this.showPassword = !this.showPassword;
     },
-    login() 
-    {
+    login() {
       axios.post('https://localhost:3000/api/users/login', this.user)
-      .then(response => 
-      {
+      .then(response => {
         console.log(response);
-        if (response.data.success) 
-        {
+        if (response.data.success) {
           console.log('Login berhasil');
           this.$router.push({ path: "/dashboard" });
-        } else 
-        {
+        } else {
           console.error('Login gagal: ' + response.data.message);
         }
       })
-      .catch(error => 
-      {
+      .catch(error => {
         console.error('Terjadi kesalahan saat mengirim permintaan: ' + error.message);
-      }
-      );
+      });
     }
   },
   computed: {
-      isDisabled() 
-      {
-      return !this.valid; // Calculate the disabled attribute value based on valid
+      isDisabled() {
+        return !this.valid;
       }
   },
   components: {
