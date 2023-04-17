@@ -58,7 +58,7 @@
                       block
                       color="success"
                       :disabled="isDisabled"
-        @click="login"
+                      @click="login"
                       >{{ $t("login.masuk") }}</v-btn
                     >
                   </v-card-actions>
@@ -121,7 +121,7 @@
                       block
                       color="success"
                       :disabled="isDisabled"
-                       @click="login"
+                      @click="login"
                       >{{ $t("login.masuk") }}</v-btn>
                   </v-card-actions>
                   <p class=" ">{{ $t("login.lupa") }}</p>
@@ -146,41 +146,41 @@
               </v-card-title>
               <LocaleSwitcher />
               <v-form v-model="valid" @submit.prevent="login">
-    <v-card-text>
-      <v-text-field
-        :rules="userRules"
-        :label="$t('login.namapengguna')"
-        prepend-icon="mdi-account-circle"
-        v-model="user.username"
-      />
-      <v-text-field
-        :rules="pwRules"
-        :label="$t('login.katasandi')"
-        :type="showPassword ? 'text' : 'password'"
-        prepend-icon="mdi-lock"
-        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-        @click:append="handleIcon"
-        v-model="user.password"
-      />
-    </v-card-text>
-    <v-checkbox
-      :label="$t('login.ingat')"
-      class="mt-n1"
-      color="blue"
-      style="margin-left: 17px"
-    >
-    </v-checkbox>
-    <v-card-actions>
-      <v-btn
-        block
-        color="success"
-        :disabled="isDisabled"
-        @click="login"
-      >{{ $t("login.masuk") }}</v-btn
-      >
-    </v-card-actions>
-    <p class=" ">{{ $t("login.lupa") }}</p>
-  </v-form>
+                <v-card-text>
+                  <v-text-field
+                    :rules="userRules"
+                    :label="$t('login.namapengguna')"
+                    prepend-icon="mdi-account-circle"
+                    v-model="user.username"
+                  />
+                  <v-text-field
+                    :rules="pwRules"
+                    :label="$t('login.katasandi')"
+                    :type="showPassword ? 'text' : 'password'"
+                    prepend-icon="mdi-lock"
+                    :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                    @click:append="handleIcon"
+                    v-model="user.password"
+                  />
+                </v-card-text>
+                <v-checkbox
+                  :label="$t('login.ingat')"
+                  class="mt-n1"
+                  color="blue"
+                  style="margin-left: 17px"
+                >
+                </v-checkbox>
+                <v-card-actions>
+                  <v-btn
+                    block
+                    color="success"
+                    :disabled="isDisabled"
+                    @click="login"
+                  >{{ $t("login.masuk") }}</v-btn
+                  >
+                </v-card-actions>
+                <p class=" ">{{ $t("login.lupa") }}</p>
+              </v-form>
             </v-card>
           </v-col>
         </v-flex>
