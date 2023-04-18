@@ -24,10 +24,11 @@
                 ></v-img>
                 <v-card-title
                   style="font-size: 15px; margin-top: -20px; margin-left: 25px"
-                  > {{ $t("login.judul") }}
+                >
+                  {{ $t("login.judul") }}
                 </v-card-title>
                 <LocaleSwitcher />
-                <v-form v-model="valid" style="margin-top: -20px">
+                <v-form v-model="valid" style="margin-top: -20px" @submit.prevent="login" @keyup.enter.native="login">
                   <v-card-text>
                     <v-text-field
                       :rules="userRules"
@@ -54,17 +55,14 @@
                   </v-checkbox>
                   <v-card-actions>
                     <v-btn
-                      v-for="login in logins"
-                      router
-                      :to="login.route"
                       block
                       color="success"
-                      @click="handleLogin"
-                      :disabled="!valid"
-                      >{{ $t ("login.masuk") }}</v-btn
+                      :disabled="isDisabled"
+                      @click="login"
+                      >{{ $t("login.masuk") }}</v-btn
                     >
                   </v-card-actions>
-                    <p class=" ">{{ $t ("login.lupa") }}</p>
+                  <p class=" ">{{ $t("login.lupa") }}</p>
                 </v-form>
               </v-card>
             </v-card>
@@ -93,7 +91,7 @@
                   >{{ $t("login.judul") }}
                 </v-card-title>
                 <LocaleSwitcher />
-                <v-form v-model="valid" style="margin-top: -20px">
+                <v-form v-model="valid" style="margin-top: -20px" @submit.prevent="login" @keyup.enter.native="login">
                   <v-card-text>
                     <v-text-field
                       :rules="userRules"
@@ -112,7 +110,7 @@
                     />
                   </v-card-text>
                   <v-checkbox
-                  :label="$t('login.ingat')"
+                    :label="$t('login.ingat')"
                     class="mt-n1"
                     color="blue"
                     style="margin-left: 18px"
@@ -120,94 +118,21 @@
                   </v-checkbox>
                   <v-card-actions>
                     <v-btn
-                      v-for="login in logins"
-                      router
-                      :to="login.route"
                       block
                       color="success"
-                      @click="handleLogin"
-                      :disabled="!valid"
-                      >{{ $t ("login.masuk") }}</v-btn
-                    >
+                      :disabled="isDisabled"
+                      @click="login"
+                      >{{ $t("login.masuk") }}</v-btn>
                   </v-card-actions>
-                    <p class=" ">{{ $t ("login.lupa") }}</p>
+                  <p class=" ">{{ $t("login.lupa") }}</p>
                 </v-form>
               </v-card>
             </v-card>
           </v-col>
-          <v-col
-            v-else-if="$vuetify.breakpoint.xl"
-            md="12"
-            align="center"
-            justify="center"
-          >
-            <v-card style="height: 466px; border-radius: 20px" class="login">
-              <v-card
-                style="height: 466px; margin-left: 310px"
-                max-width="400"
-                justify="center"
-                align="center"
-              >
-                <v-img
-                  src="../assets/logo-sig.png"
-                  max-heigth="170"
-                  max-width="340"
-                  style="margin-top: -40px"
-                ></v-img>
-                <v-card-title
-                  style="font-size: 15px; margin-top: -20px; margin-left: 50px"
-                  >{{ $t("login.judul") }}
-                </v-card-title>
-                <LocaleSwitcher />
-                <v-form v-model="valid" style="margin-top: -20px">
-                  <v-card-text>
-                    <v-text-field
-                      :rules="userRules"
-                      :label="$t('login.namapengguna')"
-                      prepend-icon="mdi-account-circle"
-                      v-model="user.username"
-                    />
-                    <v-text-field
-                      :rules="pwRules"
-                      :label="$t('login.katasandi')"
-                      :type="showPassword ? 'text' : 'password'"
-                      prepend-icon="mdi-lock"
-                      :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                      @click:append="handleIcon"
-                      v-model="user.password"
-                    />
-                  </v-card-text>
-                  <v-checkbox
-                  :label="$t('login.ingat')"
-                    class="mt-n1"
-                    color="blue"
-                    style="margin-left: 18px"
-                  >
-                  </v-checkbox>
-                  <v-card-actions>
-                    <v-btn
-                      v-for="login in logins"
-                      router
-                      :to="login.route"
-                      block
-                      color="success"
-                      @click="handleLogin"
-                      :disabled="!valid"
-                      >{{ $t ("login.masuk") }}</v-btn
-                    >
-                  </v-card-actions>
-                    <p class=" ">{{ $t ("login.lupa") }}</p>
-                </v-form>
-              </v-card>
-            </v-card>
-          </v-col>
-          <v-col v-else cols="12"
-          justify="center"
-              align="center">
+          <v-col v-else cols="12" justify="center" align="center">
             <v-card
-              style="height: 480px; border-radius: 20px; margin-top: 60px;"
+              style="height: 480px; border-radius: 20px; margin-top: 60px"
               max-width="400"
-              
             >
               <v-img
                 src="../assets/logo-sig.png"
@@ -216,11 +141,11 @@
                 style="margin-top: -60px"
               ></v-img>
               <v-card-title
-                style="font-size: 13px; margin-top: -20px; margin-left: 75px;"
+                style="font-size: 13px; margin-top: -20px; margin-left: 75px"
                 >{{ $t("login.judul") }}
               </v-card-title>
-                <LocaleSwitcher />
-              <v-form v-model="valid">
+              <LocaleSwitcher />
+              <v-form v-model="valid" @submit.prevent="login" @keyup.enter.native="login">
                 <v-card-text>
                   <v-text-field
                     :rules="userRules"
@@ -237,9 +162,10 @@
                     @click:append="handleIcon"
                     v-model="user.password"
                   />
+                  <v-alert v-if="error" type="error">{{ error }}</v-alert>
                 </v-card-text>
                 <v-checkbox
-                :label="$t('login.ingat')"
+                  :label="$t('login.ingat')"
                   class="mt-n1"
                   color="blue"
                   style="margin-left: 17px"
@@ -247,18 +173,18 @@
                 </v-checkbox>
                 <v-card-actions>
                   <v-btn
-                    v-for="login in logins"
-                    router
-                    :to="login.route"
                     block
                     color="success"
-                    @click="handleLogin"
-                    :disabled="!valid"
-                    >{{ $t ("login.masuk") }}</v-btn
+                    :disabled="isDisabled"
+                    @click="login"
+                  >{{ $t("login.masuk") }}</v-btn
                   >
                 </v-card-actions>
-                <p class=" ">{{ $t ("login.lupa") }}</p>
+                <p class=" ">{{ $t("login.lupa") }}</p>
               </v-form>
+              <div v-if="responseMessage">
+      {{ responseMessage }}
+    </div>
             </v-card>
           </v-col>
         </v-flex>
@@ -268,40 +194,53 @@
 </template>
 
 <script>
-import en from "@/locales/en.json";
-import id from "@/locales/id.json";
-import LocaleSwitcher from "../components/LocaleSwitcher.vue"
+import api from '@/api.js';
+import { mapActions , mapState } from 'vuex'
+import LocaleSwitcher from "../components/LocaleSwitcher.vue";
 export default {
   name: "LoginView",
   data() {
     return {
-      showPassword: false,
       user: {
-        username: "",
-        password: "",
+        username: '',
+        password: '',
       },
-      userRules: [(v) => v != "" || "Username is Required"],
-      pwRules: [(v) => v != "" || "Password is Required"],
+      showPassword: false,
       valid: false,
-      logins: [{ route: "/dashboard" }],
+      userRules: [
+        v => !!v || this.$t('login.validasi.namapengguna'),
+      ],
+      pwRules: [
+        v => !!v || this.$t('login.validasi.katasandi'),
+      ],
+      isDisabled: true,
+      responseMessage: '',
     };
   },
   methods: {
+    login() {
+      api.login(this.user)
+        .then((response) => {
+          // Response is successful
+          this.responseMessage = 'Login berhasil';
+        })
+        .catch((error) => {
+          // Response failed
+          this.responseMessage = 'Login gagal';
+        });
+    },
     handleIcon() {
       this.showPassword = !this.showPassword;
     },
-    handleLogin() {
-      console.log(this.user);
-      this.user = {
-        username: "",
-        password: "",
-      };
-      router.push({ path: "/dashboard" });
-    },
+  },
+  computed: {
+      isDisabled() {
+        return !this.valid;
+      }
   },
   components: {
     LocaleSwitcher,
-  }
+  },
 };
 </script>
 

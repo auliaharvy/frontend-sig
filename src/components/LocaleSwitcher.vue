@@ -18,7 +18,7 @@ export default {
       { value: 'en', text: 'English' },
       // Tambahkan opsi bahasa lain sesuai kebutuhan
     ],
-    selectedLanguage: 'id', // Menyimpan nilai bahasa yang dipilih
+    selectedLanguage: localStorage.getItem('language'), // Menyimpan nilai bahasa yang dipilih
   };
   },
   watch: {
