@@ -162,6 +162,7 @@
                     @click:append="handleIcon"
                     v-model="user.password"
                   />
+                  <v-alert v-if="error" type="error">{{ error }}</v-alert>
                 </v-card-text>
                 <v-checkbox
                   :label="$t('login.ingat')"
@@ -181,6 +182,9 @@
                 </v-card-actions>
                 <p class=" ">{{ $t("login.lupa") }}</p>
               </v-form>
+              <div v-if="responseMessage">
+      {{ responseMessage }}
+    </div>
             </v-card>
           </v-col>
         </v-flex>
@@ -190,46 +194,44 @@
 </template>
 
 <script>
-import vueaxios from "axios";
-import axios from "axios";
-import en from "@/locales/en.json";
-import id from "@/locales/id.json";
+import api from '@/api.js';
+import { mapActions , mapState } from 'vuex'
 import LocaleSwitcher from "../components/LocaleSwitcher.vue";
 export default {
   name: "LoginView",
-  data() 
-  {
+  data() {
     return {
-      showPassword: false,
       user: {
-        username: "",
-        password: "",
+        username: '',
+        password: '',
       },
-      userRules: [(v) => v != "" || "Username is Required"],
-      pwRules: [(v) => v != "" || "Password is Required"],
+      showPassword: false,
       valid: false,
+      userRules: [
+        v => !!v || this.$t('login.validasi.namapengguna'),
+      ],
+      pwRules: [
+        v => !!v || this.$t('login.validasi.katasandi'),
+      ],
+      isDisabled: true,
+      responseMessage: '',
     };
   },
-  methods: 
-  {
+  methods: {
+    login() {
+      api.login(this.user)
+        .then((response) => {
+          // Response is successful
+          this.responseMessage = 'Login berhasil';
+        })
+        .catch((error) => {
+          // Response failed
+          this.responseMessage = 'Login gagal';
+        });
+    },
     handleIcon() {
       this.showPassword = !this.showPassword;
     },
-    login() {
-      axios.post('https://localhost:3000/api/users/login', this.user)
-      .then(response => {
-        console.log(response);
-        if (response.data.success) {
-          console.log('Login berhasil');
-          this.$router.push({ path: "/dashboard" });
-        } else {
-          console.error('Login gagal: ' + response.data.message);
-        }
-      })
-      .catch(error => {
-        console.error('Terjadi kesalahan saat mengirim permintaan: ' + error.message);
-      });
-    }
   },
   computed: {
       isDisabled() {

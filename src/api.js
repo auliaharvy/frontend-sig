@@ -1,16 +1,18 @@
-import Vue from 'vue';
-import Axios from 'axios';
+import axios from 'axios'
 
-// Atur konfigurasi CORS untuk Axios
-Axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-Axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE';
-Axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Content-Type, Authorization';
+const API_URL = 'http://localhost:3000'
 
-// Set Axios sebagai properti global Vue
-Vue.prototype.$http = Axios;
+const apiClient = axios.create({
+  baseURL: API_URL,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  }
+})
 
-// Instansiasi Vue dan montirkan aplikasi Vue.js
-new Vue({
-  el: '#app',
-  // ...
-});
+export default {
+  login(credentials) {
+    return apiClient.post('/users/login', credentials)
+  }
+  // tambahkan fungsi lainnya di sini jika ada
+}

@@ -15,7 +15,7 @@
                       <v-btn v-for="add in adds"
                 router :to="add.route"
                 >{{ $t("manajemenpengguna.tambah") }}</v-btn>
-                <v-btn style="margin-left: 20px;"
+                <v-btn
                 >{{ $t("manajemenpengguna.unduh") }}</v-btn>
                     <v-spacer></v-spacer>
                     <v-text-field
@@ -26,12 +26,13 @@
                         hide-details
                     ></v-text-field>
                     </v-card-title>
-                    <v-data-table
+                    <v-data-table class="custom-table"
                     :loading="loading"
                     :headers="headers"
                     :search="search"
                     :items="items"
-                    dense
+                    elevation="2"
+                    border
                     >
                     <template v-slot:item.edit="{ item }">
                       <v-btn color="yellow" small @click="editData(item)"
@@ -96,5 +97,17 @@ export default {
 <style scoped>
 .warna-font {
   color: white; 
+}
+.custom-table table {
+  border-collapse: separate;
+  border-spacing: 0px;
+  width: 100%;
+}
+
+.custom-table th,
+.custom-table td {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 8px;
+  text-align: left;
 }
 </style>
