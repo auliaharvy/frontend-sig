@@ -9,35 +9,33 @@ const state = {
 };
 
 const mutations = {
-  setToken(state, token) {
-    state.token = token;
-    localStorage.setItem('token', response.data.token);
- // tambahkan ini untuk menyimpan token ke local storage saat mutasi
-  },
+    setToken(state, token) {
+        state.token = token;
+        localStorage.setItem('token', token); // gunakan parameter 'token' untuk menyimpan token ke local storage saat mutasi
+      },
   setLoggedIn(state, isLoggedIn) {
     state.isLoggedIn = isLoggedIn;
   }
 };
 
 const actions = {
-  login({ commit }, user) {
-    return axios
-      .post(API_ENDPOINT, user)
-      .then(response => {
-        const token = response.data.token;
-        console.log(token)
-        commit("setToken", token);
-        commit("setLoggedIn", true);
-        localStorage.setItem("token", token);
-        console.log(localStorage.getItem('token'))
-        return token;
-      })
-      .catch(error => {
-        console.error(error);
-        throw error;
-      });
-  }
-};
+    login({ commit }, user) {
+      return axios
+        .post(API_ENDPOINT, user)
+        .then(response => {
+          const token = response.data.token;
+          commit("setToken", token);
+          commit("setLoggedIn", true);
+          localStorage.setItem("token", token); // simpan token ke local storage
+          return token;
+        })
+        .catch(error => {
+          console.error(error);
+          throw error;
+        });
+    }
+  };
+  
 
 export default new Vuex.Store({
   state,

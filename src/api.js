@@ -10,7 +10,7 @@ const apiClient = axios.create({
     "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}` // tambahkan ini untuk mengambil token dari local storage dan menambahkannya ke header pada setiap request
+    Authorization: `Bearer ${localStorage.getItem('token')}` // Ambil token dari local storage di sini
   }
 })
 

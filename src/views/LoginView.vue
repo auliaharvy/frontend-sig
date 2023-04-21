@@ -217,6 +217,10 @@ export default {
       api.login(this.user)
         .then((response) => {
           // Response is successful
+          const token = response.data.token;
+          localStorage.setItem('token', token);
+          this.$store.commit("setToken", token);
+          this.$store.commit("setLoggedIn", true);
           this.responseMessage = 'Login berhasil';
         })
         .catch((error) => {
@@ -230,6 +234,9 @@ export default {
   },
   components: {
     LocaleSwitcher,
+  },
+  mounted() {
+  this.login();
   },
 };
 </script>
