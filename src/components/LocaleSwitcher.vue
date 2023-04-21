@@ -22,10 +22,11 @@ export default {
   };
   },
   watch: {
-    selectedLanguage (payload) {
-      this.$i18n.locale = payload
-    }
-  },
+  selectedLanguage (payload) {
+    this.$i18n.locale = payload;
+    localStorage.setItem('language', payload);
+  }
+},
 };
 </script>
 

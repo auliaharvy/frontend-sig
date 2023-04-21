@@ -191,7 +191,7 @@
 
 <script>
 import api from '@/api.js';
-import { mapActions , mapState } from 'vuex'
+import { mapActions } from 'vuex'
 import LocaleSwitcher from "../components/LocaleSwitcher.vue";
 export default {
   name: "LoginView",
@@ -222,6 +222,7 @@ export default {
           this.$store.commit("setToken", token);
           this.$store.commit("setLoggedIn", true);
           this.responseMessage = 'Login berhasil';
+          this.$router.push('/dashboard')
         })
         .catch((error) => {
           // Response failed
