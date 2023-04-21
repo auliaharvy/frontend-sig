@@ -1,5 +1,3 @@
-import $axios from '../api.js'
-
 const state = () => ({
     users: [],
     roles: [],

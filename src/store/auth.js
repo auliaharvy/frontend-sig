@@ -4,21 +4,25 @@ import axios from "axios";
 const API_ENDPOINT = "http://localhost:3000/users/login";
 
 const state = {
-  token: localStorage.getItem('token') || null, // tambahkan ini untuk mengambil token dari local storage saat inisiasi state
-  isLoggedIn: false
-};
-
-const mutations = {
+    token: localStorage.getItem('token') || null, 
+    isLoggedIn: false,
+    responseMessage: null // tambahkan properti untuk menyimpan response message
+  };
+  
+  const mutations = {
     setToken(state, token) {
-        state.token = token;
-        localStorage.setItem('token', token); // gunakan parameter 'token' untuk menyimpan token ke local storage saat mutasi
-      },
-  setLoggedIn(state, isLoggedIn) {
-    state.isLoggedIn = isLoggedIn;
-  }
-};
-
-const actions = {
+      state.token = token;
+      localStorage.setItem('token', token);
+    },
+    setLoggedIn(state, isLoggedIn) {
+      state.isLoggedIn = isLoggedIn;
+    },
+    setResponseMessage(state, message) { // tambahkan mutation untuk mengubah response message
+      state.responseMessage = message;
+    }
+  };
+  
+  const actions = {
     login({ commit }, user) {
       return axios
         .post(API_ENDPOINT, user)
@@ -26,11 +30,13 @@ const actions = {
           const token = response.data.token;
           commit("setToken", token);
           commit("setLoggedIn", true);
-          localStorage.setItem("token", token); // simpan token ke local storage
+          localStorage.setItem("token", token);
+          commit("setResponseMessage", "Login berhasil"); // set response message pada commit mutasi
           return token;
         })
         .catch(error => {
           console.error(error);
+          commit("setResponseMessage", "Login gagal"); // set response message pada commit mutasi jika login gagal
           throw error;
         });
     }
