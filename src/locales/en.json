@@ -8,6 +8,8 @@
       "namapengguna" : "Username",
       "katasandi" : "Password",
       "kembali" : "Back",
+      "validasinamapengguna" : "Wrong Username",
+      "validasikatasandi" : "Wrong Password",
       "lupa" : "Forgot Your Password?"
     },
   "sidebar" : 
@@ -63,8 +65,17 @@
       "alamat" : "Organization Address",
       "kota" : "Organizational City",
       "nomor" : "Organization Number",
+      "email" : "Organization Email",
+      "edit" : "Edit Organization",
       "dibuat" : "Created By",
       "diperbarui" : "Updated At"
+    },
+    "kendaraan" : 
+    {
+      "singkronisasi" : "Sync",
+      "ekspeditur" : "Shipping Agent",
+      "nomor" : "Car Number",
+      "tipe" : "Car Type"
     },
     "perandanizin" : 
     {

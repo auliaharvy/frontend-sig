@@ -8,6 +8,8 @@
       "namapengguna" : "Nama Pengguna",
       "katasandi" : "Kata Sandi",
       "kembali" : "Kembali",
+      "validasinamapengguna" : "Nama Pengguna Salah",
+      "validasikatasandi" : "Kata Sandi Salah",
       "lupa" : "Lupa Kata Sandi?"
     },
     "sidebar" : 
@@ -63,8 +65,17 @@
       "alamat" : "Alamat Organisasi",
       "kota" : "Kota Organisasi",
       "nomor" : "Nomor Organisasi",
+      "email" : "Email Organisasi",
+      "edit" : "Sunting Organisasi",
       "dibuat" : "Dibuat Oleh",
       "diperbarui" : "Diperbarui Saat"
+    },
+    "kendaraan" : 
+    {
+      "singkronisasi" : "Singkronisasi",
+      "ekspeditur" : "Ekspeditur",
+      "nomor" : "Nomor Kendaraan",
+      "tipe" : "Tipe Kendaraan"
     },
     "perandanizin" : 
     {

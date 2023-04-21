@@ -57,7 +57,6 @@
                     <v-btn
                       block
                       color="success"
-                      :disabled="isDisabled"
                       @click="login"
                       >{{ $t("login.masuk") }}</v-btn
                     >
@@ -120,7 +119,6 @@
                     <v-btn
                       block
                       color="success"
-                      :disabled="isDisabled"
                       @click="login"
                       >{{ $t("login.masuk") }}</v-btn>
                   </v-card-actions>
@@ -175,7 +173,6 @@
                   <v-btn
                     block
                     color="success"
-                    :disabled="isDisabled"
                     @click="login"
                   >{{ $t("login.masuk") }}</v-btn
                   >
@@ -208,12 +205,11 @@ export default {
       showPassword: false,
       valid: false,
       userRules: [
-        v => !!v || this.$t('login.validasi.namapengguna'),
+        v => !!v || this.$t('login.validasinamapengguna'),
       ],
       pwRules: [
-        v => !!v || this.$t('login.validasi.katasandi'),
+        v => !!v || this.$t('login.validasikatasandi'),
       ],
-      isDisabled: true,
       responseMessage: '',
     };
   },
@@ -223,6 +219,7 @@ export default {
         .then((response) => {
           // Response is successful
           this.responseMessage = 'Login berhasil';
+          this.$router.push('/dashboard')
         })
         .catch((error) => {
           // Response failed
@@ -232,11 +229,6 @@ export default {
     handleIcon() {
       this.showPassword = !this.showPassword;
     },
-  },
-  computed: {
-      isDisabled() {
-        return !this.valid;
-      }
   },
   components: {
     LocaleSwitcher,

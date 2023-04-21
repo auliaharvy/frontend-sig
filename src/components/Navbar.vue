@@ -7,9 +7,8 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <LocaleSwitcher />
-      <v-btn text v-for="logout in logouts"
-      router :to="logout.route">
-        <span>{{ $t("sidebar.keluar")}}</span>
+      <v-btn text v-for="logout in logouts" router :to="logout.route">
+        <span>{{ $t("sidebar.keluar") }}</span>
         <v-icon right>exit_to_app</v-icon>
       </v-btn>
     </v-app-bar>
@@ -26,7 +25,7 @@
         </v-layout>
       </template>
       <v-divider></v-divider>
-      <h3 style="color: white; margin-left: 10px">{{$t("menu.menu")}}</h3>
+      <h3 style="color: white; margin-left: 10px">{{ $t("menu.menu") }}</h3>
       <v-list flat class="font-weight-bold">
         <v-list-item
           v-for="link in links"
@@ -121,53 +120,60 @@
   </nav>
 </template>
  <script>
-import en from "@/locales/en.json";
-import id from "@/locales/id.json";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 
 export default {
   data: () => ({
     drawer: true,
-    links: [{ icon: "home", title: "sidebar.halamanutama", route: "/dashboard" }],
+    links: [
+      { icon: "home", title: "sidebar.halamanutama", route: "/dashboard" },
+    ],
     mgms: [
       {
-        action: "mdi-file",
-        title:  "sidebar.manajemensjp",
+        action: "mdi-file-document-outline",
+        title: "sidebar.manajemensjp",
         items: [
-          { title:  "sidebar.suratjalanpallet", route: "/surat-jalan-pallet" }, 
-          { title:  "sidebar.sjpstatus",route: "/sjp-status" }
-      ],
+          { title: "sidebar.suratjalanpallet", route: "/surat-jalan-pallet" },
+          { title: "sidebar.sjpstatus", route: "/sjp-status" },
+        ],
       },
       {
-        action: "mdi-silverware-fork-knife",
+        action: "mdi-shipping-pallet",
         title: "sidebar.manajemenpallet",
         items: [
-          { title: "sidebar.mutasipallet" , route: "/mutasi-pallet" },
+          { title: "sidebar.mutasipallet", route: "/mutasi-pallet" },
           { title: "sidebar.klaimpallet", route: "/klaim-pallet" },
-          { title: "sidebar.perubahankuotapallet" , route: "/perubahan-kuota-pallet" },
-          { title: "sidebar.palletbaru" , route: "/pallet-baru" },
-          { title: "sidebar.palletrusak" , route: "/pallet-rusak" },
-          { title: "sidebar.palletdiperbaiki" , route: "/pallet-diperbaiki" },
-          { title: "sidebar.penyewaanpallet" , route: "/penyewaan-pallet" },
+          {
+            title: "sidebar.perubahankuotapallet",
+            route: "/perubahan-kuota-pallet",
+          },
+          { title: "sidebar.palletbaru", route: "/pallet-baru" },
+          { title: "sidebar.palletrusak", route: "/pallet-rusak" },
+          { title: "sidebar.palletdiperbaiki", route: "/pallet-diperbaiki" },
+          { title: "sidebar.penyewaanpallet", route: "/penyewaan-pallet" },
         ],
       },
     ],
     pemps: [
       {
-        icon: "dashboard",
+        icon: "mdi-truck-fast",
         title: "sidebar.penyesuaianekspeditur",
         route: "/penyesuaian-ekspeditur",
       },
-      { icon: "dashboard", title: "sidebar.manajemenperusahaan", route: "/manajemen-perusahaan" },
+      {
+        icon: "mdi-domain",
+        title: "sidebar.manajemenperusahaan",
+        route: "/manajemen-perusahaan",
+      },
     ],
     lps: [
       {
-        action: "mdi-file",
+        action: "mdi-file-document-outline",
         title: "sidebar.laporan",
         items: [
-          { title: "sidebar.dasbororganisasi",  route: "/dashboard" },
+          { title: "sidebar.dasbororganisasi", route: "/dashboard" },
           { title: "sidebar.pergerakanpallet", route: "/pergerakan-pallet" },
-          { title: "sidebar.datatransaksi",  route:"/data-transaksi" },
+          { title: "sidebar.datatransaksi", route: "/data-transaksi" },
         ],
       },
       {
@@ -175,10 +181,10 @@ export default {
         title: "sidebar.pengaturan",
         items: [
           { title: "sidebar.organisasi", route: "/organisasi" },
-          { title: "sidebar.perandanizin" , route:"/peran-dan-izin" },
-          { title: "sidebar.manajemenpengguna" , route: "/manajemen-pengguna" },
-          { title: "sidebar.kendaraan" , route: "/kendaraan" },
-          { title: "sidebar.pengendara" , route: "/pengendara" },
+          { title: "sidebar.perandanizin", route: "/peran-dan-izin" },
+          { title: "sidebar.manajemenpengguna", route: "/manajemen-pengguna" },
+          { title: "sidebar.kendaraan", route: "/kendaraan" },
+          { title: "sidebar.pengendara", route: "/pengendara" },
         ],
       },
     ],

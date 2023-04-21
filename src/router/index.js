@@ -68,6 +68,15 @@ const routes = [
     component: () => import('../views/organisasi/IndexView.vue')
   },
   {
+    path: '/tambah-organisasi',
+    name: 'tambah-pengguna',
+    component: () => import('../views/organisasi/AddView.vue')
+  },{
+    path: '/edit-organisasi',
+    name: 'edit-pengguna',
+    component: () => import('../views/organisasi/EditView.vue')
+  },
+  {
     path: '/pallet-baru',
     name: 'pallet-baru',
     component: () => import('../views/pallet-baru/IndexView.vue')
