@@ -15,5 +15,9 @@ new Vue({
   vuetify,
   i18n,
   axios,
-  render: h => h(App)
+  
+  render: h => h(App),
+  created() {
+    this.$store.dispatch('initialize');
+  },
 }).$mount('#app')

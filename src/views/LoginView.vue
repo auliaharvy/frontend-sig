@@ -160,7 +160,6 @@
                     @click:append="handleIcon"
                     v-model="user.password"
                   />
-                  <v-alert v-if="error" type="error">{{ error }}</v-alert>
                 </v-card-text>
                 <v-checkbox
                   :label="$t('login.ingat')"
@@ -219,7 +218,6 @@ export default {
         .then((response) => {
           // Response is successful
           this.responseMessage = 'Login berhasil';
-          this.$router.push('/dashboard')
         })
         .catch((error) => {
           // Response failed
