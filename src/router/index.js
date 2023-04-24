@@ -114,6 +114,11 @@ const routes = [
     component: () => import('../views/perubahan-kuota-pallet/IndexView.vue')
   },
   {
+    path: '/semua-transaksi',
+    name: 'semua-transaksi',
+    component: () => import('../views/semua-transaksi/IndexView.vue')
+  },
+  {
     path: '/sjp-status',
     name: 'sjp-status',
     component: () => import('../views/sjp-status/IndexView.vue')
