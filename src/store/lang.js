@@ -30,11 +30,6 @@ const mutations = {
 const actions = {
   setLanguage({ commit }, language) {
     commit('SET_LANGUAGE', language);
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve();
-      }, 100);
-    });
   },
   setSelectedLanguageOption({ commit }, languageOption) {
     commit('SET_SELECTED_LANGUAGE_OPTION', languageOption);
