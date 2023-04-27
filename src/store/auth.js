@@ -1,23 +1,21 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import apiClient from "../api.js";
 
-Vue.use(Vuex);
-
-export default {
-  state: {
+const state = {
     token: null,
-  },
-  mutations: {
+  };
+const mutations = {
     setToken(state, token) {
       state.token = token;
     },
-  },
-  actions: {
-    async login({ commit }, credentials) {
+  };
+const actions = {
+    async login({ commit }, user) {
       try {
-        const response = await axios.post('/login', credentials);
+        const response = await apiClient.post('/users/login', user);
         const token = response.data.token;
+        console.log(setToken);
         commit('setToken', token);
+        localStorage.setItem('token', token); // tambahkan ini untuk menyimpan token pada localStorage
         return token;
       } catch (error) {
         throw error;
@@ -25,6 +23,13 @@ export default {
     },
     async logout({ commit }) {
       commit('setToken', null);
+      localStorage.removeItem('token'); // tambahkan ini untuk menghapus token dari localStorage
     },
-  },
-};
+  };
+
+export default {
+    namespaced : true,
+    state,
+    mutations,
+    actions
+  };

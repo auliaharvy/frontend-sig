@@ -56,6 +56,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { mapState } from 'vuex';
 import user from '@/store/user.js';
+import axios from 'axios';
 
 
 export default {
@@ -74,6 +75,7 @@ export default {
                 { value: 'edit', text: this.$t('manajemenpengguna.sunting')},
                 { value: 'hapus', text: this.$t('manajemenpengguna.hapus')}
             ],
+            users: [],
             search: '',
             adds: [{ route: "/tambah-pengguna" }],
 
@@ -87,14 +89,23 @@ export default {
   },
   mutations: {
   setUsers(state, users) {
-    console.log(users); // tambahkan ini
+    console.log(users);
     state.users = users;
   },
 },
   mounted() {
-    this.$store.dispatch('user/fetchUsers');
+    this.fetchUsers();
   },
     methods: {
+      fetchUsers() {
+    axios.get('http://localhost:3000/users')
+      .then(response => {
+        this.users = response.data;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
     editData(item) {
       // Logika untuk mengedit data
       console.log('Mengedit data:', item);

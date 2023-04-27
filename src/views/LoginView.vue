@@ -170,6 +170,8 @@
                   <v-btn
                     block
                     color="success"
+                    :disabled="!valid"
+                    type="submit"
                   >{{ $t("login.masuk") }}</v-btn
                   >
                 </v-card-actions>
@@ -209,17 +211,18 @@ export default {
     };
   },
   methods: {
+    ...mapActions('auth', ['login']),
+    async login() {
+      try {
+        const token = await this.$store.dispatch('auth/login', this.user);
+        // redirect to dashboard or home page after successful login
+      } catch (error) {
+        this.responseMessage = error.message;
+      }
+    },
     handleIcon() {
       this.showPassword = !this.showPassword;
     },
-    ...mapActions('user', ['login']),
-    async onSubmit() {
-      try {
-        await this.login(this.user)
-      } catch (error) {
-        // Tangani error
-      }
-    }
   },
   components: {
     LocaleSwitcher,

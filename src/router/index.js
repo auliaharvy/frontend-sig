@@ -66,11 +66,11 @@ const routes = [
   },
   {
     path: '/tambah-organisasi',
-    name: 'tambah-pengguna',
+    name: 'tambah-organisasi',
     component: () => import('../views/organisasi/AddView.vue')
   },{
     path: '/edit-organisasi',
-    name: 'edit-pengguna',
+    name: 'edit-organisasi',
     component: () => import('../views/organisasi/EditView.vue')
   },
   {
