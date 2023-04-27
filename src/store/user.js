@@ -1,36 +1,47 @@
-import axios from 'axios';
-import Vuex from 'vuex';
+import axios from 'axios'
+import Vuex from 'vuex'
 
-const state = {
-  users: [],
-};
+export const state = {
+  token: null
+}
 
-const mutations = {
-  setUsers(state, users) {
-    state.users = users;
+export const mutations = {
+  SET_TOKEN(state, token) {
+    state.token = token
+  }
+}
+
+export const actions = {
+  async login({ commit }, { username, password }) {
+    try {
+      const response = await axios.post('http://localhost:3000/users/login', { username, password })
+      const token = response.data.token
+
+      // Simpan token pada Vuex state
+      commit('SET_TOKEN', token)
+
+      // Simpan token pada local storage
+      localStorage.setItem('token', token)
+
+      // Redirect ke halaman dashboard
+      this.$router.push('/dashboard')
+    } catch (error) {
+      // Tangani error
+    }
   },
-};
 
-const actions = {
-  fetchUsers({ commit }) {
-    axios.get('http://localhost:3000/users')
-      .then(response => {
-        const users = response.data.map(user => {
-          return {
-            name: user.fullname,
-            username: user.username,
-            email: user.email,
-          };
-        });
-        commit('setUsers', users);
-      })
-      .catch(error => console.error(error));
-  },
-};
+  logout({ commit }) {
+    // Hapus token dari Vuex state dan local storage
+    commit('SET_TOKEN', null)
+    localStorage.removeItem('token')
 
+    // Redirect ke halaman login
+    this.$router.push('/login')
+  }
+};
 export default new Vuex.Store({
-    namespaced: true,
+  namespaced:true,
   state,
   mutations,
-  actions,
+  actions
 });

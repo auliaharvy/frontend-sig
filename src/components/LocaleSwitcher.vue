@@ -1,32 +1,36 @@
 <template>
  <div class="change-language">
   <img class="change-icon" src="~@/assets/change-lang.png" alt="change-language">
-    <select class="select" v-model="selectedLanguage">
-      <option value="id">Indonesia</option>
-      <option value="en">English</option>
+  <select class="select" v-model="selectedLanguage">
+      <option v-for="option in options" :value="option.value" :key="option.value">{{ option.text }}</option>
     </select>
   </div>
 </template>
   
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
   name: "LocaleSwitcher",
   data() {
     return {
-    options: [
-      { value: 'id', text: 'Indonesia' },
-      { value: 'en', text: 'English' },
-      // Tambahkan opsi bahasa lain sesuai kebutuhan
-    ],
-    selectedLanguage: localStorage.getItem('language'), // Menyimpan nilai bahasa yang dipilih
-  };
+      selectedLanguage: localStorage.getItem('language'), // Menyimpan nilai bahasa yang dipilih
+    };
   },
+  computed: {
+    ...mapState({
+      options: state => state.lang.options,
+    }),
+  },
+  methods: {
+    ...mapActions('lang', ['setLanguage', 'setSelectedLanguageOption'])
+    },
   watch: {
-  selectedLanguage (payload) {
+    async selectedLanguage(payload) {
+    await this.setLanguage(payload);
+    await this.setSelectedLanguageOption(payload);
     this.$i18n.locale = payload;
-    localStorage.setItem('language', payload);
-  }
-},
+    },
+  },
 };
 </script>
 

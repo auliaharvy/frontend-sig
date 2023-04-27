@@ -1,22 +1,25 @@
 import axios from 'axios'
+import store from './store/index.js'
+
 
 const API_URL = 'http://localhost:3000'
 
 const apiClient = axios.create({
   baseURL: API_URL,
   headers: {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
-    Accept: 'application/json',
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('token')}` // Ambil token dari local storage di sini
   }
 })
 
-export default {
-  login(credentials) {
-    return apiClient.post('/users/login', credentials)
-  },
-  // tambahkan fungsi lainnya di sini jika ada
+apiClient.interceptors.request.use(
+  function (config) {
+    const token = store.state.token
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+},
+function (error) {
+    return Promise.reject (error);
 }
+);
+
+export default apiClient

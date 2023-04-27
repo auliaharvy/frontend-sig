@@ -8,15 +8,16 @@ Vue.use(Vuex)
 const state = {
   language: localStorage.getItem('language') || 'id',
   locale: {},
-  languageOptions: [ 
-    { value: 'id', label: 'Indonesia' },
-    { value: 'en', label: 'English' }
+  options: [ 
+    { value: 'id', text: 'Indonesia' },
+    { value: 'en', text: 'English' }
   ],
   selectedLanguageOption: localStorage.getItem('language') || 'id'
 };
 
 const mutations = {
   SET_LANGUAGE(state, language) {
+    console.log("language:", language); // <-- tambahkan ini
     Vue.set(state, 'language', language);
     state.locale = require(`../locales/${language}.json`);
     localStorage.setItem('language', language);
@@ -29,14 +30,20 @@ const mutations = {
 const actions = {
   setLanguage({ commit }, language) {
     commit('SET_LANGUAGE', language);
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, 100);
+    });
   },
   setSelectedLanguageOption({ commit }, languageOption) {
     commit('SET_SELECTED_LANGUAGE_OPTION', languageOption);
   }
 };
 
-export default new Vuex.Store({
+export default {
+  namespaced : true,
   state,
   mutations,
   actions
-});
+};

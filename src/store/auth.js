@@ -1,50 +1,30 @@
-import Vuex from "vuex";
-import axios from "axios";
+import Vue from 'vue';
+import Vuex from 'vuex';
 
-const API_ENDPOINT = "http://localhost:3000/users/login";
+Vue.use(Vuex);
 
-const state = {
-    token: localStorage.getItem('token') || null, 
-    isLoggedIn: false,
-    responseMessage: null 
-  };
-  
-  const mutations = {
+export default {
+  state: {
+    token: null,
+  },
+  mutations: {
     setToken(state, token) {
       state.token = token;
-      localStorage.setItem('token', token);
     },
-    setLoggedIn(state, isLoggedIn) {
-      state.isLoggedIn = isLoggedIn;
+  },
+  actions: {
+    async login({ commit }, credentials) {
+      try {
+        const response = await axios.post('/login', credentials);
+        const token = response.data.token;
+        commit('setToken', token);
+        return token;
+      } catch (error) {
+        throw error;
+      }
     },
-    setResponseMessage(state, message) {
-      state.responseMessage = message;
-    }
-  };
-  
-  const actions = {
-    login({ commit }, user) {
-      return axios
-        .post(API_ENDPOINT, user)
-        .then(response => {
-          const token = response.data.token;
-          commit("setToken", token);
-          commit("setLoggedIn", true);
-          localStorage.setItem("token", token);
-          commit("setResponseMessage", "Login berhasil"); // set response message pada commit mutasi
-          return token;
-        })
-        .catch(error => {
-          console.error(error);
-          commit("setResponseMessage", "Login gagal"); // set response message pada commit mutasi jika login gagal
-          throw error;
-        });
-    }
-  };
-  
-
-export default new Vuex.Store({
-  state,
-  mutations,
-  actions
-});
+    async logout({ commit }) {
+      commit('setToken', null);
+    },
+  },
+};

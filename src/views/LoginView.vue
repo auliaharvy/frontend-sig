@@ -57,7 +57,6 @@
                     <v-btn
                       block
                       color="success"
-                      @click="login"
                       >{{ $t("login.masuk") }}</v-btn
                     >
                   </v-card-actions>
@@ -119,7 +118,6 @@
                     <v-btn
                       block
                       color="success"
-                      @click="login"
                       >{{ $t("login.masuk") }}</v-btn>
                   </v-card-actions>
                   <p class=" ">{{ $t("login.lupa") }}</p>
@@ -172,7 +170,6 @@
                   <v-btn
                     block
                     color="success"
-                    @click="login"
                   >{{ $t("login.masuk") }}</v-btn
                   >
                 </v-card-actions>
@@ -190,7 +187,6 @@
 </template>
 
 <script>
-import api from '@/api.js';
 import { mapActions } from 'vuex'
 import LocaleSwitcher from "../components/LocaleSwitcher.vue";
 export default {
@@ -213,31 +209,20 @@ export default {
     };
   },
   methods: {
-    login() {
-      api.login(this.user)
-        .then((response) => {
-          // Response is successful
-          const token = response.data.token;
-          localStorage.setItem('token', token);
-          this.$store.commit("setToken", token);
-          this.$store.commit("setLoggedIn", true);
-          this.responseMessage = 'Login berhasil';
-          this.$router.push('/dashboard')
-        })
-        .catch((error) => {
-          // Response failed
-          this.responseMessage = 'Login gagal';
-        });
-    },
     handleIcon() {
       this.showPassword = !this.showPassword;
     },
+    ...mapActions('user', ['login']),
+    async onSubmit() {
+      try {
+        await this.login(this.user)
+      } catch (error) {
+        // Tangani error
+      }
+    }
   },
   components: {
     LocaleSwitcher,
-  },
-  mounted() {
-  this.login();
   },
 };
 </script>
