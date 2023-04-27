@@ -6,7 +6,7 @@ const API_ENDPOINT = "http://localhost:3000/users/login";
 const state = {
     token: localStorage.getItem('token') || null, 
     isLoggedIn: false,
-    responseMessage: null // tambahkan properti untuk menyimpan response message
+    responseMessage: null 
   };
   
   const mutations = {
@@ -17,7 +17,7 @@ const state = {
     setLoggedIn(state, isLoggedIn) {
       state.isLoggedIn = isLoggedIn;
     },
-    setResponseMessage(state, message) { // tambahkan mutation untuk mengubah response message
+    setResponseMessage(state, message) {
       state.responseMessage = message;
     }
   };

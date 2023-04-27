@@ -2,12 +2,12 @@
   <v-app>
     <Navbar />
       <v-container>
-        <h1 class="heading black--text">{{ $t("sidebar.sjpstatus") }}</h1>
+        <h1 class="heading black--text">{{ $t("sidebar.mutasipallet") }}</h1>
         <v-spacer></v-spacer>
         <v-col md-12>
         <v-card>
             <v-card-title>
-              Status Surat Jalan Pallet
+              Manajemen Mutasi Pallet
             </v-card-title>
             <v-divider></v-divider>
                 <v-card>

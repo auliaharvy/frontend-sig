@@ -30,7 +30,7 @@
                     :loading="loading"
                     :headers="headers"
                     :search="search"
-                    :items="items"
+                    :items="users"
                     elevation="2"
                     border
                     >
@@ -54,9 +54,10 @@
 import Breadcomp from "@/components/Breadcrumb.vue";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import en from "@/locales/en.json";
-import id from "@/locales/id.json";
-// @ is an alias to /src
+import { mapState } from 'vuex';
+import user from '@/store/user.js';
+
+
 export default {
   name: "ManajemenPengguna",
   components: {
@@ -73,14 +74,26 @@ export default {
                 { value: 'edit', text: this.$t('manajemenpengguna.sunting')},
                 { value: 'hapus', text: this.$t('manajemenpengguna.hapus')}
             ],
-            items: [
-                { name :'Daud', username: 'daudtea', email: 'mramdhanass@gmail.com' }
-            ],
             search: '',
             adds: [{ route: "/tambah-pengguna" }],
 
         }
     },
+    computed: {
+      users() {
+        console.log(this.$store.state.users);
+  return this.$user.state.users;
+}
+  },
+  mutations: {
+  setUsers(state, users) {
+    console.log(users); // tambahkan ini
+    state.users = users;
+  },
+},
+  mounted() {
+    this.$store.dispatch('user/fetchUsers');
+  },
     methods: {
     editData(item) {
       // Logika untuk mengedit data
