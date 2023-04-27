@@ -39,12 +39,22 @@
                       ><v-icon>mdi-pencil</v-icon></v-btn>
                     </template>
                     <template v-slot:item.hapus="{ item }">
-                      <v-btn class="warna-font" color="red" small @click="hapusData(item)">{{ $t('manajemenpengguna.hapus') }}</v-btn>
+                      <v-btn class="warna-font" color="red" small @click="deleteItem(item)">{{ $t('manajemenpengguna.hapus') }}</v-btn>
                     </template>
                     </v-data-table>
                 </v-card>
           </v-card>
       </v-col>
+      <v-dialog v-model="dialog" elevation="2">
+      <v-card>
+      <v-card-title>Hapus Data Pengguna?</v-card-title>
+      <v-card-text>Anda yakin ingin menghapus Pengguna ini?</v-card-text>
+      <v-card-actions>
+        <v-btn @click="dialog = false" elevation="2">Tidak</v-btn>
+        <v-btn @click="confirmDelete" color="red" class="warna-font" elevation="2">Ya</v-btn>
+      </v-card-actions>
+      </v-card>
+       </v-dialog>
       </v-container>
     <Footer />
   </v-app>
@@ -89,6 +99,8 @@ export default {
             search: '',
             adds: [{ route: "/tambah-pengguna" }],
             loading: false,
+            dialog: false,
+            deleteId: null,
 
         }
     },
@@ -108,14 +120,30 @@ export default {
     });
 },
     editData(item) {
-      // Logika untuk mengedit data
       console.log('Mengedit data:', item);
-      this.$router.push({ path: "/edit-pengguna" });
+      this.pengguna = {
+        fullname: item.fullname,
+        username: item.username,
+        email: item.email,
+        password: item.password,
+      };    
+      this.$router.push({ path: "/edit-pengguna"});
     },
-    hapusData(item) {
-      // Logika untuk menghapus data
-      console.log('Menghapus data:', item);
-    }
+    deleteItem(item) {
+    this.deleteId = item.id;
+    this.dialog = true;
+  },
+  confirmDelete() {
+    axios
+      .delete(`http://localhost:3000/users/${this.deleteId}`)
+      .then((response) => {
+        this.getData();
+        this.dialog = false;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
   },
   mounted() {
     this.getData();

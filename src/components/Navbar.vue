@@ -124,7 +124,7 @@ import LocaleSwitcher from "@/components/LocaleSwitcher";
 
 export default {
   data: () => ({
-    drawer: true,
+    drawer: false,
     links: [
       { icon: "home", title: "sidebar.halamanutama", route: "/dashboard" },
     ],
