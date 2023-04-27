@@ -27,10 +27,10 @@
                     ></v-text-field>
                     </v-card-title>
                     <v-data-table class="custom-table"
-                    :loading="loading"
+                    v-if="!loading"
                     :headers="headers"
                     :search="search"
-                    :items="users"
+                    :items="users.data.data.data"
                     elevation="2"
                     border
                     >
@@ -54,10 +54,7 @@
 import Breadcomp from "@/components/Breadcrumb.vue";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { mapState } from 'vuex';
-import user from '@/store/user.js';
-import axios from 'axios';
-
+import axios from "axios";
 
 export default {
   name: "ManajemenPengguna",
@@ -68,44 +65,48 @@ export default {
   },
   data() {
         return {
+            // headers: [
+            //     { value: 'fullname', text: this.$t('manajemenpengguna.namalengkap') },
+            //     { value: 'username', text: this.$t('login.namapengguna')},
+            //     { value: 'email', text: 'Email' },
+            //     { value: 'edit', text: this.$t('manajemenpengguna.sunting')},
+            //     { value: 'hapus', text: this.$t('manajemenpengguna.hapus')}
+            // ],
             headers: [
-                { value: 'name', text: this.$t('manajemenpengguna.namalengkap') },
-                { value: 'username', text: this.$t('login.namapengguna')},
-                { value: 'email', text: 'Email' },
-                { value: 'edit', text: this.$t('manajemenpengguna.sunting')},
-                { value: 'hapus', text: this.$t('manajemenpengguna.hapus')}
-            ],
-            users: [],
+        { text: this.$t('manajemenpengguna.namalengkap'), value: 'fullname' },
+        { text: this.$t('login.namapengguna'), value: 'username' },
+        { text: 'Email', value: 'email' },
+        { text: this.$t('manajemenpengguna.sunting'), value: 'edit', sortable: false },
+        { text: this.$t('manajemenpengguna.hapus'), value: 'hapus', sortable: false }
+      ],
+            users: {
+              data:{
+                data:{
+                  data:[]
+                }
+              }
+            },
             search: '',
             adds: [{ route: "/tambah-pengguna" }],
+            loading: false,
 
         }
     },
-    computed: {
-      users() {
-        console.log(this.$store.state.users);
-  return this.$user.state.users;
-}
-  },
-  mutations: {
-  setUsers(state, users) {
-    console.log(users);
-    state.users = users;
-  },
-},
-  mounted() {
-    this.fetchUsers();
-  },
     methods: {
-      fetchUsers() {
-    axios.get('http://localhost:3000/users')
-      .then(response => {
-        this.users = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  },
+      getData() {
+  this.loading = true;
+  axios
+    .get("http://localhost:3000/users")
+    .then((response) => {
+      this.users.data.data.data = response.data.data.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    .finally(() => {
+      this.loading = false;
+    });
+},
     editData(item) {
       // Logika untuk mengedit data
       console.log('Mengedit data:', item);
@@ -115,7 +116,15 @@ export default {
       // Logika untuk menghapus data
       console.log('Menghapus data:', item);
     }
+  },
+  mounted() {
+    this.getData();
+  },
+  computed: {
+  computedItems() {
+    return this.users.data.slice((this.page - 1) * this.itemsPerPage, this.page * this.itemsPerPage)
   }
+}
 };
 </script>
 <style scoped>
