@@ -1,115 +1,181 @@
 <template>
-  <v-app>
-    <Navbar />
-      <v-container>
-        <h1 class="heading black--text">{{ $t("sidebar.suratjalanpallet") }}</h1>
-        <v-spacer></v-spacer>
-        <v-col md-12>
+  <v-container>
+    <v-col md-12>
+      <v-card>
+        <v-card-title>
+          {{ $t("sjp.sjp") }}
+        </v-card-title>
+        <v-divider></v-divider>
         <v-card>
-            <v-card-title>
-              {{ $t("sidebar.suratjalanpallet") }}
-            </v-card-title>
-            <v-divider></v-divider>
-                <v-card>
-                    <v-card-title>
-                      <v-btn v-for="add in adds"
-                router :to="add.route" color="success"
-                >Tambah SJP</v-btn>
-                <v-btn
-                >{{ $t("manajemenpengguna.unduh") }}</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-text-field
-                        v-model="search"
-                        prepend-icon="mdi-search"
-                        :label="$t('manajemenpengguna.cari')"
-                        single-line
-                        hide-details
-                    ></v-text-field>
-                    </v-card-title>
-                    <v-data-table class="custom-table"
-                    :loading="loading"
-                    :headers="headers"
-                    :search="search"
-                    :items="items"
-                    elevation="2"
-                    border
-                    >
-                    <template v-slot:item.hapus="{ item }">
-                      <v-btn class="warna-font" color="red" small @click="hapusData(item)">{{ $t('manajemenpengguna.hapus') }}</v-btn>
+          <v-card-title>
+            <v-btn router :to="adds.route">{{ $t("sjp.add") }}</v-btn>
+            <v-btn style="margin-left: 20px">{{
+              $t("manajemenpengguna.unduh")
+            }}</v-btn>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              prepend-icon="mdi-search"
+              :label="$t('manajemenpengguna.cari')"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :loading="loading"
+            :headers="headers"
+            :search="search"
+            :items="sjps.data"
+            dense
+          >
+            <template v-slot:item.trxStatus="{ item }">
+              <p v-if="item.trxStatus == 0">Draft</p>
+              <p class="text-green" v-else-if="item.trxStatus == 1">Send</p>
+              <p class="text-blue" v-else-if="item.trxStatus == 2">Received</p>
+              <p class="text-green" v-else-if="item.trxStatus == 3">
+                Send Back
+              </p>
+              <p class="text-blue" v-else-if="item.trxStatus == 4">
+                Send Back Received
+              </p>
+              <p class="text-red" v-else-if="item.state == 6">Sending Cancel</p>
+            </template>
+            <template v-slot:item.send="{ item }">
+              <router-link
+                :to="{ name: 'sjpstatuss.addsjp', params: { id: item.id } }"
+                v-if="item.trxStatus == 0"
+              >
+                <v-btn color="secondary" small>{{ $t("sjp.send") }}</v-btn>
+              </router-link>
+            </template>
+            <template v-slot:item.actions="{ item }">
+              <v-menu>
+                <template v-slot:activator="{ on: menu, attrs }">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on: tooltip }">
+                      <v-btn
+                        class="ma-2"
+                        text
+                        icon
+                        v-bind="attrs"
+                        v-on="{ ...tooltip, ...menu }"
+                      >
+                        <v-icon small class="mr-2">mdi-pencil</v-icon>
+                      </v-btn>
                     </template>
-                    </v-data-table>
-                </v-card>
-          </v-card>
-      </v-col>
-      </v-container>
-    <Footer />
-  </v-app>
+                    <span>Edit data</span>
+                  </v-tooltip>
+                </template>
+                <v-list>
+                  <v-list-item v-for="(item, i) in listEdit" :key="i">
+                    <v-list-item-content>
+                      <v-list-item-title @click="hapusData(item)"
+                        ><v-btn small text>
+                          <v-icon left>
+                            {{ item.icon }}
+                          </v-icon>
+                          {{ item.text }}
+                        </v-btn></v-list-item-title
+                      >
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+              <v-icon v-if="item.trxStatus === 0" small @click="hapusData(item)"> mdi-delete </v-icon>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-card>
+    </v-col>
+  </v-container>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import en from "@/locales/en.json";
-import id from "@/locales/id.json";
 // @ is an alias to /src
 export default {
-  name: "ManajemenPengguna",
+  name: "SuratJalanPallet",
   components: {
-    Navbar,
-    Footer,
-    Breadcomp
+    Breadcomp,
   },
   data() {
-        return {
-            headers: [
-                { value: 'nomorsjp', text: 'Nomor SJP' },
-                { value: 'keberangkatan', text: 'Keberangkatan' },
-                { value: 'tujuan', text: 'Tujuan' },
-                { value: 'ekspeditur', text: 'Ekspeditur' },
-                { value: 'nomorkendaraan', text: 'Nomor Kendaraan' },
-                { value: 'pengendara', text: 'Pengendara' },
-                { value: 'nomorDO', text: 'Nomor DO' },
-                { value: 'jumlahpallet', text: 'Jumlah Pallet' },
-                { value: 'statustransaksi', text: 'Status Transaksi' },
-                { value: 'dibuat', text: 'Dibuat Oleh' },
-                { value: 'diperbarui', text: 'Diperbarui Saat' },
-                { value: 'distribusi', text: 'Distribusi' },
-                { value: 'penyesuaianSJP', text: 'Penyesuaian SJP' },
-                { value: 'ubahtujuanSJP', text: 'Ubah Tujuan SJP' },
-                { value: 'pembatalanSJP', text: 'Pembatalan SJP' },
-                { value: 'hapus', text: this.$t('manajemenpengguna.hapus')}
-            ],
-            items: [
-                { name :'Daud', username: 'daudtea', email: 'mramdhanass@gmail.com' }
-            ],
-            search: '',
-            adds: [{ route: "/tambah-sjp" }],
-
-        }
+    return {
+      selectedItem: 1,
+      headers: [
+        { value: "trxNumber", text: this.$t("sjp.trxNumber") },
+        { value: "departure", text: this.$t("sjp.departure") },
+        { value: "destination", text: this.$t("sjp.destination") },
+        { value: "transporter", text: this.$t("sjp.transporter") },
+        { value: "licensePlate", text: this.$t("sjp.truck") },
+        { value: "driverName", text: this.$t("sjp.driver") },
+        { value: "noDo", text: this.$t("sjp.noDo") },
+        { value: "trxStatus", text: this.$t("sjp.trxStatus") },
+        { value: "send", text: this.$t("sjp.send") },
+        { value: "actions", text: this.$t("table.actions") },
+      ],
+      items: [],
+      search: "",
+      adds: { route: "/sjp/add" },
+      edits: { route: "/sjp/edit" },
+      listEdit: [
+        {
+          text: "Change Destination",
+          icon: "mdi-warehouse",
+          href: "/sjp/change-destination",
+        },
+        { text: "Change Truck", icon: "mdi-truck", href: "/sjp/change-truck" },
+      ],
+    };
+  },
+  created() {
+    this.getSjps(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
+  },
+  computed: {
+    ...mapState("sjp", {
+      sjps: (state) => state.sjps, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+    ...mapState("sjp", {
+      loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+  },
+  methods: {
+    ...mapActions("sjp", ["getSjps", "deleteSjp"]),
+    editData(item) {
+      // Logika untuk mengedit data
+      console.log("Mengedit data:", item);
     },
-    methods: {
+    sumTotal(data) {
+      return data.reduce((acc, item) => acc + item.quantity, 0);
+    },
     hapusData(item) {
-      // Logika untuk menghapus data
-      console.log('Menghapus data:', item);
-    }
-  }
+      this.$swal({
+        title: "Are you sure?",
+        text: "This will delete record Permanently!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes!",
+      }).then((result) => {
+        if (result.value) {
+          this.deleteSjp(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
+        }
+      });
+    },
+  },
 };
 </script>
 <style scoped>
 .warna-font {
-  color: white; 
+  color: white;
 }
-.custom-table table {
-  border-collapse: separate;
-  border-spacing: 0px;
-  width: 100%;
+.text-blue {
+  vertical-align: middle;
+  color: #0073b7 !important;
 }
-
-.custom-table th,
-.custom-table td {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  padding: 8px;
-  text-align: left;
+.text-green {
+  vertical-align: middle;
+  color: #00a65a !important;
 }
 </style>

@@ -1,121 +1,196 @@
 <template>
-  <v-app>
-    <Navbar />
-      <v-container>
-        <h1 class="heading black--text">{{ $t("sidebar.manajemenperusahaan") }}</h1>
-        <v-spacer></v-spacer>
-        <v-col md-12>
+  <v-container>
+    <v-col md-12>
+      <v-card>
+        <v-card-title>
+          {{ $t("perusahaan.perusahaan") }}
+        </v-card-title>
+        <v-divider></v-divider>
         <v-card>
-            <v-card-title>
-              Data Manajemen Pallet Perusahaan
-            </v-card-title>
-            <v-divider></v-divider>
-                <v-card>
-                    <v-card-title>
-                      <v-btn v-for="add in adds"
-                router :to="add.route"
-                >Tambah Data Manajemen</v-btn>
-                      <v-btn>
-                {{ $t("manajemenpengguna.unduh") }}</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-text-field
-                        v-model="search"
-                        prepend-icon="mdi-search"
-                        :label="$t('manajemenpengguna.cari')"
-                        single-line
-                        hide-details
-                    ></v-text-field>
-                    </v-card-title>
-                    <v-data-table class="custom-table"
-                    :loading="loading"
-                    :headers="headers"
-                    :search="search"
-                    :items="items"
-                    elevation="2"
-                    border
-                    >
-                    <template v-slot:item.hapus="{ item }">
-                      <v-btn class="warna-font" color="red" small @click="hapusData(item)">{{ $t('manajemenpengguna.hapus') }}</v-btn>
-                    </template>
-                    </v-data-table>
-                </v-card>
-          </v-card>
-      </v-col>
-      </v-container>
-    <Footer />
-  </v-app>
+          <v-card-title>
+            <v-btn router :to="adds.route">{{ $t("perusahaan.tambah") }}</v-btn>
+            <v-btn style="margin-left: 20px">{{
+              $t("manajemenpengguna.unduh")
+            }}</v-btn>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              prepend-icon="mdi-search"
+              :label="$t('manajemenpengguna.cari')"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :loading="loading"
+            :headers="headers"
+            :search="search"
+            :items="companies.data"
+            dense
+          >
+            <template v-slot:item.good_pallet="{ item }">
+              <template v-if="item.palletQuantity.length == 0">
+                0
+              </template>
+              <template v-else>
+                {{ getPallet('Good Pallet', item.palletQuantity) }}
+              </template>
+            </template>
+
+            <template v-slot:item.tbr_pallet="{ item }">
+              <template v-if="item.palletQuantity.length == 0">
+                0
+              </template>
+              <template v-else>
+                {{ getPallet('TBR Pallet', item.palletQuantity) }}
+              </template>
+            </template>
+
+            <template v-slot:item.ber_pallet="{ item }">
+              <template v-if="item.palletQuantity.length == 0">
+                0
+              </template>
+              <template v-else>
+                {{ getPallet('BER Pallet', item.palletQuantity) }}
+              </template>
+            </template>
+
+            <template v-slot:item.missing_pallet="{ item }">
+              <template v-if="item.palletQuantity.length == 0">
+                0
+              </template>
+              <template v-else>
+                {{ getPallet('Missing Pallet', item.palletQuantity) }}
+              </template>
+            </template>
+
+            <template v-slot:item.total="{ item }">
+              <template v-if="item.palletQuantity.length == 0">
+                <v-chip
+                  label
+                  color="blue"
+                >
+                  0
+                </v-chip>
+              </template>
+              <template v-else>
+                <v-chip
+                  label
+                  color="primary"
+                  v-if="sumTotal(item.palletQuantity)"
+                >
+                  {{ sumTotal(item.palletQuantity) }}
+                </v-chip>
+                <v-chip
+                  label
+                  color="blue"
+                  v-if="sumTotal(item.palletQuantity) < item.pallet_quota"
+                >
+                  {{ sumTotal(item.palletQuantity) }}
+                </v-chip>
+                <v-chip
+                  label
+                  color="warning"
+                  v-if="sumTotal(item.palletQuantity) == item.pallet_quota"
+                >
+                  {{ sumTotal(item.palletQuantity) }}
+                </v-chip>
+              </template>
+            </template>
+            <template v-slot:item.actions="{ item }">
+              <v-icon small class="mr-2" @click="editData(item)">
+                mdi-pencil
+              </v-icon>
+              <v-icon small @click="hapusData(item)"> mdi-delete </v-icon>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-card>
+    </v-col>
+  </v-container>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import en from "@/locales/en.json";
-import id from "@/locales/id.json";
 // @ is an alias to /src
 export default {
   name: "ManajemenPerusahaan",
   components: {
-    Navbar,
-    Footer,
-    Breadcomp
+    Breadcomp,
   },
   data() {
-        return {
-            headers: [
-                { value: 'namaperusahaan', text: 'Nama Perusahaan'},
-                { value: 'kodeperusahaan', text: 'Kode Perusahaan' },
-                { value: 'tipeperusahaan', text: 'Tipe Perusahaan'},
-                { value: 'keberangkatan', text: 'Keberangkatan'},
-                { value: 'alamat', text: 'Alamat'},
-                { value: 'palletmasuk', text: 'Pallet Masuk'},
-                { value: 'palletkeluar', text: 'Pallet Keluar'},
-                { value: 'goodpallet', text: 'Good Pallet'},
-                { value: 'TBRpallet', text: 'TBR Pallet'},
-                { value: 'BERpallet', text: 'BER Pallert'},
-                { value: 'missingpallet', text: 'Missing Pallet'},
-                { value: 'totalpallet', text: 'Total Pallet'},
-                { value: 'kuotapallet', text: 'Kuota Pallet'},
-                { value: 'hargasewa', text: 'Harga Sewa Pallet'},
-                { value: 'totalbiaya', text: 'Total Biaya Pallet'},
-                { value: 'hapus', text: this.$t('manajemenpengguna.hapus')},
-
-            ],
-            items: [
-                { name :'Daud', username: 'daudtea', email: 'mramdhanass@gmail.com' }
-            ],
-            search: '',
-            adds: [{ route: "/tambah-data-manajemen" }],
-
-        }
-    },
-    methods: {
+    return {
+      headers: [
+        { value: "code", text: this.$t("perusahaan.nomor") },
+        { value: "name", text: this.$t("perusahaan.nama") },
+        { value: "name_company_type", text: this.$t("perusahaan.tipe") },
+        { value: "name_organization", text: this.$t("organisasi.nama") },
+        { value: "address", text: this.$t("perusahaan.alamat") },
+        { value: "city", text: this.$t("perusahaan.kota") },
+        { value: "phone", text: this.$t("perusahaan.hp") },
+        { value: "email", text: this.$t("perusahaan.email") },
+        { value: "good_pallet", text: this.$t("pallet.good") },
+        { value: "tbr_pallet", text: this.$t("pallet.tbr") },
+        { value: "ber_pallet", text: this.$t("pallet.ber") },
+        { value: "missing_pallet", text: this.$t("pallet.missing") },
+        { value: "total", text: this.$t("pallet.total") },
+        { value: "quota", text: this.$t("pallet.quota") },
+        { value: "actions", text: this.$t("table.actions") },
+      ],
+      items: [],
+      search: "",
+      adds: { route: "/company/add" },
+      edits: { route: "/edit-perusahaan" },
+    };
+  },
+  created() {
+    this.getCompanies(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
+  },
+  computed: {
+    ...mapState("company", {
+      companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+    ...mapState("company", {
+      loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+  },
+  methods: {
+    ...mapActions("company", ["getCompanies", "deleteCompany"]),
     editData(item) {
-      // Logika untuk mengedit data
-      console.log('Mengedit data:', item);
-      this.$router.push({ path: "/edit-pengguna" });
+      this.$router.push({
+        name: 'company.edit',
+        params: { id: item.id}
+      });
+    },
+    getPallet( tipePallet, data) {
+      let found = data.find(x => x.kondisi_pallet === tipePallet).quantity;
+      console.log(found);
+      return found;
+    },
+    sumTotal(data) {
+      return data.reduce((acc, item) => acc + item.quantity, 0);
     },
     hapusData(item) {
-      // Logika untuk menghapus data
-      console.log('Menghapus data:', item);
-    }
-  }
+      this.$swal({
+        title: "Are you sure?",
+        text: "This will delete record Permanently!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes!",
+      }).then((result) => {
+        if (result.value) {
+          this.deleteCompany(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
+        }
+      });
+    },
+  },
 };
 </script>
 <style scoped>
 .warna-font {
-  color: white; 
-}
-.custom-table table {
-  border-collapse: separate;
-  border-spacing: 0px;
-  width: 100%;
-}
-
-.custom-table th,
-.custom-table td {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  padding: 8px;
-  text-align: left;
+  color: white;
 }
 </style>

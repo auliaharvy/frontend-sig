@@ -1,5 +1,6 @@
 <template>
   <v-app class="body">
+    <loading-overlay :active="loading" :is-full-page="true" loader="bars" />
     <v-container>
       <v-layout wrap style="margin-top: 100px">
         <v-flex sm14 md10 offset-md1>
@@ -28,7 +29,12 @@
                   {{ $t("login.judul") }}
                 </v-card-title>
                 <LocaleSwitcher />
-                <v-form v-model="valid" style="margin-top: -20px" @submit.prevent="login" @keyup.enter.native="login">
+                <v-form
+                  v-model="valid"
+                  style="margin-top: -20px"
+                  @submit.prevent="postLogin"
+                  @keyup.enter.native="postLogin"
+                >
                   <v-card-text>
                     <v-text-field
                       :rules="userRules"
@@ -54,11 +60,9 @@
                   >
                   </v-checkbox>
                   <v-card-actions>
-                    <v-btn
-                      block
-                      color="success"
-                      >{{ $t("login.masuk") }}</v-btn
-                    >
+                    <v-btn block type="submit" :disabled="!valid" color="success">{{
+                      $t("login.masuk")
+                    }}</v-btn>
                   </v-card-actions>
                   <p class=" ">{{ $t("login.lupa") }}</p>
                 </v-form>
@@ -89,7 +93,12 @@
                   >{{ $t("login.judul") }}
                 </v-card-title>
                 <LocaleSwitcher />
-                <v-form v-model="valid" style="margin-top: -20px" @submit.prevent="login" @keyup.enter.native="login">
+                <v-form
+                  v-model="valid"
+                  style="margin-top: -20px"
+                  @submit.prevent="postLogin"
+                  @keyup.enter.native="postLogin"
+                >
                   <v-card-text>
                     <v-text-field
                       :rules="userRules"
@@ -115,10 +124,7 @@
                   >
                   </v-checkbox>
                   <v-card-actions>
-                    <v-btn
-                      block
-                      color="success"
-                      >{{ $t("login.masuk") }}</v-btn>
+                    <v-btn block type="submit" color="success">{{ $t("login.masuk") }}</v-btn>
                   </v-card-actions>
                   <p class=" ">{{ $t("login.lupa") }}</p>
                 </v-form>
@@ -141,7 +147,11 @@
                 >{{ $t("login.judul") }}
               </v-card-title>
               <LocaleSwitcher />
-              <v-form v-model="valid" @submit.prevent="login" @keyup.enter.native="login">
+              <v-form
+                v-model="valid"
+                @submit.prevent="postLogin"
+                @keyup.enter.native="postLogin"
+              >
                 <v-card-text>
                   <v-text-field
                     :rules="userRules"
@@ -172,14 +182,11 @@
                     color="success"
                     :disabled="!valid"
                     type="submit"
-                  >{{ $t("login.masuk") }}</v-btn
+                    >{{ $t("login.masuk") }}</v-btn
                   >
                 </v-card-actions>
                 <p class=" ">{{ $t("login.lupa") }}</p>
               </v-form>
-              <div v-if="responseMessage">
-      {{ responseMessage }}
-    </div>
             </v-card>
           </v-col>
         </v-flex>
@@ -189,36 +196,49 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations, mapGetters, mapState } from "vuex";
 import LocaleSwitcher from "../components/LocaleSwitcher.vue";
 export default {
   name: "LoginView",
   data() {
     return {
       user: {
-        username: '',
-        password: '',
+        username: "",
+        password: "",
       },
       showPassword: false,
       valid: false,
-      userRules: [
-        v => !!v || this.$t('login.validasinamapengguna'),
-      ],
-      pwRules: [
-        v => !!v || this.$t('login.validasikatasandi'),
-      ],
-      responseMessage: '',
+      userRules: [(v) => !!v || this.$t("login.validasinamapengguna")],
+      pwRules: [(v) => !!v || this.$t("login.validasikatasandi")],
+      responseMessage: "",
     };
   },
+  created() {
+    if (this.isAuth) {
+      this.$router.push({ to: "/dashboard" });
+    }
+  },
+  computed: {
+    ...mapGetters(["isAuth"]),
+    ...mapState(["errors"]),
+    ...mapState("auth", {
+      loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+      errorLogin: (state) => state.errorLogin, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+      errorMessage: (state) => state.errorMessage, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+  },
   methods: {
-    ...mapActions('auth', ['login']),
-    async login() {
-      try {
-        const token = await this.$store.dispatch('auth/login', this.user);
-        // redirect to dashboard or home page after successful login
-      } catch (error) {
-        this.responseMessage = error.message;
-      }
+    ...mapActions("auth", ["submit"]),
+    ...mapMutations("auth", ["CLEAR_ERROR_LOGIN"]),
+    ...mapActions("user", ["getUserLogin"]),
+    ...mapMutations(["CLEAR_ERRORS"]),
+    async postLogin() {
+      await this.submit(this.user).then(() => {
+        if (this.isAuth) {
+          this.CLEAR_ERRORS();
+          this.$router.push({ name: "dashboard" });
+        } 
+      })
     },
     handleIcon() {
       this.showPassword = !this.showPassword;

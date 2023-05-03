@@ -1,90 +1,161 @@
 {
+  "pallet": {
+    "good": "Good Pallet",
+    "ber": "BER Pallet",
+    "tbr": "TBR Pallet",
+    "missing": "Missing Pallet",
+    "quota": "Quota Pallet",
+    "total": "Total Pallet"
+  },
   "language": "Pilih Bahasa",
-  "login" : 
-    {
-      "judul" : "Masuk ke Pallet Management System",
-      "ingat" : "Ingat Saya",
-      "masuk" : "Masuk",
-      "namapengguna" : "Nama Pengguna",
-      "katasandi" : "Kata Sandi",
-      "kembali" : "Kembali",
-      "validasinamapengguna" : "Nama Pengguna Salah",
-      "validasikatasandi" : "Kata Sandi Salah",
-      "lupa" : "Lupa Kata Sandi?"
-    },
-    "sidebar" : 
-    {
-      "halamanutama" : "Halaman Utama",
-      "manajemensjp" : "Manajemen SJP",
-      "sjpstatus" : "SJP Status",
-      "suratjalanpallet" : "Surat Jalan Pallet",
-      "manajemenpallet" : " Manajemen Pallet",
-      "mutasipallet" : "Mutasi Pallet",
-      "klaimpallet" : "Klaim Pallet",
-      "perubahankuotapallet" : "Perubahan Kuota Pallet",
-      "palletbaru" : "Pallet Baru",
-      "palletrusak" : "Pallet Rusak",
-      "palletdiperbaiki" : "Pallet Diperbaiki",
-      "penyewaanpallet" : "Penyewaan Pallet",
-      "penyesuaianekspeditur" : "Penyesuaian Ekspeditur",
-      "manajemenperusahaan" : "Manajemen Perusahaan",
-      "laporan" : "Laporan",
-      "dasbororganisasi" : "Dasbor Organisasi",
-      "pergerakanpallet" : "Pergerakan Pallet",
-      "datatransaksi" : "Data Transaksi",
-      "pengaturan" : "Pengaturan",
-      "organisasi" : "Organisasi",
-      "perandanizin" : "Peran & Izin",
-      "manajemenpengguna" : "Manajemen Pengguna",
-      "kendaraan" : "Kendaraan",
-      "pengendara" : "Pengendara",
-      "keluar" : "Keluar"
-    },
-    "menu" : 
-    {
-      "menu" : "Menu Transaksi"
-    },
-    "manajemenpengguna" : 
-    {
-      "pengguna" : "Pengguna",
-      "tambah" : "Tambah Pengguna",
-      "sunting" : "Sunting",
-      "cari" : "Cari",
-      "kirim" : "Kirim",
-      "namalengkap" : "Nama Lengkap",
-      "unduh" : "Unduh Data",
-      "email" : "Email",
-      "edit" : "Sunting Pengguna",
-      "hapus" : "Hapus"
-    },
-    "organisasi" : 
-    {
-      "organisasi" : "Organisasi",
-      "tambah" : "Tambah Organisasi",
-      "nama" : "Nama Organisasi",
-      "alamat" : "Alamat Organisasi",
-      "kota" : "Kota Organisasi",
-      "nomor" : "Nomor Organisasi",
-      "email" : "Email Organisasi",
-      "edit" : "Sunting Organisasi",
-      "dibuat" : "Dibuat Oleh",
-      "diperbarui" : "Diperbarui Saat"
-    },
-    "kendaraan" : 
-    {
-      "singkronisasi" : "Singkronisasi",
-      "ekspeditur" : "Ekspeditur",
-      "nomor" : "Nomor Kendaraan",
-      "tipe" : "Tipe Kendaraan"
-    },
-    "perandanizin" : 
-    {
-      "peran" : "Peran",
-      "menetapkanperan" : "Menetapkan Peran Ke Pengguna",
-      "perusahaan" : "Perusahaan",
-      "aturperan" : "Atur Peran",
-      "aturizin" : "Atur Izin",
-      "cek" : "Cek",
-      "izin" : "Izin"
-    }
+  "login": {
+    "judul": "Masuk ke Pallet Management System",
+    "ingat": "Ingat Saya",
+    "masuk": "Masuk",
+    "namapengguna": "Nama Pengguna",
+    "katasandi": "Kata Sandi",
+    "kembali": "Kembali",
+    "validasinamapengguna": "Nama Pengguna Salah",
+    "validasikatasandi": "Kata Sandi Salah",
+    "lupa": "Lupa Kata Sandi?"
+  },
+  "table": {
+    "actions": "Aksi"
+  },
+  "form": {
+    "submit": "Submit",
+    "reset": "Reset"
+  },
+  "sidebar": {
+    "halamanutama": "Halaman Utama",
+    "manajemensjp": "Manajemen SJP",
+    "sjpstatus": "SJP Status",
+    "suratjalanpallet": "Surat Jalan Pallet",
+    "manajemenpallet": " Manajemen Pallet",
+    "mutasipallet": "Mutasi Pallet",
+    "klaimpallet": "Klaim Pallet",
+    "perubahankuotapallet": "Perubahan Kuota Pallet",
+    "palletbaru": "Pallet Baru",
+    "palletrusak": "Pallet Rusak",
+    "palletdiperbaiki": "Pallet Diperbaiki",
+    "penyewaanpallet": "Penyewaan Pallet",
+    "penyesuaianekspeditur": "Penyesuaian Ekspeditur",
+    "manajemenperusahaan": "Manajemen Perusahaan",
+    "laporan": "Laporan",
+    "dasbororganisasi": "Dasbor Organisasi",
+    "pergerakanpallet": "Pergerakan Pallet",
+    "datatransaksi": "Data Transaksi",
+    "pengaturan": "Pengaturan",
+    "organisasi": "Organisasi",
+    "perandanizin": "Set User Role",
+    "peran": "Peran",
+    "izin": "izin",
+    "manajemenpengguna": "Manajemen Pengguna",
+    "kendaraan": "Kendaraan",
+    "pengendara": "Pengendara",
+    "keluar": "Keluar"
+  },
+  "menu": {
+    "menu": "Menu Transaksi"
+  },
+  "manajemenpengguna": {
+    "pengguna": "Pengguna",
+    "tambah": "Tambah Pengguna",
+    "sunting": "Sunting",
+    "cari": "Cari",
+    "kirim": "Kirim",
+    "namalengkap": "Nama Lengkap",
+    "username": "Username",
+    "unduh": "Unduh Data",
+    "email": "Email",
+    "edit": "Sunting Pengguna",
+    "hapus": "Hapus"
+  },
+  "organisasi": {
+    "organisasi": "Organisasi",
+    "tambah": "Tambah Organisasi",
+    "sunting": "Sunting Organisasi",
+    "nama": "Nama Organisasi",
+    "alamat": "Alamat Organisasi",
+    "kota": "Kota Organisasi",
+    "nomor": "Nomor Organisasi",
+    "email": "Email Organisasi",
+    "edit": "Sunting Organisasi",
+    "dibuat": "Dibuat Oleh",
+    "diperbarui": "Diperbarui Saat"
+  },
+  "role": {
+    "role": "Peran",
+    "tambah": "Tambah Peran",
+    "sunting": "Sunting Peran",
+    "nama": "Nama Peran",
+    "edit": "Sunting Peran",
+    "dibuat": "Created By",
+    "diperbarui": "Updated At"
+  },
+  "izin": {
+    "izin": "Izin",
+    "tambah": "Tambah Izin",
+    "sunting": "Sunting Izin",
+    "nama": "Nama Izin",
+    "edit": "Sunting Izin",
+    "dibuat": "Created By",
+    "diperbarui": "Updated At"
+  },
+  "perusahaan": {
+    "perusahaan": "Perusahaan",
+    "tambah": "Tambah Perusahaan",
+    "sunting": "Sunting",
+    "nama": "Nama",
+    "alamat": "Alamat",
+    "kota": "Kota",
+    "nomor": "Kode",
+    "email": "Email",
+    "edit": "Edit Organization",
+    "hp": "Telephone",
+    "tipe": "Tipe",
+    "dibuat": "Created By",
+    "diperbarui": "Updated At"
+  },
+  "kendaraan": {
+    "singkronisasi": "Singkronisasi",
+    "ekspeditur": "Ekspeditur",
+    "nomor": "Nomor Kendaraan",
+    "tipe": "Tipe Kendaraan"
+  },
+  "perandanizin": {
+    "peran": "Peran",
+    "menetapkanperan": "Menetapkan Peran Ke Pengguna",
+    "perusahaan": "Perusahaan",
+    "aturperan": "Atur Peran",
+    "aturizin": "Atur Izin",
+    "cek": "Cek",
+    "izin": "Izin",
+    "pengguna": "Pengguna"
+  },
+  "sjp": {
+    "sjp": "SJP (Surat Jalan Pallet)",
+    "add": "Tambah SJP",
+    "departure": "Keberangkatan",
+    "destination": "Tujuan",
+    "transporter": "Angkutan",
+    "truck": "Nomor Truck",
+    "driver": "Pengendara",
+    "trxNumber": "Nomor SJP",
+    "noDo": "Nomor DO",
+    "packaging": "Packaging",
+    "productQuantity": "Jumlah Produk",
+    "palletQuantity": "Jumlah Pallet",
+    "trxStatus": "Status",
+    "distribution": "Distribusi",
+    "send": "Kirim",
+    "eta": "Perikaraan Waktu Sampai",
+    "depart": "Waktu Keberangkatan"
+  },
+  "driver": {
+    "driver": "Pengendara",
+    "add": "Tambah Pengendara",
+    "edit": "Sunting Pengendara",
+    "nama": "Nama Pengendara"
+  }
 }

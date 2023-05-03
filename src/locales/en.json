@@ -1,90 +1,161 @@
 {
+  "pallet": {
+    "good": "Good Pallet",
+    "ber": "BER Pallet",
+    "tbr": "TBR Pallet",
+    "missing": "Missing Pallet",
+    "quota": "Quota Pallet",
+    "total": "Total Pallet"
+  },
   "language": "Select Language",
-  "login" : 
-    {
-      "judul" : "Login to Pallet Management System",
-      "ingat" : "Remember Me",
-      "masuk" : "Login",
-      "namapengguna" : "Username",
-      "katasandi" : "Password",
-      "kembali" : "Back",
-      "validasinamapengguna" : "Wrong Username",
-      "validasikatasandi" : "Wrong Password",
-      "lupa" : "Forgot Your Password?"
-    },
-  "sidebar" : 
-    {
-      "halamanutama" : "Home",
-      "manajemensjp" : "SJP Management",
-      "sjpstatus" : "Status SJP",
-      "suratjalanpallet" : "Pallet Path",
-      "manajemenpallet" : " Pallet Management",
-      "mutasipallet" : "Pallet Mutation",
-      "klaimpallet" : "Pallet Claims",
-      "perubahankuotapallet" : "Change In Pallet Quota",
-      "palletbaru" : "New Pallet",
-      "palletrusak" : "Broken Pallet",
-      "palletdiperbaiki" : "Repaired Pallet",
-      "penyewaanpallet" : "Rental Pallet",
-      "penyesuaianekspeditur" : "Shipping Adjustments",
-      "manajemenperusahaan" : "Company Management",
-      "laporan" : "Report",
-      "dasbororganisasi" : "Organization Dashboard",
-      "pergerakanpallet" : "Pallet Movement",
-      "datatransaksi" : "Transaction Data",
-      "pengaturan" : "Setting",
-      "organisasi" : "Organization",
-      "perandanizin" : "Roles & Permissions",
-      "manajemenpengguna" : "User Management",
-      "kendaraan" : "Car",
-      "pengendara" : "Driver",
-      "keluar" : "Log Out"
-    },
-  "menu" : 
-    {
-      "menu" : "Transaction Menu"
-    },
-    "manajemenpengguna" : 
-    {
-      "pengguna" : "User",
-      "tambah" : "Add User",
-      "sunting" : "Edit",
-      "cari" : "Search",
-      "kirim" : "Submit",
-      "namalengkap" : "Fullname",
-      "unduh" : "Download Data",
-      "email" : "Email",
-      "edit" : "Edit User",
-      "hapus" : "Delete"
-    },
-    "organisasi" : 
-    {
-      "organisasi" : "Organization",
-      "tambah" : "Add Organization",
-      "nama" : "Organization Name",
-      "alamat" : "Organization Address",
-      "kota" : "Organizational City",
-      "nomor" : "Organization Number",
-      "email" : "Organization Email",
-      "edit" : "Edit Organization",
-      "dibuat" : "Created By",
-      "diperbarui" : "Updated At"
-    },
-    "kendaraan" : 
-    {
-      "singkronisasi" : "Sync",
-      "ekspeditur" : "Shipping Agent",
-      "nomor" : "Car Number",
-      "tipe" : "Car Type"
-    },
-    "perandanizin" : 
-    {
-      "peran" : "Role",
-      "menetapkanperan" : "Assign Role To User",
-      "perusahaan" : "Company",
-      "aturperan" : "Set Role",
-      "aturizin" : "Set Permission",
-      "cek" : "Check",
-      "izin" : "Permission"
-    }
+  "login": {
+    "judul": "Login to Pallet Management System",
+    "ingat": "Remember Me",
+    "masuk": "Login",
+    "namapengguna": "Username",
+    "katasandi": "Password",
+    "kembali": "Back",
+    "validasinamapengguna": "Wrong Username",
+    "validasikatasandi": "Wrong Password",
+    "lupa": "Forgot Your Password?"
+  },
+  "table": {
+    "actions": "Actions"
+  },
+  "form": {
+    "submit": "Submit",
+    "reset": "Reset"
+  },
+  "sidebar": {
+    "halamanutama": "Home",
+    "manajemensjp": "SJP Management",
+    "sjpstatus": "Status SJP",
+    "suratjalanpallet": "Pallet Path",
+    "manajemenpallet": " Pallet Management",
+    "mutasipallet": "Pallet Mutation",
+    "klaimpallet": "Pallet Claims",
+    "perubahankuotapallet": "Change In Pallet Quota",
+    "palletbaru": "New Pallet",
+    "palletrusak": "Broken Pallet",
+    "palletdiperbaiki": "Repaired Pallet",
+    "penyewaanpallet": "Rental Pallet",
+    "penyesuaianekspeditur": "Shipping Adjustments",
+    "manajemenperusahaan": "Company Management",
+    "laporan": "Report",
+    "dasbororganisasi": "Organization Dashboard",
+    "pergerakanpallet": "Pallet Movement",
+    "datatransaksi": "Transaction Data",
+    "pengaturan": "Setting",
+    "organisasi": "Organization",
+    "perandanizin": "Set User Role",
+    "peran": "Role",
+    "izin": "Permission",
+    "manajemenpengguna": "User Management",
+    "kendaraan": "Car",
+    "pengendara": "Driver",
+    "keluar": "Log Out"
+  },
+  "menu": {
+    "menu": "Transaction Menu"
+  },
+  "manajemenpengguna": {
+    "pengguna": "User",
+    "tambah": "Add User",
+    "sunting": "Edit",
+    "cari": "Search",
+    "kirim": "Submit",
+    "namalengkap": "Fullname",
+    "username": "Username",
+    "unduh": "Download Data",
+    "email": "Email",
+    "edit": "Edit User",
+    "hapus": "Delete"
+  },
+  "organisasi": {
+    "organisasi": "Organization",
+    "tambah": "Add Organization",
+    "sunting": "Edit Organization",
+    "nama": "Organization Name",
+    "alamat": "Organization Address",
+    "kota": "Organizational City",
+    "nomor": "Organization Number",
+    "email": "Organization Email",
+    "edit": "Edit Organization",
+    "dibuat": "Created By",
+    "diperbarui": "Updated At"
+  },
+  "role": {
+    "role": "Role",
+    "tambah": "Add Role",
+    "sunting": "Edit Role",
+    "nama": "Role Name",
+    "edit": "Edit Role",
+    "dibuat": "Created By",
+    "diperbarui": "Updated At"
+  },
+  "izin": {
+    "izin": "Permission",
+    "tambah": "Add Permission",
+    "sunting": "Edit Permission",
+    "nama": "Permission Name",
+    "edit": "Edit Permission",
+    "dibuat": "Created By",
+    "diperbarui": "Updated At"
+  },
+  "perusahaan": {
+    "perusahaan": "Company",
+    "tambah": "Add Company",
+    "sunting": "Edit",
+    "nama": "Company Name",
+    "alamat": "Company Address",
+    "kota": "City",
+    "nomor": "Code",
+    "email": "Company Email",
+    "hp": "Phone",
+    "edit": "Edit Organization",
+    "tipe": "Type",
+    "dibuat": "Created By",
+    "diperbarui": "Updated At"
+  },
+  "kendaraan": {
+    "singkronisasi": "Sync",
+    "ekspeditur": "Shipping Agent",
+    "nomor": "Car Number",
+    "tipe": "Car Type"
+  },
+  "perandanizin": {
+    "peran": "Role",
+    "menetapkanperan": "Assign Role To User",
+    "perusahaan": "Company",
+    "aturperan": "Set Role",
+    "aturizin": "Set Permission",
+    "cek": "Check",
+    "izin": "Permission",
+    "pengguna": "User"
+  },
+  "sjp": {
+    "sjp": "SJP (Surat Jalan Pallet)",
+    "add": "Add SJP",
+    "departure": "Departure",
+    "destination": "Destination",
+    "transporter": "Transporter",
+    "truck": "Truck Number",
+    "driver": "Driver",
+    "trxNumber": "SJP Number",
+    "noDo": "DO Number",
+    "packaging": "Packaging",
+    "productQuantity": "Product Quantity",
+    "palletQuantity": "Pallet Quantity",
+    "trxStatus": "Status",
+    "distribution": "Distribution",
+    "send": "Send",
+    "eta": "Estimated Time Arrival",
+    "depart": "Departure Time"
+  },
+  "driver": {
+    "driver": "Driver",
+    "add": "Add Driver",
+    "edit": "Edit Driver",
+    "nama": "Driver Name"
+  }
 }

@@ -1,13 +1,13 @@
 <template>
   <nav>
-    <v-app-bar color="#e90e01" dark app>
+    <v-app-bar color="primary" dark app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="text-uppercase">
         PALLET MANAGEMENT SYSTEM
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <LocaleSwitcher />
-      <v-btn text v-for="logout in logouts" router :to="logout.route">
+      <v-btn text @click="logout">
         <span>{{ $t("sidebar.keluar") }}</span>
         <v-icon right>exit_to_app</v-icon>
       </v-btn>
@@ -119,21 +119,21 @@
     </v-navigation-drawer>
   </nav>
 </template>
- <script>
+<script>
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 
 export default {
   data: () => ({
     drawer: false,
     links: [
-      { icon: "home", title: "sidebar.halamanutama", route: "/dashboard" },
+      { icon: "home", title: "sidebar.halamanutama", route: "/" },
     ],
     mgms: [
       {
         action: "mdi-file-document-outline",
         title: "sidebar.manajemensjp",
         items: [
-          { title: "sidebar.suratjalanpallet", route: "/surat-jalan-pallet" },
+          { title: "sidebar.suratjalanpallet", route: "/sjp" },
           { title: "sidebar.sjpstatus", route: "/sjp-status" },
         ],
       },
@@ -163,7 +163,7 @@ export default {
       {
         icon: "mdi-domain",
         title: "sidebar.manajemenperusahaan",
-        route: "/manajemen-perusahaan",
+        route: "/company",
       },
     ],
     lps: [
@@ -180,22 +180,35 @@ export default {
         action: "mdi-cog",
         title: "sidebar.pengaturan",
         items: [
-          { title: "sidebar.organisasi", route: "/organisasi" },
+          { title: "sidebar.organisasi", route: "/organization" },
           { title: "sidebar.perandanizin", route: "/peran-dan-izin" },
-          { title: "sidebar.manajemenpengguna", route: "/manajemen-pengguna" },
+          { title: "sidebar.peran", route: "/roles" },
+          { title: "sidebar.izin", route: "/permissions" },
+          { title: "sidebar.manajemenpengguna", route: "/user" },
           { title: "sidebar.kendaraan", route: "/kendaraan" },
-          { title: "sidebar.pengendara", route: "/pengendara" },
+          { title: "sidebar.pengendara", route: "/drivers" },
         ],
       },
     ],
     logouts: [{ icon: "logout", title: "sidebar.keluar", route: "/" }],
   }),
+  methods: {
+    logout() {
+      return new Promise((resolve, reject) => {
+        localStorage.removeItem("token");
+        resolve();
+      }).then(() => {
+        this.$store.state.token = localStorage.getItem("token");
+        this.$router.push("/login");
+      });
+    },
+  },
   components: {
     LocaleSwitcher,
   },
 };
 </script>
- <style scoped>
+<style scoped>
 .border {
   border-left: 4px solid #0ba518;
 }

@@ -1,174 +1,109 @@
 <template>
-  <v-app>
-    <Navbar />
-      <v-container>
-        <h1 class="heading black--text">{{ $t("sidebar.manajemenpengguna") }}</h1>
-        <v-spacer></v-spacer>
-        <v-col md-12>
-        <v-card>
-            <v-card-title>
-              {{ $t("manajemenpengguna.pengguna") }}
-            </v-card-title>
-            <v-divider></v-divider>
-                <v-card>
-                    <v-card-title>
-                      <v-btn v-for="add in adds"
-                router :to="add.route"
-                >{{ $t("manajemenpengguna.tambah") }}</v-btn>
-                <v-btn
-                >{{ $t("manajemenpengguna.unduh") }}</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-text-field
-                        v-model="search"
-                        prepend-icon="mdi-search"
-                        :label="$t('manajemenpengguna.cari')"
-                        single-line
-                        hide-details
-                    ></v-text-field>
-                    </v-card-title>
-                    <v-data-table class="custom-table"
-                    v-if="!loading"
-                    :headers="headers"
-                    :search="search"
-                    :items="users.data.data.data"
-                    elevation="2"
-                    border
-                    >
-                    <template v-slot:item.edit="{ item }">
-                      <v-btn color="yellow" small @click="editData(item)"
-                      ><v-icon>mdi-pencil</v-icon></v-btn>
-                    </template>
-                    <template v-slot:item.hapus="{ item }">
-                      <v-btn class="warna-font" color="red" small @click="deleteItem(item)">{{ $t('manajemenpengguna.hapus') }}</v-btn>
-                    </template>
-                    </v-data-table>
-                </v-card>
-          </v-card>
-      </v-col>
-      <v-dialog v-model="dialog" elevation="2">
+  <v-container>
+    <v-col md-12>
       <v-card>
-      <v-card-title>Hapus Data Pengguna?</v-card-title>
-      <v-card-text>Anda yakin ingin menghapus Pengguna ini?</v-card-text>
-      <v-card-actions>
-        <v-btn @click="dialog = false" elevation="2">Tidak</v-btn>
-        <v-btn @click="confirmDelete" color="red" class="warna-font" elevation="2">Ya</v-btn>
-      </v-card-actions>
+        <v-card-title>
+          {{ $t("manajemenpengguna.pengguna") }}
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card>
+          <v-card-title>
+            <v-btn router :to="adds.route">{{ $t("manajemenpengguna.tambah") }}</v-btn>
+            <v-btn style="margin-left: 20px">{{
+              $t("manajemenpengguna.unduh")
+            }}</v-btn>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              prepend-icon="mdi-search"
+              :label="$t('manajemenpengguna.cari')"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :loading="loading"
+            :headers="headers"
+            :search="search"
+            :items="users.data"
+            dense
+          >
+            <template v-slot:item.actions="{ item }">
+              <v-icon small class="mr-2" @click="editData(item)">
+                mdi-pencil
+              </v-icon>
+              <v-icon small @click="hapusData(item)"> mdi-delete </v-icon>
+            </template>
+          </v-data-table>
+        </v-card>
       </v-card>
-       </v-dialog>
-      </v-container>
-    <Footer />
-  </v-app>
+    </v-col>
+  </v-container>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import axios from "axios";
-
+// @ is an alias to /src
 export default {
   name: "ManajemenPengguna",
   components: {
-    Navbar,
-    Footer,
-    Breadcomp
+    Breadcomp,
   },
   data() {
-        return {
-            // headers: [
-            //     { value: 'fullname', text: this.$t('manajemenpengguna.namalengkap') },
-            //     { value: 'username', text: this.$t('login.namapengguna')},
-            //     { value: 'email', text: 'Email' },
-            //     { value: 'edit', text: this.$t('manajemenpengguna.sunting')},
-            //     { value: 'hapus', text: this.$t('manajemenpengguna.hapus')}
-            // ],
-            headers: [
-        { text: this.$t('manajemenpengguna.namalengkap'), value: 'fullname' },
-        { text: this.$t('login.namapengguna'), value: 'username' },
-        { text: 'Email', value: 'email' },
-        { text: this.$t('manajemenpengguna.sunting'), value: 'edit', sortable: false },
-        { text: this.$t('manajemenpengguna.hapus'), value: 'hapus', sortable: false }
+    return {
+      headers: [
+        { value: "fullname", text: this.$t("manajemenpengguna.namalengkap") },
+        { value: "username", text: this.$t("manajemenpengguna.username") },
+        { value: "email", text: this.$t("manajemenpengguna.email") },
+        { value: "actions", text: this.$t("table.actions") },
       ],
-            users: {
-              data:{
-                data:{
-                  data:[]
-                }
-              }
-            },
-            search: '',
-            adds: [{ route: "/tambah-pengguna" }],
-            loading: false,
-            dialog: false,
-            deleteId: null,
-
-        }
-    },
-    methods: {
-      getData() {
-  this.loading = true;
-  axios
-    .get("http://localhost:3000/users")
-    .then((response) => {
-      this.users.data.data.data = response.data.data.data;
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-    .finally(() => {
-      this.loading = false;
-    });
-},
-    editData(item) {
-      console.log('Mengedit data:', item);
-      this.pengguna = {
-        fullname: item.fullname,
-        username: item.username,
-        email: item.email,
-        password: item.password,
-      };    
-      this.$router.push({ path: "/edit-pengguna"});
-    },
-    deleteItem(item) {
-    this.deleteId = item.id;
-    this.dialog = true;
+      items: [],
+      search: "",
+      adds: { route: "/user/add" },
+      edits: { route: "/user/edit" },
+    };
   },
-  confirmDelete() {
-    axios
-      .delete(`http://localhost:3000/users/${this.deleteId}`)
-      .then((response) => {
-        this.getData();
-        this.dialog = false;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
-  },
-  mounted() {
-    this.getData();
+  created() {
+    this.getUsers(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
   },
   computed: {
-  computedItems() {
-    return this.users.data.slice((this.page - 1) * this.itemsPerPage, this.page * this.itemsPerPage)
-  }
-}
+    ...mapState("user", {
+      users: (state) => state.users, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+    ...mapState("user", {
+      loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+  },
+  methods: {
+    ...mapActions("user", ["getUsers", "deleteUser"]),
+    editData(item) {
+      // console.log("Mengedit data:", item);
+      this.$router.push({
+        name: 'user.edit',
+        params: { id: item.id}
+      });
+    },
+    hapusData(item) {
+      this.$swal({
+        title: "Are you sure?",
+        text: "This will delete record Permanently!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes!",
+      }).then((result) => {
+        if (result.value) {
+          this.deleteUser(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
+        }
+      });
+    },
+  },
 };
 </script>
 <style scoped>
 .warna-font {
-  color: white; 
-}
-.custom-table table {
-  border-collapse: separate;
-  border-spacing: 0px;
-  width: 100%;
-}
-
-.custom-table th,
-.custom-table td {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  padding: 8px;
-  text-align: left;
+  color: white;
 }
 </style>
