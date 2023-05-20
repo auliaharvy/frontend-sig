@@ -82,7 +82,7 @@ export default {
       const valid = this.$refs.form.validate();
       if (valid){
         this.updateDriver(this.role).then(() => {
-          this.$router.push({ name: "permissions" });
+          this.$router.push({ name: "drivers" });
         });
       }
     },

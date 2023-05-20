@@ -91,7 +91,7 @@ export default {
         confirmButtonText: "Yes!",
       }).then((result) => {
         if (result.value) {
-          this.deleteDriver(id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
+          this.deleteDriver(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
         }
       });
     },

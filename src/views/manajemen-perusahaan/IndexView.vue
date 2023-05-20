@@ -76,22 +76,23 @@
               <template v-else>
                 <v-chip
                   label
-                  color="primary"
-                  v-if="sumTotal(item.palletQuantity)"
+                  color="red"
+                  v-if="sumTotal(item.palletQuantity) > item.quota"
                 >
                   {{ sumTotal(item.palletQuantity) }}
                 </v-chip>
                 <v-chip
                   label
                   color="blue"
-                  v-if="sumTotal(item.palletQuantity) < item.pallet_quota"
+                  text-color="white"
+                  v-else-if="sumTotal(item.palletQuantity) < item.quota"
                 >
                   {{ sumTotal(item.palletQuantity) }}
                 </v-chip>
                 <v-chip
                   label
-                  color="warning"
-                  v-if="sumTotal(item.palletQuantity) == item.pallet_quota"
+                  color="yellow"
+                  v-else-if="sumTotal(item.palletQuantity) == item.quota"
                 >
                   {{ sumTotal(item.palletQuantity) }}
                 </v-chip>

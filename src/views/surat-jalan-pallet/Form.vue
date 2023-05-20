@@ -7,9 +7,11 @@
           v-model="sjp.truck_number"
           :label="$t('sjp.truck')"
           :rules="noTruckRules"
+          outlined
           required
           append-icon="mdi-reload"
           @click:append="getDataDo"
+          @keyup.enter.native="getDataDo"
         ></v-text-field>
       </v-row>
 
@@ -17,6 +19,7 @@
         <v-text-field
           v-model="sjp.no_do"
           :label="$t('sjp.noDo')"
+          outlined
           :rules="noTruckRules"
           required
         ></v-text-field>
@@ -42,6 +45,7 @@
           v-model="sjp.destination"
           :label="$t('sjp.destination')"
           :rules="idRules"
+          outlined
           required
         ></v-text-field>
       </v-row>
@@ -51,6 +55,7 @@
           v-model="sjp.transporter"
           :label="$t('sjp.transporter')"
           :rules="idRules"
+          outlined
           required
         ></v-text-field>
       </v-row>
@@ -60,6 +65,7 @@
           v-model="sjp.driver"
           :label="$t('sjp.driver')"
           :rules="idRules"
+          outlined
           required
         ></v-text-field>
       </v-row>
@@ -69,6 +75,7 @@
           v-model="sjp.pallet_quantity"
           :label="$t('sjp.palletQuantity')"
           :rules="idRules"
+          outlined
           required
         ></v-text-field>
       </v-row>
@@ -85,6 +92,7 @@
               clearable
               :label="$t('sjp.depart')"
               readonly
+              outlined
               v-bind="attrs"
               v-on="on"
               @click:clear="date = null"
@@ -109,6 +117,7 @@
               clearable
               :label="$t('sjp.eta')"
               readonly
+              outlined
               v-bind="attrs"
               v-on="on"
               @click:clear="date = null"
@@ -218,8 +227,8 @@ export default {
         var tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         this.sjp.eta = tomorrow.toISOString().slice(0, 10);
-        this.sjp.destination = "PT ABC edt";
-        this.sjp.transporter = "PT GHIF";
+        this.sjp.destination = "Distributor 1";
+        this.sjp.transporter = "Transporter 1";
         this.sjp.driver = "Budi";
         this.sjp.id_destination_company = 10;
         this.sjp.id_transporter_company = 10;

@@ -111,6 +111,45 @@ const actions = {
         })
     },
 
+    getSjpDetail({ commit }, payload) {
+        commit("isLoading");
+        return new Promise((resolve, reject) => {
+          apiClient
+            .get(`/sjps/${payload}`) //KIRIM PERMINTAAN KE SERVER UNTUK MENGAMBIL SINGLE DATA CUSTOMER BERDASARKAN PAYLOAD (ID)
+            .then((response) => {
+              commit("ASSIGN_FORM", response.data.data[0]); //ASSIGN DATA TERSEBUT KE DALAM STATE CUSTOMER
+              resolve(response.data.data[0]);
+            })
+            .finally(() => {
+              commit("doneLoading");
+            });
+        });
+      },
+
+      updateSjp({ dispatch, commit, state }) {
+        commit("isLoading");
+        return new Promise((resolve, reject) => {
+          //MENGIRIMKAN REQUEST KE BACKEND DENGAN DATA YANG DIDAPATKAN DARI STATE CUSTOMER
+          apiClient
+            .patch(`/sjps/${state.sjp.id}`, state.sjp)
+            .then((response) => {
+              //APABILA BERHASIL MAKA LOAD DATA CUSTOMER UNTUK MENGAMBIL DATA TERBARU
+              dispatch("getSjps").then(() => {
+                resolve(response.data.data);
+              });
+            })
+            .catch((error) => {
+              //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+              if (error.response.status == 422) {
+                commit("SET_ERRORS", error.response.data.errors, { root: true });
+              }
+            })
+            .finally(() => {
+              commit("doneLoading");
+            });
+        });
+      },
+
     deleteSjp({ dispatch, commit }, payload) {
         commit("isLoading");
         return new Promise((resolve, reject) => {

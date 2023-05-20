@@ -28,6 +28,22 @@
             :items="sjps.data"
             dense
           >
+            <template v-slot:item.driverName="{ item }">
+              <template v-if="item.secondDriver === null">
+                <p class="text-normal">
+                  {{ item.driverName }}
+                </p>
+              </template>
+              <template v-else>
+                <p class="text-strike">
+                  {{ item.driverName }}
+                </p>
+                <v-spacer />
+                <p class="text-normal">
+                  ({{ item.secondDriver }})
+                </p>
+              </template>
+            </template>
             <template v-slot:item.trxStatus="{ item }">
               <p v-if="item.trxStatus == 0">Draft</p>
               <p class="text-green" v-else-if="item.trxStatus == 1">Send</p>
@@ -42,7 +58,7 @@
             </template>
             <template v-slot:item.send="{ item }">
               <router-link
-                :to="{ name: 'sjpstatuss.addsjp', params: { id: item.id } }"
+                :to="{ name: 'sjp-status.add', params: { id: item.id } }"
                 v-if="item.trxStatus == 0"
               >
                 <v-btn color="secondary" small>{{ $t("sjp.send") }}</v-btn>
@@ -67,14 +83,14 @@
                   </v-tooltip>
                 </template>
                 <v-list>
-                  <v-list-item v-for="(item, i) in listEdit" :key="i">
+                  <v-list-item v-for="(list, i) in listEdit" :key="i">
                     <v-list-item-content>
-                      <v-list-item-title @click="hapusData(item)"
-                        ><v-btn small text>
+                      <v-list-item-title>
+                        ><v-btn router :to="list.href+'/'+item.id" small text>
                           <v-icon left>
-                            {{ item.icon }}
+                            {{ list.icon }}
                           </v-icon>
-                          {{ item.text }}
+                          {{ list.text }}
                         </v-btn></v-list-item-title
                       >
                     </v-list-item-content>
@@ -173,9 +189,23 @@ export default {
 .text-blue {
   vertical-align: middle;
   color: #0073b7 !important;
+  display: table-cell;
+  vertical-align: middle;
 }
 .text-green {
   vertical-align: middle;
   color: #00a65a !important;
+  display: table-cell;
+  vertical-align: middle;
+}
+.text-normal {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.text-strike {
+  text-decoration: line-through;
+  display: table-cell;
+  vertical-align: middle;
 }
 </style>

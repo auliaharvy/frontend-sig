@@ -12,6 +12,15 @@ import sjp from "./sjp.js";
 import role from "./role.js";
 import permission from "./permission";
 import driver from "./driver";
+import truck from "./truck";
+import palletTransfer from "./pallet-transfer";
+import sjpStatus from "./sjp-status";
+import changeQuota from "./change-quota";
+import damagedPallet from "./damaged-pallet";
+import repairedPallet from "./repaired-pallet";
+import newPallet from "./new-pallet";
+import palletRealization from "./pallet-realization";
+import claimPallet from "./claim-pallet";
 
 Vue.use(Vuex);
 
@@ -27,6 +36,15 @@ const store = new Vuex.Store({
     role,
     permission,
     driver,
+    truck,
+    palletTransfer,
+    sjpStatus,
+    changeQuota,
+    damagedPallet,
+    repairedPallet,
+    newPallet,
+    palletRealization,
+    claimPallet
   },
   state: {
     token: localStorage.getItem("token"),

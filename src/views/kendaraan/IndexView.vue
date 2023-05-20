@@ -1,96 +1,105 @@
 <template>
-  <v-app>
-    <Navbar />
-    <v-container>
-      <h1 class="heading black--text">{{ $t("sidebar.kendaraan") }}</h1>
-      <v-spacer></v-spacer>
-      <v-col md-12>
+  <v-container>
+    <v-col md-12>
+      <v-card>
+        <v-card-title>
+          {{ $t("trucks.trucks") }}
+        </v-card-title>
+        <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            {{ $t("sidebar.kendaraan") }}
+            <v-btn router :to="adds.route">{{ $t("trucks.add") }}</v-btn>
+            <v-btn style="margin-left: 20px">{{
+              $t("manajemenpengguna.unduh")
+            }}</v-btn>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              prepend-icon="mdi-search"
+              :label="$t('manajemenpengguna.cari')"
+              single-line
+              hide-details
+            ></v-text-field>
           </v-card-title>
-          <v-divider></v-divider>
-          <v-card>
-            <v-card-title>
-              <v-btn>{{
-                $t("kendaraan.singkronisasi")
-              }}</v-btn>
-              <v-btn style="margin-left: 20px">{{
-                $t("manajemenpengguna.unduh")
-              }}</v-btn>
-              <v-spacer></v-spacer>
-              <v-text-field
-                v-model="search"
-                prepend-icon="mdi-search"
-                :label="$t('manajemenpengguna.cari')"
-                single-line
-                hide-details
-              ></v-text-field>
-            </v-card-title>
-            <v-data-table
-              :loading="loading"
-              :headers="headers"
-              :search="search"
-              :items="items"
-              dense
-            >
-              <template v-slot:item.action="{ item }">
-                <v-btn
-                  color="yellow"
-                  small
-                  @click="editData(item)"
-                  v-for="edit in edits"
-                  router
-                  :to="edit.route"
-                  ><v-icon>mdi-pencil</v-icon></v-btn
-                >
-              </template>
-            </v-data-table>
-          </v-card>
+          <v-data-table
+            :loading="loading"
+            :headers="headers"
+            :search="search"
+            :items="trucks.data"
+            dense
+          >
+            <template v-slot:item.actions="{ item }">
+              <v-icon small class="mr-2" @click="editData(item)">
+                mdi-pencil
+              </v-icon>
+              <v-icon small @click="hapusData(item)"> mdi-delete </v-icon>
+            </template>
+          </v-data-table>
         </v-card>
-      </v-col>
-    </v-container>
-    </div>
-    <Footer />
-  </v-app>
+      </v-card>
+    </v-col>
+  </v-container>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 // @ is an alias to /src
 export default {
-  name: "Dashboard",
+  name: "ManajemenKendaraan",
   components: {
-    Navbar,
-    Footer,
-    Breadcomp
+    Breadcomp,
   },
   data() {
     return {
       headers: [
-        { value: "ekspeditur", text: this.$t("kendaraan.ekspeditur") },
-        { value: "nomor", text: this.$t("kendaraan.nomor") },
-        { value: "tipe", text: this.$t("kendaraan.tipe") },
-        { value: "action", text: this.$t("manajemenpengguna.sunting") },
+        { value: "license_plate", text: this.$t("trucks.no") },
+        { value: "actions", text: this.$t("table.actions") },
       ],
-      items: [
-        {
-          ekspeditur: "SIG",
-          nomor: "B 9876 FXT",
-          tipe: "Truck",
-        },
-      ],
+      items: [],
       search: "",
-      edits: [{ route: "/edit-kendaraan" }],
+      adds: { route: "/trucks/add" },
     };
   },
+  created() {
+    this.getTrucks(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
+  },
+  computed: {
+    ...mapState("truck", {
+      trucks: (state) => state.trucks, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+    ...mapState("driver", {
+      loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+  },
   methods: {
+    ...mapActions("truck", ["getTrucks", "deleteTruck"]),
     editData(item) {
-      // Logika untuk mengedit data
-      console.log("Mengedit data:", item);
+      this.$router.push({
+        name: 'trucks.edit',
+        params: { id: item.id}
+      });
+    },
+    hapusData(item) {
+      this.$swal({
+        title: "Are you sure?",
+        text: "This will delete record Permanently!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes!",
+      }).then((result) => {
+        if (result.value) {
+          this.deleteTruck(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
+        }
+      });
     },
   },
 };
 </script>
+<style scoped>
+.warna-font {
+  color: white;
+}
+</style>

@@ -146,14 +146,14 @@ const routes = [
   // },
 
 
-  {
-    path: '/mutasi-pallet',
-    name: 'mutasi-pallet',
-    meta: {
-      requiresAuth: true
-    },
-    component: () => import('../views/mutasi-pallet/IndexView.vue')
-  },
+  // {
+  //   path: '/mutasi-pallet',
+  //   name: 'mutasi-pallet',
+  //   meta: {
+  //     requiresAuth: true
+  //   },
+  //   component: () => import('../views/mutasi-pallet/IndexView.vue')
+  // },
   
   {
     path: '/pallet-baru',
@@ -163,22 +163,76 @@ const routes = [
     },
     component: () => import('../views/pallet-baru/IndexView.vue')
   },
+
+  // Repaired Pallet
   {
-    path: '/pallet-diperbaiki',
-    name: 'pallet-diperbaiki',
-    meta: {
-      requiresAuth: true
-    },
-    component: () => import('../views/pallet-diperbaiki/IndexView.vue')
+    path: '/repaired-pallet',
+    component: () => import('../views/pallet-diperbaiki/index.vue'),
+    meta: { requiresAuth: true },
+    children: [
+        {
+            path: '',
+            name: 'repaired-pallet',
+            component: () => import('../views/pallet-diperbaiki/IndexView.vue'),
+            meta: { title: 'Manage Repaired Pallet' }
+        },
+        {
+            path: 'add',
+            name: 'repaired-pallet.add',
+            component: () => import('../views/pallet-diperbaiki/AddView.vue'),
+            meta: { title: 'Add Repaired Pallet' }
+        },
+        // {
+        //   path: 'edit/:id',
+        //   name: 'company.edit',
+        //   component: () => import('../views/manajemen-perusahaan/EditView.vue'),
+        //   meta: { title: 'Edit Company' }
+        // },
+    ]
   },
+  // {
+  //   path: '/pallet-diperbaiki',
+  //   name: 'pallet-diperbaiki',
+  //   meta: {
+  //     requiresAuth: true
+  //   },
+  //   component: () => import('../views/pallet-diperbaiki/IndexView.vue')
+  // },
+
+  // Damaged Pallet
   {
-    path: '/pallet-rusak',
-    name: 'pallet-rusak',
-    meta: {
-      requiresAuth: true
-    },
-    component: () => import('../views/pallet-rusak/IndexView.vue')
+    path: '/damaged-pallet',
+    component: () => import('../views/pallet-rusak/index.vue'),
+    meta: { requiresAuth: true },
+    children: [
+        {
+            path: '',
+            name: 'damaged-pallet',
+            component: () => import('../views/pallet-rusak/IndexView.vue'),
+            meta: { title: 'Manage Damaged Pallet' }
+        },
+        {
+            path: 'add',
+            name: 'damaged-pallet.add',
+            component: () => import('../views/pallet-rusak/AddView.vue'),
+            meta: { title: 'Add Damaged Pallet' }
+        },
+        // {
+        //   path: 'edit/:id',
+        //   name: 'company.edit',
+        //   component: () => import('../views/manajemen-perusahaan/EditView.vue'),
+        //   meta: { title: 'Edit Company' }
+        // },
+    ]
   },
+  // {
+  //   path: '/pallet-rusak',
+  //   name: 'pallet-rusak',
+  //   meta: {
+  //     requiresAuth: true
+  //   },
+  //   component: () => import('../views/pallet-rusak/IndexView.vue')
+  // },
 
   // Driver
   {
@@ -203,6 +257,33 @@ const routes = [
           name: 'drivers.edit',
           component: () => import('../views/pengendara/EditView.vue'),
           meta: { title: 'Edit Pengendara' }
+        },
+    ]
+  },
+
+  // Trucks
+  {
+    path: '/trucks',
+    component: () => import('../views/kendaraan/index.vue'),
+    meta: { requiresAuth: true },
+    children: [
+        {
+            path: '',
+            name: 'trucks',
+            component: () => import('../views/kendaraan/IndexView.vue'),
+            meta: { title: 'Manage Truck' }
+        },
+        {
+            path: 'add',
+            name: 'trucks.add',
+            component: () => import('../views/kendaraan/AddView.vue'),
+            meta: { title: 'Add New Truck' }
+        },
+        {
+          path: 'edit/:id',
+          name: 'trucks.edit',
+          component: () => import('../views/kendaraan/EditView.vue'),
+          meta: { title: 'Edit Truck' }
         },
     ]
   },
@@ -238,14 +319,14 @@ const routes = [
     },
     component: () => import('../views/pergerakan-pallet/IndexView.vue')
   },
-  {
-    path: '/perubahan-kuota-pallet',
-    name: 'perubahan-kuota-pallet',
-    meta: {
-      requiresAuth: true
-    },
-    component: () => import('../views/perubahan-kuota-pallet/IndexView.vue')
-  },
+  // {
+  //   path: '/perubahan-kuota-pallet',
+  //   name: 'perubahan-kuota-pallet',
+  //   meta: {
+  //     requiresAuth: true
+  //   },
+  //   component: () => import('../views/perubahan-kuota-pallet/IndexView.vue')
+  // },
   {
     path: '/semua-transaksi',
     name: 'semua-transaksi',
@@ -254,14 +335,16 @@ const routes = [
     },
     component: () => import('../views/semua-transaksi/IndexView.vue')
   },
-  {
-    path: '/sjp-status',
-    name: 'sjp-status',
-    meta: {
-      requiresAuth: true
-    },
-    component: () => import('../views/sjp-status/IndexView.vue')
-  },
+  // {
+  //   path: '/sjp-status',
+  //   name: 'sjp-status',
+  //   meta: {
+  //     requiresAuth: true
+  //   },
+  //   component: () => import('../views/sjp-status/IndexView.vue')
+  // },
+
+  // SJP
   {
     path: '/sjp',
     component: () => import('../views/surat-jalan-pallet/index.vue'),
@@ -279,15 +362,249 @@ const routes = [
             component: () => import('../views/surat-jalan-pallet/AddView.vue'),
             meta: { title: 'Add New SJP' }
         },
+        {
+          path: 'change-destination/:id',
+          name: 'sjp.change-destination',
+          component: () => import('../views/surat-jalan-pallet/EditDestinationView.vue'),
+          meta: { title: 'Change Destination SJP' }
+        },
+        {
+          path: 'change-truck/:id',
+          name: 'sjp.change-truck',
+          component: () => import('../views/surat-jalan-pallet/EditTruckView.vue'),
+          meta: { title: 'Change Truck SJP' }
+        },
     ]
   },
+
+  // SJP Status
   {
-    path: '/surat-jalan-pallet',
-    name: 'surat-jalan-pallet',
-    meta: {
-      requiresAuth: true
-    },
-    component: () => import('../views/surat-jalan-pallet/IndexView.vue')
+    path: '/sjp-status',
+    component: () => import('../views/sjp-status/index.vue'),
+    meta: { requiresAuth: true },
+    children: [
+        {
+            path: '',
+            name: 'sjp-status',
+            component: () => import('../views/sjp-status/IndexView.vue'),
+            meta: { title: 'Manage SJP Status' }
+        },
+        {
+            path: 'add/:id',
+            name: 'sjp-status.add',
+            component: () => import('../views/sjp-status/AddView.vue'),
+            meta: { title: 'Add New SJP Status' }
+        },
+        // {
+        //   path: 'aprroval/:id',
+        //   name: 'pallet-transfer.aprroval',
+        //   component: () => import('../views/mutasi-pallet/ApprovalView.vue'),
+        //   meta: { title: 'Approval Pallet Transfer' }
+        // },
+        // {
+        //   path: 'send/:id',
+        //   name: 'pallet-transfer.send',
+        //   component: () => import('../views/mutasi-pallet/SendView.vue'),
+        //   meta: { title: 'Send Pallet Transfer' }
+        // },
+        // {
+        //   path: 'receive/:id',
+        //   name: 'pallet-transfer.receive',
+        //   component: () => import('../views/mutasi-pallet/ReceiveView.vue'),
+        //   meta: { title: 'Receive Pallet Transfer' }
+        // },
+    ]
+  },
+
+  // Change Quota
+  {
+    path: '/change-quota',
+    component: () => import('../views/perubahan-kuota-pallet/index.vue'),
+    meta: { requiresAuth: true },
+    children: [
+        {
+            path: '',
+            name: 'change-quota',
+            component: () => import('../views/perubahan-kuota-pallet/IndexView.vue'),
+            meta: { title: 'Manage Change Quota' }
+        },
+        {
+            path: 'add',
+            name: 'change-quota.add',
+            component: () => import('../views/perubahan-kuota-pallet/AddView.vue'),
+            meta: { title: 'Add New Change Quota' }
+        },
+        {
+          path: 'approval/:id',
+          name: 'change-quota.aprroval',
+          component: () => import('../views/perubahan-kuota-pallet/ApprovalView.vue'),
+          meta: { title: 'Approval Change Quota' }
+        },
+        // {
+        //   path: 'send/:id',
+        //   name: 'pallet-transfer.send',
+        //   component: () => import('../views/mutasi-pallet/SendView.vue'),
+        //   meta: { title: 'Send Pallet Transfer' }
+        // },
+        // {
+        //   path: 'receive/:id',
+        //   name: 'pallet-transfer.receive',
+        //   component: () => import('../views/mutasi-pallet/ReceiveView.vue'),
+        //   meta: { title: 'Receive Pallet Transfer' }
+        // },
+    ]
+  },
+
+  // New Pallet
+  {
+    path: '/new-pallet',
+    component: () => import('../views/pallet-baru/index.vue'),
+    meta: { requiresAuth: true },
+    children: [
+        {
+            path: '',
+            name: 'new-pallet',
+            component: () => import('../views/pallet-baru/IndexView.vue'),
+            meta: { title: 'Manage New Pallet' }
+        },
+        {
+            path: 'add/:id',
+            name: 'new-pallet.add',
+            component: () => import('../views/pallet-baru/AddView.vue'),
+            meta: { title: 'Add New pallet' }
+        },
+        // {
+        //   path: 'aprroval/:id',
+        //   name: 'pallet-transfer.aprroval',
+        //   component: () => import('../views/mutasi-pallet/ApprovalView.vue'),
+        //   meta: { title: 'Approval Pallet Transfer' }
+        // },
+        // {
+        //   path: 'send/:id',
+        //   name: 'pallet-transfer.send',
+        //   component: () => import('../views/mutasi-pallet/SendView.vue'),
+        //   meta: { title: 'Send Pallet Transfer' }
+        // },
+        // {
+        //   path: 'receive/:id',
+        //   name: 'pallet-transfer.receive',
+        //   component: () => import('../views/mutasi-pallet/ReceiveView.vue'),
+        //   meta: { title: 'Receive Pallet Transfer' }
+        // },
+    ]
+  },
+  // New Pallet
+  {
+    path: '/pallet-realization',
+    component: () => import('../views/realisasi-pallet/index.vue'),
+    meta: { requiresAuth: true },
+    children: [
+        {
+            path: '',
+            name: 'pallet-realization',
+            component: () => import('../views/realisasi-pallet/IndexView.vue'),
+            meta: { title: 'Manage Pallet Realization' }
+        },
+        {
+            path: 'add/:id',
+            name: 'pallet-realization.add',
+            component: () => import('../views/realisasi-pallet/AddView.vue'),
+            meta: { title: 'Add Pallet Realization' }
+        },
+        // {
+        //   path: 'aprroval/:id',
+        //   name: 'pallet-transfer.aprroval',
+        //   component: () => import('../views/mutasi-pallet/ApprovalView.vue'),
+        //   meta: { title: 'Approval Pallet Transfer' }
+        // },
+        // {
+        //   path: 'send/:id',
+        //   name: 'pallet-transfer.send',
+        //   component: () => import('../views/mutasi-pallet/SendView.vue'),
+        //   meta: { title: 'Send Pallet Transfer' }
+        // },
+        // {
+        //   path: 'receive/:id',
+        //   name: 'pallet-transfer.receive',
+        //   component: () => import('../views/mutasi-pallet/ReceiveView.vue'),
+        //   meta: { title: 'Receive Pallet Transfer' }
+        // },
+    ]
+  },
+
+  // Klaim Pallet
+  {
+    path: '/claim-pallet',
+    component: () => import('../views/klaim-pallet/index.vue'),
+    meta: { requiresAuth: true },
+    children: [
+        {
+            path: '',
+            name: 'claim-pallet',
+            component: () => import('../views/klaim-pallet/IndexView.vue'),
+            meta: { title: 'Manage Claim Pallet' }
+        },
+        {
+            path: 'add',
+            name: 'claim-pallet.add',
+            component: () => import('../views/klaim-pallet/AddView.vue'),
+            meta: { title: 'Add New Claim Pallet' }
+        },
+        {
+          path: 'approval-manager/:id',
+          name: 'claim-pallet.approval-manager',
+          component: () => import('../views/klaim-pallet/ApprovalView.vue'),
+          meta: { title: 'Approval Claim Pallet' }
+        },
+        
+        {
+          path: 'approval-distributor/:id',
+          name: 'claim-pallet.approval-distributor',
+          component: () => import('../views/klaim-pallet/ApprovalViewDist.vue'),
+          meta: { title: 'Approval Claim Pallet' }
+        },
+        
+    ]
+  },
+
+
+  // Pallet Transfer
+  {
+    path: '/pallet-transfer',
+    component: () => import('../views/mutasi-pallet/index.vue'),
+    meta: { requiresAuth: true },
+    children: [
+        {
+            path: '',
+            name: 'pallet-transfer',
+            component: () => import('../views/mutasi-pallet/IndexView.vue'),
+            meta: { title: 'Manage Pallet Transfer' }
+        },
+        {
+            path: 'add',
+            name: 'pallet-transfer.add',
+            component: () => import('../views/mutasi-pallet/AddView.vue'),
+            meta: { title: 'Add New Pallet Transfer' }
+        },
+        {
+          path: 'approval/:id',
+          name: 'pallet-transfer.aprroval',
+          component: () => import('../views/mutasi-pallet/ApprovalView.vue'),
+          meta: { title: 'Approval Pallet Transfer' }
+        },
+        {
+          path: 'send/:id',
+          name: 'pallet-transfer.send',
+          component: () => import('../views/mutasi-pallet/SendView.vue'),
+          meta: { title: 'Send Pallet Transfer' }
+        },
+        {
+          path: 'receive/:id',
+          name: 'pallet-transfer.receive',
+          component: () => import('../views/mutasi-pallet/ReceiveView.vue'),
+          meta: { title: 'Receive Pallet Transfer' }
+        },
+    ]
   },
 
   // Organization
@@ -364,13 +681,12 @@ const routes = [
         },
         {
           path: 'edit/:id',
-          name: 'roles.edit',
+          name: 'permissions.edit',
           component: () => import('../views/permissions/EditView.vue'),
           meta: { title: 'Edit Organization' }
       },
     ]
   },
- 
 ]
 
 const router = new VueRouter({
