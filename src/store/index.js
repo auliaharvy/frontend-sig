@@ -21,6 +21,10 @@ import repairedPallet from "./repaired-pallet";
 import newPallet from "./new-pallet";
 import palletRealization from "./pallet-realization";
 import claimPallet from "./claim-pallet";
+import sewaPallet from "./sewa-pallet";
+import transporterAdjusment from "./transporter-adjusment";
+import palletMovement from "./pallet-movement";
+import dashboard from "./dashboard";
 
 Vue.use(Vuex);
 
@@ -44,7 +48,11 @@ const store = new Vuex.Store({
     repairedPallet,
     newPallet,
     palletRealization,
-    claimPallet
+    claimPallet,
+    sewaPallet,
+    transporterAdjusment,
+    palletMovement,
+    dashboard
   },
   state: {
     token: localStorage.getItem("token"),

@@ -17,7 +17,7 @@ const routes = [
     meta: {
       requiresAuth: true
     },
-    component: () => import('../views/dasbor-organisasi/IndexView.vue')
+    component: () => import('../views/dasbor/IndexView.vue')
   },
   {
     path: '/data-transaksi',
@@ -303,14 +303,14 @@ const routes = [
     },
     component: () => import('../views/penyesuaian-ekspeditur/IndexView.vue')
   },
-  {
-    path: '/penyewaan-pallet',
-    name: 'penyewaan-pallet',
-    meta: {
-      requiresAuth: true
-    },
-    component: () => import('../views/penyewaan-pallet/IndexView.vue')
-  },
+  // {
+  //   path: '/penyewaan-pallet',
+  //   name: 'penyewaan-pallet',
+  //   meta: {
+  //     requiresAuth: true
+  //   },
+  //   component: () => import('../views/penyewaan-pallet/IndexView.vue')
+  // },
   {
     path: '/pergerakan-pallet',
     name: 'pergerakan-pallet',
@@ -395,24 +395,18 @@ const routes = [
             component: () => import('../views/sjp-status/AddView.vue'),
             meta: { title: 'Add New SJP Status' }
         },
-        // {
-        //   path: 'aprroval/:id',
-        //   name: 'pallet-transfer.aprroval',
-        //   component: () => import('../views/mutasi-pallet/ApprovalView.vue'),
-        //   meta: { title: 'Approval Pallet Transfer' }
-        // },
-        // {
-        //   path: 'send/:id',
-        //   name: 'pallet-transfer.send',
-        //   component: () => import('../views/mutasi-pallet/SendView.vue'),
-        //   meta: { title: 'Send Pallet Transfer' }
-        // },
-        // {
-        //   path: 'receive/:id',
-        //   name: 'pallet-transfer.receive',
-        //   component: () => import('../views/mutasi-pallet/ReceiveView.vue'),
-        //   meta: { title: 'Receive Pallet Transfer' }
-        // },
+        {
+          path: 'receive/:id',
+          name: 'sjp-status.receive',
+          component: () => import('../views/sjp-status/ReceiveView.vue'),
+          meta: { title: 'Receive SJP Status' }
+        },
+        {
+          path: 'sendback/:id',
+          name: 'sjp-status.sendback',
+          component: () => import('../views/sjp-status/SendbackView.vue'),
+          meta: { title: 'Sendback SJP Status' }
+        },
     ]
   },
 
@@ -562,6 +556,76 @@ const routes = [
           name: 'claim-pallet.approval-distributor',
           component: () => import('../views/klaim-pallet/ApprovalViewDist.vue'),
           meta: { title: 'Approval Claim Pallet' }
+        },
+        
+    ]
+  },
+
+  // Transporter Adjusment
+  {
+    path: '/transporter-adjusment',
+    component: () => import('../views/penyesuaian-ekspeditur/index.vue'),
+    meta: { requiresAuth: true },
+    children: [
+        {
+            path: '',
+            name: 'transporter-adjusment',
+            component: () => import('../views/penyesuaian-ekspeditur/IndexView.vue'),
+            meta: { title: 'Manage Transporter Adjusment' }
+        },
+        {
+            path: 'add',
+            name: 'transporter-adjusment.add',
+            component: () => import('../views/penyesuaian-ekspeditur/AddView.vue'),
+            meta: { title: 'Add New Transporter Adjusment' }
+        },
+        // {
+        //   path: 'approval-manager/:id',
+        //   name: 'sewa-pallet.approval-manager',
+        //   component: () => import('../views/penyewaan-pallet/ApprovalView.vue'),
+        //   meta: { title: 'Approval Sewa Pallet' }
+        // },
+        
+        // {
+        //   path: 'approval-distributor/:id',
+        //   name: 'sewa-pallet.approval-distributor',
+        //   component: () => import('../views/penyewaan-pallet/ApprovalViewDist.vue'),
+        //   meta: { title: 'Approval Sewa Pallet' }
+        // },
+        
+    ]
+  },
+
+  // Klaim Pallet
+  {
+    path: '/sewa-pallet',
+    component: () => import('../views/penyewaan-pallet/index.vue'),
+    meta: { requiresAuth: true },
+    children: [
+        {
+            path: '',
+            name: 'sewa-pallet',
+            component: () => import('../views/penyewaan-pallet/IndexView.vue'),
+            meta: { title: 'Manage Sewa Pallet' }
+        },
+        {
+            path: 'add',
+            name: 'sewa-pallet.add',
+            component: () => import('../views/penyewaan-pallet/AddView.vue'),
+            meta: { title: 'Add New Sewa Pallet' }
+        },
+        {
+          path: 'approval-manager/:id',
+          name: 'sewa-pallet.approval-manager',
+          component: () => import('../views/penyewaan-pallet/ApprovalView.vue'),
+          meta: { title: 'Approval Sewa Pallet' }
+        },
+        
+        {
+          path: 'approval-distributor/:id',
+          name: 'sewa-pallet.approval-distributor',
+          component: () => import('../views/penyewaan-pallet/ApprovalViewDist.vue'),
+          meta: { title: 'Approval Sewa Pallet' }
         },
         
     ]

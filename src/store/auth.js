@@ -21,7 +21,13 @@ const actions = {
           .then((response) => {
               if (response.data.status == 'success') {
                   const data = response.data.data;
-                  localStorage.setItem('token', data.token)
+                  localStorage.setItem('token', data.token);
+                  var base64Url = data.token.split('.')[1];
+                  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+                      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                  }).join(''));
+                  console.log(jsonPayload);
                   commit('SET_TOKEN', response.data.data, { root: true })
               } else {
                   commit('SET_ERRORS', { invalid: 'Wrong Email/Password' }, { root: true })

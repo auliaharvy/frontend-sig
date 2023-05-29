@@ -194,6 +194,11 @@
     "sender": "Pengirim",
     "receiver": "Penerima",
     "transporter": "Ekspeditur",
+    "sendbackTo": "Kirim Kembali ke",
+    "receiveFrom": "Terima dari",
+    "sendbackSjp": "Sendback SJP",
+    "truck": "No Truk",
+    "driver": "Pengemudi",
     "status": "Status",
     "sendback": "SJP Status",
     "reason": "Alasan",
@@ -259,6 +264,33 @@
     "approvalManager": "Penyetujuan Manager",
     "approvalDistributor": "Penyetujuan Distributor"
   },
+  "sewaPallet": {
+    "index": "Biaya Sewa Pallet",
+    "trxNumber": "SP Number",
+    "add": "Tambah Biaya Sewa Pallet",
+    "approval": "Approval Biaya Sewa Pallet",
+    "company": "Distributor",
+    "approverManager": "Manager",
+    "approverDistributor": "PIC Distributor",
+    "status": "Status",
+    "reasonManager": "Alasan Manager",
+    "reasonDist": "Alasan Distributor",
+    "price": "Biaya",
+    "totalPrice": "Total Biaya",
+    "approvalManager": "Penyetujuan Manager",
+    "approvalDistributor": "Penyetujuan Distributor"
+  },
+  "transporterAdjusment": {
+    "index": "Penyesuaian Ekspeditur",
+    "trxNumber": "TA Number",
+    "add": "Tambah Penyesuaian Ekspeditur",
+    "isPool": "Dari Pool",
+    "isNotPool": "Dari Ekspeditur",
+    "transporter": "Ekspeditur",
+    "company": "Distributor",
+    "reporter": "Pelapor",
+    "status": "Status Penyesuaian"
+  },
   "damagedPallet": {
     "index": "Pallet Rusak",
     "trxNumber": "DP Number",
@@ -287,5 +319,18 @@
     "no": "Nomor Polisi",
     "add": "Tambah Kendaraan",
     "edit": "Sunting Kendaraan"
+  },
+  "palletMovement": {
+    "index": "Pergerakan Pallet",
+    "trxNumber": "SJP Number",
+    "send": "Kirim / Kirim Balik",
+    "status": "Status",
+    "departure": "Keberangkatan",
+    "destination": "Tujuan",
+    "transporter": "Ekspeditur",
+    "truck": "Nomor Truck",
+    "departTime": "Waktu Keberangkatan",
+    "eta": "Perikaraan Waktu Sampai",
+    "late": "Lama Keterlambatan (hari)" 
   }
 }

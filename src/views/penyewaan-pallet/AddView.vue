@@ -1,11 +1,11 @@
 <template>
   <v-container>
-    <Breadcomp page-title="sjpStatus.receive"/>
+    <Breadcomp page-title="sewaPallet.add"/>
     <v-spacer></v-spacer>
     <v-col md-12>
       <v-card>
         <v-card-title style="background: black; color: white">
-          {{ $t("sjpStatus.receive") }}
+          {{ $t("sewaPallet.add") }}
         </v-card-title>
         <Form />
       </v-card>
@@ -14,12 +14,11 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
-import Form from "./FormReceive.vue";
+import Form from "./Form.vue";
 // @ is an alias to /src
 export default {
-  name: "ReceiveSjpStatus",
+  name: "TambahSewaPallet",
   components: {
     Form,
     Breadcomp,
@@ -28,17 +27,8 @@ export default {
     return {
       search: "",
       showPassword: false,
-      route: { index: "/sjp-status" },
+      route: { index: "/change-quota" },
     };
-  },
-  created() {
-    this.getSjpStatusDetail(this.$route.params.id)
-  },
-  methods: {
-    ...mapActions("sjpStatus", ["getSjpStatusDetail"]),
-    handleIcon() {
-      this.showPassword = !this.showPassword;
-    },
   },
 };
 </script>

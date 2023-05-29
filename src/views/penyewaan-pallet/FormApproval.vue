@@ -4,11 +4,12 @@
     <v-container>
       <v-row no-gutters>
         <v-autocomplete
-          :label="$t('claimPallet.company')"
+          :label="$t('sewaPallet.company')"
           :items="companies.data"
           :rules="idRules"
           outlined
-          v-model="claimPallet.id_company_distributor"
+          v-model="sewaPallet.id_company_distributor"
+          readonly
           item-text="name"
           item-value="id"
         >
@@ -17,9 +18,9 @@
 
       <v-row no-gutters>
         <v-text-field
-          v-model="claimPallet.price"
-          :label="$t('claimPallet.price')"
-          :rules="idRules"
+          v-model="sewaPallet.good_pallet"
+          :label="$t('pallet.good')"
+          readonly
           type="number"
           outlined
         ></v-text-field>
@@ -27,8 +28,19 @@
 
       <v-row no-gutters>
         <v-text-field
-          v-model="claimPallet.ber_pallet"
+          v-model="sewaPallet.tbr_pallet"
+          :label="$t('pallet.tbr')"
+          readonly
+          type="number"
+          outlined
+        ></v-text-field>
+      </v-row>
+
+      <v-row no-gutters>
+        <v-text-field
+          v-model="sewaPallet.ber_pallet"
           :label="$t('pallet.ber')"
+          readonly
           type="number"
           outlined
         ></v-text-field>
@@ -36,11 +48,47 @@
 
       <v-row no-gutters>
         <v-text-field
-          v-model="claimPallet.missing_pallet"
+          v-model="sewaPallet.missing_pallet"
           :label="$t('pallet.missing')"
+          readonly
           type="number"
           outlined
         ></v-text-field>
+      </v-row>
+
+      <vuetify-money
+        v-model="sewaPallet.price"
+        :label="$t('sewaPallet.price')"
+        outlined
+        :options="options"
+      />
+
+      <vuetify-money
+        v-model="sewaPallet.total_price"
+        :label="$t('sewaPallet.totalPrice')"
+        outlined
+        :options="options"
+      />
+
+      <v-row no-gutters>
+        <v-autocomplete
+          :label="$t('sewaPallet.approvalManager')"
+          :items="itemApproval"
+          :rules="idRules"
+          outlined
+          v-model="sewaPallet.status"
+          item-text="name"
+          item-value="id"
+        >
+        </v-autocomplete>
+      </v-row>
+
+      <v-row no-gutters>
+        <v-textarea
+          v-model="sewaPallet.reason_manager"
+          :label="$t('sewaPallet.reasonManager')"
+          outlined
+        ></v-textarea>
       </v-row>
 
       <v-row no-gutters>
@@ -63,25 +111,28 @@
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
-  name: "FormAddClaimPallet",
+  name: "FormApprovalChangePallet",
   data: () => ({
+    options: {
+      prefix:"Rp",
+      precision: 0
+    },
+    itemApproval: [
+      {
+        id: 1,
+        name: 'Approve'
+      },
+      {
+        id: 2,
+        name: 'Reject'
+      }
+    ],
     idRules: [
       (value) => {
         if (value) return true;
 
         return "this field is required";
       },
-    ],
-    noTruckRules: [
-      (v) => !!v || "this field is required",
-      (v) => (v && v.length >= 3) || "must be greater than 3 characters",
-    ],
-    emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) =>
-        /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()\\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-          v
-        ) || "E-mail must be valid",
     ],
   }),
   created() {
@@ -92,25 +143,25 @@ export default {
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
-    ...mapState("claimPallet", {
-      claimPallet: (state) => state.claimPallet, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+    ...mapState("sewaPallet", {
+      sewaPallet: (state) => state.sewaPallet, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
       loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
-    ...mapMutations("claimPallet", ["CLEAR_FORM"]),
-    ...mapActions("claimPallet", ["submitClaimPallet"]),
+    ...mapMutations("sewaPallet", ["CLEAR_FORM"]),
+    ...mapActions("sewaPallet", ["updateSewaPallet"]),
     ...mapActions("company", ["getCompanies"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        this.claimPallet.status = 0;
-        this.claimPallet.created_by = 3;
-        this.claimPallet.updated_by = 3;
-        this.submitClaimPallet(this.claimPallet).then((response) => {
+        this.sewaPallet.id_user_manager = 5;
+        this.sewaPallet.update_type = 'approval_manager';
+        this.sewaPallet.updated_by = 5;
+        this.updateSewaPallet(this.sewaPallet).then((response) => {
           console.log(response);
             this.CLEAR_FORM();
-            this.$router.push({ name: "claim-pallet" });
+            this.$router.push({ name: "sewa-pallet" });
           // else {
           //   if (this.errors) {
           //     this.$swal({

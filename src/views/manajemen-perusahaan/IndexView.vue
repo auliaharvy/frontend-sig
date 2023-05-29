@@ -28,44 +28,8 @@
             :items="companies.data"
             dense
           >
-            <template v-slot:item.good_pallet="{ item }">
-              <template v-if="item.palletQuantity.length == 0">
-                0
-              </template>
-              <template v-else>
-                {{ getPallet('Good Pallet', item.palletQuantity) }}
-              </template>
-            </template>
-
-            <template v-slot:item.tbr_pallet="{ item }">
-              <template v-if="item.palletQuantity.length == 0">
-                0
-              </template>
-              <template v-else>
-                {{ getPallet('TBR Pallet', item.palletQuantity) }}
-              </template>
-            </template>
-
-            <template v-slot:item.ber_pallet="{ item }">
-              <template v-if="item.palletQuantity.length == 0">
-                0
-              </template>
-              <template v-else>
-                {{ getPallet('BER Pallet', item.palletQuantity) }}
-              </template>
-            </template>
-
-            <template v-slot:item.missing_pallet="{ item }">
-              <template v-if="item.palletQuantity.length == 0">
-                0
-              </template>
-              <template v-else>
-                {{ getPallet('Missing Pallet', item.palletQuantity) }}
-              </template>
-            </template>
-
-            <template v-slot:item.total="{ item }">
-              <template v-if="item.palletQuantity.length == 0">
+            <template v-slot:item.total_pallet="{ item }">
+              <template v-if="item.total_pallet == 0">
                 <v-chip
                   label
                   color="blue"
@@ -77,24 +41,24 @@
                 <v-chip
                   label
                   color="red"
-                  v-if="sumTotal(item.palletQuantity) > item.quota"
+                  v-if="item.total_pallet > item.quota"
                 >
-                  {{ sumTotal(item.palletQuantity) }}
+                  {{ item.total_pallet }}
                 </v-chip>
                 <v-chip
                   label
                   color="blue"
                   text-color="white"
-                  v-else-if="sumTotal(item.palletQuantity) < item.quota"
+                  v-else-if="item.total_pallet < item.quota"
                 >
-                  {{ sumTotal(item.palletQuantity) }}
+                  {{ item.total_pallet }}
                 </v-chip>
                 <v-chip
                   label
                   color="yellow"
-                  v-else-if="sumTotal(item.palletQuantity) == item.quota"
+                  v-else-if="item.total_pallet == item.quota"
                 >
-                  {{ sumTotal(item.palletQuantity) }}
+                  {{ item.total_pallet }}
                 </v-chip>
               </template>
             </template>
@@ -135,7 +99,7 @@ export default {
         { value: "tbr_pallet", text: this.$t("pallet.tbr") },
         { value: "ber_pallet", text: this.$t("pallet.ber") },
         { value: "missing_pallet", text: this.$t("pallet.missing") },
-        { value: "total", text: this.$t("pallet.total") },
+        { value: "total_pallet", text: this.$t("pallet.total") },
         { value: "quota", text: this.$t("pallet.quota") },
         { value: "actions", text: this.$t("table.actions") },
       ],

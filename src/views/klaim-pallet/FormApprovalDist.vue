@@ -31,7 +31,6 @@
         <v-text-field
           v-model="claimPallet.ber_pallet"
           :label="$t('pallet.ber')"
-          :rules="idRules"
           readonly
           type="number"
           outlined
@@ -42,7 +41,6 @@
         <v-text-field
           v-model="claimPallet.missing_pallet"
           :label="$t('pallet.missing')"
-          :rules="idRules"
           readonly
           type="number"
           outlined
@@ -141,7 +139,7 @@ export default {
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        this.claimPallet.id_user_manager = 5;
+        this.claimPallet.id_user_distributor = 5;
         this.claimPallet.update_type = 'approval_distributor';
         this.claimPallet.updated_by = 5;
         this.updateClaimPallet(this.claimPallet).then((response) => {

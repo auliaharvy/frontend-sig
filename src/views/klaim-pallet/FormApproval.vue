@@ -30,7 +30,6 @@
         <v-text-field
           v-model="claimPallet.ber_pallet"
           :label="$t('pallet.ber')"
-          :rules="idRules"
           type="number"
           outlined
         ></v-text-field>
@@ -40,7 +39,6 @@
         <v-text-field
           v-model="claimPallet.missing_pallet"
           :label="$t('pallet.missing')"
-          :rules="idRules"
           type="number"
           outlined
         ></v-text-field>

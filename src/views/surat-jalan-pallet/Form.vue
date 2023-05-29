@@ -230,15 +230,16 @@ export default {
         this.sjp.destination = "Distributor 1";
         this.sjp.transporter = "Transporter 1";
         this.sjp.driver = "Budi";
+        this.sjp.id_departure_company = 4;
         this.sjp.id_destination_company = 10;
-        this.sjp.id_transporter_company = 10;
+        this.sjp.id_transporter_company = 51;
         this.sjp.id_truck = 4;
         this.sjp.id_driver = 3;
         this.sjp.no_do = "DO-202305-0010";
         this.sjp.tonnage = 100;
         this.sjp.packaging = 60;
         this.sjp.product_quantity = 80;
-        this.sjp.pallet_quantity = 12;
+        this.sjp.pallet_quantity = 10;
         this.loading = false;
       }
     },

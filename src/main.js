@@ -12,8 +12,12 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import VuetifyMoney from "vuetify-money";
+import VueMoment from 'vue-moment'
 import { mapGetters, mapState } from 'vuex'
 
+Vue.use(VueMoment);
+Vue.use(VuetifyMoney);
 Vue.use(VueSweetalert2);
 Vue.component('loading-overlay', Loading);
 

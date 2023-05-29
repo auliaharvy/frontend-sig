@@ -4,11 +4,37 @@
     <v-container>
       <v-row no-gutters>
         <v-autocomplete
-          :label="$t('claimPallet.company')"
+          :label="$t('transporterAdjusment.transporter')"
           :items="companies.data"
           :rules="idRules"
           outlined
-          v-model="claimPallet.id_company_distributor"
+          v-model="transporterAdjusment.id_company_transporter"
+          item-text="name"
+          item-value="id"
+        >
+        </v-autocomplete>
+      </v-row>
+
+      <v-row no-gutters>
+        <v-autocomplete
+          :label="$t('transporterAdjusment.company')"
+          :items="companies.data"
+          :rules="idRules"
+          outlined
+          v-model="transporterAdjusment.id_company"
+          item-text="name"
+          item-value="id"
+        >
+        </v-autocomplete>
+      </v-row>
+
+      <v-row no-gutters>
+        <v-autocomplete
+          :label="$t('transporterAdjusment.status')"
+          :items="items"
+          :rules="idRules"
+          outlined
+          v-model="transporterAdjusment.is_from_pool"
           item-text="name"
           item-value="id"
         >
@@ -17,9 +43,8 @@
 
       <v-row no-gutters>
         <v-text-field
-          v-model="claimPallet.price"
-          :label="$t('claimPallet.price')"
-          :rules="idRules"
+          v-model="transporterAdjusment.good_pallet"
+          :label="$t('pallet.good')"
           type="number"
           outlined
         ></v-text-field>
@@ -27,17 +52,8 @@
 
       <v-row no-gutters>
         <v-text-field
-          v-model="claimPallet.ber_pallet"
-          :label="$t('pallet.ber')"
-          type="number"
-          outlined
-        ></v-text-field>
-      </v-row>
-
-      <v-row no-gutters>
-        <v-text-field
-          v-model="claimPallet.missing_pallet"
-          :label="$t('pallet.missing')"
+          v-model="transporterAdjusment.tbr_pallet"
+          :label="$t('pallet.tbr')"
           type="number"
           outlined
         ></v-text-field>
@@ -63,8 +79,18 @@
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
-  name: "FormAddClaimPallet",
+  name: "FormAddTransporterAdjusment",
   data: () => ({
+    items: [
+      {
+        id: '0',
+        name: 'From Transporter'
+      },
+      {
+        id: '1',
+        name: 'From Pool'
+      }
+    ],
     idRules: [
       (value) => {
         if (value) return true;
@@ -92,25 +118,25 @@ export default {
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
-    ...mapState("claimPallet", {
-      claimPallet: (state) => state.claimPallet, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+    ...mapState("transporterAdjusment", {
+      transporterAdjusment: (state) => state.transporterAdjusment, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
       loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
-    ...mapMutations("claimPallet", ["CLEAR_FORM"]),
-    ...mapActions("claimPallet", ["submitClaimPallet"]),
+    ...mapMutations("transporterAdjusment", ["CLEAR_FORM"]),
+    ...mapActions("transporterAdjusment", ["submitTransporterAdjusment"]),
     ...mapActions("company", ["getCompanies"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        this.claimPallet.status = 0;
-        this.claimPallet.created_by = 3;
-        this.claimPallet.updated_by = 3;
-        this.submitClaimPallet(this.claimPallet).then((response) => {
+        this.transporterAdjusment.id_user_reporter = 5;
+        this.transporterAdjusment.created_by = 3;
+        this.transporterAdjusment.updated_by = 3;
+        this.submitTransporterAdjusment(this.transporterAdjusment).then((response) => {
           console.log(response);
             this.CLEAR_FORM();
-            this.$router.push({ name: "claim-pallet" });
+            this.$router.push({ name: "transporter-adjusment" });
           // else {
           //   if (this.errors) {
           //     this.$swal({

@@ -170,6 +170,9 @@
     "sender": "Sender",
     "receiver": "Receiver",
     "transporter": "Transporter",
+    "sendbackTo": "Sendback to",
+    "receiveFrom": "Receive From",
+    "sendbackSjp": "Sendback SJP",
     "truck": "Truck Number",
     "driver": "Driver",
     "status": "Status",
@@ -193,6 +196,8 @@
     "sender": "Sender",
     "receiver": "Receiver",
     "transporter": "Transporter",
+    "truck": "Truck",
+    "driver": "Driver",
     "status": "Status",
     "sendback": "SJP Status",
     "reason": "Reason",
@@ -257,6 +262,33 @@
     "approvalManager": "Manager Approval",
     "approvalDistributor": "Distributor Approval"
   },
+  "sewaPallet": {
+    "index": "Rental Cost Pallet",
+    "trxNumber": "CP Number",
+    "add": "Add Rental Cost Pallet",
+    "approval": "Approval Rental Cost Pallet",
+    "company": "Distributor",
+    "approverManager": "Manager",
+    "approverDistributor": "PIC Distributor",
+    "status": "Status",
+    "reasonManager": "Manager Reason",
+    "reasonDist": "Distributor Reason",
+    "price": "Price",
+    "totalPrice": "Total Price",
+    "approvalManager": "Manager Approval",
+    "approvalDistributor": "Distributor Approval"
+  },
+  "transporterAdjusment": {
+    "index": "Transporter Adjusment",
+    "trxNumber": "TA Number",
+    "add": "Add Transporter Adjusment",
+    "isPool": "From Pool",
+    "isNotPool": "From Transporter",
+    "transporter": "Transporter",
+    "company": "Distributor",
+    "reporter": "Reporter",
+    "status": "Adjusment Status"
+  },
   "damagedPallet": {
     "index": "Damaged Pallet",
     "trxNumber": "DP Number",
@@ -285,5 +317,18 @@
     "no": "License Plate",
     "add": "Add Vehicle",
     "edit": "Edit Vehicle"
+  },
+  "palletMovement": {
+    "index": "Pallet Movement",
+    "trxNumber": "SJP Number",
+    "send": "Send / Send Back",
+    "status": "Status",
+    "departure": "Departure",
+    "destination": "Destination",
+    "transporter": "Transporter",
+    "truck": "Vehicle Number",
+    "departTime": "Departure Time",
+    "eta": "Estimated Time Arrival",
+    "late": "Late Time (day)"
   }
 }

@@ -4,44 +4,71 @@
     <v-container>
       <v-row no-gutters>
         <v-autocomplete
-          :label="$t('claimPallet.company')"
+          :label="$t('sewaPallet.company')"
           :items="companies.data"
           :rules="idRules"
           outlined
-          v-model="claimPallet.id_company_distributor"
+          v-model="sewaPallet.id_company_distributor"
           item-text="name"
           item-value="id"
+          @change="setPallet"
         >
         </v-autocomplete>
       </v-row>
 
       <v-row no-gutters>
         <v-text-field
-          v-model="claimPallet.price"
-          :label="$t('claimPallet.price')"
-          :rules="idRules"
+          v-model="sewaPallet.good_pallet"
+          :label="$t('pallet.good')"
           type="number"
           outlined
+          @change="totalPrice"
         ></v-text-field>
       </v-row>
 
       <v-row no-gutters>
         <v-text-field
-          v-model="claimPallet.ber_pallet"
+          v-model="sewaPallet.tbr_pallet"
+          :label="$t('pallet.tbr')"
+          type="number"
+          outlined
+          @change="totalPrice"
+        ></v-text-field>
+      </v-row>
+
+      <v-row no-gutters>
+        <v-text-field
+          v-model="sewaPallet.ber_pallet"
           :label="$t('pallet.ber')"
           type="number"
           outlined
+          @change="totalPrice"
         ></v-text-field>
       </v-row>
 
       <v-row no-gutters>
         <v-text-field
-          v-model="claimPallet.missing_pallet"
+          v-model="sewaPallet.missing_pallet"
           :label="$t('pallet.missing')"
           type="number"
           outlined
+          @change="totalPrice"
         ></v-text-field>
       </v-row>
+
+      <vuetify-money
+        v-model="price"
+        :label="$t('sewaPallet.price')"
+        outlined
+        :options="options"
+      />
+
+      <vuetify-money
+        v-model="sewaPallet.total"
+        :label="$t('sewaPallet.totalPrice')"
+        outlined
+        :options="options"
+      />
 
       <v-row no-gutters>
         <v-col :col="24">
@@ -63,8 +90,13 @@
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
-  name: "FormAddClaimPallet",
+  name: "FormAddSewaPallet",
   data: () => ({
+    price: 0,
+    options: {
+      prefix:"Rp",
+      precision: 0
+    },
     idRules: [
       (value) => {
         if (value) return true;
@@ -87,30 +119,47 @@ export default {
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
+  watch: {
+    price() {
+      this.sewaPallet.price = this.price;
+      this.totalPrice()
+    }
+  },
   computed: {
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
-    ...mapState("claimPallet", {
-      claimPallet: (state) => state.claimPallet, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+    ...mapState("sewaPallet", {
+      sewaPallet: (state) => state.sewaPallet, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
       loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
-    ...mapMutations("claimPallet", ["CLEAR_FORM"]),
-    ...mapActions("claimPallet", ["submitClaimPallet"]),
+    ...mapMutations("sewaPallet", ["CLEAR_FORM"]),
+    ...mapActions("sewaPallet", ["submitSewaPallet"]),
     ...mapActions("company", ["getCompanies"]),
+    setPallet() {
+      this.sewaPallet.good_pallet = this.companies.data.find(x => x.id === this.sewaPallet.id_company_distributor).good_pallet;
+      this.sewaPallet.tbr_pallet = this.companies.data.find(x => x.id === this.sewaPallet.id_company_distributor).tbr_pallet;
+      this.sewaPallet.ber_pallet = this.companies.data.find(x => x.id === this.sewaPallet.id_company_distributor).ber_pallet;
+      this.sewaPallet.missing_pallet = this.companies.data.find(x => x.id === this.sewaPallet.id_company_distributor).missing_pallet;
+      // console.log(this.companies)
+    },
+    totalPrice() {
+      const totalPallet = this.sewaPallet.good_pallet + this.sewaPallet.tbr_pallet + this.sewaPallet.ber_pallet + this.sewaPallet.missing_pallet;
+      this.sewaPallet.total = this.sewaPallet.price * totalPallet;
+    },
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        this.claimPallet.status = 0;
-        this.claimPallet.created_by = 3;
-        this.claimPallet.updated_by = 3;
-        this.submitClaimPallet(this.claimPallet).then((response) => {
+        this.sewaPallet.status = 0;
+        this.sewaPallet.created_by = 3;
+        this.sewaPallet.updated_by = 3;
+        this.submitSewaPallet(this.sewaPallet).then((response) => {
           console.log(response);
             this.CLEAR_FORM();
-            this.$router.push({ name: "claim-pallet" });
+            this.$router.push({ name: "sewa-pallet" });
           // else {
           //   if (this.errors) {
           //     this.$swal({

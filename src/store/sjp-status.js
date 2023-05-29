@@ -15,6 +15,14 @@ const state = () => ({
       id_user_receiver: '',
       trx_number: '',
       sjp_number: '',
+      send_good_pallet: 0,
+      send_tbr_pallet: 0,
+      send_ber_pallet: 0,
+      send_missing_pallet: 0,
+      good_pallet: 0,
+      tbr_pallet: 0,
+      ber_pallet: 0,
+      missing_pallet: 0,
       status: '',
       is_sendback: '',
       sending_driver_approval: '',
@@ -33,11 +41,19 @@ const state = () => ({
 
 const mutations = {
     isLoading (state) {
-        state.loading = true
-      },
-      doneLoading (state) {
-        state.loading = false
-      },
+      state.loading = true
+    },
+    doneLoading (state) {
+      state.loading = false
+    },
+    isError (state, payload) {
+      state.error = true;
+      state.errorMessage = payload;
+    }, 
+    clearError (state) {
+      state.error = false;
+      state.errorMessage = '';
+    }, 
     //MUTATIONS UNTUK ASSIGN DATA CUSTOMER KE DALAM STATE CUSTOMER
     ASSIGN_DATA(state, payload) {
         state.sjpStatuss = payload;
@@ -59,6 +75,14 @@ const mutations = {
           id_user_receiver: '',
           trx_number: '',
           sjp_number: '',
+          send_good_pallet: 0,
+          send_tbr_pallet: 0,
+          send_ber_pallet: 0,
+          send_missing_pallet: 0,
+          good_pallet: 0,
+          tbr_pallet: 0,
+          ber_pallet: 0,
+          missing_pallet: 0,
           status: '',
           is_sendback: '',
           sending_driver_approval: '',
@@ -85,6 +109,14 @@ const actions = {
             .then((response) => {
                 commit('ASSIGN_DATA', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
+                commit('clearError')
+            }).catch((error) => {
+              //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+              if (error.response.status == 422) {
+                  commit('isError', error.response.data.errors,)
+              } else {
+                  commit('isError', error.response.data.error)
+              }
             }).finally(() => {
                 commit('doneLoading')
             })
@@ -114,17 +146,16 @@ const actions = {
         })
     },
 
-    getPalletTransferDetail({ commit }, payload) {
+    getSjpStatusDetail({ commit }, payload) {
         commit("isLoading");
         return new Promise((resolve, reject) => {
           apiClient
-            .get(`/pallet-transfers/${payload}`) //KIRIM PERMINTAAN KE SERVER UNTUK MENGAMBIL SINGLE DATA CUSTOMER BERDASARKAN PAYLOAD (ID)
+            .get(`/sjp-statuss/${payload}`) //KIRIM PERMINTAAN KE SERVER UNTUK MENGAMBIL SINGLE DATA CUSTOMER BERDASARKAN PAYLOAD (ID)
             .then((response) => {
-              const data = response.data.data[0].palletQuantity;
-              const goodPallet = data.find(x => x.kondisi_pallet === 'Good Pallet').quantity;
-              const tbrPallet = data.find(x => x.kondisi_pallet === 'TBR Pallet').quantity;
-              response.data.data[0].good_pallet = goodPallet; 
-              response.data.data[0].tbr_pallet = tbrPallet; 
+              response.data.data[0].send_good_pallet = response.data.data[0].good_pallet; 
+              response.data.data[0].send_tbr_pallet = response.data.data[0].tbr_pallet; 
+              response.data.data[0].send_ber_pallet = response.data.data[0].ber_pallet; 
+              response.data.data[0].send_missing_pallet = response.data.data[0].missing_pallet; 
               commit("ASSIGN_FORM", response.data.data[0]); //ASSIGN DATA TERSEBUT KE DALAM STATE CUSTOMER
               resolve(response.data.data[0]);
             })
@@ -134,22 +165,23 @@ const actions = {
         });
       },
 
-      updatePalletTransfer({ dispatch, commit, state }) {
+      updateSjpStatus({ dispatch, commit, state }) {
         commit("isLoading");
         return new Promise((resolve, reject) => {
           //MENGIRIMKAN REQUEST KE BACKEND DENGAN DATA YANG DIDAPATKAN DARI STATE CUSTOMER
           apiClient
-            .patch(`/pallet-transfers/${state.palletTransfer.id}`, state.palletTransfer)
+            .patch(`/sjp-statuss/${state.sjpStatus.id}`, state.sjpStatus)
             .then((response) => {
               //APABILA BERHASIL MAKA LOAD DATA CUSTOMER UNTUK MENGAMBIL DATA TERBARU
-              dispatch("getPalletTransfers").then(() => {
+              dispatch("getSjpStatuss").then(() => {
                 resolve(response.data.data);
               });
             })
             .catch((error) => {
-              //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
               if (error.response.status == 422) {
-                commit("SET_ERRORS", error.response.data.errors, { root: true });
+                alert(error.response.data.errors)
+              } else {
+                alert(error.response.data.error)
               }
             })
             .finally(() => {

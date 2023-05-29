@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-text-field
           v-model="sjpStatus.sjp_number"
-          :label="$t('pallet.sjpNumber')"
+          :label="$t('sjpStatus.sjpNumber')"
           :rules="idRules"
           outlined
           readonly
@@ -14,7 +14,7 @@
 
       <v-row no-gutters>
         <v-autocomplete
-          :label="$t('palletTransfer.destination')"
+          :label="$t('sjpStatus.departure')"
           :items="companies.data"
           :rules="idRules"
           outlined
@@ -144,6 +144,7 @@ export default {
         this.sjpStatus.is_sendback = 0;
         this.sjpStatus.status = 0;
         this.sjpStatus.id_user_sender = 3;
+        this.sjpStatus.sjp_status = "send";
         this.submitSjpStatus(this.sjpStatus).then((response) => {
           console.log(response);
             this.CLEAR_FORM();

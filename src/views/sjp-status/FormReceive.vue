@@ -4,11 +4,11 @@
     <v-container>
       <v-row no-gutters>
         <v-autocomplete
-          :label="$t('palletTransfer.departure')"
+          :label="$t('sjpStatus.departure')"
           :items="companies.data"
           :rules="idRules"
           outlined
-          v-model="palletTransfer.id_company_departure"
+          v-model="sjpStatus.id_departure_company"
           item-text="name"
           item-value="id"
           required
@@ -19,11 +19,11 @@
 
       <v-row no-gutters>
         <v-autocomplete
-          :label="$t('palletTransfer.destination')"
+          :label="$t('sjpStatus.destination')"
           :items="companies.data"
           :rules="idRules"
           outlined
-          v-model="palletTransfer.id_company_destination"
+          v-model="sjpStatus.id_destination_company"
           item-text="name"
           item-value="id"
           required
@@ -34,11 +34,11 @@
 
       <v-row no-gutters>
         <v-autocomplete
-          :label="$t('palletTransfer.transporter')"
+          :label="$t('sjpStatus.transporter')"
           :items="companies.data"
           :rules="idRules"
           outlined
-          v-model="palletTransfer.id_company_transporter"
+          v-model="sjpStatus.id_transporter_company"
           item-text="name"
           item-value="id"
           required
@@ -49,11 +49,10 @@
 
       <v-row no-gutters>
         <v-autocomplete
-          :label="$t('palletTransfer.truck')"
+          :label="$t('sjpStatus.truck')"
           :items="trucks.data"
-          :rules="idRules"
           outlined
-          v-model="palletTransfer.id_truck"
+          v-model="sjpStatus.id_truck"
           item-text="license_plate"
           item-value="id"
           required
@@ -64,11 +63,10 @@
 
       <v-row no-gutters>
         <v-autocomplete
-          :label="$t('palletTransfer.driver')"
+          :label="$t('sjpStatus.driver')"
           :items="drivers.data"
-          :rules="idRules"
           outlined
-          v-model="palletTransfer.id_driver"
+          v-model="sjpStatus.id_driver"
           item-text="name"
           item-value="id"
           required
@@ -79,9 +77,10 @@
 
       <v-row no-gutters>
         <v-text-field
-          v-model="palletTransfer.good_pallet"
+          v-model="sjpStatus.good_pallet"
           :label="$t('pallet.good')"
           :rules="idRules"
+          type="number"
           outlined
           readonly
         ></v-text-field>
@@ -89,39 +88,26 @@
 
       <v-row no-gutters>
         <v-text-field
-          v-model="palletTransfer.tbr_pallet"
+          v-model="tbrPallet"
           :label="$t('pallet.tbr')"
-          :rules="idRules"
           outlined
-          readonly
+          type="number"
         ></v-text-field>
       </v-row>
 
-      <!-- <v-row no-gutters>
-        <v-select
-          v-model="palletTransfer.status"
-          :items="approvalItems"
-          :label="$t('palletTransfer.approvalForm')"
-          item-text="name"
-          item-value="id"
+      <v-row no-gutters>
+        <v-file-input
+          v-model="sjpStatus.receiving_driver_approval"
           outlined
-        ></v-select>
-        <v-textarea
-          v-model="palletTransfer.status"
-          :label="$t('palletTransfer.approvalForm')"
-          :rules="idRules"
-          outlined
-          required
-        ></v-textarea>
-      </v-row> -->
+          :label="$t('sjpStatus.approval')"
+        ></v-file-input>
+      </v-row>
 
       <v-row no-gutters>
         <v-textarea
-          v-model="palletTransfer.note"
-          :label="$t('palletTransfer.note')"
-          :rules="idRules"
+          v-model="sjpStatus.note"
+          :label="$t('sjpStatus.note')"
           outlined
-          required
         ></v-textarea>
       </v-row>
 
@@ -145,13 +131,12 @@
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
-  name: "FormPalletTransfer",
+  name: "FormReceiveSjp",
   data: () => ({
-    loading: false,
+    tbrPallet: 0,
     idRules: [
       (value) => {
         if (value) return true;
-
         return "this field is required";
       },
     ],
@@ -166,24 +151,20 @@ export default {
           v
         ) || "E-mail must be valid",
     ],
-    approvalItems: [
-      {
-        id: 1,
-        name: 'Approve'
-      },
-      {
-        id: 4,
-        name: 'Reject'
-      },
-    ]
   }),
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getTrucks(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getDrivers(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
+  watch: {
+    tbrPallet() {
+      this.sjpStatus.tbr_pallet = this.tbrPallet;
+      this.sjpStatus.good_pallet =
+        this.sjpStatus.send_good_pallet - this.tbrPallet;
+    },
+  },
   computed: {
-    ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
@@ -193,39 +174,135 @@ export default {
     ...mapState("driver", {
       drivers: (state) => state.drivers, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
-    ...mapState("palletTransfer", {
-      palletTransfer: (state) => state.palletTransfer, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+    ...mapState("sjpStatus", {
+      sjpStatus: (state) => state.sjpStatus, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+      loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
-    ...mapMutations("palletTransfer", ["CLEAR_FORM"]),
-    ...mapActions("palletTransfer", ["updatePalletTransfer"]),
+    ...mapMutations("sjpStatus", ["CLEAR_FORM", "clearError"]),
+    ...mapActions("sjpStatus", [
+      "updateSjpStatus",
+      "getSjpStatusDetail",
+      "submitSjpStatus",
+    ]),
     ...mapActions("company", ["getCompanies"]),
     ...mapActions("truck", ["getTrucks"]),
     ...mapActions("driver", ["getDrivers"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        this.palletTransfer.update_type = "receiving";
-        this.palletTransfer.status = 3;
-        this.palletTransfer.ber_pallet = '0';
-        this.palletTransfer.missing_pallet = '0';
-        this.updatePalletTransfer(this.palletTransfer).then((response) => {
-          console.log(response);
-          console.log(this.palletTransfer);
-            this.CLEAR_FORM();
-            this.$router.push({ name: "pallet-transfer" });
-          // else {
-          //   if (this.errors) {
-          //     this.$swal({
-          //       icon: 'error',
-          //       title: 'error.status',
-          //       text: this.errors,
-          //     });
-          //   }
-          // }
+        var checkContent =
+          "<div><strong><span>" +
+          "<p> | Send Good Pallet : <b>" +
+          this.sjpStatus.send_good_pallet +
+          " </b> | Receive Good Pallet : <b> " +
+          this.sjpStatus.good_pallet +
+          " </b> | </p>" +
+          // "<p> | Send Filled Pallet : <b>" + sendData.filled_pallet + " </b> | Receive Filled Pallet : <b> " + data.filled_pallet + " </b> | </p>" +
+          "<p> | Send TBR Pallet : <b> " +
+          this.sjpStatus.send_tbr_pallet +
+          " </b> | Receive TBR Pallet : <b> " +
+          this.sjpStatus.tbr_pallet +
+          " </b> | </p>" +
+          "<p> | Send BER Pallet : <b> " +
+          this.sjpStatus.send_ber_pallet +
+          " </b> | Receive BER Pallet : <b> " +
+          this.sjpStatus.ber_pallet +
+          " </b> | </p>" +
+          "<p> | Send Missing Pallet : <b> " +
+          this.sjpStatus.send_missing_pallet +
+          " </b> | Receive Missing Pallet : <b> " +
+          this.sjpStatus.missing_pallet +
+          " </b> | </p>" +
+          "</span> </strong></div>";
+
+        this.$swal({
+          title: "Receive " + this.sjpStatus.sjp_number,
+          text: "...<div>" + checkContent + "</div>...",
+          html: "...<div>" + checkContent + "</div>...",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Receive!",
+        }).then((result) => {
+          if (result.value) {
+            if (this.sjpStatus.is_sendback == 0) {
+              this.sjpStatus.sjp_status = "receive";
+              this.sjpStatus.status = 1;
+              this.sjpStatus.id_user_receiver = 1;
+              this.updateSjpStatus(this.sjpStatus).then((response) => {
+                this.CLEAR_FORM();
+                this.sendbackCheck();
+              });
+            } else {
+              this.sjpStatus.sjp_status = "receive_sendback";
+              this.sjpStatus.status = 1;
+              this.sjpStatus.id_user_receiver = 1;
+              this.updateSjpStatus(this.sjpStatus).then((response) => {
+                this.CLEAR_FORM();
+                this.$router.push({ name: "sjp-status" });
+              });
+            }
+          }
         });
       }
+    },
+    sendbackCheck() {
+      this.getSjpStatusDetail(this.sjpStatus.id).then(() => {
+        // this.sjpStatus.sjp_number = this.sjp.sjp_number;
+        // this.sjpStatus.id_sjp = this.$route.params.id;
+        // this.sjpStatus.id_departure_company = this.sjp.idDeparture;
+        // this.sjpStatus.id_destination_company = this.sjp.idDestination;
+        // this.sjpStatus.id_transporter_company = this.sjp.idTransporter;
+        // this.sjpStatus.good_pallet = this.sjp.palletQuantity;
+        // this.sjpStatus.tbr_pallet = 0;
+        // this.sjpStatus.ber_pallet = 0;
+        // this.sjpStatus.missing_pallet = 0;
+        var checkContent =
+          "<div><strong><span>Did you want Sendback?" +
+          "<p> Good Pallet : <b>" +
+          this.sjpStatus.good_pallet +
+          "<p> TBR Pallet : <b> " +
+          this.sjpStatus.tbr_pallet +
+          "<p> BER Pallet : <b> " +
+          this.sjpStatus.ber_pallet +
+          "<p> Missing Pallet : <b> " +
+          this.sjpStatus.tbr_pallet +
+          "</span> </strong></div>";
+
+        this.$swal({
+          title: "Sendback " + this.sjpStatus.sjp_number,
+          text: "...<div>" + checkContent + "</div>...",
+          html: "...<div>" + checkContent + "</div>...",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Sendback!",
+          cancelButtonText: "No!",
+        }).then((result) => {
+          if (result.value) {
+            this.autoSendback(); //JIKA SETUJU MAKA PERMINTAAN SENDBACK AKAN DI EKSEKUSI
+          } else {
+            this.$router.push({
+              name: "sjp-status.sendback",
+              params: { id: this.sjpStatus.id },
+            });
+          }
+        });
+      });
+    },
+    autoSendback() {
+      this.sjpStatus.is_sendback = 1;
+      this.sjpStatus.sjp_status = "sendback";
+      this.sjpStatus.status = 0;
+      this.sjpStatus.id_user_sender = 3;
+      this.submitSjpStatus(this.sjpStatus).then((response) => {
+        this.CLEAR_FORM();
+        this.$router.push({ name: "sjp-status" });
+      });
     },
     reset() {
       this.$refs.form.reset();

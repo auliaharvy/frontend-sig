@@ -151,7 +151,7 @@ export default {
           { title: "sidebar.realisasiPallet", route: "/pallet-realization" },
           { title: "sidebar.palletrusak", route: "/damaged-pallet" },
           { title: "sidebar.palletdiperbaiki", route: "/repaired-pallet" },
-          { title: "sidebar.penyewaanpallet", route: "/penyewaan-pallet" },
+          { title: "sidebar.penyewaanpallet", route: "/sewa-pallet" },
         ],
       },
     ],
@@ -159,7 +159,7 @@ export default {
       {
         icon: "mdi-truck-fast",
         title: "sidebar.penyesuaianekspeditur",
-        route: "/penyesuaian-ekspeditur",
+        route: "/transporter-adjusment",
       },
       {
         icon: "mdi-domain",

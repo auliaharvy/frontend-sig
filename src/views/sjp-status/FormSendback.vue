@@ -3,15 +3,24 @@
     <loading-overlay :active="loading" :is-full-page="true" loader="bars" />
     <v-container>
       <v-row no-gutters>
+        <v-text-field
+          v-model="sjpStatus.sjp_number"
+          :label="$t('sjpStatus.sjpNumber')"
+          :rules="idRules"
+          outlined
+          readonly
+        ></v-text-field>
+      </v-row>
+
+      <v-row no-gutters>
         <v-autocomplete
-          :label="$t('palletTransfer.departure')"
+          :label="$t('sjpStatus.sendbackTo')"
           :items="companies.data"
           :rules="idRules"
           outlined
-          v-model="palletTransfer.id_company_departure"
+          v-model="sjpStatus.id_departure_company"
           item-text="name"
           item-value="id"
-          required
           readonly
         >
         </v-autocomplete>
@@ -19,14 +28,13 @@
 
       <v-row no-gutters>
         <v-autocomplete
-          :label="$t('palletTransfer.destination')"
+          :label="$t('sjpStatus.sendbackFrom')"
           :items="companies.data"
           :rules="idRules"
           outlined
-          v-model="palletTransfer.id_company_destination"
+          v-model="sjpStatus.id_destination_company"
           item-text="name"
           item-value="id"
-          required
           readonly
         >
         </v-autocomplete>
@@ -38,40 +46,9 @@
           :items="companies.data"
           :rules="idRules"
           outlined
-          v-model="palletTransfer.id_company_transporter"
+          v-model="sjpStatus.id_transporter_company"
           item-text="name"
           item-value="id"
-          required
-          readonly
-        >
-        </v-autocomplete>
-      </v-row>
-
-      <v-row no-gutters>
-        <v-autocomplete
-          :label="$t('palletTransfer.truck')"
-          :items="trucks.data"
-          :rules="idRules"
-          outlined
-          v-model="palletTransfer.id_truck"
-          item-text="license_plate"
-          item-value="id"
-          required
-          readonly
-        >
-        </v-autocomplete>
-      </v-row>
-
-      <v-row no-gutters>
-        <v-autocomplete
-          :label="$t('palletTransfer.driver')"
-          :items="drivers.data"
-          :rules="idRules"
-          outlined
-          v-model="palletTransfer.id_driver"
-          item-text="name"
-          item-value="id"
-          required
           readonly
         >
         </v-autocomplete>
@@ -79,7 +56,7 @@
 
       <v-row no-gutters>
         <v-text-field
-          v-model="palletTransfer.good_pallet"
+          v-model="sjpStatus.good_pallet"
           :label="$t('pallet.good')"
           :rules="idRules"
           outlined
@@ -89,39 +66,26 @@
 
       <v-row no-gutters>
         <v-text-field
-          v-model="palletTransfer.tbr_pallet"
+          v-model="sjpStatus.tbr_pallet"
           :label="$t('pallet.tbr')"
-          :rules="idRules"
           outlined
           readonly
         ></v-text-field>
       </v-row>
 
-      <!-- <v-row no-gutters>
-        <v-select
-          v-model="palletTransfer.status"
-          :items="approvalItems"
-          :label="$t('palletTransfer.approvalForm')"
-          item-text="name"
-          item-value="id"
+      <v-row no-gutters>
+        <v-file-input
+          v-model="sjpStatus.sending_driver_approval"
           outlined
-        ></v-select>
-        <v-textarea
-          v-model="palletTransfer.status"
-          :label="$t('palletTransfer.approvalForm')"
-          :rules="idRules"
-          outlined
-          required
-        ></v-textarea>
-      </v-row> -->
+          :label="$t('sjpStatus.approval')"
+        ></v-file-input>
+      </v-row>
 
       <v-row no-gutters>
         <v-textarea
-          v-model="palletTransfer.note"
+          v-model="sjpStatus.note"
           :label="$t('palletTransfer.note')"
-          :rules="idRules"
           outlined
-          required
         ></v-textarea>
       </v-row>
 
@@ -145,7 +109,7 @@
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
-  name: "FormPalletTransfer",
+  name: "FormAddSJPStatus",
   data: () => ({
     loading: false,
     idRules: [
@@ -166,55 +130,34 @@ export default {
           v
         ) || "E-mail must be valid",
     ],
-    approvalItems: [
-      {
-        id: 1,
-        name: 'Approve'
-      },
-      {
-        id: 4,
-        name: 'Reject'
-      },
-    ]
   }),
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
-    this.getTrucks(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
-    this.getDrivers(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
-    ...mapState("truck", {
-      trucks: (state) => state.trucks, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
-    }),
-    ...mapState("driver", {
-      drivers: (state) => state.drivers, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
-    }),
-    ...mapState("palletTransfer", {
-      palletTransfer: (state) => state.palletTransfer, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+    ...mapState("sjpStatus", {
+      sjpStatus: (state) => state.sjpStatus, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
-    ...mapMutations("palletTransfer", ["CLEAR_FORM"]),
-    ...mapActions("palletTransfer", ["updatePalletTransfer"]),
+    ...mapMutations("sjpStatus", ["CLEAR_FORM"]),
+    ...mapActions("sjpStatus", ["submitSjpStatus"]),
     ...mapActions("company", ["getCompanies"]),
-    ...mapActions("truck", ["getTrucks"]),
-    ...mapActions("driver", ["getDrivers"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        this.palletTransfer.update_type = "sending";
-        this.palletTransfer.status = 2;
-        this.palletTransfer.ber_pallet = '0';
-        this.palletTransfer.missing_pallet = '0';
-        this.updatePalletTransfer(this.palletTransfer).then((response) => {
+        this.sjpStatus.is_sendback = 1;
+        this.sjpStatus.status = 0;
+        this.sjpStatus.id_user_sender = 3;
+        this.sjpStatus.sjp_status = "sendback";
+        this.submitSjpStatus(this.sjpStatus).then((response) => {
           console.log(response);
-          console.log(this.palletTransfer);
             this.CLEAR_FORM();
-            this.$router.push({ name: "pallet-transfer" });
+            this.$router.push({ name: "sjp-status" });
           // else {
           //   if (this.errors) {
           //     this.$swal({

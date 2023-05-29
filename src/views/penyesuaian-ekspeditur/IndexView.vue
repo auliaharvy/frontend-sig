@@ -1,102 +1,138 @@
 <template>
-  <v-app>
-    <Navbar />
-      <v-container>
-        <h1 class="heading black--text">{{ $t("sidebar.penyesuaianekspeditur") }}</h1>
-        <v-spacer></v-spacer>
-        <v-col md-12>
+  <v-container>
+    <v-col md-12>
+      <v-card>
+        <v-card-title>
+          {{ $t("transporterAdjusment.index") }}
+        </v-card-title>
+        <v-divider></v-divider>
         <v-card>
-            <v-card-title>
-              Catatan Penyesuaian Ekspeditur
-            </v-card-title>
-            <v-divider></v-divider>
-                <v-card>
-                    <v-card-title>
-                      <v-btn v-for="add in adds"
-                router :to="add.route"
-                >Penyesuaian Ekspeditur</v-btn>
-                      <v-btn>
-                {{ $t("manajemenpengguna.unduh") }}</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-text-field
-                        v-model="search"
-                        prepend-icon="mdi-search"
-                        :label="$t('manajemenpengguna.cari')"
-                        single-line
-                        hide-details
-                    ></v-text-field>
-                    </v-card-title>
-                    <v-data-table class="custom-table"
-                    :loading="loading"
-                    :headers="headers"
-                    :search="search"
-                    :items="items"
-                    elevation="2"
-                    border
-                    >
-                    </v-data-table>
-                </v-card>
-          </v-card>
-      </v-col>
-      </v-container>
-    <Footer />
-  </v-app>
+          <v-card-title>
+            <v-btn router :to="adds.route">{{ $t("transporterAdjusment.add") }}</v-btn>
+            <v-btn style="margin-left: 20px">{{
+              $t("manajemenpengguna.unduh")
+            }}</v-btn>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              prepend-icon="mdi-search"
+              :label="$t('manajemenpengguna.cari')"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :loading="loading"
+            :headers="headers"
+            :search="search"
+            :items="transporterAdjusments.data"
+            dense
+          >
+            <template v-slot:item.is_from_pool="{ item }">
+              <p class="text-normal" v-if="item.is_from_pool == 0 || item.is_from_pool == null">{{ $t("transporterAdjusment.isNotPool") }}</p>
+              <p class="text-normal" v-if="item.is_from_pool == 1">{{ $t("transporterAdjusment.isPool") }}</p>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-card>
+    </v-col>
+  </v-container>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import en from "@/locales/en.json";
-import id from "@/locales/id.json";
 // @ is an alias to /src
 export default {
-  name: "ManajemenPerusahaan",
+  name: "TransporterAdjusment",
   components: {
-    Navbar,
-    Footer,
-    Breadcomp
+    Breadcomp,
   },
   data() {
-        return {
-            headers: [
-                { value: 'nomorpenyesuaian', text: 'Nomor Penyesuaian Ekspeditur'},
-                { value: 'pelapor', text: 'Pelapor' },
-                { value: 'perusahaan', text: 'Perusahaan'},
-                { value: 'ekspeditur', text: 'Ekspeditur'},
-                { value: 'alamat', text: 'Alamat'},
-                { value: 'goodpallet', text: 'Good Pallet'},
-                { value: 'TBRpallet', text: 'TBR Pallet'},
-                { value: 'tipepenyesuaian', text: 'Tipe Penyesuaian'},
-                { value: 'alasan', text: 'Alasan'},
-                { value: 'catatan', text: 'Catatan'},
-                { value: 'dibuat', text: 'Dibuat Saat'}
-
-            ],
-            items: [
-                { name :'Daud', username: 'daudtea', email: 'mramdhanass@gmail.com' }
-            ],
-            search: '',
-            adds: [{ route: "/tambah-penyesuaian-ekspeditur" }],
-
-        }
+    return {
+      selectedItem: 1,
+      headers: [
+        { value: "trx_number", text: this.$t("transporterAdjusment.trxNumber") },
+        { value: "transporter_name", text: this.$t("transporterAdjusment.transporter") },
+        { value: "company_name", text: this.$t("transporterAdjusment.company") },
+        { value: "reporter_name", text: this.$t("transporterAdjusment.reporter") },
+        { value: "is_from_pool", text: this.$t("transporterAdjusment.status") },
+        { value: "good_pallet", text: this.$t("pallet.good") },
+        { value: "tbr_pallet", text: this.$t("pallet.tbr") },
+      ],
+      search: "",
+      adds: { route: "/transporter-adjusment/add" },
+      edits: { route: "/transporter-adjustment/edit" },
+    };
+  },
+  created() {
+    this.getTransporterAdjusments(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
+  },
+  computed: {
+    ...mapState("transporterAdjusment", {
+      transporterAdjusments: (state) => state.transporterAdjusments, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+    ...mapState("transporterAdjusment", {
+      loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+  },
+  methods: {
+    ...mapActions("transporterAdjusment", ["getTransporterAdjusments", "deleteTransporterAdjusment"]),
+    editData(item) {
+      // Logika untuk mengedit data
+      console.log("Mengedit data:", item);
     },
+    sumTotal(data) {
+      return data.reduce((acc, item) => acc + item.quantity, 0);
+    },
+    hapusData(item) {
+      this.$swal({
+        title: "Are you sure?",
+        text: "This will delete record Permanently!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes!",
+      }).then((result) => {
+        if (result.value) {
+          this.deleteTransporterAdjusment(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
+        }
+      });
+    },
+  },
 };
 </script>
 <style scoped>
 .warna-font {
-  color: white; 
+  color: white;
 }
-.custom-table table {
-  border-collapse: separate;
-  border-spacing: 0px;
-  width: 100%;
+.text-blue {
+  vertical-align: middle;
+  color: #0073b7 !important;
+  display: table-cell;
+  vertical-align: middle;
+}
+.text-green {
+  vertical-align: middle;
+  color: #00a65a !important;
+  display: table-cell;
+  vertical-align: middle;
+}
+.text-red{
+  vertical-align: middle;
+  color: red !important;
+  display: table-cell;
+  vertical-align: middle;
+}
+.text-normal {
+  display: table-cell;
+  vertical-align: middle;
 }
 
-.custom-table th,
-.custom-table td {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  padding: 8px;
-  text-align: left;
+.text-strike {
+  text-decoration: line-through;
+  display: table-cell;
+  vertical-align: middle;
 }
 </style>

@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <v-btn router :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn>
+            <!-- <v-btn router :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn> -->
             <v-btn style="margin-left: 20px">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
@@ -30,18 +30,29 @@
           >
 
             <template v-slot:item.is_sendback="{ item }">
-              <p v-if="item.is_sendback == 0">Send</p>
-              <p class="text-green" v-else-if="item.status == 1">Sendback</p>
+              <p class="text-normal" v-if="item.is_sendback == 0">Send</p>
+              <p class="text-normal" v-else-if="item.is_sendback == 1">Sendback</p>
             </template>
 
             <template v-slot:item.status="{ item }">
-              <p v-if="item.status == 0">Draft</p>
-              <p class="text-green" v-else-if="item.status == 1">Sending</p>
-              <p class="text-green" v-else-if="item.status == 2">Received</p>
+              <p class="text-normal" v-if="item.status == 0">Sending</p>
+              <p class="text-green" v-else-if="item.status == 1">Received</p>
             </template>
 
 
             <template v-slot:item.actions="{ item }">
+              <router-link
+                :to="{ name: 'sjp-status.receive', params: { id: item.id } }"
+                v-if="item.status_sjp == 1"
+              >
+                <v-btn color="secondary" small>{{ $t("sjpStatus.receive") }}</v-btn>
+              </router-link>
+              <router-link
+                :to="{ name: 'sjp-status.sendback', params: { id: item.id } }"
+                v-if="item.status_sjp == 2 && item.is_sendback == 0"
+              >
+                <v-btn color="secondary" small>{{ $t("sjpStatus.sendbackSjp") }}</v-btn>
+              </router-link>
               <v-menu>
                 <template v-slot:activator="{ on: menu, attrs }">
                   <v-tooltip bottom>
@@ -74,7 +85,7 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-icon v-if="item.status === 0" small @click="hapusData(item)"> mdi-delete </v-icon>
+              <!-- <v-icon v-if="item.status === 0" small @click="hapusData(item)"> mdi-delete </v-icon> -->
             </template>
           </v-data-table>
         </v-card>
@@ -111,23 +122,21 @@ export default {
       edits: { route: "/sjp-status/edit" },
       listEdit: [
         {
-          text: "Change Destination",
-          icon: "mdi-warehouse",
-          href: "/pallet-transfer/change-destination",
+          text: "Receive",
+          icon: "mdi-call-received",
+          href: "/sjp-status/receive",
         },
         { text: "Change Truck", icon: "mdi-truck", href: "/pallet-transfers/change-truck" },
       ],
     };
   },
   created() {
-    this.getSjpStatuss(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
+    this.getSjpStatuss();
   },
   computed: {
     ...mapState("sjpStatus", {
-      sjpStatuss: (state) => state.sjpStatuss, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
-    }),
-    ...mapState("sjpStatus", {
-      loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      sjpStatuss: (state) => state.sjpStatuss,
+      loading: (state) => state.loading,
     }),
   },
   methods: {
