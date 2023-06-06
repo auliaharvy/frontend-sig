@@ -99,6 +99,31 @@ const actions = {
         })
     },
 
+    bulkCreateTruck({ dispatch, commit, state }, payload) {
+      commit('isLoading')
+      return new Promise((resolve, reject) => {
+          console.log(payload);
+          //MENGIRIMKAN REQUEST KE BACKEND DENGAN DATA YANG DIDAPATKAN DARI STATE CUSTOMER
+          apiClient.post(`/trucks/bulk`, payload)
+          .then((response) => {
+              console.log(response);
+              //APABILA BERHASIL MAKA LOAD DATA CUSTOMER UNTUK MENGAMBIL DATA TERBARU
+              dispatch('getTrucks').then(() => {
+                  resolve(response.data)
+              })
+          })
+          .catch((error) => {
+            console.log(error);
+              //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+              if (error.response.status == 422) {
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+              }
+          }).finally(() => {
+              commit('doneLoading')
+          })
+      })
+  },
+
     updateTruck({ dispatch, commit, state }) {
         commit("isLoading");
         return new Promise((resolve, reject) => {

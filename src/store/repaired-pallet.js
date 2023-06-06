@@ -3,6 +3,7 @@ import apiClient from '../api.js'
 const state = () => ({
     loading: false,
     repairedPallets: [], //STATE UNTUK MENAMPUNG DATA SJPS
+    exportData: [],
 
     //STATE INI UNTUK FORM ADD DAN EDIT NANTINYA
     repairedPallet: {
@@ -31,6 +32,9 @@ const mutations = {
     //MUTATIONS UNTUK ASSIGN DATA CUSTOMER KE DALAM STATE CUSTOMER
     ASSIGN_DATA(state, payload) {
         state.repairedPallets = payload;
+    },
+    ASSIGN_DATA_EXPORT(state, payload) {
+      state.exportData = payload
     },
     //MENGUBAH STATE PAGE
     SET_PAGE(state, payload) {
@@ -72,6 +76,19 @@ const actions = {
                 commit('doneLoading')
             })
         })
+    },
+    getExportDamagedPallets({ commit }, payload) {
+      commit('isLoading')
+      return new Promise((resolve, reject) => {
+          //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
+          apiClient.get(`/repaired-pallets/export?from=${payload[0]}&to=${payload[1]}`)
+          .then((response) => {
+              commit('ASSIGN_DATA_EXPORT', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+              resolve(response.data)
+          }).finally(() => {
+              commit('doneLoading')
+          })
+      })
     },
     submitRepairedPallet({ dispatch, commit, state }) {
         commit('isLoading')

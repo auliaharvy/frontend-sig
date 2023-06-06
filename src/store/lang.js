@@ -9,15 +9,14 @@ const state = {
   language: localStorage.getItem('language') || 'id',
   locale: {},
   options: [ 
-    { value: 'id', text: 'Indonesia' },
-    { value: 'en', text: 'English' }
+    { value: 'id', text: 'INDONESIA' },
+    { value: 'en', text: 'ENGLISH' }
   ],
   selectedLanguageOption: localStorage.getItem('language') || 'id'
 };
 
 const mutations = {
   SET_LANGUAGE(state, language) {
-    console.log("language:", language); // <-- tambahkan ini
     Vue.set(state, 'language', language);
     state.locale = require(`../locales/${language}.json`);
     localStorage.setItem('language', language);

@@ -9,7 +9,7 @@
         <v-card>
           <v-card-title>
             <v-btn router :to="adds.route">{{ $t("transporterAdjusment.add") }}</v-btn>
-            <v-btn style="margin-left: 20px">{{
+            <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
             <v-spacer></v-spacer>
@@ -36,6 +36,27 @@
         </v-card>
       </v-card>
     </v-col>
+    <v-dialog v-model="dialogExport" width="auto">
+      <v-card>
+        <v-card-text>
+          <v-date-picker
+            v-model="downloadRange"
+            @change="getExportData()"
+            range
+          ></v-date-picker>
+        </v-card-text>
+        <v-card-actions>
+          <export-excel
+              :data="exportData.data"
+              :fields="json_fields"
+              worksheet="Sheet Transporter Adjusment"
+              name="data-transporter-adjusment.xls"
+            >
+              <v-btn color="primary" block>Download</v-btn>
+            </export-excel>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -50,6 +71,8 @@ export default {
   },
   data() {
     return {
+      dialogExport: false,
+      downloadRange: [],
       selectedItem: 1,
       headers: [
         { value: "trx_number", text: this.$t("transporterAdjusment.trxNumber") },
@@ -63,6 +86,15 @@ export default {
       search: "",
       adds: { route: "/transporter-adjusment/add" },
       edits: { route: "/transporter-adjustment/edit" },
+      json_fields: {
+        "Transaction Number": "trx_number",
+        "Company": "company_name",
+        "Transporter": "transporter_name",
+        "Reporter": "reporter_name",
+        "Good Pallet": "good_pallet",
+        "TBR Pallet": "tbr_pallet",
+        "is_from_pool": "is_from_pool",
+      },
     };
   },
   created() {
@@ -71,13 +103,14 @@ export default {
   computed: {
     ...mapState("transporterAdjusment", {
       transporterAdjusments: (state) => state.transporterAdjusments, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      exportData: (state) => state.exportData, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("transporterAdjusment", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
-    ...mapActions("transporterAdjusment", ["getTransporterAdjusments", "deleteTransporterAdjusment"]),
+    ...mapActions("transporterAdjusment", ["getTransporterAdjusments", "getExportTransporterAdjusments", "deleteTransporterAdjusment"]),
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);
@@ -99,6 +132,9 @@ export default {
           this.deleteTransporterAdjusment(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
         }
       });
+    },
+    getExportData() {
+      this.getExportTransporterAdjusments(this.downloadRange);
     },
   },
 };

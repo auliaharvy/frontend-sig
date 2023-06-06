@@ -2,15 +2,16 @@
   <nav>
     <v-app-bar color="primary" dark app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title class="text-uppercase">
+      <!-- <v-toolbar-title class="text-uppercase">
         PALLET MANAGEMENT SYSTEM
-      </v-toolbar-title>
+      </v-toolbar-title> -->
       <v-spacer></v-spacer>
       <LocaleSwitcher />
-      <v-btn text @click="logout">
+      <ProfileMenu />
+      <!-- <v-btn text @click="logout">
         <span>{{ $t("sidebar.keluar") }}</span>
         <v-icon right>exit_to_app</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" dark app class="red darken-4">
       <template>
@@ -115,19 +116,19 @@
             <v-list-item-title>{{ $t(logout.title) }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item> </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </nav>
 </template>
 <script>
 import LocaleSwitcher from "@/components/LocaleSwitcher";
+import ProfileMenu from "@/components/ProfileMenu";
 
 export default {
   data: () => ({
     drawer: false,
-    links: [
-      { icon: "home", title: "sidebar.halamanutama", route: "/" },
-    ],
+    links: [{ icon: "home", title: "sidebar.halamanutama", route: "/" }],
     mgms: [
       {
         action: "mdi-file-document-outline",
@@ -197,6 +198,7 @@ export default {
     logout() {
       return new Promise((resolve, reject) => {
         localStorage.removeItem("token");
+        localStorage.removeItem("userData");
         resolve();
       }).then(() => {
         this.$store.state.token = localStorage.getItem("token");
@@ -206,6 +208,7 @@ export default {
   },
   components: {
     LocaleSwitcher,
+    ProfileMenu
   },
 };
 </script>

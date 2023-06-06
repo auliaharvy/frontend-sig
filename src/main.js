@@ -15,8 +15,10 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 import VuetifyMoney from "vuetify-money";
 import VueMoment from 'vue-moment'
 import { mapGetters, mapState } from 'vuex'
+import excel from 'vue-excel-export'
 
 Vue.use(VueMoment);
+Vue.use(excel)
 Vue.use(VuetifyMoney);
 Vue.use(VueSweetalert2);
 Vue.component('loading-overlay', Loading);
@@ -37,8 +39,7 @@ new Vue({
   computed: {
     ...mapGetters(['isAuth']),
     ...mapState(['token']),
-    ...mapState('user', {
-        user_authenticated: state => state.authenticated
-    })
+    ...mapState(['userData']),
+    ...mapState(['roleSet']),
   },
 }).$mount('#app')

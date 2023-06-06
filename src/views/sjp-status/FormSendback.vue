@@ -66,10 +66,9 @@
 
       <v-row no-gutters>
         <v-text-field
-          v-model="sjpStatus.tbr_pallet"
+          v-model="tbrPallet"
           :label="$t('pallet.tbr')"
           outlined
-          readonly
         ></v-text-field>
       </v-row>
 
@@ -111,7 +110,7 @@ import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "FormAddSJPStatus",
   data: () => ({
-    loading: false,
+    tbrPallet: 0,
     idRules: [
       (value) => {
         if (value) return true;
@@ -134,6 +133,13 @@ export default {
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
+  watch: {
+    tbrPallet() {
+      this.sjpStatus.tbr_pallet = this.tbrPallet;
+      this.sjpStatus.good_pallet =
+        this.sjpStatus.send_good_pallet - this.tbrPallet;
+    },
+  },
   computed: {
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
@@ -141,6 +147,7 @@ export default {
     }),
     ...mapState("sjpStatus", {
       sjpStatus: (state) => state.sjpStatus, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+      loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {

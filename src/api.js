@@ -7,8 +7,9 @@ const API_URL = 'http://localhost:3000'
 const apiClient = axios.create({
   baseURL: API_URL,
   headers: {
-    'Content-Type': 'application/json',
-  }
+    'Access-Control-Allow-Origin': '*',
+    'Content-type': 'application/json',
+  },
 })
 
 apiClient.interceptors.request.use(

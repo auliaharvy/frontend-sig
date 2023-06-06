@@ -9,7 +9,7 @@
         <v-card>
           <v-card-title>
             <v-btn router :to="adds.route">{{ $t("sjp.add") }}</v-btn>
-            <v-btn style="margin-left: 20px">{{
+            <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
             <v-spacer></v-spacer>
@@ -39,9 +39,7 @@
                   {{ item.driverName }}
                 </p>
                 <v-spacer />
-                <p class="text-normal">
-                  ({{ item.secondDriver }})
-                </p>
+                <p class="text-normal">({{ item.secondDriver }})</p>
               </template>
             </template>
             <template v-slot:item.trxStatus="{ item }">
@@ -86,7 +84,12 @@
                   <v-list-item v-for="(list, i) in listEdit" :key="i">
                     <v-list-item-content>
                       <v-list-item-title>
-                        ><v-btn router :to="list.href+'/'+item.id" small text>
+                        ><v-btn
+                          router
+                          :to="list.href + '/' + item.id"
+                          small
+                          text
+                        >
                           <v-icon left>
                             {{ list.icon }}
                           </v-icon>
@@ -97,12 +100,39 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-icon v-if="item.trxStatus === 0" small @click="hapusData(item)"> mdi-delete </v-icon>
+              <v-icon
+                v-if="item.trxStatus === 0"
+                small
+                @click="hapusData(item)"
+              >
+                mdi-delete
+              </v-icon>
             </template>
           </v-data-table>
         </v-card>
       </v-card>
     </v-col>
+    <v-dialog v-model="dialogExport" width="auto">
+      <v-card>
+        <v-card-text>
+          <v-date-picker
+            v-model="downloadRange"
+            @change="getExportData()"
+            range
+          ></v-date-picker>
+        </v-card-text>
+        <v-card-actions>
+          <export-excel
+              :data="exportData.data"
+              :fields="json_fields"
+              worksheet="Sheet SJP"
+              name="data-sjp.xls"
+            >
+              <v-btn color="primary" block>Download</v-btn>
+            </export-excel>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -117,9 +147,11 @@ export default {
   },
   data() {
     return {
+      dialogExport: false,
+      downloadRange: [],
       selectedItem: 1,
       headers: [
-        { value: "trxNumber", text: this.$t("sjp.trxNumber") },
+        { value: "trxNumber", text: this.$t("sjp.trxNumber"), width: "15%" },
         { value: "departure", text: this.$t("sjp.departure") },
         { value: "destination", text: this.$t("sjp.destination") },
         { value: "transporter", text: this.$t("sjp.transporter") },
@@ -142,6 +174,20 @@ export default {
         },
         { text: "Change Truck", icon: "mdi-truck", href: "/sjp/change-truck" },
       ],
+      json_fields: {
+        "SJP Number": "trxNumber",
+        "DO Number": "noDo",
+        "Departure": "departure",
+        "Destination": "destination",
+        "Transporter": "transporter",
+        "Pallet Quantity": "palletQuantity",
+        "Truck": "licensePlate",
+        "Driver": "driverName",
+        "Departure Time": "departureTime",
+        "Estimated Time Arrival": "eta",
+        "Status": "trxStatus",
+        "Distribution": "distribution",
+      },
     };
   },
   created() {
@@ -150,13 +196,14 @@ export default {
   computed: {
     ...mapState("sjp", {
       sjps: (state) => state.sjps, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      exportData: (state) => state.exportData, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("sjp", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
-    ...mapActions("sjp", ["getSjps", "deleteSjp"]),
+    ...mapActions("sjp", ["getSjps", "getExportDataSjps", "deleteSjp"]),
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);
@@ -178,6 +225,9 @@ export default {
           this.deleteSjp(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
         }
       });
+    },
+    getExportData() {
+      this.getExportDataSjps(this.downloadRange);
     },
   },
 };

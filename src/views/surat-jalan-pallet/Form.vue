@@ -1,6 +1,7 @@
 <template>
   <v-form ref="form">
     <loading-overlay :active="loading" :is-full-page="true" loader="bars" />
+    <loading-overlay :active="loadingApi" :is-full-page="true" loader="bars" />
     <v-container>
       <v-row no-gutters>
         <v-text-field
@@ -10,8 +11,8 @@
           outlined
           required
           append-icon="mdi-reload"
-          @click:append="getDataDo"
-          @keyup.enter.native="getDataDo"
+          @click:append="fetchDo"
+          @keyup.enter.native="fetchDo"
         ></v-text-field>
       </v-row>
 
@@ -182,6 +183,9 @@ export default {
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    ...mapState("company", {
+      loadingApi: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
     ...mapState("sjp", {
       sjp: (state) => state.sjp, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
@@ -190,6 +194,7 @@ export default {
     ...mapMutations("sjp", ["CLEAR_FORM"]),
     ...mapActions("sjp", ["submitSjp"]),
     ...mapActions("company", ["getCompanies"]),
+    ...mapActions("apiExternal", ["getDataDo", "getDataDoDirect"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
@@ -212,7 +217,7 @@ export default {
     reset() {
       this.$refs.form.reset();
     },
-    getDataDo() {
+    async fetchDo() {
       if (!this.sjp.truck_number) {
         this.$swal({
           title: "Truck Number Empty",
@@ -222,25 +227,26 @@ export default {
           confirmButtonText: "Ok!",
         });
       } else {
-        this.loading = true;
-        this.sjp.departure_time = new Date().toISOString().slice(0, 10);
-        var tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        this.sjp.eta = tomorrow.toISOString().slice(0, 10);
-        this.sjp.destination = "Distributor 1";
-        this.sjp.transporter = "Transporter 1";
-        this.sjp.driver = "Budi";
-        this.sjp.id_departure_company = 4;
-        this.sjp.id_destination_company = 10;
-        this.sjp.id_transporter_company = 51;
-        this.sjp.id_truck = 4;
-        this.sjp.id_driver = 3;
-        this.sjp.no_do = "DO-202305-0010";
-        this.sjp.tonnage = 100;
-        this.sjp.packaging = 60;
-        this.sjp.product_quantity = 80;
-        this.sjp.pallet_quantity = 10;
-        this.loading = false;
+        // this.loading = true;
+        await this.getDataDo();
+        // this.sjp.departure_time = new Date().toISOString().slice(0, 10);
+        // var tomorrow = new Date();
+        // tomorrow.setDate(tomorrow.getDate() + 1);
+        // this.sjp.eta = tomorrow.toISOString().slice(0, 10);
+        // this.sjp.destination = "Distributor 1";
+        // this.sjp.transporter = "Transporter 1";
+        // this.sjp.driver = "Budi";
+        // this.sjp.id_departure_company = 4;
+        // this.sjp.id_destination_company = 10;
+        // this.sjp.id_transporter_company = 51;
+        // this.sjp.id_truck = 4;
+        // this.sjp.id_driver = 3;
+        // this.sjp.no_do = "DO-202305-0010";
+        // this.sjp.tonnage = 100;
+        // this.sjp.packaging = 60;
+        // this.sjp.product_quantity = 80;
+        // this.sjp.pallet_quantity = 10;
+        // this.loading = false;
       }
     },
   },

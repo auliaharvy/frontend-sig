@@ -60,7 +60,7 @@
                   >
                   </v-checkbox>
                   <v-card-actions>
-                    <v-btn block type="submit" :disabled="!valid" color="success">{{
+                    <v-btn block type="submit" :disabled="!valid" color="primary">{{
                       $t("login.masuk")
                     }}</v-btn>
                   </v-card-actions>
@@ -124,7 +124,7 @@
                   >
                   </v-checkbox>
                   <v-card-actions>
-                    <v-btn block type="submit" color="success">{{ $t("login.masuk") }}</v-btn>
+                    <v-btn block type="submit" color="primary">{{ $t("login.masuk") }}</v-btn>
                   </v-card-actions>
                   <p class=" ">{{ $t("login.lupa") }}</p>
                 </v-form>
@@ -179,7 +179,7 @@
                 <v-card-actions>
                   <v-btn
                     block
-                    color="success"
+                    color="primary"
                     :disabled="!valid"
                     type="submit"
                     >{{ $t("login.masuk") }}</v-btn

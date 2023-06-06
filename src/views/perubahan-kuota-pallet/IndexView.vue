@@ -9,7 +9,7 @@
         <v-card>
           <v-card-title>
             <v-btn router :to="adds.route">{{ $t("changeQuota.add") }}</v-btn>
-            <v-btn style="margin-left: 20px">{{
+            <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
             <v-spacer></v-spacer>
@@ -89,6 +89,27 @@
         </v-card>
       </v-card>
     </v-col>
+    <v-dialog v-model="dialogExport" width="auto">
+      <v-card>
+        <v-card-text>
+          <v-date-picker
+            v-model="downloadRange"
+            @change="getExportData()"
+            range
+          ></v-date-picker>
+        </v-card-text>
+        <v-card-actions>
+          <export-excel
+              :data="exportData.data"
+              :fields="json_fields"
+              worksheet="Sheet Change Quota"
+              name="data-change-quota.xls"
+            >
+              <v-btn color="primary" block>Download</v-btn>
+            </export-excel>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -97,12 +118,14 @@ import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
 // @ is an alias to /src
 export default {
-  name: "SuratJalanPallet",
+  name: "ChangeQuota",
   components: {
     Breadcomp,
   },
   data() {
     return {
+      dialogExport: false,
+      downloadRange: [],
       selectedItem: 1,
       headers: [
         { value: "trx_number", text: this.$t("changeQuota.trxNumber") },
@@ -119,6 +142,18 @@ export default {
       search: "",
       adds: { route: "/change-quota/add" },
       edits: { route: "/change-quota/edit" },
+      json_fields: {
+        "CQ Number": "trx_number",
+        "Company": "company_name",
+        "Requester": "requester_name",
+        "Approver": "approver_name",
+        "Quantity": "quantity",
+        "Approved Quantity": "approved_quantity",
+        "Receiver": "receiver_name",
+        "Status": "status",
+        "Note": "note",
+        "Reason": "reason",
+      },
     };
   },
   created() {
@@ -127,13 +162,14 @@ export default {
   computed: {
     ...mapState("changeQuota", {
       changeQuotas: (state) => state.changeQuotas, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      exportData: (state) => state.exportData, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("changeQuota", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
-    ...mapActions("changeQuota", ["getChangeQuotas", "deleteChangeQuota"]),
+    ...mapActions("changeQuota", ["getChangeQuotas", "getExportChangeQuotas","deleteChangeQuota"]),
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);
@@ -155,6 +191,9 @@ export default {
           this.deleteChangeQuota(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
         }
       });
+    },
+    getExportData() {
+      this.getExportChangeQuotas(this.downloadRange);
     },
   },
 };

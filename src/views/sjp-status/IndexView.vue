@@ -9,7 +9,7 @@
         <v-card>
           <v-card-title>
             <!-- <v-btn router :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn> -->
-            <v-btn style="margin-left: 20px">{{
+            <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
             <v-spacer></v-spacer>
@@ -91,6 +91,27 @@
         </v-card>
       </v-card>
     </v-col>
+    <v-dialog v-model="dialogExport" width="auto">
+      <v-card>
+        <v-card-text>
+          <v-date-picker
+            v-model="downloadRange"
+            @change="getExportData()"
+            range
+          ></v-date-picker>
+        </v-card-text>
+        <v-card-actions>
+          <export-excel
+              :data="exportData.data"
+              :fields="json_fields"
+              worksheet="Sheet SJP Status"
+              name="data-sjp-status.xls"
+            >
+              <v-btn color="primary" block>Download</v-btn>
+            </export-excel>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -105,9 +126,11 @@ export default {
   },
   data() {
     return {
+      dialogExport: false,
+      downloadRange: [],
       selectedItem: 1,
       headers: [
-        { value: "trx_number", text: this.$t("sjpStatus.trxNumber") },
+        { value: "trx_number", text: this.$t("sjpStatus.trxNumber"), width: "15%" },
         { value: "sjp_number", text: this.$t("sjpStatus.sjpNumber") },
         { value: "sender_name", text: this.$t("sjpStatus.sender") },
         { value: "receiver_name", text: this.$t("sjpStatus.receiver") },
@@ -128,6 +151,22 @@ export default {
         },
         { text: "Change Truck", icon: "mdi-truck", href: "/pallet-transfers/change-truck" },
       ],
+      json_fields: {
+        "SJPS Number": "trx_number",
+        "SJP Number": "sjp_number",
+        "Departure": "departure_company",
+        "Destination": "destination_company",
+        "Transporter": "transporter_company",
+        "Checker Sender": "sender_name",
+        "Checker Receiver": "receiver_name",
+        "Good Pallet": "good_pallet",
+        "TBR Pallet": "tbr_pallet",
+        "BER Pallet": "ber_pallet",
+        "Missing Pallet": "missing_pallet",
+        "Status": "status",
+        "is_sendback": "is_sendback",
+        "note": "note",
+      },
     };
   },
   created() {
@@ -136,11 +175,12 @@ export default {
   computed: {
     ...mapState("sjpStatus", {
       sjpStatuss: (state) => state.sjpStatuss,
+      exportData: (state) => state.exportData,
       loading: (state) => state.loading,
     }),
   },
   methods: {
-    ...mapActions("sjpStatus", ["getSjpStatuss", "deleteSjpStatus"]),
+    ...mapActions("sjpStatus", ["getSjpStatuss", "getExportDataSjpStatuss","deleteSjpStatus"]),
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);
@@ -159,6 +199,9 @@ export default {
           this.deleteSjpStatus(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
         }
       });
+    },
+    getExportData() {
+      this.getExportDataSjpStatuss(this.downloadRange);
     },
   },
 };

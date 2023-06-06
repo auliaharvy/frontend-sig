@@ -7,6 +7,7 @@
             <span class="text-h6 text-center font-weight-normal"
               >All Pallet : {{ sumTotal(totalPallets.data) }}</span
             >
+            
           </v-card-title>
         </v-card>
       </v-col>

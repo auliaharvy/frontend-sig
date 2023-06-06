@@ -9,7 +9,7 @@
         <v-card>
           <v-card-title>
             <!-- <v-btn router :to="adds.route">{{ $t("newPallet.add") }}</v-btn> -->
-            <v-btn style="margin-left: 20px">{{
+            <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
             <v-spacer></v-spacer>
@@ -72,6 +72,27 @@
         </v-card>
       </v-card>
     </v-col>
+    <v-dialog v-model="dialogExport" width="auto">
+      <v-card>
+        <v-card-text>
+          <v-date-picker
+            v-model="downloadRange"
+            @change="getExportData()"
+            range
+          ></v-date-picker>
+        </v-card-text>
+        <v-card-actions>
+          <export-excel
+              :data="exportData.data"
+              :fields="json_fields"
+              worksheet="Sheet New Pallet"
+              name="data-new-pallet.xls"
+            >
+              <v-btn color="primary" block>Download</v-btn>
+            </export-excel>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -86,6 +107,8 @@ export default {
   },
   data() {
     return {
+      dialogExport: false,
+      downloadRange: [],
       selectedItem: 1,
       headers: [
         { value: "trx_number", text: this.$t("newPallet.trxNumber") },
@@ -108,6 +131,15 @@ export default {
         },
         { text: "Change Truck", icon: "mdi-truck", href: "/sjp/change-truck" },
       ],
+      json_fields: {
+        "NP Number": "trx_number",
+        "CQ Number": "no_change_quota",
+        "Company": "company_requester",
+        "Workshop": "company_workshop",
+        "Request Pallet": "qty_request_pallet",
+        "Ready Pallet": "qty_ready_pallet",
+        "Status": "status",
+      },
     };
   },
   created() {
@@ -116,13 +148,14 @@ export default {
   computed: {
     ...mapState("newPallet", {
       newPallets: (state) => state.newPallets, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      exportData: (state) => state.exportData, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("newPallet", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
-    ...mapActions("newPallet", ["getNewPallets", "deleteNewPallet"]),
+    ...mapActions("newPallet", ["getNewPallets", "getExportNewPallets","deleteNewPallet"]),
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);
@@ -144,6 +177,9 @@ export default {
           this.deleteNewPallet(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
         }
       });
+    },
+    getExportData() {
+      this.getExportNewPallets(this.downloadRange);
     },
   },
 };

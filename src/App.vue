@@ -23,7 +23,8 @@ export default {
   }),
   computed: {
     ...mapState(["token"]),
-    ...mapGetters(["isAuth"]),
+    ...mapState(["userData"]),
+    ...mapGetters(["isAuth", "getRoles"]),
   },
 };
 </script>

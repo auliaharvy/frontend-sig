@@ -9,7 +9,7 @@
         <v-card>
           <v-card-title>
             <v-btn router :to="adds.route">{{ $t("sewaPallet.add") }}</v-btn>
-            <v-btn style="margin-left: 20px">{{
+            <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
             <v-spacer></v-spacer>
@@ -74,6 +74,27 @@
         </v-card>
       </v-card>
     </v-col>
+    <v-dialog v-model="dialogExport" width="auto">
+      <v-card>
+        <v-card-text>
+          <v-date-picker
+            v-model="downloadRange"
+            @change="getExportData()"
+            range
+          ></v-date-picker>
+        </v-card-text>
+        <v-card-actions>
+          <export-excel
+              :data="exportData.data"
+              :fields="json_fields"
+              worksheet="Sheet Biaya Sewa Pallet"
+              name="data-biaya-sewa-pallet.xls"
+            >
+              <v-btn color="primary" block>Download</v-btn>
+            </export-excel>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -88,6 +109,8 @@ export default {
   },
   data() {
     return {
+      dialogExport: false,
+      downloadRange: [],
       selectedItem: 1,
       headers: [
         { value: "trx_number", text: this.$t("claimPallet.trxNumber") },
@@ -116,6 +139,21 @@ export default {
         },
         { text: "Approval Distributor", icon: "mdi-pen", href: "/sewa-pallet/approval-distributor" },
       ],
+      json_fields: {
+        "Transaction Number": "trx_number",
+        "Company": "company_name",
+        "Manager": "manager_name",
+        "PIC Company": "pic_distributor",
+        "Good Pallet": "good_pallet",
+        "TBR Pallet": "tbr_pallet",
+        "BER Pallet": "ber_pallet",
+        "Missing Pallet": "missing_pallet",
+        "Price": "price",
+        "Total Price": "total_price",
+        "Reason Manager": "reason_manager",
+        "Reason Company": "reason_distributor",
+        "Status": "status",
+      },
     };
   },
   created() {
@@ -124,13 +162,14 @@ export default {
   computed: {
     ...mapState("sewaPallet", {
       sewaPallets: (state) => state.sewaPallets, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      exportData: (state) => state.exportData, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("sewaPallet", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
-    ...mapActions("sewaPallet", ["getSewaPallets", "deleteSewaPallet"]),
+    ...mapActions("sewaPallet", ["getSewaPallets", "getExportSewaPallets","deleteSewaPallet"]),
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);
@@ -152,6 +191,9 @@ export default {
           this.deleteSewaPallet(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
         }
       });
+    },
+    getExportData() {
+      this.getExportSewaPallets(this.downloadRange);
     },
   },
 };

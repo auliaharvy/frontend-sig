@@ -9,7 +9,7 @@
         <v-card>
           <v-card-title>
             <v-btn router :to="adds.route">{{ $t("repairPallet.add") }}</v-btn>
-            <v-btn style="margin-left: 20px">{{
+            <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
             <v-spacer></v-spacer>
@@ -67,6 +67,27 @@
         </v-card>
       </v-card>
     </v-col>
+    <v-dialog v-model="dialogExport" width="auto">
+      <v-card>
+        <v-card-text>
+          <v-date-picker
+            v-model="downloadRange"
+            @change="getExportData()"
+            range
+          ></v-date-picker>
+        </v-card-text>
+        <v-card-actions>
+          <export-excel
+              :data="exportData.data"
+              :fields="json_fields"
+              worksheet="Sheet Repaired Pallet"
+              name="data-repaired-pallet.xls"
+            >
+              <v-btn color="primary" block>Download</v-btn>
+            </export-excel>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -81,6 +102,8 @@ export default {
   },
   data() {
     return {
+      dialogExport: false,
+      downloadRange: [],
       selectedItem: 1,
       headers: [
         { value: "trx_number", text: this.$t("repairPallet.trxNumber") },
@@ -92,6 +115,13 @@ export default {
       search: "",
       adds: { route: "/repaired-pallet/add" },
       edits: { route: "/repaired-pallet/edit" },
+      json_fields: {
+        "Transaction Number": "trx_number",
+        "Company": "company_name",
+        "Reporter": "reporter_name",
+        "Quantity Good Pallet": "qty_good_pallet",
+        "Note": "note",
+      },
     };
   },
   created() {
@@ -100,13 +130,14 @@ export default {
   computed: {
     ...mapState("repairedPallet", {
       repairedPallets: (state) => state.repairedPallets, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      exportData: (state) => state.exportData, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("repairedPallet", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
-    ...mapActions("repairedPallet", ["getRepairedPallets", "deleteRepairedPallet"]),
+    ...mapActions("repairedPallet", ["getRepairedPallets", "getExportDamagedPallets","deleteRepairedPallet"]),
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);
@@ -128,6 +159,9 @@ export default {
           this.deleteRepairedPallet(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
         }
       });
+    },
+    getExportData() {
+      this.getExportDamagedPallets(this.downloadRange);
     },
   },
 };

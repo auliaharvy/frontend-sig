@@ -8,9 +8,16 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <v-btn style="margin-left: 20px">{{
-              $t("manajemenpengguna.unduh")
-            }}</v-btn>
+            <export-excel
+              :data="palletMovements.data"
+              :fields="json_fields"
+              worksheet="Sheet Pallet Movement"
+              name="data-pallet-movement.xls"
+            >
+              <v-btn style="margin-left: 0px">{{
+                $t("manajemenpengguna.unduh")
+              }}</v-btn>
+            </export-excel>
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -92,6 +99,22 @@ export default {
         { value: "eta", text: this.$t("palletMovement.eta") },
         { value: "late", text: this.$t("palletMovement.late") },
       ],
+      json_fields: {
+        "Transaction Number": "trx_number",
+        "Send / Sendback": "distribution",
+        "Status": "status",
+        "Departure": "departure",
+        "Destination": "destination",
+        "Transporter": "transporter",
+        "Truck": "truck",
+        "Good Pallet": "good",
+        "TBR Pallet": "tbr",
+        "BER Pallet": "ber",
+        "Missing Pallet": "missing",
+        "Departure Time": "departure_time",
+        "ETA": "eta",
+        "Late": "late",
+      },
       search: "",
       adds: { route: "/pallet-movement/add" },
       edits: { route: "/pallet-movement/edit" },

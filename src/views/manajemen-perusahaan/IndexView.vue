@@ -9,9 +9,17 @@
         <v-card>
           <v-card-title>
             <v-btn router :to="adds.route">{{ $t("perusahaan.tambah") }}</v-btn>
-            <v-btn style="margin-left: 20px">{{
-              $t("manajemenpengguna.unduh")
-            }}</v-btn>
+            <export-excel
+              :data="companies.data"
+              :fields="json_fields"
+              worksheet="Sheet Companies"
+              name="data-companies.xls"
+            >
+              <v-btn style="margin-left: 20px">{{
+                $t("manajemenpengguna.unduh")
+              }}</v-btn>
+            </export-excel>
+            
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -103,10 +111,27 @@ export default {
         { value: "quota", text: this.$t("pallet.quota") },
         { value: "actions", text: this.$t("table.actions") },
       ],
+      json_fields: {
+        "Code": "code",
+        "Name": "name",
+        "Type": "name_company_type",
+        "Organization": "name_organization",
+        "Address": "address",
+        "City": "city",
+        "Phone": "phone",
+        "Email": "email",
+        "Good Pallet": "good_pallet",
+        "TBR Pallet": "tbr_pallet",
+        "BER Pallet": "ber_pallet",
+        "Missing Pallet": "missing_pallet",
+        "Total Pallet": "total_pallet",
+        "Quota Pallet": "quota",
+      },
       items: [],
       search: "",
       adds: { route: "/company/add" },
       edits: { route: "/edit-perusahaan" },
+      
     };
   },
   created() {

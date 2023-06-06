@@ -14,8 +14,12 @@ const mutations = {
 const actions = {
     async submit({ commit }, payload) {
       localStorage.setItem('token', null)
+      localStorage.setItem('userData', null)
+      localStorage.setItem('roles', null)
       commit('isLoading')
       commit('SET_TOKEN', null, { root: true })
+      // commit('RESET_USER', { root: true })
+      // commit('SET_USER_AUTH', null, { root: true })
       return new Promise((resolve, reject) => {
         apiClient.post('/users/login', payload)
           .then((response) => {
@@ -27,7 +31,11 @@ const actions = {
                   var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
                       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
                   }).join(''));
-                  console.log(jsonPayload);
+                  var jsonUser = JSON.parse(jsonPayload)
+                  localStorage.setItem('userData', jsonPayload);
+                  commit('SET_USER_DATA', jsonUser, { root: true })
+                  commit('SET_USER_AUTH', jsonUser, { root: true })
+                  commit('SET_ROLE', jsonUser.data.role[0], { root: true })
                   commit('SET_TOKEN', response.data.data, { root: true })
               } else {
                   commit('SET_ERRORS', { invalid: 'Wrong Email/Password' }, { root: true })
@@ -46,7 +54,9 @@ const actions = {
     },
     async logout({ commit }) {
       commit('setToken', null);
+      commit('RESET_USER')
       localStorage.removeItem('token'); // tambahkan ini untuk menghapus token dari localStorage
+      localStorage.removeItem('userData'); // tambahkan ini untuk menghapus token dari localStorage
     },
   };
 

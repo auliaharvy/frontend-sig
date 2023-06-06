@@ -9,7 +9,7 @@
         <v-card>
           <v-card-title>
             <v-btn router :to="adds.route">{{ $t("claimPallet.add") }}</v-btn>
-            <v-btn style="margin-left: 20px">{{
+            <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
             <v-spacer></v-spacer>
@@ -74,6 +74,27 @@
         </v-card>
       </v-card>
     </v-col>
+    <v-dialog v-model="dialogExport" width="auto">
+      <v-card>
+        <v-card-text>
+          <v-date-picker
+            v-model="downloadRange"
+            @change="getExportData()"
+            range
+          ></v-date-picker>
+        </v-card-text>
+        <v-card-actions>
+          <export-excel
+              :data="exportData.data"
+              :fields="json_fields"
+              worksheet="Sheet Claim Pallet"
+              name="data-claim-pallet.xls"
+            >
+              <v-btn color="primary" block>Download</v-btn>
+            </export-excel>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -88,9 +109,11 @@ export default {
   },
   data() {
     return {
+      dialogExport: false,
+      downloadRange: [],
       selectedItem: 1,
       headers: [
-        { value: "trx_number", text: this.$t("claimPallet.trxNumber") },
+        { value: "trx_number", text: this.$t("claimPallet.trxNumber"), width: "50%" },
         { value: "company_name", text: this.$t("claimPallet.company") },
         { value: "manager_name", text: this.$t("claimPallet.approverManager") },
         { value: "pic_distributor", text: this.$t("claimPallet.approverDistributor") },
@@ -114,6 +137,19 @@ export default {
         },
         { text: "Approval Distributor", icon: "mdi-pen", href: "/claim-pallet/approval-distributor" },
       ],
+      json_fields: {
+        "CP Number": "trx_number",
+        "Company": "company_name",
+        "Manager": "manager_name",
+        "PIC Company": "pic_distributor",
+        "BER Pallet": "ber_pallet",
+        "Missing Pallet": "missing_pallet",
+        "Price": "price",
+        "Total Price": "total_price",
+        "Status": "status",
+        "Reason Manager": "reason_manager",
+        "Reason Company": "reason_distributor",
+      },
     };
   },
   created() {
@@ -122,13 +158,14 @@ export default {
   computed: {
     ...mapState("claimPallet", {
       claimPallets: (state) => state.claimPallets, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      exportData: (state) => state.exportData, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("claimPallet", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
-    ...mapActions("claimPallet", ["getClaimPallets", "deleteClaimPallet"]),
+    ...mapActions("claimPallet", ["getClaimPallets", "getExportClaimPallets","deleteClaimPallet"]),
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);
@@ -150,6 +187,9 @@ export default {
           this.deleteClaimPallet(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
         }
       });
+    },
+    getExportData() {
+      this.getExportClaimPallets(this.downloadRange);
     },
   },
 };

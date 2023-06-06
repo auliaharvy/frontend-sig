@@ -314,8 +314,9 @@
   "trucks": {
     "trucks": "Vehicle",
     "transporter": "Transporter",
+    "transporter_code": "Transporter Code",
     "no": "License Plate",
-    "add": "Add Vehicle",
+    "add": "Syncronize Vehicle",
     "edit": "Edit Vehicle"
   },
   "palletMovement": {

@@ -316,8 +316,9 @@
   "trucks": {
     "trucks": "Kendaraan",
     "transporter": "Ekspeditur",
+    "transporter_code": "Kode Ekspeditur",
     "no": "Nomor Polisi",
-    "add": "Tambah Kendaraan",
+    "add": "Sinkron Kendaraan",
     "edit": "Sunting Kendaraan"
   },
   "palletMovement": {
