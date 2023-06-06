@@ -1,8 +1,8 @@
 <template>
-    <div class="d-flex align-center">
-      <v-breadcrumbs class="ml-auto">
-    <v-breadcrumbs-item class="bcformat" href="/dashboard">{{$t("sidebar.halamanutama")}} ></v-breadcrumbs-item>
-    <v-breadcrumbs-item active>{{ $t('sidebar.activePage') }}</v-breadcrumbs-item>
+    <div class="align-left">
+    <v-breadcrumbs>
+      <v-breadcrumbs-item class="bcformat" href="/">{{$t("sidebar.halamanutama")}} ></v-breadcrumbs-item>
+      <v-breadcrumbs-item class="bcformat" active>{{ $t(pageTitle) }}</v-breadcrumbs-item>
   </v-breadcrumbs>
 </div>
 </template>
@@ -22,7 +22,7 @@ export default {
 <style scoped>
 .bcformat {
     font-size: 12px;
-    color: #fffff;
+    color: black;
 }
 
 </style>

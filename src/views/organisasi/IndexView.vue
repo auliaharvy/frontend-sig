@@ -1,115 +1,105 @@
 <template>
-  <v-app>
-    <Navbar />
-      <v-container>
-        <h1 class="heading black--text">{{ $t("sidebar.organisasi") }}</h1>
-        <v-spacer></v-spacer>
-        <v-col md-12>
+  <v-container>
+    <v-col md-12>
+      <v-card>
+        <v-card-title>
+          {{ $t("organisasi.organisasi") }}
+        </v-card-title>
+        <v-divider></v-divider>
         <v-card>
-            <v-card-title>
-              {{ $t("organisasi.organisasi") }}
-            </v-card-title>
-            <v-divider></v-divider>
-                <v-card>
-                    <v-card-title>
-                      <v-btn v-for="add in adds"
-                router :to="add.route"
-                >{{ $t("organisasi.tambah") }}</v-btn>
-                <v-btn style="margin-left: 20px;"
-                >{{ $t("manajemenpengguna.unduh") }}</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-text-field
-                        v-model="search"
-                        prepend-icon="mdi-search"
-                        :label="$t('manajemenpengguna.cari')"
-                        single-line
-                        hide-details
-                    ></v-text-field>
-                    </v-card-title>
-                    <v-data-table
-                    :loading="loading"
-                    :headers="headers"
-                    :search="search"
-                    :items="items"
-                    dense
-                    >
-                    <template v-slot:item.edit="{ item }">
-                      <v-btn color="yellow" small @click="editData(item)"
-                      v-for="edit in edits"
-                      router :to="edit.route"
-                      ><v-icon>mdi-pencil</v-icon></v-btn>
-                    </template>
-                    <template v-slot:item.hapus="{ item }">
-                      <v-btn class="warna-font" color="red" small @click="hapusData(item)">{{ $t('manajemenpengguna.hapus') }}</v-btn>
-                    </template>
-                    </v-data-table>
-                </v-card>
-          </v-card>
-      </v-col>
-      </v-container>
-    <Footer />
-  </v-app>
+          <v-card-title>
+            <v-btn router :to="adds.route">{{ $t("organisasi.tambah") }}</v-btn>
+            <v-btn style="margin-left: 20px">{{
+              $t("manajemenpengguna.unduh")
+            }}</v-btn>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              prepend-icon="mdi-search"
+              :label="$t('manajemenpengguna.cari')"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :loading="loading"
+            :headers="headers"
+            :search="search"
+            :items="organizations.data"
+            dense
+          >
+            <template v-slot:item.actions="{ item }">
+              <v-icon small class="mr-2" @click="editData(item)">
+                mdi-pencil
+              </v-icon>
+              <v-icon small @click="hapusData(item)"> mdi-delete </v-icon>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-card>
+    </v-col>
+  </v-container>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import en from "@/locales/en.json";
-import id from "@/locales/id.json";
 // @ is an alias to /src
 export default {
-  name: "ManajemenPengguna",
+  name: "ManajemenOrganisasi",
   components: {
-    Navbar,
-    Footer,
-    Breadcomp
+    Breadcomp,
   },
   data() {
-        return {
-            headers: [
-                { value: 'nama', text: this.$t('organisasi.nama') },
-                { value: 'alamat', text: this.$t('organisasi.alamat')},
-                { value: 'kota', text: this.$t('organisasi.kota') },
-                { value: 'nomor', text: this.$t('organisasi.nomor') },
-                { value: 'email', text: 'Email' },
-                { value: 'tag', text: 'Tag' },
-                { value: 'dibuat', text: this.$t('organisasi.dibuat') },
-                { value: 'diperbarui', text: this.$t('organisasi.diperbarui') },
-                { value: 'edit', text: this.$t('manajemenpengguna.sunting')},
-                { value: 'hapus', text: this.$t('manajemenpengguna.hapus')}
-            ],
-            items: [
-                { nama :'Surya Micro Systems',
-                 alamat: 'Cikarang', 
-                 kota: 'Bekasi', 
-                 nomor: '081225340707', 
-                 email: 'mramdhanass@gmail.com',
-                 tag: 'ada', 
-                 dibuat: 'Admin', 
-                 diperbarui: '25-03-2023' 
-                 }
-            ],
-            search: '',
-            adds: [{ route: "/tambah-pengguna" }],
-            edits: [{ route: "/edit-pengguna" }],
-
-        }
-    },
-    methods: {
+    return {
+      headers: [
+        { value: "name", text: this.$t("organisasi.nama") },
+        { value: "actions", text: this.$t("table.actions") },
+      ],
+      items: [],
+      search: "",
+      adds: { route: "/organization.add" },
+    };
+  },
+  created() {
+    this.getOrganization(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
+  },
+  computed: {
+    ...mapState("organization", {
+      organizations: (state) => state.organizations, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+    ...mapState("organization", {
+      loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+  },
+  methods: {
+    ...mapActions("organization", ["getOrganization", "deleteOrganization"]),
     editData(item) {
-      // Logika untuk mengedit data
-      console.log('Mengedit data:', item);
+      this.$router.push({
+        name: 'organization.edit',
+        params: { id: item.id}
+      });
     },
     hapusData(item) {
-      // Logika untuk menghapus data
-      console.log('Menghapus data:', item);
-    }
-  }
+      this.$swal({
+        title: "Are you sure?",
+        text: "This will delete record Permanently!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes!",
+      }).then((result) => {
+        if (result.value) {
+          this.deleteOrganization(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
+        }
+      });
+    },
+  },
 };
 </script>
 <style scoped>
 .warna-font {
-  color: white; 
+  color: white;
 }
 </style>

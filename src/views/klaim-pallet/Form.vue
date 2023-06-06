@@ -1,0 +1,134 @@
+<template>
+  <v-form ref="form">
+    <loading-overlay :active="loading" :is-full-page="true" loader="bars" />
+    <v-container>
+      <v-row no-gutters>
+        <v-autocomplete
+          :label="$t('claimPallet.company')"
+          :items="companies.data"
+          :rules="idRules"
+          outlined
+          v-model="claimPallet.id_company_distributor"
+          item-text="name"
+          item-value="id"
+        >
+        </v-autocomplete>
+      </v-row>
+
+      <v-row no-gutters>
+        <v-text-field
+          v-model="claimPallet.price"
+          :label="$t('claimPallet.price')"
+          :rules="idRules"
+          type="number"
+          outlined
+        ></v-text-field>
+      </v-row>
+
+      <v-row no-gutters>
+        <v-text-field
+          v-model="claimPallet.ber_pallet"
+          :label="$t('pallet.ber')"
+          type="number"
+          outlined
+        ></v-text-field>
+      </v-row>
+
+      <v-row no-gutters>
+        <v-text-field
+          v-model="claimPallet.missing_pallet"
+          :label="$t('pallet.missing')"
+          type="number"
+          outlined
+        ></v-text-field>
+      </v-row>
+
+      <v-row no-gutters>
+        <v-col :col="24">
+          <div class="d-flex flex-column">
+            <v-btn color="success" class="mt-4" block @click="validate">
+              {{ $t("form.submit") }}
+            </v-btn>
+
+            <v-btn color="error" class="mt-4" block @click="reset">
+              {{ $t("form.reset") }}
+            </v-btn>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-form>
+</template>
+
+<script>
+import { mapActions, mapState, mapMutations } from "vuex";
+export default {
+  name: "FormAddClaimPallet",
+  data: () => ({
+    idRules: [
+      (value) => {
+        if (value) return true;
+
+        return "this field is required";
+      },
+    ],
+    noTruckRules: [
+      (v) => !!v || "this field is required",
+      (v) => (v && v.length >= 3) || "must be greater than 3 characters",
+    ],
+    emailRules: [
+      (v) => !!v || "E-mail is required",
+      (v) =>
+        /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()\\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+          v
+        ) || "E-mail must be valid",
+    ],
+  }),
+  created() {
+    this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+  },
+  computed: {
+    ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
+    ...mapState("company", {
+      companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+    ...mapState("claimPallet", {
+      claimPallet: (state) => state.claimPallet, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+      loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+  },
+  methods: {
+    ...mapMutations("claimPallet", ["CLEAR_FORM"]),
+    ...mapActions("claimPallet", ["submitClaimPallet"]),
+    ...mapActions("company", ["getCompanies"]),
+    validate() {
+      const valid = this.$refs.form.validate();
+      if (valid) {
+        this.claimPallet.status = 0;
+        this.claimPallet.created_by = 3;
+        this.claimPallet.updated_by = 3;
+        this.submitClaimPallet(this.claimPallet).then((response) => {
+          console.log(response);
+            this.CLEAR_FORM();
+            this.$router.push({ name: "claim-pallet" });
+          // else {
+          //   if (this.errors) {
+          //     this.$swal({
+          //       icon: 'error',
+          //       title: 'error.status',
+          //       text: this.errors,
+          //     });
+          //   }
+          // }
+        });
+      }
+    },
+    reset() {
+      this.$refs.form.reset();
+    },
+  },
+  destroyed() {
+    this.CLEAR_FORM(); //KETIKA COMPONENT DITINGGALKAN, BERSIHKAN DATA
+  },
+};
+</script>

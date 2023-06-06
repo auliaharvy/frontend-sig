@@ -1,161 +1,105 @@
 <template>
-  <v-app>
-    <Navbar />
-    <div class="team">
-      <v-container>
-        <h1 class="heading black--text">{{ $t("sidebar.pengendara") }}</h1>
-        <v-spacer></v-spacer>
-        <v-layout row wrap>
-          <v-flex sm6 xs12 md6 lg3>
-            <v-card class="ma-3">
-              <v-list-item>
-                <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet color="green" width="80" height="80" elevation="10">
-                    <v-icon dark large>store</v-icon>
-                  </v-sheet>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <div class="overline text-right">Article</div>
-                  <v-list-item-title class="headline mb-1 text-right"
-                    >523614</v-list-item-title
-                  >
-                  <div><v-divider></v-divider></div>
-                </v-list-item-content>
-              </v-list-item>
-              <v-card-actions>
-                <v-icon text class="ma-2">person</v-icon>
-                <div class="overline">Iyad</div>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-          <v-flex sm6 xs12 md6 lg3>
-            <v-card class="ma-3">
-              <v-list-item>
-                <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet
-                    color="#F44336"
-                    width="80"
-                    height="80"
-                    elevation="10"
-                  >
-                    <v-icon dark large>subscriptions</v-icon>
-                  </v-sheet>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <div class="overline text-right">Abonné</div>
-                  <v-list-item-title class="headline mb-1 text-right"
-                    >+700</v-list-item-title
-                  >
-                  <div><v-divider></v-divider></div>
-                </v-list-item-content>
-              </v-list-item>
-              <v-card-actions>
-                <v-icon text class="ma-2">subscriptions</v-icon>
-                <div class="overline">AAE IdeaPro</div>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-          <v-flex sm6 xs12 md6 lg3>
-            <v-card class="ma-3">
-              <v-list-item>
-                <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet
-                    color="#03A9F4"
-                    width="80"
-                    height="80"
-                    elevation="10"
-                  >
-                    <v-icon dark large>add_shopping_cart</v-icon>
-                  </v-sheet>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <div class="overline text-right">Shopping</div>
-                  <v-list-item-title class="headline mb-1 text-right"
-                    >$34,245</v-list-item-title
-                  >
-                  <div><v-divider></v-divider></div>
-                </v-list-item-content>
-              </v-list-item>
-              <v-card-actions>
-                <v-icon text class="ma-2">credit_card</v-icon>
-                <div class="overline">VISA Card</div>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-          <v-flex sm6 xs12 md6 lg3>
-            <v-card class="ma-3">
-              <v-list-item>
-                <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet
-                    color="#FFC107"
-                    width="80"
-                    height="80"
-                    elevation="10"
-                  >
-                    <v-icon dark large>folder_shared</v-icon>
-                  </v-sheet>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <div class="overline text-right">Folder shared</div>
-                  <v-list-item-title class="headline mb-1 text-right"
-                    >1730</v-list-item-title
-                  >
-                  <div><v-divider></v-divider></div>
-                </v-list-item-content>
-              </v-list-item>
-              <v-card-actions>
-                <v-icon text class="ma-2">folder</v-icon>
-                <div class="overline">Prodect</div>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-          <v-flex xs12 sm6 md4 lg3 v-for="person in team" :key="person.name">
-            <v-card class="text-center ma-3">
-              <v-responsive class="pt-4">
-                <v-avatar size="100" class="red lighten-2">
-                  <img :src="person.avatar" alt="" />
-                </v-avatar>
-              </v-responsive>
-              <v-card-text>
-                <div class="subheading">{{ person.name }}</div>
-                <div class="grey--text">{{ person.role }}</div>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn outlined color="orange">
-                  <v-icon small left>message</v-icon>
-                  <span>Message</span>
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </div>
-    <Footer />
-  </v-app>
+  <v-container>
+    <v-col md-12>
+      <v-card>
+        <v-card-title>
+          {{ $t("driver.driver") }}
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card>
+          <v-card-title>
+            <v-btn router :to="adds.route">{{ $t("driver.add") }}</v-btn>
+            <v-btn style="margin-left: 20px">{{
+              $t("manajemenpengguna.unduh")
+            }}</v-btn>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              prepend-icon="mdi-search"
+              :label="$t('manajemenpengguna.cari')"
+              single-line
+              hide-details
+            ></v-text-field>
+          </v-card-title>
+          <v-data-table
+            :loading="loading"
+            :headers="headers"
+            :search="search"
+            :items="drivers.data"
+            dense
+          >
+            <template v-slot:item.actions="{ item }">
+              <v-icon small class="mr-2" @click="editData(item)">
+                mdi-pencil
+              </v-icon>
+              <v-icon small @click="hapusData(item)"> mdi-delete </v-icon>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-card>
+    </v-col>
+  </v-container>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import en from "@/locales/en.json";
-import id from "@/locales/id.json";
 // @ is an alias to /src
 export default {
-  name: "Dashboard",
+  name: "ManajemenPengendara",
   components: {
-    Navbar,
-    Footer,
-    Breadcomp
+    Breadcomp,
   },
-  data: () => ({
-    team: [
-      { name: "Iyad", role: "web developer", avatar: "/img1.png" },
-      { name: "Reda", role: "Graphic designer", avatar: "/img2.png" },
-      { name: "Zineb", role: "web developer", avatar: "/img3.png" },
-      { name: "Hu TechGroup", role: "Desktop developer", avatar: "/img4.png" },
-    ],
-  }),
+  data() {
+    return {
+      headers: [
+        { value: "name", text: this.$t("driver.nama") },
+        { value: "actions", text: this.$t("table.actions") },
+      ],
+      items: [],
+      search: "",
+      adds: { route: "/drivers/add" },
+    };
+  },
+  created() {
+    this.getDrivers(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
+  },
+  computed: {
+    ...mapState("driver", {
+      drivers: (state) => state.drivers, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+    ...mapState("driver", {
+      loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+  },
+  methods: {
+    ...mapActions("driver", ["getDrivers", "deleteDriver"]),
+    editData(item) {
+      this.$router.push({
+        name: 'drivers.edit',
+        params: { id: item.id}
+      });
+    },
+    hapusData(item) {
+      this.$swal({
+        title: "Are you sure?",
+        text: "This will delete record Permanently!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes!",
+      }).then((result) => {
+        if (result.value) {
+          this.deleteDriver(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
+        }
+      });
+    },
+  },
 };
 </script>
+<style scoped>
+.warna-font {
+  color: white;
+}
+</style>

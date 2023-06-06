@@ -1,17 +1,17 @@
 <template>
   <nav>
-    <v-app-bar color="#e90e01" dark app>
+    <v-app-bar color="primary" dark app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title class="text-uppercase">
+      <!-- <v-toolbar-title class="text-uppercase">
         PALLET MANAGEMENT SYSTEM
-      </v-toolbar-title>
+      </v-toolbar-title> -->
       <v-spacer></v-spacer>
       <LocaleSwitcher />
-      <v-btn text v-for="logout in logouts"
-      router :to="logout.route">
-        <span>{{ $t("sidebar.keluar")}}</span>
+      <ProfileMenu />
+      <!-- <v-btn text @click="logout">
+        <span>{{ $t("sidebar.keluar") }}</span>
         <v-icon right>exit_to_app</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" dark app class="red darken-4">
       <template>
@@ -26,7 +26,7 @@
         </v-layout>
       </template>
       <v-divider></v-divider>
-      <h3 style="color: white; margin-left: 10px">{{$t("menu.menu")}}</h3>
+      <h3 style="color: white; margin-left: 10px">{{ $t("menu.menu") }}</h3>
       <v-list flat class="font-weight-bold">
         <v-list-item
           v-for="link in links"
@@ -116,80 +116,103 @@
             <v-list-item-title>{{ $t(logout.title) }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item> </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </nav>
 </template>
- <script>
-import en from "@/locales/en.json";
-import id from "@/locales/id.json";
+<script>
 import LocaleSwitcher from "@/components/LocaleSwitcher";
+import ProfileMenu from "@/components/ProfileMenu";
 
 export default {
   data: () => ({
-    drawer: true,
-    links: [{ icon: "home", title: "sidebar.halamanutama", route: "/dashboard" }],
+    drawer: false,
+    links: [{ icon: "home", title: "sidebar.halamanutama", route: "/" }],
     mgms: [
       {
-        action: "mdi-file",
-        title:  "sidebar.manajemensjp",
+        action: "mdi-file-document-outline",
+        title: "sidebar.manajemensjp",
         items: [
-          { title:  "sidebar.suratjalanpallet", route: "/surat-jalan-pallet" }, 
-          { title:  "sidebar.sjpstatus",route: "/sjp-status" }
-      ],
+          { title: "sidebar.suratjalanpallet", route: "/sjp" },
+          { title: "sidebar.sjpstatus", route: "/sjp-status" },
+        ],
       },
       {
-        action: "mdi-silverware-fork-knife",
+        action: "mdi-shipping-pallet",
         title: "sidebar.manajemenpallet",
         items: [
-          { title: "sidebar.mutasipallet" , route: "/mutasi-pallet" },
-          { title: "sidebar.klaimpallet", route: "/klaim-pallet" },
-          { title: "sidebar.perubahankuotapallet" , route: "/perubahan-kuota-pallet" },
-          { title: "sidebar.palletbaru" , route: "/pallet-baru" },
-          { title: "sidebar.palletrusak" , route: "/pallet-rusak" },
-          { title: "sidebar.palletdiperbaiki" , route: "/pallet-diperbaiki" },
-          { title: "sidebar.penyewaanpallet" , route: "/penyewaan-pallet" },
+          { title: "sidebar.mutasipallet", route: "/pallet-transfer" },
+          { title: "sidebar.klaimpallet", route: "/claim-pallet" },
+          {
+            title: "sidebar.perubahankuotapallet",
+            route: "/change-quota",
+          },
+          { title: "sidebar.palletbaru", route: "/new-pallet" },
+          { title: "sidebar.realisasiPallet", route: "/pallet-realization" },
+          { title: "sidebar.palletrusak", route: "/damaged-pallet" },
+          { title: "sidebar.palletdiperbaiki", route: "/repaired-pallet" },
+          { title: "sidebar.penyewaanpallet", route: "/sewa-pallet" },
         ],
       },
     ],
     pemps: [
       {
-        icon: "dashboard",
+        icon: "mdi-truck-fast",
         title: "sidebar.penyesuaianekspeditur",
-        route: "/penyesuaian-ekspeditur",
+        route: "/transporter-adjusment",
       },
-      { icon: "dashboard", title: "sidebar.manajemenperusahaan", route: "/manajemen-perusahaan" },
+      {
+        icon: "mdi-domain",
+        title: "sidebar.manajemenperusahaan",
+        route: "/company",
+      },
     ],
     lps: [
       {
-        action: "mdi-file",
+        action: "mdi-file-document-outline",
         title: "sidebar.laporan",
         items: [
-          { title: "sidebar.dasbororganisasi",  route: "/dashboard" },
+          { title: "sidebar.dasbororganisasi", route: "/dashboard" },
           { title: "sidebar.pergerakanpallet", route: "/pergerakan-pallet" },
-          { title: "sidebar.datatransaksi",  route:"/data-transaksi" },
+          { title: "sidebar.datatransaksi", route: "/data-transaksi" },
         ],
       },
       {
         action: "mdi-cog",
         title: "sidebar.pengaturan",
         items: [
-          { title: "sidebar.organisasi", route: "/organisasi" },
-          { title: "sidebar.perandanizin" , route:"/peran-dan-izin" },
-          { title: "sidebar.manajemenpengguna" , route: "/manajemen-pengguna" },
-          { title: "sidebar.kendaraan" , route: "/kendaraan" },
-          { title: "sidebar.pengendara" , route: "/pengendara" },
+          { title: "sidebar.organisasi", route: "/organization" },
+          { title: "sidebar.perandanizin", route: "/peran-dan-izin" },
+          { title: "sidebar.peran", route: "/roles" },
+          { title: "sidebar.izin", route: "/permissions" },
+          { title: "sidebar.manajemenpengguna", route: "/user" },
+          { title: "sidebar.kendaraan", route: "/trucks" },
+          { title: "sidebar.pengendara", route: "/drivers" },
         ],
       },
     ],
     logouts: [{ icon: "logout", title: "sidebar.keluar", route: "/" }],
   }),
+  methods: {
+    logout() {
+      return new Promise((resolve, reject) => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userData");
+        resolve();
+      }).then(() => {
+        this.$store.state.token = localStorage.getItem("token");
+        this.$router.push("/login");
+      });
+    },
+  },
   components: {
     LocaleSwitcher,
+    ProfileMenu
   },
 };
 </script>
- <style scoped>
+<style scoped>
 .border {
   border-left: 4px solid #0ba518;
 }

@@ -19,7 +19,7 @@ function loadLocaleMessages () {
 export default new VueI18n({
   legacy: false,
   globalInjection: true,
-  locale: 'id',
+  locale: localStorage.getItem("language"),
   fallbackLocale: 'id',
   messages: loadLocaleMessages()
 })

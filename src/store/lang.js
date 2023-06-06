@@ -8,9 +8,9 @@ Vue.use(Vuex)
 const state = {
   language: localStorage.getItem('language') || 'id',
   locale: {},
-  languageOptions: [ 
-    { value: 'id', label: 'Indonesia' },
-    { value: 'en', label: 'English' }
+  options: [ 
+    { value: 'id', text: 'INDONESIA' },
+    { value: 'en', text: 'ENGLISH' }
   ],
   selectedLanguageOption: localStorage.getItem('language') || 'id'
 };
@@ -35,8 +35,9 @@ const actions = {
   }
 };
 
-export default new Vuex.Store({
+export default {
+  namespaced : true,
   state,
   mutations,
   actions
-});
+};
