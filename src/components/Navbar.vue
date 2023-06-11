@@ -31,6 +31,7 @@
         <v-list-item
           v-for="link in links"
           :key="link.title"
+          v-if="$can(link.permission)"
           router
           :to="link.route"
         >
@@ -58,6 +59,7 @@
             v-for="child in mgm.items"
             :key="child.title"
             router
+            v-if="$can(child.permission)"
             :to="child.route"
           >
             <v-list-item-content>
@@ -68,6 +70,7 @@
         <v-list-item
           v-for="pemp in pemps"
           :key="pemp.title"
+          v-if="$can(pemp.permission)"
           router
           :to="pemp.route"
         >
@@ -94,6 +97,7 @@
           <v-list-item
             v-for="child in lp.items"
             :key="child.title"
+            v-if="$can(child.permission)"
             router
             :to="child.route"
           >
@@ -103,20 +107,6 @@
           </v-list-item>
         </v-list-group>
         <v-divider></v-divider>
-        <v-list-item
-          v-for="logout in logouts"
-          :key="logout.title"
-          router
-          :to="logout.route"
-        >
-          <v-list-item-action>
-            <v-icon>{{ logout.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{ $t(logout.title) }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item> </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </nav>
@@ -128,31 +118,32 @@ import ProfileMenu from "@/components/ProfileMenu";
 export default {
   data: () => ({
     drawer: false,
-    links: [{ icon: "home", title: "sidebar.halamanutama", route: "/" }],
+    links: [{ icon: "home", title: "sidebar.halamanutama", route: "/", permission: 'read dashboard' }],
     mgms: [
       {
         action: "mdi-file-document-outline",
         title: "sidebar.manajemensjp",
         items: [
-          { title: "sidebar.suratjalanpallet", route: "/sjp" },
-          { title: "sidebar.sjpstatus", route: "/sjp-status" },
+          { title: "sidebar.suratjalanpallet", route: "/sjp", permission: 'read sjp' },
+          { title: "sidebar.sjpstatus", route: "/sjp-status", permission: 'read sjp status' },
         ],
       },
       {
         action: "mdi-shipping-pallet",
         title: "sidebar.manajemenpallet",
         items: [
-          { title: "sidebar.mutasipallet", route: "/pallet-transfer" },
-          { title: "sidebar.klaimpallet", route: "/claim-pallet" },
+          { title: "sidebar.mutasipallet", route: "/pallet-transfer", permission: 'read pallet transfer' },
+          { title: "sidebar.klaimpallet", route: "/claim-pallet", permission: 'read claim pallet' },
           {
             title: "sidebar.perubahankuotapallet",
             route: "/change-quota",
+            permission: 'read change quota'
           },
-          { title: "sidebar.palletbaru", route: "/new-pallet" },
-          { title: "sidebar.realisasiPallet", route: "/pallet-realization" },
-          { title: "sidebar.palletrusak", route: "/damaged-pallet" },
-          { title: "sidebar.palletdiperbaiki", route: "/repaired-pallet" },
-          { title: "sidebar.penyewaanpallet", route: "/sewa-pallet" },
+          { title: "sidebar.palletbaru", route: "/new-pallet", permission: 'read new pallet' },
+          { title: "sidebar.realisasiPallet", route: "/pallet-realization", permission: 'read pallet realization' },
+          { title: "sidebar.palletrusak", route: "/damaged-pallet", permission: 'read damaged pallet' },
+          { title: "sidebar.palletdiperbaiki", route: "/repaired-pallet", permission: 'read repaired pallet' },
+          { title: "sidebar.penyewaanpallet", route: "/sewa-pallet", permission: 'read sewa pallet' },
         ],
       },
     ],
@@ -161,11 +152,13 @@ export default {
         icon: "mdi-truck-fast",
         title: "sidebar.penyesuaianekspeditur",
         route: "/transporter-adjusment",
+        permission: 'read transporter adjustment',
       },
       {
         icon: "mdi-domain",
         title: "sidebar.manajemenperusahaan",
         route: "/company",
+        permission: 'read company'
       },
     ],
     lps: [
@@ -173,16 +166,16 @@ export default {
         action: "mdi-file-document-outline",
         title: "sidebar.laporan",
         items: [
-          { title: "sidebar.dasbororganisasi", route: "/dashboard" },
-          { title: "sidebar.pergerakanpallet", route: "/pergerakan-pallet" },
-          { title: "sidebar.datatransaksi", route: "/data-transaksi" },
+          { title: "sidebar.dasbororganisasi", route: "/dashboard",  permission: 'read dashboard organization' },
+          { title: "sidebar.pergerakanpallet", route: "/pergerakan-pallet", permission: 'read pallet movement' },
+          { title: "sidebar.datatransaksi", route: "/data-transaksi", permission: 'read all transaction' },
         ],
       },
       {
         action: "mdi-cog",
         title: "sidebar.pengaturan",
         items: [
-          { title: "sidebar.organisasi", route: "/organization" },
+          { title: "sidebar.organisasi", route: "/organization"  },
           { title: "sidebar.perandanizin", route: "/peran-dan-izin" },
           { title: "sidebar.peran", route: "/roles" },
           { title: "sidebar.izin", route: "/permissions" },
@@ -190,6 +183,7 @@ export default {
           { title: "sidebar.kendaraan", route: "/trucks" },
           { title: "sidebar.pengendara", route: "/drivers" },
         ],
+        permission: 'read setting'
       },
     ],
     logouts: [{ icon: "logout", title: "sidebar.keluar", route: "/" }],

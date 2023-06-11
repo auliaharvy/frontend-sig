@@ -13,11 +13,13 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import VuetifyMoney from "vuetify-money";
+import Permissions from './mixins/permission.js'
 import VueMoment from 'vue-moment'
 import { mapGetters, mapState } from 'vuex'
 import excel from 'vue-excel-export'
 
 Vue.use(VueMoment);
+Vue.mixin(Permissions)
 Vue.use(excel)
 Vue.use(VuetifyMoney);
 Vue.use(VueSweetalert2);

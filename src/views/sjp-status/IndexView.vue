@@ -172,7 +172,18 @@ export default {
   created() {
     this.getSjpStatuss();
   },
+  watch: {
+    errors(newValue, oldValue) {
+      console.log(`Updating from ${oldValue} to ${newValue}`);
+
+      // Do whatever makes sense now
+      if (newValue === 'success') {
+        
+      }
+    },
+  },
   computed: {
+    ...mapState(['errors']),
     ...mapState("sjpStatus", {
       sjpStatuss: (state) => state.sjpStatuss,
       exportData: (state) => state.exportData,

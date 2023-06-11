@@ -14,8 +14,14 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   function (config) {
-    const token = store.state.auth.token;
-    if (token) config.headers.Authorization = `Bearer ${token}`;
+    const token = localStorage.getItem("token");
+    const role = JSON.parse(localStorage.getItem("role"));
+    const user = JSON.parse(localStorage.getItem("userData"));
+    if (token) config.headers.authorization = token;
+    if (role) config.headers.companyId = role.company_id;
+    if (role) config.headers.companyName = role.company_name;
+    if (user) config.headers.userId = user.data.id;
+    if (user) config.headers.userName = user.data.username;
     return config;
 },
 function (error) {

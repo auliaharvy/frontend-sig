@@ -62,7 +62,8 @@ const store = new Vuex.Store({
     userAuthenticated: JSON.parse(localStorage.getItem("userData")),
     errors: [],
     roles: [],
-    roleSet: {},
+    roleSet: JSON.parse(localStorage.getItem("role")),
+    permissions: JSON.parse(localStorage.getItem("permissions")),
   },
   getters: {
     isAuth: (state) => {

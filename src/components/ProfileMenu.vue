@@ -37,16 +37,9 @@
 
         <v-divider></v-divider>
 
-        <!-- <v-list>
-          <v-list-item>
-            {{ userData.data.role[0].permissions }}
-          </v-list-item>
-        </v-list> -->
 
         <v-card-actions>
           <v-spacer></v-spacer>
-
-          <!-- <v-btn variant="text" @click="menu = false"> Cancel </v-btn> -->
           <v-btn color="primary" variant="text" @click="logout()">
             Logout
           </v-btn>
@@ -82,9 +75,10 @@ export default {
       return new Promise((resolve, reject) => {
         localStorage.removeItem("token");
         localStorage.removeItem("userData");
+        localStorage.removeItem("role");
+        localStorage.removeItem("permission");
         resolve();
       }).then(() => {
-        this.$store.state.token = localStorage.getItem("token");
         this.$router.push("/login");
       });
     },

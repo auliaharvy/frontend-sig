@@ -15,7 +15,8 @@ const actions = {
     async submit({ commit }, payload) {
       localStorage.setItem('token', null)
       localStorage.setItem('userData', null)
-      localStorage.setItem('roles', null)
+      localStorage.setItem('role', null)
+      localStorage.setItem('permission', null)
       commit('isLoading')
       commit('SET_TOKEN', null, { root: true })
       // commit('RESET_USER', { root: true })
@@ -33,6 +34,8 @@ const actions = {
                   }).join(''));
                   var jsonUser = JSON.parse(jsonPayload)
                   localStorage.setItem('userData', jsonPayload);
+                  localStorage.setItem('role', JSON.stringify(jsonUser.data.role[0]));
+                  localStorage.setItem('permission', JSON.stringify(jsonUser.data.role[0].permissions));
                   commit('SET_USER_DATA', jsonUser, { root: true })
                   commit('SET_USER_AUTH', jsonUser, { root: true })
                   commit('SET_ROLE', jsonUser.data.role[0], { root: true })
