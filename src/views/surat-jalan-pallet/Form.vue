@@ -4,8 +4,56 @@
     <loading-overlay :active="loadingApi" :is-full-page="true" loader="bars" />
     <v-container>
       <v-row no-gutters>
+        <v-menu
+          v-model="tanggal1"
+          :close-on-content-click="false"
+          max-width="290"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              :value="paramDo.X_TGL1"
+              clearable
+              label="query tanggal 1"
+              readonly
+              outlined
+              v-bind="attrs"
+              v-on="on"
+              @click:clear="date = null"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            v-model="paramDo.X_TGL1"
+            @change="tanggal1 = false"
+          ></v-date-picker>
+        </v-menu>
+      </v-row>
+      <v-row no-gutters>
+        <v-menu
+          v-model="tanggal2"
+          :close-on-content-click="false"
+          max-width="290"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              :value="paramDo.X_TGL2"
+              clearable
+              label="query tanggal 2"
+              readonly
+              outlined
+              v-bind="attrs"
+              v-on="on"
+              @click:clear="date = null"
+            ></v-text-field>
+          </template>
+          <v-date-picker
+            v-model="paramDo.X_TGL2"
+            @change="tanggal2 = false"
+          ></v-date-picker>
+        </v-menu>
+      </v-row>
+      <v-row no-gutters>
         <v-text-field
-          v-model="sjp.truck_number"
+          v-model="paramDo.X_NOPOLISI"
           :label="$t('sjp.truck')"
           :rules="noTruckRules"
           outlined
@@ -17,30 +65,33 @@
       </v-row>
 
       <v-row no-gutters>
-        <v-text-field
-          v-model="sjp.no_do"
-          :label="$t('sjp.noDo')"
-          outlined
-          :rules="noTruckRules"
-          required
-        ></v-text-field>
-      </v-row>
-
-      <!-- <v-row no-gutters>
           <v-autocomplete
-            :label="$t('sjp.destination')"
-            :items="companies.data"
+            :label="$t('sjp.noDo')"
+            :items="dataDo"
             :rules="idRules"
-            dense
-            solo
-            v-model="sjp.id_destination_company"
-            item-text="name"
-            item-value="id"
+            outlined
+            v-model="sjp.no_do"
+            item-text="NO_DO"
+            item-value="NO_DO"
+            @change="changeDo()"
             required
             clearable
           >
           </v-autocomplete>
-        </v-row> -->
+        </v-row>
+        <v-row no-gutters>
+          <v-autocomplete
+            label="Multiple SPJ"
+            :items="[{id: '0', label: 'Single'}, {id: '1', label: 'Multiple'}]"
+            outlined
+            v-model="sjp.is_multiple"
+            item-text="label"
+            item-value="id"
+          >
+          </v-autocomplete>
+        </v-row>
+
+      
       <v-row no-gutters>
         <v-text-field
           v-model="sjp.destination"
@@ -155,7 +206,8 @@ export default {
   data: () => ({
     etaForm: false,
     departureForm: false,
-    loading: false,
+    tanggal1: false,
+    tanggal2: false,
     idRules: [
       (value) => {
         if (value) return true;
@@ -177,6 +229,7 @@ export default {
   }),
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.setDate();
   },
   computed: {
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
@@ -188,6 +241,12 @@ export default {
     }),
     ...mapState("sjp", {
       sjp: (state) => state.sjp, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+      loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+    ...mapState("apiExternal", {
+      dataDo: (state) => state.dataDo, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+      loadingApi: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+      paramDo: (state) => state.paramDo, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
@@ -217,8 +276,32 @@ export default {
     reset() {
       this.$refs.form.reset();
     },
+    async changeDo() {
+      const foundDo = this.dataDo.find(x => x.NO_DO === this.sjp.no_do);
+      this.sjp.no_do = foundDo.NO_DO
+          this.sjp.destination = foundDo.NAMA_TOKO;
+          this.sjp.destination_code = foundDo.SOLD_TO;
+          this.sjp.truck_number = foundDo['LICENSE PLATE'];
+          this.sjp.transporter = foundDo.NAMA_EXPEDITUR;
+          this.sjp.transporter_code = foundDo.NO_EXPEDITUR;
+          this.sjp.organization_name = foundDo.NAMA_SOLD_TO;
+          this.sjp.driver = foundDo.NAMA_SOPIR;
+          const beratIsi = foundDo.BERAT_ISI.split(',')[0]
+          const tonnage = beratIsi.replace('.','')
+          this.sjp.tonnage = parseInt(tonnage) / 1000;
+          this.sjp.packaging = 40;
+          this.sjp.pallet_quantity = Math.floor((parseInt(tonnage)/ 1000) / 2);
+          this.sjp.departure_time = new Date().toISOString().slice(0, 10);
+          var tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          this.sjp.eta = tomorrow.toISOString().slice(0, 10);
+    },
+    async setDate() {
+      this.paramDo.X_TGL1 = new Date().toISOString().slice(0, 10);
+      this.paramDo.X_TGL2 = new Date().toISOString().slice(0, 10);
+    },
     async fetchDo() {
-      if (!this.sjp.truck_number) {
+      if (!this.paramDo.X_NOPOLISI) {
         this.$swal({
           title: "Truck Number Empty",
           text: "Please Fill Truck Number",
@@ -228,7 +311,35 @@ export default {
         });
       } else {
         // this.loading = true;
-        await this.getDataDo();
+        await this.getDataDo().then((response) => {
+          if(response === 'No Data Found') {
+            this.$swal({
+              title: "No data found",
+              text: "No DO Data found",
+              type: "danger",
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Ok!",
+            });
+          } else {
+            this.sjp.no_do = response[0].NO_DO
+            this.sjp.destination = response[0].NAMA_TOKO;
+            this.sjp.destination_code = response[0].SOLD_TO;
+            this.sjp.truck_number = response[0]['LICENSE PLATE'];
+            this.sjp.transporter = response[0].NAMA_EXPEDITUR;
+            this.sjp.transporter_code = response[0].NO_EXPEDITUR;
+            this.sjp.organization_name = response[0].NAMA_SOLD_TO;
+            this.sjp.driver = response[0].NAMA_SOPIR;
+            const beratIsi = response[0].BERAT_ISI.split(',')[0]
+            const tonnage = beratIsi.replace('.','')
+            this.sjp.tonnage = parseInt(tonnage) / 1000;
+            this.sjp.packaging = 40;
+            this.sjp.pallet_quantity = Math.floor((parseInt(tonnage)/ 1000) / 2);
+            this.sjp.departure_time = new Date().toISOString().slice(0, 10);
+            var tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            this.sjp.eta = tomorrow.toISOString().slice(0, 10);
+          }
+        });
         // this.sjp.departure_time = new Date().toISOString().slice(0, 10);
         // var tomorrow = new Date();
         // tomorrow.setDate(tomorrow.getDate() + 1);

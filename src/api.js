@@ -20,6 +20,7 @@ apiClient.interceptors.request.use(
     if (token) config.headers.authorization = token;
     if (role) config.headers.companyId = role.company_id;
     if (role) config.headers.companyName = role.company_name;
+    if (role) config.headers.role = role.role_name;
     if (user) config.headers.userId = user.data.id;
     if (user) config.headers.userName = user.data.username;
     return config;

@@ -63,7 +63,6 @@ const actions = {
           //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
           apiClient.post(`/api-external/do`, state.paramDo)
           .then((response) => {
-              console.log(response)
               commit('ASSIGN_DO', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
               resolve(response.data)
           }).finally(() => {
