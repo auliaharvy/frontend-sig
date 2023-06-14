@@ -187,6 +187,22 @@ const actions = {
         });
     });
   },
+
+  setRolePermission({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+      commit("CLEAR_ERRORS", "", { root: true });
+      apiClient
+        .post(`/roles/rolehaspermissions`, payload.dataRolePermissions)
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch((error) => {
+          if (error.response.status == 422) {
+            commit("SET_ERRORS", error.response.data.errors, { root: true });
+          }
+        });
+    });
+  },
 };
 
 export default {

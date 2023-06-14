@@ -95,7 +95,8 @@
                           <v-checkbox
                             v-for="permission in permissions"
                             :key="permission.id"
-                            v-model="permissions[permission.name.toLowerCase()]"
+                            :value="permission.id"
+                            v-model="new_permission"
                             :label="`${permission.name}`"
                           ></v-checkbox>
                         </v-col>
@@ -105,7 +106,7 @@
                 </v-card>
               </v-form>
               <v-form style="margin-top: 20px">
-                <v-btn class="success">
+                <v-btn class="success" @click="setPermission">
                   {{ $t("perandanizin.aturizin") }}
                 </v-btn>
               </v-form>
@@ -195,9 +196,18 @@ export default {
       });
     },
     setPermission() {
+      console.log(this.new_permission);
+      console.log(this.permissions);
+      const dataRolePermissions = [];
+      for(var i = 0; i < this.new_permission.length; i++) {
+          var obj = {}; // <---- Move declaration inside loop
+
+          obj['id_permission'] = this.new_permission[i];
+          obj['id_role'] = this.role_selected;
+          dataRolePermissions.push(obj);
+      }
       this.setRolePermission({
-        role_id: this.role_selected,
-        permissions: this.new_permission,
+        dataRolePermissions
       }).then((res) => {
         if (res.status == "success") {
           this.alert_permission = true;
