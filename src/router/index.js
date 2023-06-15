@@ -21,11 +21,19 @@ const routes = [
   },
   {
     path: '/data-transaksi',
+    component: () => import('../views/semua-transaksi/index.vue'),
     name: 'data-transaksi',
     meta: {
       requiresAuth: true
     },
-    component: () => import('../views/data-transaksi/IndexView.vue')
+    children: [
+      {
+          path: '',
+          name: 'all-transaction.data',
+          component: () => import('../views/semua-transaksi/IndexView.vue'),
+          meta: { title: 'All transaction' }
+      },
+    ]
   },
   {
     path: '/peran-dan-izin',
@@ -333,7 +341,14 @@ const routes = [
     meta: {
       requiresAuth: true
     },
-    component: () => import('../views/semua-transaksi/IndexView.vue')
+    children: [
+      {
+          path: '',
+          name: 'sjp',
+          component: () => import('../views/semua-transaksi/IndexView.vue'),
+          meta: { title: 'Manage SJP' }
+      },
+    ]
   },
   // {
   //   path: '/sjp-status',

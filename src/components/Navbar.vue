@@ -83,6 +83,7 @@
         </v-list-item>
         <v-list-group
           v-for="lp in lps"
+          v-if="$can(lp.permission)"
           :key="lp.title"
           v-model="lp.active"
           :prepend-icon="lp.action"
@@ -98,6 +99,31 @@
             v-for="child in lp.items"
             :key="child.title"
             v-if="$can(child.permission)"
+            router
+            :to="child.route"
+          >
+            <v-list-item-content>
+              <v-list-item-title> {{ $t(child.title) }} </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+        <v-list-group
+          v-for="setting in settings"
+          v-if="$can(setting.permission)"
+          :key="setting.title"
+          v-model="setting.active"
+          :prepend-icon="setting.action"
+          no-action
+        >
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>{{ $t(setting.title) }}</v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item
+            v-for="child in setting.items"
+            :key="child.title"
             router
             :to="child.route"
           >
@@ -166,11 +192,14 @@ export default {
         action: "mdi-file-document-outline",
         title: "sidebar.laporan",
         items: [
-          { title: "sidebar.dasbororganisasi", route: "/dashboard",  permission: 'read dashboard organization' },
+          { title: "sidebar.dasbororganisasi", route: "/",  permission: 'read dashboard organization' },
           { title: "sidebar.pergerakanpallet", route: "/pergerakan-pallet", permission: 'read pallet movement' },
           { title: "sidebar.datatransaksi", route: "/data-transaksi", permission: 'read all transaction' },
         ],
+        permission: 'read laporan'
       },
+    ],
+    settings: [
       {
         action: "mdi-cog",
         title: "sidebar.pengaturan",

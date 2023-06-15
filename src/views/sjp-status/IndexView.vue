@@ -43,13 +43,13 @@
             <template v-slot:item.actions="{ item }">
               <router-link
                 :to="{ name: 'sjp-status.receive', params: { id: item.id } }"
-                v-if="item.status_sjp == 1"
+                v-if="item.status_sjp == 1 && $can('edit sjp status')"
               >
                 <v-btn color="secondary" small>{{ $t("sjpStatus.receive") }}</v-btn>
               </router-link>
               <router-link
                 :to="{ name: 'sjp-status.sendback', params: { id: item.id } }"
-                v-if="item.status_sjp == 2 && item.is_sendback == 0"
+                v-if="item.status_sjp == 2 && item.is_sendback == 0 && $can('add sjp status')"
               >
                 <v-btn color="secondary" small>{{ $t("sjpStatus.sendbackSjp") }}</v-btn>
               </router-link>

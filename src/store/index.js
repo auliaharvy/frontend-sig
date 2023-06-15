@@ -26,6 +26,7 @@ import transporterAdjusment from "./transporter-adjusment";
 import palletMovement from "./pallet-movement";
 import dashboard from "./dashboard";
 import apiExternal from "./api-external";
+import allTransaction from "./all-transaction";
 
 Vue.use(Vuex);
 
@@ -54,7 +55,8 @@ const store = new Vuex.Store({
     transporterAdjusment,
     palletMovement,
     dashboard,
-    apiExternal
+    apiExternal,
+    allTransaction
   },
   state: {
     token: localStorage.getItem("token"),
