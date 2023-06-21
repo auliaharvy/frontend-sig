@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <v-btn router :to="adds.route">{{ $t("perusahaan.tambah") }}</v-btn>
+            <v-btn v-if="$can('create company')" router :to="adds.route">{{ $t("perusahaan.tambah") }}</v-btn>
             <export-excel
               :data="companies.data"
               :fields="json_fields"
@@ -71,10 +71,10 @@
               </template>
             </template>
             <template v-slot:item.actions="{ item }">
-              <v-icon small class="mr-2" @click="editData(item)">
+              <v-icon v-if="$can('update company')" small class="mr-2" @click="editData(item)">
                 mdi-pencil
               </v-icon>
-              <v-icon small @click="hapusData(item)"> mdi-delete </v-icon>
+              <v-icon v-if="$can('delete company')" small @click="hapusData(item)"> mdi-delete </v-icon>
             </template>
           </v-data-table>
         </v-card>

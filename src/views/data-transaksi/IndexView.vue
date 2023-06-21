@@ -8,6 +8,7 @@
         <v-card>
             <v-card-title>
               Semua Transaksi
+              <v-btn v-if="$can('create laporan')" router :to="adds.route">{{ $t("laporan.tambah") }}</v-btn>
             </v-card-title>
             <v-divider></v-divider>
                 <v-card>
@@ -37,6 +38,12 @@
                     elevation="2"
                     border
                     >
+                      <template v-slot:item.actions="{ item }">
+                        <v-icon v-if="$can('update laporan')" small class="mr-2" @click="editData(item)">
+                          mdi-pencil
+                        </v-icon>
+                        <v-icon v-if="$can('delete laporan')" small @click="hapusData(item)"> mdi-delete </v-icon>
+                      </template>
                     </v-data-table>
                 </v-card>
           </v-card>

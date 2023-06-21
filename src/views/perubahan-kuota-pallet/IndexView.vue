@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <v-btn router :to="adds.route">{{ $t("changeQuota.add") }}</v-btn>
+            <v-btn v-if="$can('create change quota')" router :to="adds.route">{{ $t("changeQuota.add") }}</v-btn>
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
@@ -46,6 +46,7 @@
                         class="ma-2"
                         text
                         icon
+                        v-if="item.status === 0 || item.status === null && $can('update change quota')"
                         v-bind="attrs"
                         v-on="{ ...tooltip, ...menu }"
                       >
@@ -83,7 +84,7 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-icon v-if="item.status === 0 || item.status === null " small @click="hapusData(item)"> mdi-delete </v-icon>
+              <v-icon v-if="item.status === 0 || item.status === null && $can('delete change quota')" small @click="hapusData(item)"> mdi-delete </v-icon>
             </template>
           </v-data-table>
         </v-card>

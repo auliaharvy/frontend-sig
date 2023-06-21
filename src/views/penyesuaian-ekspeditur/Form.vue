@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('transporterAdjusment.transporter')"
-          :items="companies.data"
+          :items="companiesTransporter.data"
           :rules="idRules"
           outlined
           v-model="transporterAdjusment.id_company_transporter"
@@ -112,8 +112,10 @@ export default {
   }),
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesTransporter(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
+    ...mapState(["setRole"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -122,17 +124,21 @@ export default {
       transporterAdjusment: (state) => state.transporterAdjusment, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
       loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    ...mapState("dropdown", {
+      companiesTransporter: (state) => state.companiesTransporter, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
   },
   methods: {
     ...mapMutations("transporterAdjusment", ["CLEAR_FORM"]),
     ...mapActions("transporterAdjusment", ["submitTransporterAdjusment"]),
     ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesTransaporter"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        this.transporterAdjusment.id_user_reporter = 5;
-        this.transporterAdjusment.created_by = 3;
-        this.transporterAdjusment.updated_by = 3;
+        this.transporterAdjusment.id_user_reporter = this.setRole.user_id;
+        this.transporterAdjusment.created_by = this.setRole.user_id;
+        this.transporterAdjusment.updated_by = this.setRole.user_id;
         this.submitTransporterAdjusment(this.transporterAdjusment).then((response) => {
           console.log(response);
             this.CLEAR_FORM();

@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('changeQuota.compRequester')"
-          :items="companies.data"
+          :items="companiesDestination.data"
           :rules="idRules"
           outlined
           v-model="changeQuota.id_company_requester"
@@ -97,6 +97,7 @@ export default {
   }),
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesDestination(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
     ...mapState["roleSet"],
@@ -108,11 +109,15 @@ export default {
       changeQuota: (state) => state.changeQuota, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
       loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    ...mapState("dropdown", {
+      companiesDestination: (state) => state.companiesDestination, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
   },
   methods: {
     ...mapMutations("changeQuota", ["CLEAR_FORM"]),
     ...mapActions("changeQuota", ["submitChangeQuota"]),
     ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesDestination"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {

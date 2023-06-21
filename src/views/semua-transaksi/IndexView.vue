@@ -32,6 +32,10 @@
                   range
                 ></v-date-picker>
               </v-menu>
+              <v-icon v-if="$can('update all transaction')" small class="mr-2" @click="editData(item)">
+                mdi-pencil
+              </v-icon>
+              <v-icon v-if="$can('delete all transaction')" small @click="hapusData(item)"> mdi-delete </v-icon>
               <v-btn>{{ $t("manajemenpengguna.unduh") }}</v-btn>
               <v-spacer></v-spacer>
               <v-text-field

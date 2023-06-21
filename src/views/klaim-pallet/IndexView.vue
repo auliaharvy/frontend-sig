@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <v-btn router :to="adds.route">{{ $t("claimPallet.add") }}</v-btn>
+            <v-btn v-if="$can('create claim pallet')" router :to="adds.route">{{ $t("claimPallet.add") }}</v-btn>
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
@@ -45,6 +45,7 @@
                         text
                         icon
                         v-bind="attrs"
+                        v-if="item.status == 0 && $can('update claim pallet')"
                         v-on="{ ...tooltip, ...menu }"
                       >
                         <v-icon small class="mr-2">mdi-pencil</v-icon>
@@ -68,7 +69,7 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-icon v-if="item.status == 0 || item.status == null" small @click="hapusData(item)"> mdi-delete </v-icon>
+              <v-icon v-if="item.status == 0 || item.status == null && $can('delete claim pallet')" small @click="hapusData(item)"> mdi-delete </v-icon>
             </template>
           </v-data-table>
         </v-card>

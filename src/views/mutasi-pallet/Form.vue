@@ -191,7 +191,7 @@ export default {
         this.palletTransfer.status = 0;
         this.palletTransfer.ber_pallet = 0;
         this.palletTransfer.missing_pallet = 0;
-        this.palletTransfer.id_company_departure = this.roleSet.company_id;
+        // this.palletTransfer.id_company_departure = this.roleSet.company_id;
         this.palletTransfer.created_by = this.roleSet.user_id;
         this.palletTransfer.updated_by = this.roleSet.user_id;
         this.submitPalletTransfer(this.palletTransfer).then((response) => {

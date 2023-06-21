@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <v-btn router :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn>
+            <v-btn v-if="$can('create pallet transfer')" router :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn>
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
@@ -74,7 +74,7 @@
             </template>
 
             <template v-slot:item.process="{ item }">
-              <template v-if="item.status == 0">
+              <template v-if="item.status == 0 && $can('approve pallet transfer')">
                 <router-link
                   :to="{ name: 'pallet-transfer.aprroval', params: { id: item.id } }"
                 >
@@ -106,6 +106,7 @@
                         class="ma-2"
                         text
                         icon
+                        v-if="item.status == 0 && $can('update pallet transfer')"
                         v-bind="attrs"
                         v-on="{ ...tooltip, ...menu }"
                       >
@@ -130,7 +131,7 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-icon v-if="item.status === 0" small @click="hapusData(item)"> mdi-delete </v-icon>
+              <v-icon v-if="item.status === 0 && $can('delete pallet transfer')" small @click="hapusData(item)"> mdi-delete </v-icon>
             </template>
           </v-data-table>
         </v-card>

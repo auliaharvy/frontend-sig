@@ -75,14 +75,14 @@ const actions = {
             .then((response) => {
               console.log(response);
               const roleSet = JSON.parse(localStorage.getItem("role"));
-                if(roleSet.role_name !== 'Supervisor' || roleSet.role_name !== 'Manager' || roleSet.role_name !== 'Superuser') {
+                if(roleSet.role_name == 'Supervisor' || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
+                  commit('ASSIGN_DATA', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                  resolve(response.data)
+                } else {
                   const result = {
                     data: response.data.data.filter(val => val.company_requester == roleSet.company_name || val.company_workshop == roleSet.company_name),
                   };  
                   commit('ASSIGN_DATA', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
-                  resolve(response.data)
-                } else {
-                  commit('ASSIGN_DATA', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                   resolve(response.data)
                 } 
             }).finally(() => {

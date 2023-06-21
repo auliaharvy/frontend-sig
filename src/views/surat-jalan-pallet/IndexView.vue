@@ -8,7 +8,8 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <v-btn v-if="this.$route.path === '/sjp' && $can('create sjp')" router :to="adds.route">{{ $t("sjp.add") }}</v-btn>
+            <!-- <v-btn v-if="this.$route.path === '/sjp' && $can('create sjp')" router :to="adds.route">{{ $t("sjp.add") }}</v-btn> -->
+            <v-btn v-if="$can('create sjp')" router :to="adds.route">{{ $t("sjp.add") }}</v-btn>
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
@@ -57,16 +58,15 @@
             <template v-slot:item.send="{ item }">
               <router-link
                 :to="{ name: 'sjp-status.add', params: { id: item.id } }"
-                v-if="item.trxStatus == 0 && $can('create sjp')"
+                v-if="item.trxStatus == 0 && $can('create sjps')"
               >
                 <v-btn color="secondary" small>{{ $t("sjp.send") }}</v-btn>
               </router-link>
             </template>
             <template v-slot:item.actions="{ item }">
-              <p>{{ item }}</p>
               <v-menu>
                 <template v-slot:activator="{ on: menu, attrs }">
-                  <v-tooltip bottom>
+                  <v-tooltip bottom >
                     <template v-slot:activator="{ on: tooltip }">
                       <v-btn
                         class="ma-2"
@@ -74,6 +74,7 @@
                         icon
                         v-bind="attrs"
                         v-on="{ ...tooltip, ...menu }"
+                        v-if="item.trxStatus == 0 && $can('update sjp')"
                       >
                         <v-icon small class="mr-2">mdi-pencil</v-icon>
                       </v-btn>
@@ -102,7 +103,7 @@
                 </v-list>
               </v-menu>
               <v-icon
-                v-if="item.trxStatus === 0"
+                v-if="item.trxStatus == 0 && $can('delete sjp')"
                 small
                 @click="hapusData(item)"
               >
