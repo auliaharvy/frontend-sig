@@ -40,12 +40,19 @@ const actions = {
                   commit('SET_USER_AUTH', jsonUser, { root: true })
                   commit('SET_ROLE', jsonUser.data.role[0], { root: true })
                   commit('SET_TOKEN', response.data.data, { root: true })
-              } else {
-                  commit('SET_ERRORS', { invalid: 'Wrong Email/Password' }, { root: true })
               }
               resolve(response.data)
           })
           .catch((error) => {
+              console.log(error);
+              if (error.response.status == 400) {
+                  commit('SET_ERRORS', {invalid: error.response.data.errors }, { root: true })
+                  console.log(error.response.data.errors);
+              } 
+              if (error.response.status == 401) {
+                  commit('SET_ERRORS', { invalid: error.response.data.errors }, { root: true })
+                  console.log(error.response.data.errors);
+              } 
               if (error.response.status == 422) {
                   commit('SET_ERRORS', error.response.data.errors, { root: true })
               } 

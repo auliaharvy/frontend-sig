@@ -10,9 +10,9 @@
             align="center"
             justify="center"
           >
-            <v-card style="height: 466px; border-radius: 20px" class="login">
+            <v-card style="height: 500px; border-radius: 20px" class="login">
               <v-card
-                style="height: 466px; margin-left: 600px"
+                style="height: 500px; margin-left: 600px"
                 max-width="400"
                 justify="center"
                 align="center"
@@ -29,6 +29,7 @@
                   {{ $t("login.judul") }}
                 </v-card-title>
                 <LocaleSwitcher />
+                <div style="color:#f74328; "><small>{{ errors.invalid }}</small></div>
                 <v-form
                   v-model="valid"
                   style="margin-top: -20px"
@@ -237,8 +238,8 @@ export default {
         if (this.isAuth) {
           this.CLEAR_ERRORS();
           this.$router.push({ name: "dashboard" });
-        } 
-      })
+        }
+      });
     },
     handleIcon() {
       this.showPassword = !this.showPassword;
