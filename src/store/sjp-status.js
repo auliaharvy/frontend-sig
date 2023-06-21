@@ -111,8 +111,17 @@ const actions = {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/sjp-statuss?page=${state.page}&q=${search}`)
             .then((response) => {
-                commit('ASSIGN_DATA', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
-                resolve(response.data)
+                const roleSet = JSON.parse(localStorage.getItem("role"));
+                if(roleSet.role_name == "Supervisor" || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
+                  commit('ASSIGN_DATA', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                  resolve(response.data)
+                } else {
+                  const result = {
+                    data: response.data.data.filter(val => val.id_departure_company == roleSet.company_id || val.id_destination_company == roleSet.company_id || val.id_transporter_company == roleSet.company_id)
+                  };  
+                  commit('ASSIGN_DATA', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                  resolve(result)
+                } 
                 commit('clearError')
             }).catch((error) => {
               //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS

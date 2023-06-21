@@ -222,10 +222,10 @@ export default {
       return new Promise((resolve, reject) => {
         localStorage.removeItem("token");
         localStorage.removeItem("userData");
+        localStorage.removeItem("role");
         resolve();
       }).then(() => {
-        this.$store.state.token = localStorage.getItem("token");
-        this.$router.push("/login");
+        this.$router.push("/login").then(() => { this.$router.go() });
       });
     },
   },

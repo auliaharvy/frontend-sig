@@ -21,7 +21,6 @@
           v-model="sjpStatus.id_departure_company"
           item-text="name"
           item-value="id"
-          readonly
         >
         </v-autocomplete>
       </v-row>
@@ -126,6 +125,7 @@ export default {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
+    ...mapState(["setRole"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -143,7 +143,7 @@ export default {
       if (valid) {
         this.sjpStatus.is_sendback = 0;
         this.sjpStatus.status = 0;
-        this.sjpStatus.id_user_sender = 3;
+        this.sjpStatus.id_user_sender = this.setRole.user_id;
         this.sjpStatus.sjp_status = "send";
         this.submitSjpStatus(this.sjpStatus).then((response) => {
           console.log(response);

@@ -48,6 +48,7 @@ const actions = {
             //REQUEST DATA CUSTOMER  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/permissions?page=${state.page}&q=${search}`)
             .then((response) => {
+              console.log(response);
                 commit('ASSIGN_DATA', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data.data)
             }).finally(() => {

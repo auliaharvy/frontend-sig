@@ -8,7 +8,8 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <!-- <v-btn router :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn> -->
+            <!-- <v-btn router v-if="$can('add sjp')" :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn> -->
+            <v-btn router v-if="$can('add sjp status')" :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn>
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
@@ -61,6 +62,7 @@
                         class="ma-2"
                         text
                         icon
+                        v-if="item.status == 0 && $can('update sjp status')"
                         v-bind="attrs"
                         v-on="{ ...tooltip, ...menu }"
                       >
@@ -85,7 +87,7 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <!-- <v-icon v-if="item.status === 0" small @click="hapusData(item)"> mdi-delete </v-icon> -->
+              <v-icon v-if="item.status === 0 && $can('delete sjp status')" small @click="hapusData(item)"> mdi-delete </v-icon>
             </template>
           </v-data-table>
         </v-card>

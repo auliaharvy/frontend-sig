@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <v-btn router :to="adds.route">{{ $t("transporterAdjusment.add") }}</v-btn>
+            <v-btn v-if="$can('create transporter adjustment')" :to="adds.route">{{ $t("transporterAdjusment.add") }}</v-btn>
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
@@ -32,6 +32,29 @@
               <p class="text-normal" v-if="item.is_from_pool == 0 || item.is_from_pool == null">{{ $t("transporterAdjusment.isNotPool") }}</p>
               <p class="text-normal" v-if="item.is_from_pool == 1">{{ $t("transporterAdjusment.isPool") }}</p>
             </template>
+            <template v-slot:item.actions="{ item }">
+              <v-menu>
+                <template v-slot:activator="{ on: menu, attrs }">
+                  <v-tooltip bottom >
+                    <template v-slot:activator="{ on: tooltip }">
+                      <v-btn
+                        class="ma-2"
+                        text
+                        icon
+                        v-bind="attrs"
+                        v-on="{ ...tooltip, ...menu }"
+                        v-if="item.status == 0 && $can('update transporter adjustment')"
+                      >
+                        <v-icon small class="mr-2">mdi-pencil</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Edit data</span>
+                  </v-tooltip>
+                </template>
+              </v-menu>
+              <v-icon v-if="item.status === 0 && $can('delete transporter adjustment')" small @click="hapusData(item)"> mdi-delete </v-icon>
+            </template>
+
           </v-data-table>
         </v-card>
       </v-card>

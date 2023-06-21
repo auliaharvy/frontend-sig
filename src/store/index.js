@@ -27,6 +27,7 @@ import palletMovement from "./pallet-movement";
 import dashboard from "./dashboard";
 import apiExternal from "./api-external";
 import allTransaction from "./all-transaction";
+import dropdown from "./dropdown";
 
 Vue.use(Vuex);
 
@@ -56,7 +57,8 @@ const store = new Vuex.Store({
     palletMovement,
     dashboard,
     apiExternal,
-    allTransaction
+    allTransaction,
+    dropdown
   },
   state: {
     token: localStorage.getItem("token"),

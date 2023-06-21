@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('claimPallet.company')"
-          :items="companies.data"
+          :items="companiesDeparture.data"
           :rules="idRules"
           outlined
           v-model="claimPallet.id_company_distributor"
@@ -86,8 +86,10 @@ export default {
   }),
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
-  },
+    this.getCompaniesDeparture();
+    },
   computed: {
+    ...mapState(["setRole"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -96,17 +98,21 @@ export default {
       claimPallet: (state) => state.claimPallet, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
       loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    ...mapState("dropdown", {
+      companiesDeparture: (state) => state.companiesDeparture, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
   },
   methods: {
     ...mapMutations("claimPallet", ["CLEAR_FORM"]),
     ...mapActions("claimPallet", ["submitClaimPallet"]),
     ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesDeparture"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
         this.claimPallet.status = 0;
-        this.claimPallet.created_by = 3;
-        this.claimPallet.updated_by = 3;
+        this.claimPallet.created_by = this.setRole.user_id;
+        this.claimPallet.updated_by = this.setRole.user_id;
         this.submitClaimPallet(this.claimPallet).then((response) => {
           console.log(response);
             this.CLEAR_FORM();

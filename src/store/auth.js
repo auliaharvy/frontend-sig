@@ -33,22 +33,31 @@ const actions = {
                       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
                   }).join(''));
                   var jsonUser = JSON.parse(jsonPayload)
-                  localStorage.setItem('userData', jsonPayload);
-                  localStorage.setItem('role', JSON.stringify(jsonUser.data.role[0]));
-                  localStorage.setItem('permission', JSON.stringify(jsonUser.data.role[0].permissions));
-                  commit('SET_USER_DATA', jsonUser, { root: true })
-                  commit('SET_USER_AUTH', jsonUser, { root: true })
-                  commit('SET_ROLE', jsonUser.data.role[0], { root: true })
-                  commit('SET_TOKEN', response.data.data, { root: true })
+                  console.log(jsonUser);
+                  if (jsonUser.data.role.length == 0) {
+                    alert('User does not have role, please contact administrator');
+                  } else {
+                    localStorage.setItem('userData', jsonPayload);
+                    localStorage.setItem('role', JSON.stringify(jsonUser.data.role[0]));
+                    localStorage.setItem('permission', JSON.stringify(jsonUser.data.role[0].permissions));
+                    commit('SET_USER_DATA', jsonUser, { root: true })
+                    commit('SET_USER_AUTH', jsonUser, { root: true })
+                    commit('SET_ROLE', jsonUser.data.role[0], { root: true })
+                    commit('SET_TOKEN', response.data.data, { root: true })
+                    resolve(response.data)
+                  }
               } else {
+                  alert('Wrong Email/Password');
                   commit('SET_ERRORS', { invalid: 'Wrong Email/Password' }, { root: true })
               }
-              resolve(response.data)
           })
           .catch((error) => {
               if (error.response.status == 422) {
+                  alert(error.response.data.errors[0].password);
                   commit('SET_ERRORS', error.response.data.errors, { root: true })
-              } 
+              } else {
+                alert(error.response.data.message);
+              }
           })
           .finally(() => {
               commit('doneLoading')

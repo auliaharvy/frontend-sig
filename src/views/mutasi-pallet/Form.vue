@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('palletTransfer.departure')"
-          :items="companies.data"
+          :items="companiesDeparture.data"
           :rules="idRules"
           outlined
           v-model="palletTransfer.id_company_departure"
@@ -20,7 +20,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('palletTransfer.destination')"
-          :items="companies.data"
+          :items="companiesDestination.data"
           :rules="idRules"
           outlined
           v-model="palletTransfer.id_company_destination"
@@ -35,7 +35,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('palletTransfer.transporter')"
-          :items="companies.data"
+          :items="companiesTransporter.data"
           :rules="idRules"
           outlined
           v-model="palletTransfer.id_company_transporter"
@@ -153,14 +153,23 @@ export default {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getTrucks(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getDrivers(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesDeparture();
+    this.getCompaniesDestination(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesTransporter(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
+    ...mapState(["roleSet"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("truck", {
       trucks: (state) => state.trucks, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+    ...mapState("dropdown", {
+      companiesDeparture: (state) => state.companiesDeparture, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      companiesTransporter: (state) => state.companiesTransporter, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      companiesDestination: (state) => state.companiesDestination, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("driver", {
       drivers: (state) => state.drivers, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -173,6 +182,7 @@ export default {
     ...mapMutations("palletTransfer", ["CLEAR_FORM"]),
     ...mapActions("palletTransfer", ["submitPalletTransfer"]),
     ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesDeparture", "getCompaniesDestination", "getCompaniesTransporter"]),
     ...mapActions("truck", ["getTrucks"]),
     ...mapActions("driver", ["getDrivers"]),
     validate() {
@@ -181,6 +191,9 @@ export default {
         this.palletTransfer.status = 0;
         this.palletTransfer.ber_pallet = 0;
         this.palletTransfer.missing_pallet = 0;
+        // this.palletTransfer.id_company_departure = this.roleSet.company_id;
+        this.palletTransfer.created_by = this.roleSet.user_id;
+        this.palletTransfer.updated_by = this.roleSet.user_id;
         this.submitPalletTransfer(this.palletTransfer).then((response) => {
           console.log(response);
             this.CLEAR_FORM();

@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('changeQuota.compRequester')"
-          :items="companies.data"
+          :items="companiesDestination.data"
           :rules="idRules"
           outlined
           v-model="changeQuota.id_company_requester"
@@ -97,8 +97,10 @@ export default {
   }),
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesDestination(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
+    ...mapState["roleSet"],
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -107,18 +109,22 @@ export default {
       changeQuota: (state) => state.changeQuota, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
       loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    ...mapState("dropdown", {
+      companiesDestination: (state) => state.companiesDestination, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
   },
   methods: {
     ...mapMutations("changeQuota", ["CLEAR_FORM"]),
     ...mapActions("changeQuota", ["submitChangeQuota"]),
     ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesDestination"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
         this.changeQuota.status = 0;
-        this.changeQuota.id_requester = 3;
-        this.changeQuota.created_by = 3;
-        this.changeQuota.updated_by = 3;
+        this.changeQuota.id_requester = this.roleSet.user_id;
+        this.changeQuota.created_by = this.roleSet.user_id;
+        this.changeQuota.updated_by = this.roleSet.user_id;
         this.submitChangeQuota(this.changeQuota).then((response) => {
           console.log(response);
             this.CLEAR_FORM();

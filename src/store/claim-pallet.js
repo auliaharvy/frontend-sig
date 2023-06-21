@@ -9,6 +9,7 @@ const state = () => ({
     claimPallet: {
       id: '',
       id_company_distributor: '',
+      id_company_departure: '',
       id_user_manager: '',
       id_user_distributor: '',
       status: '',
@@ -72,9 +73,18 @@ const actions = {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/claim-pallets?page=${state.page}&q=${search}`)
             .then((response) => {
-                console.log(response);
+              console.log(response);
+              const roleSet = JSON.parse(localStorage.getItem("role"));
+              if(roleSet.role_name == 'Supervisor' || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
                 commit('ASSIGN_DATA', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
-                resolve(response.data)
+                resolve(response.data);
+              } else {
+                const result = {
+                  data: response.data.data.filter(val => val.company_name == roleSet.company_name),
+                };  
+                commit('ASSIGN_DATA', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                resolve(response.data);
+              }
             }).finally(() => {
                 commit('doneLoading')
             })

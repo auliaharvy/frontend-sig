@@ -8,6 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
+            <v-btn v-if="$can('create pallet movement')" router :to="adds.route">{{ $t("perusahaan.tambah") }}</v-btn>
             <export-excel
               :data="palletMovements.data"
               :fields="json_fields"
@@ -63,6 +64,28 @@
               >
                 {{ diffDate(item.eta) }}
               </v-chip>
+            </template>
+            <template v-slot:item.actions="{ item }">
+              <v-menu>
+                <template v-slot:activator="{ on: menu, attrs }">
+                  <v-tooltip bottom >
+                    <template v-slot:activator="{ on: tooltip }">
+                      <v-btn
+                        class="ma-2"
+                        text
+                        icon
+                        v-bind="attrs"
+                        v-on="{ ...tooltip, ...menu }"
+                        v-if="item.status == 0 && $can('update pallet movement')"
+                      >
+                        <v-icon small class="mr-2">mdi-pencil</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Edit data</span>
+                  </v-tooltip>
+                </template>
+              </v-menu>
+              <v-icon v-if="item.status === 0 && $can('delete pallet movement')" small @click="hapusData(item)"> mdi-delete </v-icon>
             </template>
           </v-data-table>
         </v-card>

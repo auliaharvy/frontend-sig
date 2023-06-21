@@ -95,9 +95,9 @@ export default {
       const valid = this.$refs.form.validate();
       if (valid) {
         this.repairedPallet.status = 0;
-        this.repairedPallet.id_user_reporter = 3;
-        this.repairedPallet.created_by = 3;
-        this.repairedPallet.updated_by = 3;
+        this.repairedPallet.id_user_reporter = this.setRole.user_id;
+        this.repairedPallet.created_by = this.setRole.user_id;
+        this.repairedPallet.updated_by = this.setRole.user_id;
         this.submitRepairedPallet(this.repairedPallet).then((response) => {
           console.log(response);
             this.CLEAR_FORM();

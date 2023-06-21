@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <v-btn router :to="adds.route">{{ $t("organisasi.tambah") }}</v-btn>
+            <v-btn v-if="$can('create dashboard organization')" router :to="adds.route">{{ $t("organisasi.tambah") }}</v-btn>
             <v-btn style="margin-left: 20px">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
@@ -29,10 +29,10 @@
             dense
           >
             <template v-slot:item.actions="{ item }">
-              <v-icon small class="mr-2" @click="editData(item)">
+              <v-icon v-if="$can('update dashboard organization')" small class="mr-2" @click="editData(item)">
                 mdi-pencil
               </v-icon>
-              <v-icon small @click="hapusData(item)"> mdi-delete </v-icon>
+              <v-icon v-if="$can('delete dashboard organization')" small @click="hapusData(item)"> mdi-delete </v-icon>
             </template>
           </v-data-table>
         </v-card>
