@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <!-- <v-btn v-if="this.$route.path === '/sjp' && $can('create sjp')" router :to="adds.route">{{ $t("sjp.add") }}</v-btn> -->
+            <v-btn v-if="this.$route.path === '/sjp' && $can('create sjp')" router :to="adds.route">{{ $t("sjp.add") }}</v-btn>
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
@@ -63,7 +63,8 @@
               </router-link>
             </template>
             <template v-slot:item.actions="{ item }">
-              <v-menu v-if="item.sjp != item.draft">
+              <p>{{ item }}</p>
+              <v-menu>
                 <template v-slot:activator="{ on: menu, attrs }">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on: tooltip }">
