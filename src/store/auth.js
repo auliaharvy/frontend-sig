@@ -46,9 +46,13 @@ const actions = {
               resolve(response.data)
           })
           .catch((error) => {
+              console.log(error)
               if (error.response.status == 422) {
+                  alert(error.response.data.errors[0].password);
                   commit('SET_ERRORS', error.response.data.errors, { root: true })
-              } 
+              } else {
+                alert(error.response.data.message);
+              }
           })
           .finally(() => {
               commit('doneLoading')

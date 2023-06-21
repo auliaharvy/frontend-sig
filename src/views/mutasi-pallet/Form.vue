@@ -155,6 +155,7 @@ export default {
     this.getDrivers(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
+    ...mapState(["roleSet"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -181,6 +182,10 @@ export default {
         this.palletTransfer.status = 0;
         this.palletTransfer.ber_pallet = 0;
         this.palletTransfer.missing_pallet = 0;
+        console.log(this.roleSet);
+        this.palletTransfer.id_company_departure = this.roleSet.company_id;
+        this.palletTransfer.created_by = this.roleSet.user_id;
+        this.palletTransfer.updated_by = this.roleSet.user_id;
         this.submitPalletTransfer(this.palletTransfer).then((response) => {
           console.log(response);
             this.CLEAR_FORM();

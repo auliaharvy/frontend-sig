@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <v-btn v-if="$can('add sjp')" router :to="adds.route">{{ $t("sjp.add") }}</v-btn>
+            <!-- <v-btn v-if="this.$route.path === '/sjp' && $can('create sjp')" router :to="adds.route">{{ $t("sjp.add") }}</v-btn> -->
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
@@ -57,7 +57,7 @@
             <template v-slot:item.send="{ item }">
               <router-link
                 :to="{ name: 'sjp-status.add', params: { id: item.id } }"
-                v-if="item.trxStatus == 0 && $can('add sjp status')"
+                v-if="item.trxStatus == 0 && $can('create sjp')"
               >
                 <v-btn color="secondary" small>{{ $t("sjp.send") }}</v-btn>
               </router-link>

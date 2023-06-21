@@ -126,6 +126,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(["setRole"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -154,8 +155,8 @@ export default {
       const valid = this.$refs.form.validate();
       if (valid) {
         this.sewaPallet.status = 0;
-        this.sewaPallet.created_by = 3;
-        this.sewaPallet.updated_by = 3;
+        this.sewaPallet.created_by = this.setRole.user_id;
+        this.sewaPallet.updated_by = this.setRole.user_id;
         this.submitSewaPallet(this.sewaPallet).then((response) => {
           console.log(response);
             this.CLEAR_FORM();

@@ -99,6 +99,7 @@ export default {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
+    ...mapState["roleSet"],
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -116,9 +117,9 @@ export default {
       const valid = this.$refs.form.validate();
       if (valid) {
         this.changeQuota.status = 0;
-        this.changeQuota.id_requester = 3;
-        this.changeQuota.created_by = 3;
-        this.changeQuota.updated_by = 3;
+        this.changeQuota.id_requester = this.roleSet.user_id;
+        this.changeQuota.created_by = this.roleSet.user_id;
+        this.changeQuota.updated_by = this.roleSet.user_id;
         this.submitChangeQuota(this.changeQuota).then((response) => {
           console.log(response);
             this.CLEAR_FORM();
