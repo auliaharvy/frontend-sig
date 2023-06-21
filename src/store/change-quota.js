@@ -80,8 +80,18 @@ const actions = {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/change-quotas?page=${state.page}&q=${search}`)
             .then((response) => {
+              console.log(response);
+              const roleSet = JSON.parse(localStorage.getItem("role"));
+              if(roleSet.role_name !== 'Supervisor' || roleSet.role_name !== 'Manager' || roleSet.role_name !== 'Superuser') {
+                const result = {
+                  data: response.data.data.filter(val => val.id_company_requester == roleSet.company_id || val.company_name == roleSet.company_name)
+                };  
+                commit('ASSIGN_DATA', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                resolve(response.data)
+              } else {
                 commit('ASSIGN_DATA', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
+              }
             }).finally(() => {
                 commit('doneLoading')
             })

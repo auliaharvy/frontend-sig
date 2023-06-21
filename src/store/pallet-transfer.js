@@ -79,7 +79,7 @@ const mutations = {
     CLEAR_FORM(state) {
         state.palletTransfer = {
           id: '',
-          id_company_departure: 4,
+          id_company_departure: '',
           id_company_destination: '',
           id_company_transporter: '',
           id_truck: '',
@@ -118,8 +118,8 @@ const mutations = {
           sender_name: '',
           created_at: '',
           updated_at: '',
-          created_by: 3,
-          updated_by: 3,
+          created_by: '',
+          updated_by: '',
         }
     }
 }
@@ -132,8 +132,18 @@ const actions = {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/pallet-transfers?page=${state.page}&q=${search}`)
             .then((response) => {
+              console.log(response);
+              const roleSet = JSON.parse(localStorage.getItem("role"));
+              if(roleSet.role_name !== 'Supervisor' || roleSet.role_name !== 'Manager' || roleSet.role_name !== 'Superuser') {
+                const result = {
+                  data: response.data.data.filter(val => val.id_company_departure == roleSet.company_id || val.id_company_destination == roleSet.company_id || val.id_company_transporter == roleSet.company_id)
+                };
+                commit('ASSIGN_DATA', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                resolve(response.data)
+              } else {
                 commit('ASSIGN_DATA', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
+              }
             }).finally(() => {
                 commit('doneLoading')
             })

@@ -6,7 +6,7 @@ const state = () => ({
     exportData: [],
     //STATE INI UNTUK FORM ADD DAN EDIT NANTINYA
     sjp: {
-        id_departure_company: 4,
+        id_departure_company: '',
         id_destination_company: '',
         destination: '',
         id_transporter_company: '',
@@ -21,10 +21,10 @@ const state = () => ({
         packaging: "",
         eta: '',
         departure_time: '',
-        product_quantity: 80,
-        pallet_quantity: 10,
-        created_by: 3,
-        updated_by: 3,
+        product_quantity: '',
+        pallet_quantity: '',
+        created_by: '',
+        updated_by: '',
     },
     page: 1
 })
@@ -54,7 +54,7 @@ const mutations = {
     //RESET STATE CUSTOMER
     CLEAR_FORM(state) {
         state.sjp = {
-            id_departure_company: 4,
+            id_departure_company: '',
             id_destination_company: '',
             destination: '',
             id_transporter_company: '',
@@ -69,10 +69,10 @@ const mutations = {
             packaging: "",
             eta: '',
             departure_time: '',
-            product_quantity: 80,
-            pallet_quantity: 10,
-            created_by: 3,
-            updated_by: 3,
+            product_quantity: '',
+            pallet_quantity: '',
+            created_by: '',
+            updated_by: '',
         }
     }
 }
@@ -85,8 +85,19 @@ const actions = {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/sjps?page=${state.page}&q=${search}`)
             .then((response) => {
-                commit('ASSIGN_DATA', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
-                resolve(response.data)
+                const roleSet = JSON.parse(localStorage.getItem("role"));
+                if(roleSet.role_name !== 'Supervisor' || roleSet.role_name !== 'Manager' || roleSet.role_name !== 'Superuser') {
+                  const result = {
+                    data: response.data.data.filter(val => val.idDeparture == roleSet.company_id || val.idDestination == roleSet.company_id || val.idTransporter == roleSet.company_id)
+                  };  
+                  commit('ASSIGN_DATA', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                  resolve(response.data)
+                } else {
+                  commit('ASSIGN_DATA', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                  resolve(response.data)
+                } 
+                
+                
             }).finally(() => {
                 commit('doneLoading')
             })
@@ -119,10 +130,11 @@ const actions = {
             .catch((error) => {
                 //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
                 if (error.response.status == 422) {
-                    commit('SET_ERRORS', error.response.data.errors, { root: true })
-                } else {
-                    commit('SET_ERRORS', error.response.data.error, { root: true })
-                }
+                  alert(error.response.data.errors[0].password);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+              } else {
+                alert(error.response.data.message);
+              }
             }).finally(() => {
                 commit('doneLoading')
             })

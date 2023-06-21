@@ -44,18 +44,13 @@ const actions = {
               resolve(response.data)
           })
           .catch((error) => {
-              console.log(error);
-              if (error.response.status == 400) {
-                  commit('SET_ERRORS', {invalid: error.response.data.errors }, { root: true })
-                  console.log(error.response.data.errors);
-              } 
-              if (error.response.status == 401) {
-                  commit('SET_ERRORS', { invalid: error.response.data.errors }, { root: true })
-                  console.log(error.response.data.errors);
-              } 
+              console.log(error)
               if (error.response.status == 422) {
+                  alert(error.response.data.errors[0].password);
                   commit('SET_ERRORS', error.response.data.errors, { root: true })
-              } 
+              } else {
+                alert(error.response.data.message);
+              }
           })
           .finally(() => {
               commit('doneLoading')

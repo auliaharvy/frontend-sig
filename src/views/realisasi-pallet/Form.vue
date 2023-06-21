@@ -93,8 +93,8 @@ export default {
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        this.palletRealization.created_by = 3;
-        this.palletRealization.updated_by = 3;
+        this.palletRealization.created_by = this.roleSet.user_id;
+        this.palletRealization.updated_by = this.roleSet.user_id;
         this.submitPalletRealization(this.palletRealization).then((response) => {
           console.log(response);
             this.CLEAR_FORM();

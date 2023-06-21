@@ -232,6 +232,7 @@ export default {
     this.setDate();
   },
   computed: {
+    ...mapState('roleSet'),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -257,6 +258,8 @@ export default {
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
+        this.sjp.created_by = this.roleSet.user_id;
+        this.sjp.updated_by = this.roleSet.user_id;
         this.submitSjp(this.sjp).then((response) => {
           console.log(response);
             this.CLEAR_FORM();

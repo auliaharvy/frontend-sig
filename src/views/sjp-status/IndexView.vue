@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <!-- <v-btn router :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn> -->
+            <v-btn router v-if="$can('add sjp')" :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn>
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
