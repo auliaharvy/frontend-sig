@@ -40,7 +40,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" variant="text" @click="logout()">
+          <v-btn color="primary" variant="text" @click="doLogout()">
             Logout
           </v-btn>
         </v-card-actions>
@@ -70,17 +70,23 @@ export default {
     }),
   },
   methods: {
+    ...mapActions("auth", [
+      "logout",
+    ]),
     ...mapActions("lang", ["setLanguage", "setSelectedLanguageOption"]),
-    async logout() {
-      return new Promise((resolve, reject) => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userData");
-        localStorage.removeItem("role");
-        localStorage.removeItem("permission");
-        resolve();
-      }).then(() => {
-        this.$router.push("/login");
+    async doLogout() {
+      this.logout().then(() => {
+        window.location.reload();
       });
+      // return new Promise((resolve, reject) => {
+      //   localStorage.removeItem("token");
+      //   localStorage.removeItem("userData");
+      //   localStorage.removeItem("role");
+      //   localStorage.removeItem("permission");
+      //   resolve();
+      // }).then(() => {
+      //   this.$router.push("/login");
+      // });
     },
   },
   watch: {

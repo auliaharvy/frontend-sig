@@ -53,23 +53,25 @@ const mutations = {
 }
 
 const actions = {
-    getTotalPallets({ commit, state }, payload) {
+    doLoading ({ commit }) {
         commit('isLoading')
+    },
+    stopLoading ({ commit }) {
+        commit('doneLoading')
+    },
+    getTotalPallets({ commit, state }, payload) {
         let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/dashboards/total-pallet`)
             .then((response) => {
-                console.log(response);
                 commit('ASSIGN_TOTAL', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
             }).finally(() => {
-                commit('doneLoading')
             })
         })
     },
     getConditionAlls({ commit }, payload) {
-        commit('isLoading')
         let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
@@ -78,12 +80,10 @@ const actions = {
                 commit('ASSIGN_CONDITION_ALL', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
             }).finally(() => {
-                commit('doneLoading')
             })
         })
     },
     getConditionTransporters({ commit }, payload) {
-        commit('isLoading')
         let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
@@ -92,12 +92,10 @@ const actions = {
                 commit('ASSIGN_CONDITION_TRANSPORTERS', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
             }).finally(() => {
-                commit('doneLoading')
             })
         })
     },
     getConditionCompany({ commit }, payload) {
-        commit('isLoading')
         let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
@@ -106,12 +104,10 @@ const actions = {
                 commit('ASSIGN_CONDITION_COMPANY', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
             }).finally(() => {
-                commit('doneLoading')
             })
         })
     },
     getConditionWarehouse({ commit }, payload) {
-        commit('isLoading')
         let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
@@ -120,12 +116,10 @@ const actions = {
                 commit('ASSIGN_CONDITION_WAREHOUSE', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
             }).finally(() => {
-                commit('doneLoading')
             })
         })
     },
     getConditionTransporter({ commit }, payload) {
-        commit('isLoading')
         let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
@@ -134,49 +128,70 @@ const actions = {
                 commit('ASSIGN_CONDITION_TRANSPORTER', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
             }).finally(() => {
-                commit('doneLoading')
             })
         })
     },
     getDetailPools({ commit }, payload) {
-        commit('isLoading')
         let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/dashboards/detail-pallet?type=Pool Pallet`)
             .then((response) => {
-                commit('ASSIGN_DETAIL_POOL', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
-                resolve(response.data)
+                console.log(response)
+                const roleSet = JSON.parse(localStorage.getItem("role"));
+                if(roleSet.role_name == "Supervisor" || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
+                    commit('ASSIGN_DETAIL_POOL', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                    resolve(response.data)
+                } else {
+                    const result = {
+                        data: response.data.data.filter(val => val.id == roleSet.company_id)
+                    };  
+                  commit('ASSIGN_DETAIL_POOL', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                    resolve(result)
+                } 
             }).finally(() => {
-                commit('doneLoading')
             })
         })
     },
     getDetailWarehouse({ commit }, payload) {
-        commit('isLoading')
         let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/dashboards/detail-pallet?type=Warehouse`)
             .then((response) => {
-                commit('ASSIGN_DETAIL_WAREHOUSE', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
-                resolve(response.data)
+                const roleSet = JSON.parse(localStorage.getItem("role"));
+                if(roleSet.role_name == "Supervisor" || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
+                    commit('ASSIGN_DETAIL_WAREHOUSE', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                    resolve(response.data)
+                } else {
+                    const result = {
+                        data: response.data.data.filter(val => val.id == roleSet.company_id)
+                    };  
+                  commit('ASSIGN_DETAIL_WAREHOUSE', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                    resolve(result)
+                } 
             }).finally(() => {
-                commit('doneLoading')
             })
         })
     },
     getDetailTransporter({ commit }, payload) {
-        commit('isLoading')
         let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/dashboards/detail-pallet?type=Transporter`)
             .then((response) => {
-                commit('ASSIGN_DETAIL_TRANSPORTER', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
-                resolve(response.data)
+                const roleSet = JSON.parse(localStorage.getItem("role"));
+                if(roleSet.role_name == "Supervisor" || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
+                    commit('ASSIGN_DETAIL_TRANSPORTER', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                    resolve(response.data)
+                } else {
+                    const result = {
+                        data: response.data.data.filter(val => val.id == roleSet.company_id)
+                    };  
+                  commit('ASSIGN_DETAIL_TRANSPORTER', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                    resolve(result)
+                } 
             }).finally(() => {
-                commit('doneLoading')
             })
         })
     },

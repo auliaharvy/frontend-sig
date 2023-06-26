@@ -33,7 +33,6 @@ const actions = {
                       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
                   }).join(''));
                   var jsonUser = JSON.parse(jsonPayload)
-                  console.log(jsonUser);
                   if (jsonUser.data.role.length == 0) {
                     alert('User does not have role, please contact administrator');
                   } else {
@@ -41,7 +40,7 @@ const actions = {
                     localStorage.setItem('role', JSON.stringify(jsonUser.data.role[0]));
                     localStorage.setItem('permission', JSON.stringify(jsonUser.data.role[0].permissions));
                     commit('SET_USER_DATA', jsonUser, { root: true })
-                    commit('SET_USER_AUTH', jsonUser, { root: true })
+                    // commit('SET_USER_AUTH', jsonUser, { root: true })
                     commit('SET_ROLE', jsonUser.data.role[0], { root: true })
                     commit('SET_TOKEN', response.data.data, { root: true })
                     resolve(response.data)
@@ -65,10 +64,11 @@ const actions = {
       })
     },
     async logout({ commit }) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userData");
+      localStorage.removeItem("role");
       commit('setToken', null);
-      commit('RESET_USER')
-      localStorage.removeItem('token'); // tambahkan ini untuk menghapus token dari localStorage
-      localStorage.removeItem('userData'); // tambahkan ini untuk menghapus token dari localStorage
+      commit('RESET_USER');
     },
   };
 

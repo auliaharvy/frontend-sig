@@ -55,7 +55,29 @@ export default {
           },
         ],
       },
-      chartOptions: this.options,
+      chartOptions:  {
+        plugins: {
+          datalabels: {
+          color: '#000000',
+          formatter: function (value) {
+            return Math.round(value);
+          },
+          font: {
+            weight: 'bold',
+            size: 12,
+          }
+        }
+        },
+        responsive: true,
+        scales: {
+          x: {
+            stacked: true,
+          },
+          y: {
+            stacked: true
+          }
+        }
+      },
     };
   },
 };

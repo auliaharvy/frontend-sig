@@ -138,6 +138,7 @@
   </nav>
 </template>
 <script>
+import { mapActions } from "vuex";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import ProfileMenu from "@/components/ProfileMenu";
 
@@ -218,15 +219,20 @@ export default {
     logouts: [{ icon: "logout", title: "sidebar.keluar", route: "/" }],
   }),
   methods: {
+    ...mapActions("auth", [
+      "logout",
+    ]),
     logout() {
-      return new Promise((resolve, reject) => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userData");
-        localStorage.removeItem("role");
-        resolve();
-      }).then(() => {
-        this.$router.push("/login").then(() => { this.$router.go() });
-      });
+      location.reload() 
+      // this.logout().then(() => {
+      //   this.$router.go(0);
+      // });
+      // return new Promise((resolve, reject) => {
+      //   this.logout()
+      //   resolve();
+      // }).then(() => {
+      //   this.$router.push("/login").then(() => { this.$router.go() });
+      // });
     },
   },
   components: {

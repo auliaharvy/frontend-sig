@@ -53,7 +53,7 @@
                   </v-tooltip>
                 </template>
                 <v-list>
-                  <v-list-item v-if="item.qty_ready_pallet < item.qty_request_pallet">
+                  <v-list-item v-if="item.qty_ready_pallet < item.qty_request_pallet && $can('create pallet realization')">
                     <v-list-item-content>
                       <v-list-item-title>
                         <v-btn router :to="'/pallet-realization/add/'+item.id" small text>

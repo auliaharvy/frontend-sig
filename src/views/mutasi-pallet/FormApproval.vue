@@ -23,13 +23,14 @@
           :items="companies.data"
           :rules="idRules"
           outlined
-          v-model="palletTransfer.id_company_destination"
+          v-model="palletTransfer.id_company_departure"
           item-text="name"
           item-value="id"
           required
           readonly
         >
         </v-autocomplete>
+        <div>{{ palletTransfer.id_company_destination }}</div>
       </v-row>
 
       <v-row no-gutters>

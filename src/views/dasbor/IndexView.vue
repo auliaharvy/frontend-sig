@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <v-row no-gutters>
+    <loading-overlay :active="loading" :is-full-page="true" loader="bars" />
+    <v-row v-if="roleSet.role_name == 'Supervisor' || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser'" no-gutters>
       <v-col :sm="12" :md="12" :lg="12">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
@@ -13,7 +14,7 @@
       </v-col>
     </v-row>
 
-    <v-row no-gutters>
+    <v-row v-if="roleSet.role_name == 'Supervisor' || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser'" no-gutters>
       <v-col :sm="12" :md="12" :lg="12">
         <v-card class="ma-1" elevation="5">
 
@@ -28,7 +29,7 @@
       </v-col>
     </v-row>
 
-    <v-row no-gutters>
+    <v-row v-if="roleSet.role_name == 'Supervisor' || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser'" no-gutters>
       <v-col :sm="6" :md="6" :lg="6">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
@@ -68,12 +69,12 @@
       </v-col>
     </v-row>
 
-    <v-row no-gutters>
+    <v-row v-if="roleSet.role_name == 'Supervisor' || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser' || roleSet.company_type == 'Pool Pallet'" no-gutters>
       <v-col :sm="6" :md="6" :lg="6">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
             <span class="text-h6 text-center font-weight-normal"
-              >Pool Pallet Detail</span
+              >Pool Pallet Detail : {{ sumPoolPallet(detailPools.data) }}</span
             >
           </v-card-title>
           <v-divider />
@@ -119,12 +120,12 @@
       </v-col>
     </v-row>
 
-    <v-row no-gutters>
+    <v-row v-if="roleSet.role_name == 'Supervisor' || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser' || roleSet.company_type == 'Warehouse'" no-gutters>
       <v-col :sm="6" :md="6" :lg="6">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
             <span class="text-h6 text-center font-weight-normal"
-              >Warehouse Detail</span
+              >Warehouse Detail : {{ sumPoolPallet(detailWarehouse.data) }}</span
             >
           </v-card-title>
           <v-divider />
@@ -170,12 +171,12 @@
       </v-col>
     </v-row>
 
-    <v-row no-gutters>
+    <v-row v-if="roleSet.role_name == 'Supervisor' || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser' || roleSet.company_type == 'Transporter'" no-gutters>
       <v-col :sm="6" :md="6" :lg="6">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
             <span class="text-h6 text-center font-weight-normal"
-              >Transporter Detail</span
+              >Transporter Detail : {{ sumPoolPallet(detailTransporter.data) }}</span
             >
           </v-card-title>
           <v-divider />
@@ -247,56 +248,34 @@ export default {
     DoughnutChart,
   },
   data: () => ({
-    idConditionCompany: 4,
-    idConditionWarehouse: 4,
-    idConditionTransporter: 4,
+    idConditionCompany: 0,
+    idConditionWarehouse: 0,
+    idConditionTransporter: 0,
     barChartDetailOptions: {
-      onClick: function (evt, array) {
-        if (array.length != 0) {
-          var position = array[0]._index;
-          var activeElement = this.tooltip._data.labels[position];
-          console.log(activeElement);
-        } else {
-          console.log("You selected the background!");
-        }
-      },
       scales: {
-        xAxes: [
-          {
-            stacked: true,
-          },
-        ],
-        yAxes: [
-          {
-            stacked: true,
-            ticks: {
-              // stepSize: 50,
-              // maxTicksLimit: 3,
-              suggestedMin: 0,
-            },
-          },
-        ],
+        x: [{
+        stacked: true,
+        ticks: {
+          beginAtZero: true
+        }
+      }],
       },
       plugins: {
         datalabels: {
-          display: true,
-          align: "center",
-          anchor: "center",
-        },
+          color: '#000000',
+          formatter: function (value) {
+            return Math.round(value);
+          },
+          font: {
+            weight: 'bold',
+            size: 12,
+          }
+        }
       },
       responsive: true,
       maintainAspectRatio: false,
     },
     barChartOptions: {
-      onClick: function (evt, array) {
-        if (array.length != 0) {
-          var position = array[0]._index;
-          var activeElement = this.tooltip._data.labels[position];
-          console.log(activeElement);
-        } else {
-          console.log("You selected the background!");
-        }
-      },
       scales: {
         yAxes: [
           {
@@ -310,10 +289,15 @@ export default {
       },
       plugins: {
         datalabels: {
-          display: true,
-          align: "center",
-          anchor: "center",
-        },
+          color: '#000000',
+          formatter: function (value) {
+            return Math.round(value);
+          },
+          font: {
+            weight: 'bold',
+            size: 12,
+          }
+        }
       },
       responsive: true,
       maintainAspectRatio: false,
@@ -326,20 +310,24 @@ export default {
     ],
   }),
   created() {
+    this.doLoading();
     this.getTotalPallets(); //LOAD DATA KETIKA COMPONENT DI-LOAD
     this.getConditionAlls("all"); //LOAD DATA KETIKA COMPONENT DI-LOAD
     this.getConditionTransporters("Transporter"); //LOAD DATA KETIKA COMPONENT DI-LOAD
     this.getDetailPools().then((response) => {
       this.idConditionCompany = response.data[0].id;
       this.getConditionCompany(response.data[0].id);
+      this.stopLoading()
     });
     this.getDetailWarehouse().then((response) => {
       this.idConditionWarehouse = response.data[0].id;
       this.getConditionWarehouse(response.data[0].id);
+      this.stopLoading()
     });
     this.getDetailTransporter().then((response) => {
       this.idConditionTransporter = response.data[0].id;
       this.getConditionTransporter(response.data[0].id);
+      this.stopLoading()
     });
   },
   computed: {
@@ -357,6 +345,7 @@ export default {
     ...mapState("dashboard", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    ...mapState(["roleSet"]),
     // data total pallet barchart
     dataTotalPallet() {
       return _.map(this.totalPallets.data, function (o) {
@@ -401,6 +390,7 @@ export default {
       });
     },
     // data Detail Pallet Pool
+    
     detailPoolStock() {
       return _.map(this.detailPools.data, function (o) {
         return o.stock;
@@ -486,8 +476,13 @@ export default {
       "getDetailTransporter",
       "getConditionCompany",
       "getConditionWarehouse",
-      "getConditionTransporter"
+      "getConditionTransporter",
+      "doLoading",
+      "stopLoading"
     ]),
+    sumPoolPallet(data) {
+      return data.reduce((acc, o) => acc + parseInt(o.stock), 0)
+    },
     sumTotal(data) {
       return data.reduce((acc, item) => acc + parseInt(item.jumlah_pallet), 0);
     },

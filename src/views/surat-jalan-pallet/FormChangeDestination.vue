@@ -36,7 +36,7 @@
       <v-row no-gutters>
           <v-autocomplete
             :label="$t('sjp.newDest')"
-            :items="companies.data"
+            :items="companiesDestination.data"
             :rules="idRules"
             outlined
             v-model="sjp.id_new_destination_company"
@@ -92,6 +92,7 @@ export default {
   }),
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesDestination();
   },
   computed: {
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
@@ -101,10 +102,14 @@ export default {
     ...mapState("sjp", {
       sjp: (state) => state.sjp, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    ...mapState("dropdown", {
+      companiesDestination: (state) => state.companiesDestination, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
   },
   methods: {
     ...mapMutations("sjp", ["CLEAR_FORM"]),
     ...mapActions("sjp", ["updateSjp"]),
+    ...mapActions("dropdown", ["getCompaniesDestination"]),
     ...mapActions("company", ["getCompanies"]),
     validate() {
       this.sjp.change_type = 'change_destination';

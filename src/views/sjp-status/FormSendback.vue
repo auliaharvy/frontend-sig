@@ -58,7 +58,7 @@
         <v-text-field
           v-model="sjpStatus.good_pallet"
           :label="$t('pallet.good')"
-          :rules="idRules"
+          :rules="palletRules"
           outlined
           readonly
         ></v-text-field>
@@ -68,6 +68,7 @@
         <v-text-field
           v-model="tbrPallet"
           :label="$t('pallet.tbr')"
+          :rules="palletRules"
           outlined
         ></v-text-field>
       </v-row>
@@ -117,6 +118,9 @@ export default {
 
         return "this field is required";
       },
+    ],
+    palletRules: [
+      (v) => v > -1 || "cannot input - number",
     ],
     noTruckRules: [
       (v) => !!v || "this field is required",
@@ -178,7 +182,9 @@ export default {
       }
     },
     reset() {
-      this.$refs.form.reset();
+      this.tbrPallet = 0;
+      this.sjpStatus.receiving_driver_approval = '';
+      this.sjpStatus.note = '';
     },
   },
   destroyed() {

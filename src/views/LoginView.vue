@@ -237,7 +237,7 @@ export default {
       await this.submit(this.user).then(() => {
         if (this.isAuth) {
           this.CLEAR_ERRORS();
-          this.$router.push({ name: "dashboard" });
+          this.$router.push({ name: "dashboard" }).then(() => { window.location.reload() });
         }
       });
     },

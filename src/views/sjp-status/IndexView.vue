@@ -44,17 +44,17 @@
             <template v-slot:item.actions="{ item }">
               <router-link
                 :to="{ name: 'sjp-status.receive', params: { id: item.id } }"
-                v-if="item.status_sjp == 1 && $can('edit sjp status')"
+                v-if="item.status_sjp == 1 && $can('update sjp status')"
               >
                 <v-btn color="secondary" small>{{ $t("sjpStatus.receive") }}</v-btn>
               </router-link>
               <router-link
                 :to="{ name: 'sjp-status.sendback', params: { id: item.id } }"
-                v-if="item.status_sjp == 2 && item.is_sendback == 0 && $can('add sjp status')"
+                v-if="item.status_sjp == 2 && item.is_sendback == 0 && $can('create sjp status') && item.status == 1"
               >
                 <v-btn color="secondary" small>{{ $t("sjpStatus.sendbackSjp") }}</v-btn>
               </router-link>
-              <v-menu>
+              <!-- <v-menu>
                 <template v-slot:activator="{ on: menu, attrs }">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on: tooltip }">
@@ -87,7 +87,7 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-icon v-if="item.status === 0 && $can('delete sjp status')" small @click="hapusData(item)"> mdi-delete </v-icon>
+              <v-icon v-if="item.status === 0 && $can('delete sjp status')" small @click="hapusData(item)"> mdi-delete </v-icon> -->
             </template>
           </v-data-table>
         </v-card>
@@ -151,7 +151,6 @@ export default {
           icon: "mdi-call-received",
           href: "/sjp-status/receive",
         },
-        { text: "Change Truck", icon: "mdi-truck", href: "/pallet-transfers/change-truck" },
       ],
       json_fields: {
         "SJPS Number": "trx_number",

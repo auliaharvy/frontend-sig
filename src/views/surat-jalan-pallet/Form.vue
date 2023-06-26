@@ -126,7 +126,7 @@
         <v-text-field
           v-model="sjp.pallet_quantity"
           :label="$t('sjp.palletQuantity')"
-          :rules="idRules"
+          :rules="palletRules"
           outlined
           required
         ></v-text-field>
@@ -215,6 +215,9 @@ export default {
         return "this field is required";
       },
     ],
+    palletRules: [
+      (v) => v > -1 || "cannot input - number",
+    ],
     noTruckRules: [
       (v) => !!v || "this field is required",
       (v) => (v && v.length >= 3) || "must be greater than 3 characters",
@@ -261,7 +264,6 @@ export default {
         this.sjp.created_by = this.roleSet.user_id;
         this.sjp.updated_by = this.roleSet.user_id;
         this.submitSjp(this.sjp).then((response) => {
-          console.log(response);
             this.CLEAR_FORM();
             this.$router.push({ name: "sjp" });
           // else {

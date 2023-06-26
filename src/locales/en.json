@@ -199,7 +199,11 @@
     "truck": "Truck",
     "driver": "Driver",
     "status": "Status",
-    "sendback": "SJP Status",
+    "sendback": "Sendback",
+    "sendbackTo": "Sendback To",
+    "sendbackFrom": "Sendback From",
+    "receiveFrom": "Receive From",
+    "sendbackSjp": "Sendback SJP",
     "reason": "Reason",
     "note": "Note",
     "check": "Check"

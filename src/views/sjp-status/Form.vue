@@ -57,7 +57,7 @@
         <v-text-field
           v-model="sjpStatus.good_pallet"
           :label="$t('pallet.good')"
-          :rules="idRules"
+          :rules="palletRules"
           outlined
           readonly
         ></v-text-field>
@@ -109,6 +109,9 @@ export default {
         return "this field is required";
       },
     ],
+    palletRules: [
+      (v) => v > -1 || "cannot input - number",
+    ],
     noTruckRules: [
       (v) => !!v || "this field is required",
       (v) => (v && v.length >= 3) || "must be greater than 3 characters",
@@ -125,7 +128,7 @@ export default {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
-    ...mapState(["setRole"]),
+    ...mapState(["roleSet"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -143,7 +146,7 @@ export default {
       if (valid) {
         this.sjpStatus.is_sendback = 0;
         this.sjpStatus.status = 0;
-        this.sjpStatus.id_user_sender = this.setRole.user_id;
+        this.sjpStatus.id_user_sender = this.roleSet.user_id;
         this.sjpStatus.sjp_status = "send";
         this.submitSjpStatus(this.sjpStatus).then((response) => {
           console.log(response);
@@ -162,7 +165,8 @@ export default {
       }
     },
     reset() {
-      this.$refs.form.reset();
+      this.sjpStatus.sending_driver_approval = '';
+      this.sjpStatus.note = '';
     },
   },
   destroyed() {

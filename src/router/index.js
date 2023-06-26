@@ -335,21 +335,21 @@ const routes = [
   //   },
   //   component: () => import('../views/perubahan-kuota-pallet/IndexView.vue')
   // },
-  {
-    path: '/semua-transaksi',
-    name: 'semua-transaksi',
-    meta: {
-      requiresAuth: true
-    },
-    children: [
-      {
-          path: '',
-          name: 'sjp',
-          component: () => import('../views/semua-transaksi/IndexView.vue'),
-          meta: { title: 'Manage SJP' }
-      },
-    ]
-  },
+  // {
+  //   path: '/semua-transaksi',
+  //   name: 'semua-transaksi',
+  //   meta: {
+  //     requiresAuth: true
+  //   },
+  //   children: [
+  //     {
+  //         path: '',
+  //         name: 'sjp',
+  //         component: () => import('../views/semua-transaksi/IndexView.vue'),
+  //         meta: { title: 'Manage SJP' }
+  //     },
+  //   ]
+  // },
   // {
   //   path: '/sjp-status',
   //   name: 'sjp-status',

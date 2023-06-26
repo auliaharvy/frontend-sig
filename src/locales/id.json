@@ -195,6 +195,7 @@
     "receiver": "Penerima",
     "transporter": "Ekspeditur",
     "sendbackTo": "Kirim Kembali ke",
+    "sendbackFrom": "Kirim Kembali dari",
     "receiveFrom": "Terima dari",
     "sendbackSjp": "Sendback SJP",
     "truck": "No Truk",
