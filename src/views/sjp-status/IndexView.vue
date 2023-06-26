@@ -39,6 +39,13 @@
               <p class="text-green" v-else-if="item.status == 1">Received</p>
             </template>
 
+            <template v-slot:item.tinjau="{ item }">
+              <router-link
+                :to="{ name: 'sjp-status.view', params: { id: item.id } }"
+              >
+                <v-btn color="info" small>Tinjau</v-btn>
+              </router-link>
+            </template>
 
             <template v-slot:item.actions="{ item }">
               <router-link
@@ -137,6 +144,7 @@ export default {
         { value: "is_sendback", text: this.$t("sjpStatus.sendback") },
         { value: "status", text: this.$t("sjpStatus.status") },
         { value: "note", text: this.$t("sjpStatus.note") },
+        { value: "tinjau", text: 'Tinjau'},
         { value: "actions", text: this.$t("table.actions") },
       ],
       items: [],

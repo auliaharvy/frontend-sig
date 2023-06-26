@@ -381,7 +381,7 @@ const routes = [
   {
     path: '/sjp-status',
     component: () => import('../views/sjp-status/index.vue'),
-    meta: { requiresAuth: true },
+    // meta: { requiresAuth: true },
     children: [
         {
             path: '',
@@ -406,6 +406,12 @@ const routes = [
           name: 'sjp-status.sendback',
           component: () => import('../views/sjp-status/SendbackView.vue'),
           meta: { title: 'Sendback SJP Status' }
+        },
+        {
+          path: 'view/:id',
+          name: 'sjp-status.view',
+          component: () => import('../views/sjp-status/PrintView.vue'),
+          meta: { title: 'Print SJP Status' }
         },
     ]
   },

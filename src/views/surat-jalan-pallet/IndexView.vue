@@ -192,6 +192,8 @@ export default {
   },
   created() {
     this.getSjps(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
+    console.log(this.sjps);
+    console.log('wkwk');
   },
   computed: {
     ...mapState("sjp", {
