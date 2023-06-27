@@ -1,10 +1,10 @@
 <template>
   <v-app>
-    <app-header v-if="isAuth && this.$route.name != 'sjp-status.view' && this.$route.name != 'claim-pallet.view'" />
+    <app-header v-if="isAuth && this.$route.name != 'sjp-status.view' && this.$route.name != 'claim-pallet.view' && this.$route.name != 'sewa-pallet.view'" />
     <v-main>
       <router-view />
     </v-main>
-    <app-footer v-if="isAuth && this.$route.name != 'sjp-status.view' && this.$route.name != 'claim-pallet.view'" />
+    <app-footer v-if="isAuth && this.$route.name != 'sjp-status.view' && this.$route.name != 'claim-pallet.view' && this.$route.name != 'sewa-pallet.view'" />
   </v-app>
 </template>
 

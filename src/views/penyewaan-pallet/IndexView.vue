@@ -35,6 +35,14 @@
               <p class="text-green" v-else-if="item.status == 3">Distributor Approved</p>
               <p class="text-red" v-else-if="item.status == 4">Distributor Rejected</p>
             </template>
+            <template v-slot:item.tinjau="{ item }">
+              <router-link
+                :to="{ name: 'sewa-pallet.view', params: { id: item.id } }"
+              >
+                <v-btn color="info" small>Tinjau</v-btn>
+              </router-link>
+            </template>
+
             <template v-slot:item.actions="{ item }">
               <v-menu>
                 <template v-slot:activator="{ on: menu, attrs }">
@@ -127,6 +135,7 @@ export default {
         { value: "total_price", text: this.$t("claimPallet.totalPrice") },
         { value: "reason_manager", text: this.$t("claimPallet.reasonManager") },
         { value: "reason_distributor", text: this.$t("claimPallet.reasonDist") },
+        { value: "tinjau", text: 'Tinjau' },
         { value: "actions", text: this.$t("table.actions") },
       ],
       search: "",

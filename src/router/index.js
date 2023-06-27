@@ -654,7 +654,14 @@ const routes = [
           component: () => import('../views/penyewaan-pallet/ApprovalViewDist.vue'),
           meta: { title: 'Approval Sewa Pallet' }
         },
-        
+
+        {
+          path: 'view/:id',
+          name: 'sewa-pallet.view',
+          component: () => import('../views/penyewaan-pallet/PrintView.vue'),
+          meta: { title: 'Print Sewa Pallet' }
+        },
+       
     ]
   },
 

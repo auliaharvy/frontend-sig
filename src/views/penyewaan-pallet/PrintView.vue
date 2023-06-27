@@ -123,8 +123,8 @@
   </nav>
     <v-col md-12>
       <v-card class="container-print-section" style="display: flex; justify-content:center; padding-top: 50px; padding-bottom: 50px; background-color: #F5F5F5;">
+        <!-- <v-card class="print-section" style="display: flex; justify-content:center; flex-direction: column; width: 75%; padding: 30px;"> -->
         <v-card class="print-section" style="display: flex; justify-content:center; flex-direction: column; width: 2480px; padding: 30px;">
-        <!-- <v-card class="print-section" style="display: flex; justify-content:center; flex-direction: column; width: 287px; padding: 15px;"></v-card> -->
           <v-simple-table>
             <template v-slot:default>
               <table class="section-header" style="width: 100%; padding-bottom: 5px; font-size: 20px;">
@@ -133,7 +133,7 @@
                 </tr>
                 <tr style="width: 100%;">
                   <td class="pt-dan-number" style="display: inline-block; width: 50%; text-align: start;"><strong>PT. SEMEN INDONESIA</strong></td>
-                  <td class="pt-dan-number" style="display: inline-block; width: 50%; text-align: end;"><strong>{{ claimPallet.trx_number }}</strong></td>
+                  <td class="pt-dan-number" style="display: inline-block; width: 50%; text-align: end;"><strong>{{ sewaPallet.trx_number }}</strong></td>
                 </tr>
                 <tr style="width: 100%;">
                   <td style="display: inline-block; padding-top: 5px; width: 50%;">
@@ -158,12 +158,12 @@
                       <tr style="width: 100%;">
                         <td style="width: 12%;">Pembeli</td>
                         <td style="width: 2%">:</td>
-                        <td style="width: 36%">{{ claimPallet.company_name }}</td>
+                        <td style="width: 36%">{{ sewaPallet.company_name == null ? '-' : sewaPallet.company_name }}</td>
                       </tr>
                       <tr>
                         <td style="width: 12%;">Nama</td>
                         <td style="width: 2%">:</td>
-                        <td style="width: 86%" colspan="2">{{ claimPallet.manager_name == null ? '-' : claimPallet.manager_name}}</td>
+                        <td style="width: 86%" colspan="2">{{ sewaPallet.manager_name == null ? '-' : sewaPallet.manager_name }}</td>
                       </tr>
                       <tr>
                         <td style="width: 12%;">Alamat</td>
@@ -174,12 +174,8 @@
                       </tr>
                     </table>
                   </td>
-                  <!-- <td style="width: 50%; border: 1px solid red;">hay</td> -->
                 </tr>
               </table>
-              <!-- <div style="display: inline-block; height: 100px; width: 50%; border: 1px solid black;">
-                <div style="display: inline-block; text-align: end; border: 1px solid black;">No. 000032</div>
-              </div> -->
             </template>
           </v-simple-table>
           <v-simple-table class="custom-data-table">
@@ -201,26 +197,40 @@
                   <td>{{ item.name }}</td>
                   <td>{{ item.calories }}</td>
                 </tr> -->
-                <tr>
+                <tr style="font-size: 14px;">
                   <td>01</td>
-                  <td>BER PALLET</td>
-                  <td>{{ claimPallet.ber_pallet }}</td>
-                  <td>{{ claimPallet.ber_pallet == 0 ? '-' : convertToRupiah(claimPallet.price) }}</td> <!-- JIKA 0 MAKA TAMPILKAN STRIP '-'-->
-                  <td>{{ convertToRupiah(claimPallet.price * claimPallet.ber_pallet ) }}</td> <!-- JUMLAH PER DESKRIPSI PALLET, HASIL PERKALIAN DARI HARGA SATUAN PALLET DIKALI JUMLAH PALLET -->
+                  <td>GOOD PALLET</td>
+                  <td>{{ sewaPallet.good_pallet == 0 ? '-' : sewaPallet.good_pallet }}</td>
+                  <td>{{ sewaPallet.good_pallet == 0 ? '-' : convertToRupiah(sewaPallet.price) }}</td><!-- JIKA 0 MAKA TAMPILKAN STRIP '-'-->
+                  <td>{{ convertToRupiah(sewaPallet.price * sewaPallet.good_pallet ) }}</td><!-- JUMLAH PER DESKRIPSI PALLET, HASIL PERKALIAN DARI HARGA SATUAN PALLET DIKALI JUMLAH PALLET -->
                 </tr>
-                <tr>
+                <tr style="font-size: 14px;">
                   <td>02</td>
-                  <td>MISSING PALLET</td>
-                  <td>{{ claimPallet.missing_pallet }}</td>
-                  <td>{{ claimPallet.missing_pallet == 0 ? '-' : convertToRupiah(claimPallet.price) }}</td> <!-- JIKA 0 MAKA TAMPILKAN STRIP '-'-->
-                  <td>{{ convertToRupiah(claimPallet.price * claimPallet.missing_pallet ) }}</td> <!-- JUMLAH PER DESKRIPSI PALLET, HASIL PERKALIAN DARI HARGA SATUAN PALLET DIKALI JUMLAH PALLET -->
+                  <td>TBR PALLET</td>
+                  <td>{{ sewaPallet.tbr_pallet == 0 ? '-' : sewaPallet.tbr_pallet }}</td>
+                  <td>{{ sewaPallet.tbr_pallet == 0 ? '-' : convertToRupiah(sewaPallet.price) }}</td><!-- JIKA 0 MAKA TAMPILKAN STRIP '-'-->
+                  <td>{{ convertToRupiah(sewaPallet.price * sewaPallet.tbr_pallet ) }}</td><!-- JUMLAH PER DESKRIPSI PALLET, HASIL PERKALIAN DARI HARGA SATUAN PALLET DIKALI JUMLAH PALLET -->
                 </tr>
-                <tr>
+                <tr style="font-size: 14px;">
+                  <td>03</td>
+                  <td>BER PALLET</td>
+                  <td>{{ sewaPallet.ber_pallet == 0 ? '-' : sewaPallet.ber_pallet }}</td>
+                  <td>{{ sewaPallet.ber_pallet == 0 ? '-' : convertToRupiah(sewaPallet.price) }}</td><!-- JIKA 0 MAKA TAMPILKAN STRIP '-'-->
+                  <td>{{ convertToRupiah(sewaPallet.price * sewaPallet.ber_pallet ) }}</td><!-- JUMLAH PER DESKRIPSI PALLET, HASIL PERKALIAN DARI HARGA SATUAN PALLET DIKALI JUMLAH PALLET -->
+                </tr>
+                <tr style="font-size: 14px;">
+                  <td>04</td>
+                  <td>MISSING PALLET</td>
+                  <td>{{ sewaPallet.missing_pallet == 0 ? '-' : sewaPallet.missing_pallet }}</td>
+                  <td>{{ sewaPallet.missing_pallet == 0 ? '-' : convertToRupiah(sewaPallet.price) }}</td><!-- JIKA 0 MAKA TAMPILKAN STRIP '-'-->
+                  <td>{{ convertToRupiah(sewaPallet.price * sewaPallet.missing_pallet ) }}</td><!-- JUMLAH PER DESKRIPSI PALLET, HASIL PERKALIAN DARI HARGA SATUAN PALLET DIKALI JUMLAH PALLET -->
+                </tr>
+                <tr style="font-size: 24px;">
                   <td></td>
                   <td></td>
                   <td></td> 
                   <td>Total :</td>
-                  <td>{{ convertToRupiah(claimPallet.price * claimPallet.ber_pallet + claimPallet.price * claimPallet.missing_pallet) }}</td><!-- TOTAL BERASAL DARI PENJUMLAHAN SELURUH JUMLAH DARI MASING MASING DESKRIPSI -->
+                  <td>{{ convertToRupiah(sewaPallet.price * sewaPallet.good_pallet + sewaPallet.price * sewaPallet.tbr_pallet + sewaPallet.price * sewaPallet.ber_pallet + sewaPallet.price * sewaPallet.missing_pallet) }}</td><!-- TOTAL BERASAL DARI PENJUMLAHAN SELURUH JUMLAH DARI MASING MASING DESKRIPSI -->
                 </tr>
               </tbody>
             </template>
@@ -230,7 +240,7 @@
               <div style="padding: 20px 20px 50px 20px;">
                 <div style="display: inline-block; width: 70px;">Terbilang</div>
                 <div style="display: inline-block; width: 10px;">:</div>
-                <span>{{ convertToRupiah(claimPallet.price * claimPallet.ber_pallet + claimPallet.price * claimPallet.missing_pallet) }}</span>
+                <span>{{ convertToRupiah(sewaPallet.price * sewaPallet.good_pallet + sewaPallet.price * sewaPallet.tbr_pallet + sewaPallet.price * sewaPallet.ber_pallet + sewaPallet.price * sewaPallet.missing_pallet) }}</span>
               </div>
               <div style="display: inline-block; width: 50%;">
                 <div style="text-align: center; padding-bottom: 70px;">Diterima Oleh</div>
@@ -268,7 +278,7 @@
 </template>
 <script>
 import { mapActions, mapState } from "vuex";
-import QrcodeVue from 'qrcode.vue';
+import QrcodeVue from 'qrcode.vue'
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import ProfileMenu from "@/components/ProfileMenu";
 
@@ -277,9 +287,9 @@ export default {
   name: "QRCode",
   data() {
     return {
-
     terbilang: '',
     linkQR: '',
+    baseUrl: window.location.origin,
     forSlot: {
       table: 'table',
     },
@@ -356,22 +366,22 @@ export default {
     QrcodeVue,
   },
   created() {
-    this.getClaimPalletDetail(this.$route.params.id).then((response) => {
+    this.getSewaPalletDetail(this.$route.params.id).then((response) => {
       console.log(response);
-      const tanggal = new Date(response.created_at);
+      const tanggal = new Date(response.updated_at);
       const tanggalFormat = tanggal.getFullYear() + "-" + (tanggal.getMonth() + 1) + "-" + tanggal.getDate() + " " + tanggal.getHours() + ":" + tanggal.getMinutes() + ":" + tanggal.getSeconds();
       this.tanggal = tanggalFormat;
     });
-    this.linkQR = window.location.origin + '/claim-pallet/view/' + this.$route.params.id;
+    this.linkQR = window.location.origin + '/sewa-pallet/view/' + this.$route.params.id;
   },
   computed: {
-    ...mapState("claimPallet", {
-      claimPallet: (state) => state.claimPallet,
+    ...mapState("sewaPallet", {
+      sewaPallet: (state) => state.sewaPallet,
       loading: (state) => state.loading,
     }),
   },
   methods: {
-    ...mapActions("claimPallet", ["getClaimPalletDetail"]),
+    ...mapActions("sewaPallet", ["getSewaPalletDetail"]),
     convertToRupiah(number) {
       const formattedNumber = number.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
       return formattedNumber;
@@ -380,9 +390,9 @@ export default {
 };
 </script>
 <style scoped>
-/* Untuk perangkat dengan lebar layar maksimum 600px */
+/* @media print and (width: 302px) and (height: 700px) { */
 @media (max-width: 600px) {
-  .print-section{
+  .print-section, .container-alamat{
     font-size: small;
   }
 
@@ -406,12 +416,12 @@ export default {
   }
 }
 
-/* @media print and (width: 302px) and (height: 700px) { */
 @media print {
   @page {
     size: A4;
     margin: 0;
   }
+
   *, .print-section .btn-print {
     visibility: hidden;
     /* display: none !important; */
