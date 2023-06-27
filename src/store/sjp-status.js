@@ -5,7 +5,7 @@ const state = () => ({
     sjpStatuss: [], //STATE UNTUK MENAMPUNG DATA SJPS
     exportData: [],
 
-    //STATE INI UNTUK FORM ADD DAN EDIT NANTINYA
+    //STATE INI UNTUK FORM ADD, EDIT DAN DETAIL PRINT QRCODEE NANTINYA
     sjpStatus: {
       id: '',
       id_sjp: '',
@@ -184,6 +184,10 @@ const actions = {
               response.data.data[0].send_missing_pallet = response.data.data[0].missing_pallet; 
               commit("ASSIGN_FORM", response.data.data[0]); //ASSIGN DATA TERSEBUT KE DALAM STATE CUSTOMER
               resolve(response.data.data[0]);
+            }).catch((error) => {
+              //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+              console.log('dibawah ini error dari sjps status detail');
+              console.log(error);
             })
             .finally(() => {
               commit("doneLoading");

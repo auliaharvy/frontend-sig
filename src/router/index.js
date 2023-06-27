@@ -422,6 +422,12 @@ const routes = [
           component: () => import('../views/sjp-status/SendbackView.vue'),
           meta: { title: 'Sendback SJP Status' }
         },
+        {
+          path: 'view/:id',
+          name: 'sjp-status.view',
+          component: () => import('../views/sjp-status/PrintView.vue'),
+          meta: { title: 'Print SJP Status' }
+        },
     ]
   },
 
@@ -572,7 +578,13 @@ const routes = [
           component: () => import('../views/klaim-pallet/ApprovalViewDist.vue'),
           meta: { title: 'Approval Claim Pallet' }
         },
-        
+        {
+          path: 'view/:id',
+          name: 'claim-pallet.view',
+          component: () => import('../views/klaim-pallet/PrintView.vue'),
+          meta: { title: 'Claim Pallet Print' }
+        },
+       
     ]
   },
 
