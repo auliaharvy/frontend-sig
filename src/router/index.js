@@ -588,7 +588,7 @@ const routes = [
     ]
   },
 
-  // Transporter Adjusment
+  // Transporter Adjustment
   {
     path: '/transporter-adjusment',
     component: () => import('../views/penyesuaian-ekspeditur/index.vue'),

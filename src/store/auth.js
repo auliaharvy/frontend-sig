@@ -51,7 +51,6 @@ const actions = {
               }
           })
           .catch((error) => {
-            console.log(error);
               if (error.response.status == 422) {
                   alert(error.response.data.errors[0].password);
                   commit('SET_ERRORS', error.response.data.errors, { root: true })

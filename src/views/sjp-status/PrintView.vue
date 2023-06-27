@@ -195,7 +195,7 @@ import QrcodeVue from 'qrcode.vue'
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import ProfileMenu from "@/components/ProfileMenu";
 
-// @ is an alias to /src
+// @ is an alias to /src (WARNING)
 export default {
   name: "QRCode",
   data() {

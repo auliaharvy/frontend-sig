@@ -10,8 +10,8 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar"; // AMBIL COMPONENT NAVBAR
+import Footer from "@/components/Footer"; // AMBIL COMPONENT FOOTER 
 export default {
   name: "App",
   components: {
