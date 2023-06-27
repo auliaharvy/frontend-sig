@@ -197,7 +197,7 @@ export default {
   },
   computed: {
     ...mapState("sjp", {
-      sjps: (state) => state.sjps, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      sjps: (state) => state.sjps, //MENGAMBIL STATE SJPS
       exportData: (state) => state.exportData, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("sjp", {

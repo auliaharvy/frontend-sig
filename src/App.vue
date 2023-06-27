@@ -1,12 +1,10 @@
 <template>
   <v-app>
-    <app-header v-if="isAuth" />
-    <!-- <app-header/> -->
+    <app-header v-if="isAuth && this.$route.name != 'sjp-status.view'" />
     <v-main>
       <router-view />
     </v-main>
-    <!-- <app-footer/> -->
-    <app-footer v-if="isAuth" />
+    <app-footer v-if="isAuth && this.$route.name != 'sjp-status.view'" />
   </v-app>
 </template>
 
@@ -14,7 +12,6 @@
 import { mapState, mapGetters } from "vuex";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-// import "@/views/global";
 export default {
   name: "App",
   components: {
@@ -23,12 +20,28 @@ export default {
   },
   data: () => ({
     //
+    isPrinting: false,
   }),
   computed: {
     ...mapState(["token"]),
     ...mapState(["userData"]),
     ...mapGetters(["isAuth", "getRoles"]),
   },
+  created() {
+    window.addEventListener('beforeprint', this.handleBeforePrint);
+    window.addEventListener('afterprint', this.handleAfterPrint);
+  },
+  beforeDestroy() {
+    window.removeEventListener('beforeprint', this.handleBeforePrint);
+    window.removeEventListener('afterprint', this.handleAfterPrint);
+  },
+  methods: {
+    handleBeforePrint() {
+      this.isPrinting = true;
+    },
+    handleAfterPrint() {
+      this.isPrinting = false;
+    }
+  }
 };
 </script>
-<!-- <style src="./src/views/global.css"></style> -->

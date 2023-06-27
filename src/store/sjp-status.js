@@ -5,7 +5,7 @@ const state = () => ({
     sjpStatuss: [], //STATE UNTUK MENAMPUNG DATA SJPS
     exportData: [],
 
-    //STATE INI UNTUK FORM ADD DAN EDIT NANTINYA
+    //STATE INI UNTUK FORM ADD, EDIT DAN DETAIL PRINT QRCODE NANTINYA
     sjpStatus: {
       id: '',
       id_sjp: '',

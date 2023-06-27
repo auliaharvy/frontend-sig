@@ -182,7 +182,7 @@ export default {
   },
   computed: {
     ...mapState("sjpStatus", {
-      sjpStatuss: (state) => state.sjpStatuss,
+      sjpStatuss: (state) => state.sjpStatuss, // MENGAMBIL STATE SJP STATUS
       exportData: (state) => state.exportData,
       loading: (state) => state.loading,
     }),

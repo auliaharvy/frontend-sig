@@ -381,7 +381,7 @@ const routes = [
   {
     path: '/sjp-status',
     component: () => import('../views/sjp-status/index.vue'),
-    // meta: { requiresAuth: true },
+    meta: { requiresAuth: true },
     children: [
         {
             path: '',

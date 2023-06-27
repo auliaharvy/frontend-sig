@@ -43,7 +43,6 @@ const actions = {
               resolve(response.data)
           })
           .catch((error) => {
-            console.log(error);
               if (error.response.status == 422) {
                   commit('SET_ERRORS', error.response.data.errors, { root: true })
               } 
