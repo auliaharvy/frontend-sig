@@ -4,7 +4,7 @@
 
 <script>
 import { Bar } from "vue-chartjs";
-import ChartJSPluginDatalabels from "chartjs-plugin-datalabels";
+// import ChartJSPluginDatalabels from "chartjs-plugin-datalabels";
 import {
   Chart as ChartJS,
   Title,

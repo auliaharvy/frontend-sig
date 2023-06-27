@@ -125,11 +125,11 @@
       <v-card class="container-print-section" style="display: flex; justify-content:center; padding-top: 50px; padding-bottom: 50px; background-color: #F5F5F5;">
         <v-card class="print-section" style="display: flex; justify-content:center; flex-direction: column; width: 75%; padding: 30px;">
         <!-- <v-card class="print-section" style="display: flex; justify-content:center; flex-direction: column; width: 287px; padding: 15px;"></v-card> -->
-          <div style="text-align: center; font-size: 20px; padding-bottom: 18px;">FAKTUR TAGIHAN</div>
-          <div style="width: 100%;">
+          <div style="text-align: center; font-size: 20px; padding-bottom: 20px;">FAKTUR TAGIHAN</div>
+          <div style="width: 100%; margin-bottom: 25px;">
             <div style="display: inline-block; width: 50%;">
               <div style="font-size: 18px;"><strong>PT. SEMEN INDONESIA</strong></div>
-              <div style="padding-bottom: 15px;">
+              <div style="padding-bottom: 15px; padding-top: 10px;">
                 <div style="font-size: 14px;">Jl. Jendral Sudirman No.00</div>
                 <div style="font-size: 14px;">Jakarta Utara 14330</div>
               </div>
@@ -139,10 +139,113 @@
               </div>
             </div>
             <div style="display: inline-block; width: 50%;">
-              <div style="font-size: 18px;"><strong>{{ claimPallet.trx_number }}</strong></div>
-              <qrcode-vue :value="baseUrl + '/sjp-status/receive/' + this.$route.params.id" :size="100" level="H" />
+              <div style="font-size: 18px; text-align: end; margin-bottom: 10px;"><strong>{{ claimPallet.trx_number }}</strong></div>
+              <qrcode-vue style="display: flex; justify-content: end;" :value="baseUrl + '/claim-pallet/view/' + this.$route.params.id" :size="100" level="H" />
             </div>
           </div>
+          <v-simple-table class="custom-table">
+            <template v-slot:default>
+              <table style="width: 100%;">
+                <tr style="width: 100%;">
+                  <td style="width: 100%;">
+                    <table style="width: 100%; padding: 5px;">
+                      <tr style="width: 100%;">
+                        <td style="width: 12%;">Pembeli</td>
+                        <td style="width: 2%">:</td>
+                        <td style="width: 36%">{{ claimPallet.company_name }}</td>
+                        <td style="width: 50%; text-align: end;">No. 00000023</td>
+                      </tr>
+                      <tr>
+                        <td style="width: 12%;">Nama</td>
+                        <td style="width: 2%">:</td>
+                        <td style="width: 86%" colspan="2">{{ claimPallet.manager_name }}</td>
+                      </tr>
+                      <tr>
+                        <td style="width: 12%;">Alamat</td>
+                        <td style="width: 2%">:</td>
+                        <td style="width: 86%; word-wrap: break-word;" colspan="2">
+                          <div style="display: inline-block; width: 50%;">JL. JENDRAL SUDIRMAN NO.000023 JAKARTA UTARA 14330</div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <!-- <td style="width: 50%; border: 1px solid red;">hay</td> -->
+                </tr>
+              </table>
+              <!-- <div style="display: inline-block; height: 100px; width: 50%; border: 1px solid black;">
+                <div style="display: inline-block; text-align: end; border: 1px solid black;">No. 000032</div>
+              </div> -->
+            </template>
+          </v-simple-table>
+          <v-simple-table class="custom-data-table">
+            <template v-slot:default>
+              <thead style="padding: 20px;">
+                <tr style="font-size: 18px;">
+                  <td>No</td>
+                  <td>Deskripsi</td>
+                  <td>Unit (Pcs)</td>
+                  <td>Harga</td>
+                  <td>Jumlah</td>
+                </tr>
+              </thead>
+              <tbody style="padding: 50px;">
+                <!-- <tr
+                  v-for="item in desserts"
+                  :key="item.name"
+                  >
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.calories }}</td>
+                </tr> -->
+                <tr style="font-size: 14px;">
+                  <td>1. </td>
+                  <td>BER PALLET</td>
+                  <td>10</td>
+                  <td>{{ convertToRupiah(claimPallet.price) }}</td>
+                  <td>{{ convertToRupiah(claimPallet.total_price) }}</td>
+                </tr>
+                <tr style="font-size: 14px;">
+                  <td>2. </td>
+                  <td>MISSING PALLET</td>
+                  <td>10</td>
+                  <td>{{ convertToRupiah(claimPallet.price) }}</td>
+                  <td>{{ convertToRupiah(claimPallet.total_price) }}</td>
+                </tr>
+                <tr style="font-size: 24px;">
+                  <td></td>
+                  <td></td>
+                  <td></td> 
+                  <td>Total :</td>
+                  <td>{{ convertToRupiah(claimPallet.total_price + claimPallet.total_price) }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+          <v-simple-table class="v-simple-table-footer">
+            <template v-slot:default>
+              <div style="padding: 20px 20px 50px 20px;">
+                <div style="display: inline-block; width: 70px;">Terbilang</div>
+                <div style="display: inline-block; width: 10px;">:</div>
+                <span>{{ convertToRupiah(claimPallet.total_price + claimPallet.total_price) }}</span>
+              </div>
+              <div style="display: inline-block; width: 50%;">
+                <div style="text-align: center; padding-bottom: 70px;">Diterima Oleh</div>
+                <div style="display: flex; justify-content: center;">
+                  <div style="width: 120px; height: 1px; background-color: black;"></div>
+                </div>
+                <div style="text-align: center; padding-bottom: 25px;">Tanda tangan / Nama</div>
+              </div>
+              <div style="display: inline-block; width: 50%;">
+                <div style="text-align: center; padding-bottom: 70px;">Hormat Kami</div>
+                <div style="display: flex; justify-content: center;">
+                  <div style="width: 120px; height: 1px; background-color: black;"></div>
+                </div>
+                <div style="text-align: center; padding-bottom: 25px;">Tanda tangan / Nama</div>
+              </div>
+            </template>
+            </v-simple-table>
+            <div style="display: flex; justify-content: center; padding-top: 20px;">
+              <v-btn class="btn-print" style="width: 110px; font-size: 12px;" onclick="window.print();">KIRIM TAGIHAN</v-btn>
+            </div>
         </v-card>
       </v-card>
     </v-col>
@@ -169,7 +272,11 @@ export default {
   name: "QRCode",
   data() {
     return {
+    terbilang: '',
     baseUrl: window.location.origin,
+    forSlot: {
+      table: 'table',
+    },
     drawer: false,
     links: [{ icon: "home", title: "sidebar.halamanutama", route: "/" }],
     mgms: [
@@ -258,6 +365,10 @@ export default {
   },
   methods: {
     ...mapActions("claimPallet", ["getClaimPalletDetail"]),
+    convertToRupiah(number) {
+      const formattedNumber = number.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+      return formattedNumber;
+    }
   }
 };
 </script>
@@ -275,6 +386,18 @@ export default {
     display: none;
   } */
 }
+.custom-table{
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.custom-data-table, .v-simple-table-footer{
+  border: 1px solid black;
+}
+.custom-data-table, .v-simple-table-footer{
+  border-top: 0px solid black;
+}
+
 .warna-font {
   color: white;
 }
