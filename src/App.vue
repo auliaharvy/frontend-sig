@@ -1,10 +1,10 @@
 <template>
   <v-app>
-    <app-header v-if="isAuth && this.$route.name != 'sjp-status.view'" />
+    <app-header v-if="isAuth && this.$route.name != 'sjp-status.view' && this.$route.name != 'claim-pallet.view'" />
     <v-main>
       <router-view />
     </v-main>
-    <app-footer v-if="isAuth && this.$route.name != 'sjp-status.view'" />
+    <app-footer v-if="isAuth && this.$route.name != 'sjp-status.view' && this.$route.name != 'claim-pallet.view'" />
   </v-app>
 </template>
 
@@ -20,28 +20,11 @@ export default {
   },
   data: () => ({
     //
-    isPrinting: false,
   }),
   computed: {
     ...mapState(["token"]),
     ...mapState(["userData"]),
     ...mapGetters(["isAuth", "getRoles"]),
   },
-  created() {
-    window.addEventListener('beforeprint', this.handleBeforePrint);
-    window.addEventListener('afterprint', this.handleAfterPrint);
-  },
-  beforeDestroy() {
-    window.removeEventListener('beforeprint', this.handleBeforePrint);
-    window.removeEventListener('afterprint', this.handleAfterPrint);
-  },
-  methods: {
-    handleBeforePrint() {
-      this.isPrinting = true;
-    },
-    handleAfterPrint() {
-      this.isPrinting = false;
-    }
-  }
 };
 </script>

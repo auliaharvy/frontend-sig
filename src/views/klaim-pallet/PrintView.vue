@@ -274,7 +274,7 @@ export default {
     QrcodeVue,
   },
   created() {
-    this.getSjpStatusDetail(this.$route.params.id).then((response) => {
+    this.getClaimPalletDetail(this.$route.params.id).then((response) => {
       console.log(response);
       const tanggal = new Date(response.created_at);
       const tanggalFormat = tanggal.getFullYear() + "-" + (tanggal.getMonth() + 1) + "-" + tanggal.getDate() + " " + tanggal.getHours() + ":" + tanggal.getMinutes() + ":" + tanggal.getSeconds();
@@ -282,17 +282,18 @@ export default {
     });
   },
   computed: {
-    ...mapState("sjpStatus", {
-      sjpStatus: (state) => state.sjpStatus,
+    ...mapState("claimPallet", {
+      claimPallet: (state) => state.claimPallet,
       loading: (state) => state.loading,
     }),
   },
   methods: {
-    ...mapActions("sjpStatus", ["getSjpStatuss", "getSjpStatusDetail", "getExportDataSjpStatuss","deleteSjpStatus"]),
+    ...mapActions("claimPallet", ["getClaimPalletDetail"]),
   }
 };
 </script>
 <style scoped>
+/* @media print and (width: 302px) and (height: 700px) { */
 @media print {
   *, .print-section .btn-print {
     visibility: hidden;

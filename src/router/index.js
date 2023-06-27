@@ -563,7 +563,13 @@ const routes = [
           component: () => import('../views/klaim-pallet/ApprovalViewDist.vue'),
           meta: { title: 'Approval Claim Pallet' }
         },
-        
+        {
+          path: 'view/:id',
+          name: 'claim-pallet.view',
+          component: () => import('../views/klaim-pallet/PrintView.vue'),
+          meta: { title: 'Claim Pallet Print' }
+        },
+       
     ]
   },
 

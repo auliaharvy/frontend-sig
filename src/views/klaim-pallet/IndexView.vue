@@ -28,6 +28,14 @@
             :items="claimPallets.data"
             dense
           >
+            <template v-slot:item.tinjau="{ item }">
+              <router-link
+                :to="{ name: 'claim-pallet.view', params: { id: item.id } }"
+              >
+                <v-btn color="info" small>Tinjau</v-btn>
+              </router-link>
+            </template>
+
             <template v-slot:item.status="{ item }">
               <p v-if="item.status == 0 || item.status == null">Draft</p>
               <p class="text-green" v-else-if="item.status == 1">Manager Approved</p>
@@ -124,6 +132,7 @@ export default {
         { value: "total_price", text: this.$t("claimPallet.totalPrice") },
         { value: "reason_manager", text: this.$t("claimPallet.reasonManager") },
         { value: "reason_distributor", text: this.$t("claimPallet.reasonDist") },
+        { value: "tinjau", text: 'Tinjau' },
         { value: "actions", text: this.$t("table.actions") },
       ],
       search: "",
