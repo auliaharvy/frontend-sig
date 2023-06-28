@@ -166,6 +166,7 @@ const actions = {
   getAllPermission({ commit }) {
     return new Promise((resolve, reject) => {
       apiClient.get(`/permissions`).then((response) => {
+        console.log(response.data.data.data);
         commit("ASSIGN_PERMISSION", response.data.data.data);
         resolve(response.data);
       });
@@ -194,6 +195,7 @@ const actions = {
       apiClient
         .post(`/roles/rolehaspermissions`, payload.dataRolePermissions)
         .then((response) => {
+          console.log(response);
           resolve(response.data);
         })
         .catch((error) => {
@@ -203,6 +205,22 @@ const actions = {
         });
     });
   },
+
+  getRolePermission({ commit }, payload) {
+    commit("isLoading");
+    return new Promise((resolve, reject) => {
+      apiClient
+        .get(`/rolehaspermission/${payload}`) //KIRIM PERMINTAAN KE SERVER UNTUK MENGAMBIL SINGLE DATA CUSTOMER BERDASARKAN PAYLOAD (ID)
+        .then((response) => {
+          commit("ASSIGN_ROLE_PERMISSION", response.data.data); //ASSIGN DATA TERSEBUT KE DALAM STATE CUSTOMER
+          resolve(response.data.data);
+        })
+        .finally(() => {
+          commit("doneLoading");
+        });
+    });
+  },
+
 };
 
 export default {

@@ -77,8 +77,8 @@
                 </v-autocomplete>
               </v-form>
               <v-form>
-                <v-btn color="secondary">
-                  {{ $t("perandanizin.cek") }}
+                <v-btn color="secondary" @click="checkPermission">
+                  {{ $t("perandanizin.cek") }} 
                 </v-btn>
               </v-form>
               <v-form style="margin-top: 20px">
@@ -92,13 +92,23 @@
                         <v-col
                           cols="12"
                         >
-                          <v-checkbox
+                          <!-- <v-checkbox
                             v-for="permission in permissions"
                             :key="permission.id"
                             :value="permission.id"
                             v-model="new_permission"
                             :label="`${permission.name}`"
-                          ></v-checkbox>
+                          ></v-checkbox> -->
+                          <template v-for="(row, index) in permissions">
+                            <input type="checkbox" 
+                            class="minimal-red" 
+                            :key="index"
+                            :value="row.name"
+                            :checked="role_permission.findIndex(x => x.id_permission == row.id) != -1"
+                            @click="addPermission(row.id)"
+                            > {{ row.name }} <br :key="'row' + index">
+                            <br :key="'enter' + index" v-if="(index+1) %4 == 0">
+                          </template>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -179,6 +189,7 @@ export default {
       });
     },
     addPermission(name) {
+      console.log(this.new_permission);
       const record = this.new_permission.find((el) => el.name == name);
       if (record) {
         this.new_permission.splice(this.new_permission.indexOf(record), 1);
@@ -189,6 +200,8 @@ export default {
       }
     },
     checkPermission() {
+      console.log(this.new_permission);
+      console.log(this.role_permission);
       this.loading = true;
       this.getRolePermission(this.role_selected).then(() => {
         this.loading = false;
@@ -197,15 +210,17 @@ export default {
     },
     setPermission() {
       console.log(this.new_permission);
+      console.log(this.role_permission);
       console.log(this.permissions);
       const dataRolePermissions = [];
       for(var i = 0; i < this.new_permission.length; i++) {
           var obj = {}; // <---- Move declaration inside loop
 
-          obj['id_permission'] = this.new_permission[i];
+          obj['id_permission'] = this.new_permission[i].name;
           obj['id_role'] = this.role_selected;
           dataRolePermissions.push(obj);
       }
+      console.log(dataRolePermissions);
       this.setRolePermission({
         dataRolePermissions
       }).then((res) => {
