@@ -34,7 +34,7 @@ const actions = {
             apiClient.get(`/pallet-movements?page=${state.page}&q=${search}`)
             .then((response) => {
                 console.log(response);
-                commit('ASSIGN_DATA', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                commit('ASSIGN_DATA', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
             }).finally(() => {
                 commit('doneLoading')

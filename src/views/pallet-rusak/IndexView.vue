@@ -22,12 +22,44 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table
+            v-model="selected"
             :loading="loading"
             :headers="headers"
             :search="search"
-            :items="damagedPallets.data"
+            :items="filteredDamagedPallets"
             dense
           >
+            <template v-slot:header="{ header }">
+              <tr class="grey lighten-3">
+                <th v-for="header in headers" :key="header.text" style="width: 200px;">
+                  <div v-if="filters.hasOwnProperty(header.value)">
+                    <v-autocomplete
+                      flat
+                      hide-details
+                      multiple
+                      attach
+                      chips
+                      dense
+                      clearable
+                      :items="columnValueList(header.value)"
+                      v-model="filters[header.value]"
+                    >
+                      <template v-slot:selection="{ item, index }">
+                        <v-chip v-if="index < 5">
+                          <span>
+                            {{ item }} 
+                          </span>
+                        </v-chip>
+                        <span v-if="index === 5" class="grey--text caption" > 
+                          (+{{ filters[header.value].length - 5 }} others) 
+                        </span>
+                      </template>
+                    </v-autocomplete>
+                  </div>
+                </th>
+              </tr>
+            </template>
+
             <!-- <template v-slot:item.actions="{ item }">
               <v-menu>
                 <template v-slot:activator="{ on: menu, attrs }">
@@ -103,6 +135,7 @@ export default {
   },
   data() {
     return {
+      selected: [],
       dialogExport: false,
       downloadRange: [],
       selectedItem: 1,
@@ -113,6 +146,13 @@ export default {
         { value: "qty_tbr_pallet", text: this.$t("pallet.tbr") },
         { value: "note", text: this.$t("damagedPallet.note") },
       ],
+      filters: {
+        trx_number: [],
+        company_name: [],
+        reporter_name: [],
+        qty_tbr_pallet: [],
+        note: [],
+      },
       search: "",
       adds: { route: "/damaged-pallet/add" },
       edits: { route: "/damaged-pallet/edit" },
@@ -136,9 +176,19 @@ export default {
     ...mapState("damagedPallet", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    filteredDamagedPallets() {
+      return this.damagedPallets.filter((d) => {
+        return Object.keys(this.filters).every((f) => {
+          return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+        });
+      });
+    },
   },
   methods: {
     ...mapActions("damagedPallet", ["getDamagedPallets", "getExportDamagedPallets","deleteDamagedPallet"]),
+    columnValueList(val) {
+      return this.damagedPallets.map((d) => d[val]);
+    },
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);

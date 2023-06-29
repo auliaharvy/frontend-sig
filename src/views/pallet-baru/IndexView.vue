@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <!-- <v-btn v-if="$can('create new pallet')" router :to="adds.route">{{ $t("newPallet.add") }}</v-btn> -->
+            <v-btn v-if="$can('create new pallet')" router :to="adds.route">{{ $t("newPallet.add") }}</v-btn>
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
@@ -22,12 +22,44 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table
+            v-model="selected"
             :loading="loading"
             :headers="headers"
             :search="search"
-            :items="newPallets.data"
+            :items="filteredNewPallets"
             dense
           >
+            <template v-slot:header="{ header }">
+              <tr class="grey lighten-3">
+                <th v-for="header in headers" :key="header.text" style="width: 200px;">
+                  <div v-if="filters.hasOwnProperty(header.value)">
+                    <v-autocomplete
+                      flat
+                      hide-details
+                      multiple
+                      attach
+                      chips
+                      dense
+                      clearable
+                      :items="columnValueList(header.value)"
+                      v-model="filters[header.value]"
+                    >
+                      <template v-slot:selection="{ item, index }">
+                        <v-chip v-if="index < 5">
+                          <span>
+                            {{ item }} 
+                          </span>
+                        </v-chip>
+                        <span v-if="index === 5" class="grey--text caption" > 
+                          (+{{ filters[header.value].length - 5 }} others) 
+                        </span>
+                      </template>
+                    </v-autocomplete>
+                  </div>
+                </th>
+              </tr>
+            </template>
+
             <template v-slot:item.status="{ item }">
               <p v-if="item.status == 0">Draft</p>
               <p class="text-green" v-else-if="item.status == 1">Process</p>
@@ -97,6 +129,9 @@
   </v-container>
 </template>
 
+<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
@@ -108,6 +143,7 @@ export default {
   },
   data() {
     return {
+      selected: [],
       dialogExport: false,
       downloadRange: [],
       selectedItem: 1,
@@ -121,6 +157,16 @@ export default {
         { value: "status", text: this.$t("newPallet.status") },
         { value: "actions", text: this.$t("table.actions") },
       ],
+      filters: {
+        trx_number: [],
+        no_change_quota: [],
+        company_requester: [],
+        company_workshop: [],
+        qty_request_pallet: [],
+        qty_ready_pallet: [],
+        status: [],
+        // actions: [],
+      },
       search: "",
       adds: { route: "/new-pallet/add" },
       edits: { route: "/new-pallet/edit" },
@@ -154,9 +200,19 @@ export default {
     ...mapState("newPallet", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    filteredNewPallets() {
+      return this.newPallets.filter((d) => {
+        return Object.keys(this.filters).every((f) => {
+          return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+        });
+      });
+    }
   },
   methods: {
     ...mapActions("newPallet", ["getNewPallets", "getExportNewPallets","deleteNewPallet"]),
+    columnValueList(val) {
+      return this.newPallets.map((d) => d[val]);
+    },
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);

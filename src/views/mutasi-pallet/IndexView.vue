@@ -22,6 +22,41 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table
+            v-model="selected"
+            :search="search"
+            :headers="headers"
+            :items="filteredPalletTransfers"
+			    >
+            <template v-slot:header="{ header }">
+              <tr class="grey lighten-3">
+                <th v-for="header in headers" :key="header.text" style="width: 200px;">
+                  <div v-if="filters.hasOwnProperty(header.value)">
+                    <v-autocomplete
+                      multiple
+                      attach
+                      chips
+                      dense
+                      clearable
+                      :items="columnValueList(header.value)"
+                      v-model="filters[header.value]"
+                    >
+                      <template v-slot:selection="{ item, index }">
+                        <v-chip v-if="index < 5">
+                          <span>
+                            {{ item }} 
+                          </span>
+                        </v-chip>
+                        <span v-if="index === 5" class="grey--text caption" > 
+                          (+{{ filters[header.value].length - 5 }} others) 
+                        </span>
+                      </template>
+                    </v-autocomplete>
+                  </div>
+                </th>
+              </tr>
+            </template>
+			    </v-data-table>
+          <!-- <v-data-table
             :loading="loading"
             :headers="headers"
             :search="search"
@@ -133,7 +168,7 @@
               </v-menu>
               <v-icon v-if="item.status === 0 && $can('delete pallet transfer')" small @click="hapusData(item)"> mdi-delete </v-icon>
             </template>
-          </v-data-table>
+          </v-data-table> -->
         </v-card>
       </v-card>
     </v-col>
@@ -161,6 +196,9 @@
   </v-container>
 </template>
 
+<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
@@ -174,6 +212,7 @@ export default {
     return {
       dialogExport: false,
       downloadRange: [],
+			selected: [],
       selectedItem: 1,
       headers: [
         { value: "trx_code", text: this.$t("palletTransfer.trxNumber"), width: "20%" },
@@ -192,6 +231,23 @@ export default {
         { value: "process", text: this.$t("palletTransfer.process") },
         { value: "actions", text: this.$t("table.actions") },
       ],
+			filters: {
+        trx_code: [],
+        departure_company: [],
+        destination_company: [],
+        transporter_company: [],
+        license_plate: [],
+        driver_name: [],
+        good_pallet: [],
+        tbr_pallet: [],
+        ber_pallet: [],
+        missing_pallet: [],
+        status: [],
+        reason: [],
+        note: [],
+        process: [],
+        // actions: [],
+			},
       items: [],
       search: "",
       adds: { route: "/pallet-transfer/add" },
@@ -224,7 +280,7 @@ export default {
     };
   },
   created() {
-    this.getPalletTransfers(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
+    this.getPalletTransfers();
   },
   computed: {
     ...mapState("palletTransfer", {
@@ -234,9 +290,19 @@ export default {
     ...mapState("palletTransfer", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    filteredPalletTransfers() {
+      return this.palletTransfers.filter((d) => {
+        return Object.keys(this.filters).every((f) => {
+          return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+        });
+      });
+    },
   },
   methods: {
     ...mapActions("palletTransfer", ["getPalletTransfers", "getExportPalletTransfers","deletePalletTransfer"]),
+    columnValueList(val) {
+      return this.palletTransfers.map((d) => d[val]);
+    },
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);

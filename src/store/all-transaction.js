@@ -33,7 +33,7 @@ const actions = {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/all-transactions?from=${payload[0]}&to=${payload[1]}`)
             .then((response) => {
-                commit('ASSIGN_DATA', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                commit('ASSIGN_DATA', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
             }).finally(() => {
                 commit('doneLoading')

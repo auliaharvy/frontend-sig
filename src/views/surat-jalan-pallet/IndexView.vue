@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <!-- <v-btn v-if="this.$route.path === '/sjp' && $can('create sjp')" router :to="adds.route">{{ $t("sjp.add") }}</v-btn> -->
+            <v-btn v-if="this.$route.path === '/sjp' && $can('create sjp')" router :to="adds.route">{{ $t("sjp.add") }}</v-btn>
             <v-btn v-if="$can('create sjp')" router :to="adds.route">{{ $t("sjp.add") }}</v-btn>
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
@@ -23,12 +23,43 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table
+            v-model="selected"
             :loading="loading"
             :headers="headers"
             :search="search"
-            :items="sjps.data"
+            :items="filteredSjps"
             dense
           >
+            <template v-slot:header="{ header }">
+              <tr class="grey lighten-3">
+                <th v-for="header in headers" :key="header.text" style="width: 200px;">
+                  <div v-if="filters.hasOwnProperty(header.value)">
+                    <v-autocomplete
+                      flat
+                      hide-details
+                      multiple
+                      attach
+                      chips
+                      dense
+                      clearable
+                      :items="columnValueList(header.value)"
+                      v-model="filters[header.value]"
+                    >
+                      <template v-slot:selection="{ item, index }">
+                        <v-chip v-if="index < 5">
+                          <span>
+                            {{ item }} 
+                          </span>
+                        </v-chip>
+                        <span v-if="index === 5" class="grey--text caption" > 
+                          (+{{ filters[header.value].length - 5 }} others) 
+                        </span>
+                      </template>
+                    </v-autocomplete>
+                  </div>
+                </th>
+              </tr>
+            </template>
             <template v-slot:item.driverName="{ item }">
               <template v-if="item.secondDriver === null">
                 <p class="text-normal">
@@ -138,6 +169,9 @@
   </v-container>
 </template>
 
+<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
@@ -149,6 +183,7 @@ export default {
   },
   data() {
     return {
+      selected: [],
       roleSet: {},
       dialogExport: false,
       downloadRange: [],
@@ -165,6 +200,19 @@ export default {
         { value: "send", text: this.$t("sjp.send") },
         { value: "actions", text: this.$t("table.actions") },
       ],
+      filters: {
+        trxNumber: [],
+        departure: [],
+        destination: [],
+        transporter: [],
+        license: [],
+        licensePlate: [],
+        driverName: [],
+        noDo: [],
+        trxStatus: [],
+        send: [],
+        // actions: []
+      },
       items: [],
       search: "",
       adds: { route: "/sjp/add" },
@@ -196,8 +244,6 @@ export default {
   created() {
     this.getRoleSet();
     this.getSjps(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
-    console.log(this.sjps);
-    console.log('wkwk');
   },
   computed: {
     ...mapState("sjp", {
@@ -207,9 +253,19 @@ export default {
     ...mapState("sjp", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    filteredSjps() {
+      return this.sjps.filter((d) => {
+        return Object.keys(this.filters).every((f) => {
+          return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+        });
+      });
+    },
   },
   methods: {
     ...mapActions("sjp", ["getSjps", "getExportDataSjps", "deleteSjp"]),
+    columnValueList(val) {
+      return this.sjps.map((d) => d[val]);
+    },
     getRoleSet() {
       this.roleSet = JSON.parse(localStorage.getItem("role"));
     },

@@ -22,12 +22,43 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table
+            v-model="selected"
             :loading="loading"
             :headers="headers"
             :search="search"
-            :items="transporterAdjusments.data"
+            :items="filteredTransporterAdjusments"
             dense
           >
+            <template v-slot:header="{ header }">
+              <tr class="grey lighten-3">
+                <th v-for="header in headers" :key="header.text" style="width: 200px;">
+                  <div v-if="filters.hasOwnProperty(header.value)">
+                    <v-autocomplete
+                      flat
+                      hide-details
+                      multiple
+                      attach
+                      chips
+                      dense
+                      clearable
+                      :items="columnValueList(header.value)"
+                      v-model="filters[header.value]"
+                    >
+                      <template v-slot:selection="{ item, index }">
+                        <v-chip v-if="index < 5">
+                          <span>
+                            {{ item }} 
+                          </span>
+                        </v-chip>
+                        <span v-if="index === 5" class="grey--text caption" > 
+                          (+{{ filters[header.value].length - 5 }} others) 
+                        </span>
+                      </template>
+                    </v-autocomplete>
+                  </div>
+                </th>
+              </tr>
+            </template>
             <template v-slot:item.is_from_pool="{ item }">
               <p class="text-normal" v-if="item.is_from_pool == 0 || item.is_from_pool == null">{{ $t("transporterAdjusment.isNotPool") }}</p>
               <p class="text-normal" v-if="item.is_from_pool == 1">{{ $t("transporterAdjusment.isPool") }}</p>
@@ -54,7 +85,6 @@
               </v-menu>
               <v-icon v-if="item.status === 0 && $can('delete transporter adjustment')" small @click="hapusData(item)"> mdi-delete </v-icon>
             </template>
-
           </v-data-table>
         </v-card>
       </v-card>
@@ -83,6 +113,9 @@
   </v-container>
 </template>
 
+<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
@@ -94,6 +127,7 @@ export default {
   },
   data() {
     return {
+      selected: [],
       dialogExport: false,
       downloadRange: [],
       selectedItem: 1,
@@ -106,6 +140,15 @@ export default {
         { value: "good_pallet", text: this.$t("pallet.good") },
         { value: "tbr_pallet", text: this.$t("pallet.tbr") },
       ],
+      filters: {
+        trx_number: [],
+        transporter_name: [],
+        company_name: [],
+        reporter_name: [],
+        is_from_pool: [],
+        good_pallet: [],
+        tbr_pallet: [],
+      },
       search: "",
       adds: { route: "/transporter-adjusment/add" },
       edits: { route: "/transporter-adjustment/edit" },
@@ -131,9 +174,19 @@ export default {
     ...mapState("transporterAdjusment", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    filteredTransporterAdjusments() {
+      return this.transporterAdjusments.filter((d) => {
+        return Object.keys(this.filters).every((f) => {
+          return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+        });
+      });
+    },
   },
   methods: {
     ...mapActions("transporterAdjusment", ["getTransporterAdjusments", "getExportTransporterAdjusments", "deleteTransporterAdjusment"]),
+    columnValueList(val) {
+      return this.transporterAdjusments.map((d) => d[val]);
+    },
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);

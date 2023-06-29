@@ -22,12 +22,43 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table
+            v-model="selected"
             :loading="loading"
             :headers="headers"
             :search="search"
-            :items="changeQuotas.data"
+            :items="filteredChangeQuotas"
             dense
           >
+            <template v-slot:header="{ header }">
+              <tr class="grey lighten-3">
+                <th v-for="header in headers" :key="header.text" style="width: 200px;">
+                  <div v-if="filters.hasOwnProperty(header.value)">
+                    <v-autocomplete
+                      flat
+                      hide-details
+                      multiple
+                      attach
+                      chips
+                      dense
+                      clearable
+                      :items="columnValueList(header.value)"
+                      v-model="filters[header.value]"
+                    >
+                      <template v-slot:selection="{ item, index }">
+                        <v-chip v-if="index < 5">
+                          <span>
+                            {{ item }} 
+                          </span>
+                        </v-chip>
+                        <span v-if="index === 5" class="grey--text caption" > 
+                          (+{{ filters[header.value].length - 5 }} others) 
+                        </span>
+                      </template>
+                    </v-autocomplete>
+                  </div>
+                </th>
+              </tr>
+            </template>
             <template v-slot:item.type="{ item }">
               <p class="text-green" v-if="item.type == 0 || item.type == null">Penambahan</p>
               <p class="text-red" v-else-if="item.type == 1">Pengurangan</p>
@@ -69,7 +100,6 @@
                       >
                     </v-list-item-content>
                   </v-list-item>
-
                   <v-list-item v-if="item.id_new_pallet == 'belum ada' && item.type != 1 && item.status === 1">
                     <v-list-item-content>
                       <v-list-item-title>
@@ -114,6 +144,9 @@
   </v-container>
 </template>
 
+<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
@@ -125,6 +158,7 @@ export default {
   },
   data() {
     return {
+      selected: [],
       dialogExport: false,
       downloadRange: [],
       selectedItem: 1,
@@ -140,6 +174,18 @@ export default {
         { value: "note", text: this.$t("changeQuota.note") },
         { value: "actions", text: this.$t("table.actions") },
       ],
+      filters: {
+        trx_number: [],
+        company_name: [],
+        requester_name: [],
+        quantity: [],
+        approved_quantity: [],
+        type: [],
+        status: [],
+        reason: [],
+        note: [],
+        // actions: [],
+      },
       search: "",
       adds: { route: "/change-quota/add" },
       edits: { route: "/change-quota/edit" },
@@ -168,9 +214,19 @@ export default {
     ...mapState("changeQuota", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    filteredChangeQuotas() {
+      return this.changeQuotas.filter((d) => {
+        return Object.keys(this.filters).every((f) => {
+          return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+        });
+      });
+    },
   },
   methods: {
     ...mapActions("changeQuota", ["getChangeQuotas", "getExportChangeQuotas","deleteChangeQuota"]),
+    columnValueList(val) {
+      return this.changeQuotas.map((d) => d[val]);
+    },
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);
@@ -188,8 +244,7 @@ export default {
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes!",
       }).then((result) => {
-        if (result.value) {
-          this.deleteChangeQuota(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
+        if (result.value) { this.deleteChangeQuota(item.id); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
         }
       });
     },

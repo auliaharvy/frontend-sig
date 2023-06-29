@@ -48,7 +48,7 @@ const actions = {
             //REQUEST DATA CUSTOMER  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/roles?page=${state.page}&q=${search}`)
             .then((response) => {
-                commit('ASSIGN_DATA', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                commit('ASSIGN_DATA', response.data.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data.data)
             }).finally(() => {
                 commit('doneLoading')

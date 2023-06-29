@@ -136,8 +136,7 @@ import { mapActions, mapState, mapMutations } from "vuex";
 
 export default {
   name: "SetPermission",
-  data() {
-    return {
+  data: () => ({
       userRole: {
         role_id: '',
         user_id: '',
@@ -155,8 +154,7 @@ export default {
       loading: false,
       alert_permission: false,
       alert_role: false,
-    };
-  },
+  }),
   created() {
     this.getRoles();
     this.getAllPermission();
@@ -201,7 +199,7 @@ export default {
       });
     },
     addPermission(name) {
-      console.log(this.new_permission);
+      // console.log(this.new_permission);
       const record = this.new_permission.find((el) => el.name == name);
       if (record) {
         this.new_permission.splice(this.new_permission.indexOf(record), 1);
@@ -212,8 +210,8 @@ export default {
       }
     },
     checkPermission() {
-      console.log(this.new_permission);
-      console.log(this.role_permission);
+      // console.log(this.new_permission);
+      // console.log(this.role_permission);
       this.loading = true;
       this.getRolePermission(this.role_selected).then(() => {
         this.loading = false;
@@ -221,9 +219,9 @@ export default {
       });
     },
     setPermission() {
-      console.log(this.new_permission);
-      console.log(this.role_permission);
-      console.log(this.permissions);
+      // console.log(this.new_permission);
+      // console.log(this.role_permission);
+      // console.log(this.permissions);
       const dataRolePermissions = [];
       for(var i = 0; i < this.new_permission.length; i++) {
           var obj = {}; // <---- Move declaration inside loop

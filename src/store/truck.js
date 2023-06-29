@@ -54,7 +54,7 @@ const actions = {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/trucks?page=${state.page}&q=${search}`)
             .then((response) => {
-                commit('ASSIGN_DATA', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                commit('ASSIGN_DATA', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
             }).finally(() => {
                 commit('doneLoading')

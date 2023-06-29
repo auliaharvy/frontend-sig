@@ -70,7 +70,7 @@ const actions = {
       apiClient
         .get(`/users?page=${state.page}&q=${search}`)
         .then((response) => {
-          commit("ASSIGN_DATA", response.data.data); //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+          commit("ASSIGN_DATA", response.data.data.data); //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
           resolve(response.data.data);
         })
         .finally(() => {
@@ -186,7 +186,7 @@ const actions = {
           resolve(response.data);
         })
         .catch((error) => {
-            alert(error.response.data.errors);
+            alert(error.response.data);
           if (error.response.status == 422) {
             commit("SET_ERRORS", error.response.data.errors, { root: true });
           }

@@ -65,6 +65,7 @@ const actions = {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/dashboards/total-pallet`)
             .then((response) => {
+                console.log(response)
                 commit('ASSIGN_TOTAL', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
             }).finally(() => {
@@ -77,6 +78,7 @@ const actions = {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/dashboards/pallet-condition?type=${payload}`)
             .then((response) => {
+                console.log(response)
                 commit('ASSIGN_CONDITION_ALL', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
             }).finally(() => {
@@ -137,7 +139,6 @@ const actions = {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/dashboards/detail-pallet?type=Pool Pallet`)
             .then((response) => {
-                console.log(response)
                 const roleSet = JSON.parse(localStorage.getItem("role"));
                 if(roleSet.role_name == "Supervisor" || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
                     commit('ASSIGN_DETAIL_POOL', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS

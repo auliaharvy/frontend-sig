@@ -22,6 +22,96 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table
+            v-model="selected"
+            :loading="loading"
+            :headers="headers"
+            :search="search"
+            :items="filteredClaimPallets"
+            dense
+			    >
+
+            <template v-slot:header="{ header }">
+              <tr class="grey lighten-3">
+                <th v-for="header in headers" :key="header.text" style="width: 200px;">
+                  <div v-if="filters.hasOwnProperty(header.value)">
+                    <v-autocomplete
+                      flat
+                      hide-details
+                      multiple
+                      attach
+                      chips
+                      dense
+                      clearable
+                      :items="columnValueList(header.value)"
+                      v-model="filters[header.value]"
+                    >
+                      <template v-slot:selection="{ item, index }">
+                        <v-chip v-if="index < 5">
+                          <span>
+                            {{ item }} 
+                          </span>
+                        </v-chip>
+                        <span v-if="index === 5" class="grey--text caption" > 
+                          (+{{ filters[header.value].length - 5 }} others) 
+                        </span>
+                      </template>
+                    </v-autocomplete>
+                  </div>
+                </th>
+              </tr>
+            </template>
+            <template v-slot:item.tinjau="{ item }">
+              <router-link
+                :to="{ name: 'claim-pallet.view', params: { id: item.id } }"
+              >
+                <v-btn color="info" small>Tinjau</v-btn>
+              </router-link>
+            </template>
+            <template v-slot:item.status="{ item }">
+              <p v-if="item.status == 0 || item.status == null">Draft</p>
+              <p class="text-green" v-else-if="item.status == 1">Manager Approved</p>
+              <p class="text-red" v-else-if="item.status == 2">Manager Rejected</p>
+              <p class="text-green" v-else-if="item.status == 3">Distributor Approved</p>
+              <p class="text-red" v-else-if="item.status == 4">Distributor Rejected</p>
+            </template>
+            <template v-slot:item.actions="{ item }">
+              <v-menu>
+                <template v-slot:activator="{ on: menu, attrs }">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on: tooltip }">
+                      <v-btn
+                        class="ma-2"
+                        text
+                        icon
+                        v-bind="attrs"
+                        v-if="item.status == 0 && $can('update claim pallet')"
+                        v-on="{ ...tooltip, ...menu }"
+                      >
+                        <v-icon small class="mr-2">mdi-pencil</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Edit data</span>
+                  </v-tooltip>
+                </template>
+                <v-list>
+                  <v-list-item v-for="(list, i) in listEdit" :key="i">
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        <v-btn router :to="list.href+'/'+item.id" small text>
+                          <v-icon left>
+                            {{ list.icon }}
+                          </v-icon>
+                          {{ list.text }}
+                        </v-btn></v-list-item-title
+                      >
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+              <v-icon v-if="item.status == 0 || item.status == null && $can('delete claim pallet')" small @click="hapusData(item)"> mdi-delete </v-icon>
+            </template>
+			    </v-data-table>
+          <!-- <v-data-table
             :loading="loading"
             :headers="headers"
             :search="search"
@@ -79,7 +169,7 @@
               </v-menu>
               <v-icon v-if="item.status == 0 || item.status == null && $can('delete claim pallet')" small @click="hapusData(item)"> mdi-delete </v-icon>
             </template>
-          </v-data-table>
+          </v-data-table> -->
         </v-card>
       </v-card>
     </v-col>
@@ -107,6 +197,9 @@
   </v-container>
 </template>
 
+<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
@@ -119,6 +212,7 @@ export default {
   data() {
     return {
       dialogExport: false,
+      selected: [],
       downloadRange: [],
       selectedItem: 1,
       headers: [
@@ -136,6 +230,21 @@ export default {
         { value: "tinjau", text: 'Tinjau' },
         { value: "actions", text: this.$t("table.actions") },
       ],
+      filters: {
+        trx_number: [],
+        company_name: [],
+        manager_name: [],
+        pic_distributor: [],
+        status: [],
+        ber_pallet: [],
+        missing_pallet: [],
+        price: [],
+        total_price: [],
+        reason_manager: [],
+        reason_distributor: [],
+        tinjau: [],
+        // actions: [],
+      },
       search: "",
       adds: { route: "/claim-pallet/add" },
       edits: { route: "/claim-pallet/edit" },
@@ -173,9 +282,19 @@ export default {
     ...mapState("claimPallet", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    filteredClaimPallets() {
+      return this.claimPallets.filter((d) => {
+        return Object.keys(this.filters).every((f) => {
+          return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+        });
+      });
+    },
   },
   methods: {
     ...mapActions("claimPallet", ["getClaimPallets", "getExportClaimPallets","deleteClaimPallet"]),
+    columnValueList(val) {
+      return this.claimPallets.map((d) => d[val]);
+    },
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);

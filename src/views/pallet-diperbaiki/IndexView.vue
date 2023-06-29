@@ -22,12 +22,44 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table
+            v-model="selected"
             :loading="loading"
             :headers="headers"
             :search="search"
-            :items="repairedPallets.data"
+            :items="filteredRepairedPallets"
             dense
           >
+            <template v-slot:header="{ header }">
+              <tr class="grey lighten-3">
+                <th v-for="header in headers" :key="header.text" style="width: 200px;">
+                  <div v-if="filters.hasOwnProperty(header.value)">
+                    <v-autocomplete
+                      flat
+                      hide-details
+                      multiple
+                      attach
+                      chips
+                      dense
+                      clearable
+                      :items="columnValueList(header.value)"
+                      v-model="filters[header.value]"
+                    >
+                      <template v-slot:selection="{ item, index }">
+                        <v-chip v-if="index < 5">
+                          <span>
+                            {{ item }} 
+                          </span>
+                        </v-chip>
+                        <span v-if="index === 5" class="grey--text caption" > 
+                          (+{{ filters[header.value].length - 5 }} others) 
+                        </span>
+                      </template>
+                    </v-autocomplete>
+                  </div>
+                </th>
+              </tr>
+            </template>
+			    </v-data-table>
             <!-- <template v-slot:item.actions="{ item }">
               <v-menu>
                 <template v-slot:activator="{ on: menu, attrs }">
@@ -63,8 +95,8 @@
                 </v-list>
               </v-menu>
               <v-icon v-if="item.status === 0 || item.status === null && $can('delete repaired pallet')" small @click="hapusData(item)"> mdi-delete </v-icon>
-            </template> -->
-          </v-data-table>
+            </template>
+          </v-data-table> --->
         </v-card>
       </v-card>
     </v-col>
@@ -92,6 +124,9 @@
   </v-container>
 </template>
 
+<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
@@ -113,6 +148,13 @@ export default {
         { value: "qty_good_pallet", text: this.$t("pallet.good") },
         { value: "note", text: this.$t("repairPallet.note") },
       ],
+      filters: {
+        trx_number: [],
+        company_name: [],
+        reporter_name: [],
+        qty_good_pallet: [],
+        note: [],
+      },
       search: "",
       adds: { route: "/repaired-pallet/add" },
       edits: { route: "/repaired-pallet/edit" },
@@ -136,9 +178,19 @@ export default {
     ...mapState("repairedPallet", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    filteredRepairedPallets() {
+      return this.repairedPallets.filter((d) => {
+        return Object.keys(this.filters).every((f) => {
+          return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+        });
+      });
+    },
   },
   methods: {
     ...mapActions("repairedPallet", ["getRepairedPallets", "getExportDamagedPallets","deleteRepairedPallet"]),
+    columnValueList(val) {
+      return this.repairedPallets.map((d) => d[val]);
+    },
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);

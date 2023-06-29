@@ -25,9 +25,39 @@
             :loading="loading"
             :headers="headers"
             :search="search"
-            :items="users.data"
+            :items="FilteredUsers"
             dense
           >
+            <template v-slot:header="{ header }">
+              <tr class="grey lighten-3">
+                <th v-for="header in headers" :key="header.text" style="width: 200px;">
+                  <div v-if="filters.hasOwnProperty(header.value)">
+                    <v-autocomplete
+                      flat
+                      hide-details
+                      multiple
+                      attach
+                      chips
+                      dense
+                      clearable
+                      :items="columnValueList(header.value)"
+                      v-model="filters[header.value]"
+                    >
+                      <template v-slot:selection="{ item, index }">
+                        <v-chip v-if="index < 5">
+                          <span>
+                            {{ item }} 
+                          </span>
+                        </v-chip>
+                        <span v-if="index === 5" class="grey--text caption" > 
+                          (+{{ filters[header.value].length - 5 }} others) 
+                        </span>
+                      </template>
+                    </v-autocomplete>
+                  </div>
+                </th>
+              </tr>
+            </template>
             <template v-slot:item.actions="{ item }">
               <v-icon small class="mr-2" @click="editData(item)">
                 mdi-pencil
@@ -41,6 +71,9 @@
   </v-container>
 </template>
 
+<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
@@ -52,12 +85,19 @@ export default {
   },
   data() {
     return {
+      selected: [],
       headers: [
         { value: "fullname", text: this.$t("manajemenpengguna.namalengkap") },
         { value: "username", text: this.$t("manajemenpengguna.username") },
         { value: "email", text: this.$t("manajemenpengguna.email") },
         { value: "actions", text: this.$t("table.actions") },
       ],
+      filters: {
+        fullname: [],
+        username: [],
+        email: [],
+        // actions: [],
+      },
       items: [],
       search: "",
       adds: { route: "/user/add" },
@@ -74,9 +114,19 @@ export default {
     ...mapState("user", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    FilteredUsers() {
+      return this.users.filter((d) => {
+        return Object.keys(this.filters).every((f) => {
+          return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+        });
+      });
+    },
   },
   methods: {
     ...mapActions("user", ["getUsers", "deleteUser"]),
+    columnValueList(val) {
+      return this.users.map((d) => d[val]);
+    },
     editData(item) {
       // console.log("Mengedit data:", item);
       this.$router.push({

@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <!-- <v-btn router v-if="$can('add sjp')" :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn> -->
+            <v-btn router v-if="$can('add sjp')" :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn>
             <v-btn router v-if="$can('add sjp status')" :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn>
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
@@ -26,10 +26,39 @@
             :loading="loading"
             :headers="headers"
             :search="search"
-            :items="sjpStatuss.data"
+            :items="FilteredSjpStatuss"
             dense
           >
-
+            <template v-slot:header="{ header }">
+              <tr class="grey lighten-3">
+                <th v-for="header in headers" :key="header.text" style="width: 200px;">
+                  <div v-if="filters.hasOwnProperty(header.value)">
+                    <v-autocomplete
+                      flat
+                      hide-details
+                      multiple
+                      attach
+                      chips
+                      dense
+                      clearable
+                      :items="columnValueList(header.value)"
+                      v-model="filters[header.value]"
+                    >
+                      <template v-slot:selection="{ item, index }">
+                        <v-chip v-if="index < 5">
+                          <span>
+                            {{ item }} 
+                          </span>
+                        </v-chip>
+                        <span v-if="index === 5" class="grey--text caption" > 
+                          (+{{ filters[header.value].length - 5 }} others) 
+                        </span>
+                      </template>
+                    </v-autocomplete>
+                  </div>
+                </th>
+              </tr>
+            </template>
             <template v-slot:item.is_sendback="{ item }">
               <p class="text-normal" v-if="item.is_sendback == 0">Send</p>
               <p class="text-normal" v-else-if="item.is_sendback == 1">Sendback</p>
@@ -124,6 +153,9 @@
   </v-container>
 </template>
 
+<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
@@ -135,6 +167,7 @@ export default {
   },
   data() {
     return {
+      selected: [],
       dialogExport: false,
       downloadRange: [],
       selectedItem: 1,
@@ -149,6 +182,17 @@ export default {
         { value: "tinjau", text: 'Tinjau'},
         { value: "actions", text: this.$t("table.actions") },
       ],
+      filters: {
+        trx_number: [],
+        sjp_number: [],
+        sender_name: [],
+        receiver_name: [],
+        is_sendback: [],
+        status: [],
+        note: [],
+        tinjau: [],
+        // actions: [],
+      },
       items: [],
       search: "",
       adds: { route: "/sjp-status/add" },
@@ -198,9 +242,19 @@ export default {
       exportData: (state) => state.exportData,
       loading: (state) => state.loading,
     }),
+    FilteredSjpStatuss() {
+      return this.sjpStatuss.filter((d) => {
+        return Object.keys(this.filters).every((f) => {
+          return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+        });
+      });
+    },
   },
   methods: {
     ...mapActions("sjpStatus", ["getSjpStatuss", "getExportDataSjpStatuss","deleteSjpStatus"]),
+    columnValueList(val) {
+      return this.sjpStatuss.map((d) => d[val]);
+    },
     editData(item) {
       // Logika untuk mengedit data
       console.log("Mengedit data:", item);

@@ -49,13 +49,43 @@
             </v-card-title>
             <v-data-table
               class="custom-table"
+              v-model="selected"
               :loading="loading"
               :headers="headers"
               :search="search"
-              :items="allTransactions.data"
+              :items="filteredAllTransactions"
               elevation="2"
-              border
             >
+              <template v-slot:header="{ header }">
+                <tr class="grey lighten-3">
+                  <th v-for="header in headers" :key="header.text" style="width: 200px;">
+                    <div v-if="filters.hasOwnProperty(header.value)">
+                      <v-autocomplete
+                        flat
+                        hide-details
+                        multiple
+                        attach
+                        chips
+                        dense
+                        clearable
+                        :items="columnValueList(header.value)"
+                        v-model="filters[header.value]"
+                      >
+                        <template v-slot:selection="{ item, index }">
+                          <v-chip v-if="index < 5">
+                            <span>
+                              {{ item }} 
+                            </span>
+                          </v-chip>
+                          <span v-if="index === 5" class="grey--text caption" > 
+                            (+{{ filters[header.value].length - 5 }} others) 
+                          </span>
+                        </template>
+                      </v-autocomplete>
+                    </div>
+                  </th>
+                </tr>
+              </template>
             </v-data-table>
           </v-card>
         </v-card>
@@ -63,6 +93,9 @@
     </v-container>
 </template>
 
+<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
@@ -74,6 +107,7 @@ export default {
   },
   data() {
     return {
+      selected: [],
       menu1: false,
       dates: [ ], 
       headers: [
@@ -102,6 +136,32 @@ export default {
         { value: "reason", text: this.$t("allTransaction.reason") },
         { value: "note", text: this.$t("allTransaction.note") },
       ],
+      filters: {
+        log_number: [],
+        trx_number: [],
+        transaction: [],
+        status: [],
+        no_do: [],
+        no_do_new: [],
+        sender_reporter: [],
+        receiver_approver: [],
+        company_departure: [],
+        company_destination: [],
+        company_new_destination: [],
+        company_transporter: [],
+        company: [],
+        truck_number: [],
+        truck_number_new: [],
+        driver_name: [],
+        driver_name_new: [],
+        good_pallet: [],
+        tbr_pallet: [],
+        ber_pallet: [],
+        missing_pallet: [],
+        price: [],
+        reason: [],
+        note: [],
+      },
       search: "",
     };
   },
@@ -131,9 +191,19 @@ export default {
     aWeek(){
       this.dateRange = this.dates
     },
+    filteredAllTransactions() {
+      return this.allTransactions.filter((d) => {
+        return Object.keys(this.filters).every((f) => {
+          return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
+        });
+      });
+    },
   },
   methods: {
     ...mapActions("allTransaction", ["getAllTransactions"]),
+    columnValueList(val) {
+      return this.allTransactions.map((d) => d[val]);
+    },
     async setDate() {
       var week = new Date();
       week.setDate(week.getDate() - 7);
