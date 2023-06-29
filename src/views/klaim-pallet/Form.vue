@@ -89,7 +89,7 @@ export default {
     this.getCompaniesDeparture();
     },
   computed: {
-    ...mapState(["setRole"]),
+    ...mapState(["roleSet"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -111,8 +111,8 @@ export default {
       const valid = this.$refs.form.validate();
       if (valid) {
         this.claimPallet.status = 0;
-        this.claimPallet.created_by = this.setRole.user_id;
-        this.claimPallet.updated_by = this.setRole.user_id;
+        this.claimPallet.created_by = this.roleSet.user_id;
+        this.claimPallet.updated_by = this.roleSet.user_id;
         this.submitClaimPallet(this.claimPallet).then((response) => {
           console.log(response);
             this.CLEAR_FORM();
@@ -126,6 +126,8 @@ export default {
           //     });
           //   }
           // }
+        }).catch((error) => {
+          console.log(error);
         });
       }
     },

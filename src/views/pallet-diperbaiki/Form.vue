@@ -78,6 +78,7 @@ export default {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
+    ...mapState(["roleSet"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -95,9 +96,9 @@ export default {
       const valid = this.$refs.form.validate();
       if (valid) {
         this.repairedPallet.status = 0;
-        this.repairedPallet.id_user_reporter = this.setRole.user_id;
-        this.repairedPallet.created_by = this.setRole.user_id;
-        this.repairedPallet.updated_by = this.setRole.user_id;
+        this.repairedPallet.id_user_reporter = this.roleSet.user_id;
+        this.repairedPallet.created_by = this.roleSet.user_id;
+        this.repairedPallet.updated_by = this.roleSet.user_id;
         this.submitRepairedPallet(this.repairedPallet).then((response) => {
           console.log(response);
             this.CLEAR_FORM();

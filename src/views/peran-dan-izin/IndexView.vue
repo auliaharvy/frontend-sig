@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <loading-overlay :active="loading" :is-full-page="true" loader="bars" />
     <h1 class="heading black--text">{{ $t("sidebar.perandanizin") }}</h1>
     <v-col cols="12" sm="12" md="12">
       <v-row>
@@ -14,6 +15,7 @@
                 <v-autocomplete
                   :label="$t('perandanizin.peran')"
                   :items="roles"
+                  :rules="idRules"
                   outlined
                   v-model="userRole.role_id"
                   item-text="name"
@@ -27,6 +29,7 @@
                 <v-autocomplete
                   :label="$t('perandanizin.pengguna')"
                   :items="users.data"
+                  :rules="idRules"
                   outlined
                   v-model="userRole.user_id"
                   item-text="username"
@@ -40,6 +43,7 @@
                 <v-autocomplete
                   :label="$t('perandanizin.perusahaan')"
                   :items="companies.data"
+                  :rules="idRules"
                   outlined
                   v-model="userRole.company_id"
                   item-text="name"
@@ -139,6 +143,13 @@ export default {
         user_id: '',
         company_id: '',
       },
+      idRules: [
+        (value) => {
+          if (value) return true;
+
+          return "this field is required";
+        },
+      ],
       role_selected: "",
       new_permission: [],
       loading: false,
@@ -159,6 +170,7 @@ export default {
       roles: (state) => state.roles,
       permissions: (state) => state.permissions,
       role_permission: (state) => state.role_permission,
+      success: (state) => state.success,
     }),
     ...mapState("company", {
       companies: (state) => state.companies
@@ -224,11 +236,15 @@ export default {
       this.setRolePermission({
         dataRolePermissions
       }).then((res) => {
-        if (res.status == "success") {
+        // if (res.status == "success") {
+        this.$swal(res.message);
+        if (res.message != "") {
+          console.log(res);
           this.alert_permission = true;
           setTimeout(() => {
             this.role_selected = "";
             this.new_permission = [];
+            // this.role_permission = [];
             this.loading = false;
             this.alert_permission = false;
             this.CLEAR_ROLE_PERMISSION();

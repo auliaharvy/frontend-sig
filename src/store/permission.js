@@ -85,6 +85,7 @@ const actions = {
             })
             .catch((error) => {
                 //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                alert(error.response.data);
                 if (error.response.status == 422) {
                     commit('SET_ERRORS', error.response.data.errors, { root: true })
                 }
@@ -108,6 +109,7 @@ const actions = {
             })
             .catch((error) => {
               //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+              alert(error.response.data);
               if (error.response.status == 422) {
                 commit("SET_ERRORS", error.response.data.errors, { root: true });
               }

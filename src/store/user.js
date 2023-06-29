@@ -106,6 +106,7 @@ const actions = {
         })
         .catch((error) => {
           //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+          alert(error.response.data);
           if (error.response.status == 422) {
             commit("SET_ERRORS", error.response.data.errors, { root: true });
           }
@@ -129,6 +130,8 @@ const actions = {
         })
         .catch((error) => {
           //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+          alert(error.response.data);
+          console.log(error);
           if (error.response.status == 422) {
             commit("SET_ERRORS", error.response.data.errors, { root: true });
           }
@@ -179,9 +182,11 @@ const actions = {
       apiClient
         .post(`/userhasrole`, payload)
         .then((response) => {
+          alert(response.data.message);
           resolve(response.data);
         })
         .catch((error) => {
+            alert(error.response.data.errors);
           if (error.response.status == 422) {
             commit("SET_ERRORS", error.response.data.errors, { root: true });
           }
@@ -190,18 +195,23 @@ const actions = {
   },
 
   setRolePermission({ commit }, payload) {
+    commit("isLoading");
     return new Promise((resolve, reject) => {
       commit("CLEAR_ERRORS", "", { root: true });
       apiClient
         .post(`/roles/rolehaspermissions`, payload.dataRolePermissions)
         .then((response) => {
-          console.log(response);
           resolve(response.data);
         })
         .catch((error) => {
+          alert(error.response.data);
           if (error.response.status == 422) {
+            alert(error.response.data.errors);
             commit("SET_ERRORS", error.response.data.errors, { root: true });
           }
+        })
+        .finally(() => {
+          commit("doneLoading");
         });
     });
   },
