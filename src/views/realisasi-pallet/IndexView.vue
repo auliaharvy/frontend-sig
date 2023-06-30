@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <v-btn v-if="$can('create pallet realization')" router :to="adds.route">{{ $t("newPallet.add") }}</v-btn>
+            <!-- <v-btn v-if="$can('create pallet realization')" router :to="adds.route">{{ $t("newPallet.add") }}</v-btn> -->
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
