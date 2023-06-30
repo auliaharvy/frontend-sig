@@ -43,6 +43,7 @@
                     <v-autocomplete
                       flat
                       hide-details
+                      hide-selected
                       multiple
                       attach
                       chips
@@ -141,20 +142,20 @@ export default {
     return {
       selectedItem: 1,
       headers: [
-        { value: "trx_number", text: this.$t("palletMovement.trxNumber") },
-        { value: "distribution", text: this.$t("palletMovement.send") },
-        { value: "status", text: this.$t("palletMovement.status") },
-        { value: "departure", text: this.$t("palletMovement.departure") },
-        { value: "destination", text: this.$t("palletMovement.destination") },
-        { value: "transporter", text: this.$t("palletMovement.transporter") },
-        { value: "truck", text: this.$t("palletMovement.truck") },
-        { value: "good", text: this.$t("pallet.good") },
-        { value: "tbr", text: this.$t("pallet.tbr") },
-        { value: "ber", text: this.$t("pallet.ber") },
-        { value: "missing", text: this.$t("pallet.missing") },
-        { value: "departure_time", text: this.$t("palletMovement.departTime") },
-        { value: "eta", text: this.$t("palletMovement.eta") },
-        { value: "late", text: this.$t("palletMovement.late") },
+        { value: "trx_number", text: this.$t("palletMovement.trxNumber"), width: "200px" },
+        { value: "distribution", text: this.$t("palletMovement.send"), width: "100px" },
+        { value: "status", text: this.$t("palletMovement.status"), width: "100px" },
+        { value: "departure", text: this.$t("palletMovement.departure"), width: "180px" },
+        { value: "destination", text: this.$t("palletMovement.destination"), width: "180px" },
+        { value: "transporter", text: this.$t("palletMovement.transporter"), width: "180px" },
+        { value: "truck", text: this.$t("palletMovement.truck"), width: "180px" },
+        { value: "good", text: this.$t("pallet.good"), width: "100px" },
+        { value: "tbr", text: this.$t("pallet.tbr"), width: "100px" },
+        { value: "ber", text: this.$t("pallet.ber"), width: "100px" },
+        { value: "missing", text: this.$t("pallet.missing"), width: "100px" },
+        { value: "departure_time", text: this.$t("palletMovement.departTime"), width: "150px" },
+        { value: "eta", text: this.$t("palletMovement.eta"), width: "150px" },
+        { value: "late", text: this.$t("palletMovement.late"), width: "100px" },
       ],
       filters: {
         trx_number: [],

@@ -69,6 +69,7 @@
           outlined
           :label="$t('sjpStatus.approval')"
         ></v-file-input>
+        <small></small>
       </v-row>
 
       <v-row no-gutters>

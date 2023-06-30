@@ -36,6 +36,7 @@
                     <v-autocomplete
                       flat
                       hide-details
+                      hide-selected
                       multiple
                       attach
                       chips
@@ -108,6 +109,18 @@
             @change="getExportData()"
             range
           ></v-date-picker>
+          <v-text-field
+            v-model="dateRangeText"
+            label="Date range"
+            prepend-icon="mdi-calendar"
+            readonly
+          ></v-text-field>
+          <v-text-field
+            v-model="totalDataDownload"
+            label="Total Data"
+            prepend-icon="mdi-file-multiple"
+            readonly
+          ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <export-excel
@@ -135,6 +148,7 @@ export default {
   },
   data() {
     return {
+      totalDataDownload: 0,
       selected: [],
       dialogExport: false,
       downloadRange: [],
@@ -183,6 +197,9 @@ export default {
         });
       });
     },
+    dateRangeText () {
+      return this.downloadRange.join(' ~ ')
+    },
   },
   methods: {
     ...mapActions("damagedPallet", ["getDamagedPallets", "getExportDamagedPallets","deleteDamagedPallet"]),
@@ -212,7 +229,9 @@ export default {
       });
     },
     getExportData() {
-      this.getExportDamagedPallets(this.downloadRange);
+      this.getExportDamagedPallets(this.downloadRange).then((result) => {
+        this.totalDataDownload = result.data.length
+      });
     },
   },
 };

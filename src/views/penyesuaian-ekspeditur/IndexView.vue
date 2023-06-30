@@ -36,6 +36,7 @@
                     <v-autocomplete
                       flat
                       hide-details
+                      hide-selected
                       multiple
                       attach
                       chips
@@ -97,6 +98,18 @@
             @change="getExportData()"
             range
           ></v-date-picker>
+          <v-text-field
+            v-model="dateRangeText"
+            label="Date range"
+            prepend-icon="mdi-calendar"
+            readonly
+          ></v-text-field>
+          <v-text-field
+            v-model="totalDataDownload"
+            label="Total Data"
+            prepend-icon="mdi-file-multiple"
+            readonly
+          ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <export-excel
@@ -127,18 +140,19 @@ export default {
   },
   data() {
     return {
+      totalDataDownload: 0,
       selected: [],
       dialogExport: false,
       downloadRange: [],
       selectedItem: 1,
       headers: [
-        { value: "trx_number", text: this.$t("transporterAdjusment.trxNumber") },
-        { value: "transporter_name", text: this.$t("transporterAdjusment.transporter") },
-        { value: "company_name", text: this.$t("transporterAdjusment.company") },
-        { value: "reporter_name", text: this.$t("transporterAdjusment.reporter") },
-        { value: "is_from_pool", text: this.$t("transporterAdjusment.status") },
-        { value: "good_pallet", text: this.$t("pallet.good") },
-        { value: "tbr_pallet", text: this.$t("pallet.tbr") },
+        { value: "trx_number", text: this.$t("transporterAdjusment.trxNumber"), width: "200px" },
+        { value: "transporter_name", text: this.$t("transporterAdjusment.transporter"), width: "180px" },
+        { value: "company_name", text: this.$t("transporterAdjusment.company"), width: "180px" },
+        { value: "reporter_name", text: this.$t("transporterAdjusment.reporter"), width: "180px" },
+        { value: "is_from_pool", text: this.$t("transporterAdjusment.status"), width: "100px" },
+        { value: "good_pallet", text: this.$t("pallet.good"), width: "100px" },
+        { value: "tbr_pallet", text: this.$t("pallet.tbr"), width: "100px" },
       ],
       filters: {
         trx_number: [],
@@ -181,6 +195,9 @@ export default {
         });
       });
     },
+    dateRangeText () {
+      return this.downloadRange.join(' ~ ')
+    },
   },
   methods: {
     ...mapActions("transporterAdjusment", ["getTransporterAdjusments", "getExportTransporterAdjusments", "deleteTransporterAdjusment"]),
@@ -210,7 +227,9 @@ export default {
       });
     },
     getExportData() {
-      this.getExportTransporterAdjusments(this.downloadRange);
+      this.getExportTransporterAdjusments(this.downloadRange).then((result) => {
+        this.totalDataDownload = result.data.length
+      });
     },
   },
 };

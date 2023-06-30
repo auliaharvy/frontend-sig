@@ -36,6 +36,7 @@
                     <v-autocomplete
                       flat
                       hide-details
+                      hide-selected
                       multiple
                       attach
                       chips
@@ -113,6 +114,18 @@
             @change="getExportData()"
             range
           ></v-date-picker>
+          <v-text-field
+            v-model="dateRangeText"
+            label="Date range"
+            prepend-icon="mdi-calendar"
+            readonly
+          ></v-text-field>
+          <v-text-field
+            v-model="totalDataDownload"
+            label="Total Data"
+            prepend-icon="mdi-file-multiple"
+            readonly
+          ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <export-excel
@@ -143,19 +156,20 @@ export default {
   },
   data() {
     return {
+      totalDataDownload: 0,
       selected: [],
       dialogExport: false,
       downloadRange: [],
       selectedItem: 1,
       headers: [
-        { value: "trx_number", text: this.$t("newPallet.trxNumber") },
-        { value: "no_change_quota", text: this.$t("changeQuota.trxNumber") },
-        { value: "company_requester", text: this.$t("newPallet.compRequester") },
-        { value: "company_workshop", text: this.$t("newPallet.compSupplier") },
-        { value: "qty_request_pallet", text: this.$t("newPallet.palletAdd") },
-        { value: "qty_ready_pallet", text: this.$t("newPallet.palletRealisation") },
-        { value: "status", text: this.$t("newPallet.status") },
-        { value: "actions", text: this.$t("table.actions") },
+        { value: "trx_number", text: this.$t("newPallet.trxNumber"), width: "200px" },
+        { value: "no_change_quota", text: this.$t("changeQuota.trxNumber"), width: "200px" },
+        { value: "company_requester", text: this.$t("newPallet.compRequester"), width: "180px" },
+        { value: "company_workshop", text: this.$t("newPallet.compSupplier"), width: "180px" },
+        { value: "qty_request_pallet", text: this.$t("newPallet.palletAdd"), width: "100px" },
+        { value: "qty_ready_pallet", text: this.$t("newPallet.palletRealisation"), width: "100px" },
+        { value: "status", text: this.$t("newPallet.status"), width: "100px" },
+        { value: "actions", text: this.$t("table.actions"), width: "80px" },
       ],
       filters: {
         trx_number: [],
@@ -206,7 +220,10 @@ export default {
           return this.filters[f].length < 1 || this.filters[f].includes(d[f]);
         });
       });
-    }
+    },
+    dateRangeText () {
+      return this.downloadRange.join(' ~ ')
+    },
   },
   methods: {
     ...mapActions("newPallet", ["getNewPallets", "getExportNewPallets","deleteNewPallet"]),
@@ -236,7 +253,9 @@ export default {
       });
     },
     getExportData() {
-      this.getExportNewPallets(this.downloadRange);
+      this.getExportNewPallets(this.downloadRange).then((result) => {
+        this.totalDataDownload = result.data.length
+      });
     },
   },
 };

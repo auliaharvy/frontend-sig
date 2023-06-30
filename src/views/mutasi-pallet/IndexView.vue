@@ -32,6 +32,9 @@
                 <th v-for="header in headers" :key="header.text" style="width: 200px;">
                   <div v-if="filters.hasOwnProperty(header.value)">
                     <v-autocomplete
+                      flat
+                      hide-details
+                      hide-selected
                       multiple
                       attach
                       chips
@@ -180,6 +183,18 @@
             @change="getExportData()"
             range
           ></v-date-picker>
+          <v-text-field
+            v-model="dateRangeText"
+            label="Date range"
+            prepend-icon="mdi-calendar"
+            readonly
+          ></v-text-field>
+          <v-text-field
+            v-model="totalDataDownload"
+            label="Total Data"
+            prepend-icon="mdi-file-multiple"
+            readonly
+          ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <export-excel
@@ -210,26 +225,27 @@ export default {
   },
   data() {
     return {
+      totalDataDownload: 0,
       dialogExport: false,
       downloadRange: [],
 			selected: [],
       selectedItem: 1,
       headers: [
-        { value: "trx_code", text: this.$t("palletTransfer.trxNumber"), width: "20%" },
-        { value: "departure_company", text: this.$t("palletTransfer.departure") },
-        { value: "destination_company", text: this.$t("palletTransfer.destination") },
-        { value: "transporter_company", text: this.$t("palletTransfer.transporter") },
-        { value: "license_plate", text: this.$t("palletTransfer.truck") },
-        { value: "driver_name", text: this.$t("palletTransfer.driver") },
-        { value: "good_pallet", text: this.$t("pallet.good") },
-        { value: "tbr_pallet", text: this.$t("pallet.tbr") },
-        { value: "ber_pallet", text: this.$t("pallet.ber") },
-        { value: "missing_pallet", text: this.$t("pallet.missing") },
-        { value: "status", text: this.$t("palletTransfer.status") },
-        { value: "reason", text: this.$t("palletTransfer.reason") },
-        { value: "note", text: this.$t("palletTransfer.note") },
-        { value: "process", text: this.$t("palletTransfer.process") },
-        { value: "actions", text: this.$t("table.actions") },
+        { value: "trx_code", text: this.$t("palletTransfer.trxNumber"), width: "200px" },
+        { value: "departure_company", text: this.$t("palletTransfer.departure"), width: "180px" },
+        { value: "destination_company", text: this.$t("palletTransfer.destination"), width: "180px" },
+        { value: "transporter_company", text: this.$t("palletTransfer.transporter"), width: "180px" },
+        { value: "license_plate", text: this.$t("palletTransfer.truck"), width: "180px" },
+        { value: "driver_name", text: this.$t("palletTransfer.driver"), width: "180px" },
+        { value: "good_pallet", text: this.$t("pallet.good"), width: "100px" },
+        { value: "tbr_pallet", text: this.$t("pallet.tbr"), width: "100px" },
+        { value: "ber_pallet", text: this.$t("pallet.ber"), width: "100px" },
+        { value: "missing_pallet", text: this.$t("pallet.missing"), width: "100px" },
+        { value: "status", text: this.$t("palletTransfer.status"), width: "150px" },
+        { value: "reason", text: this.$t("palletTransfer.reason"), width: "150px" },
+        { value: "note", text: this.$t("palletTransfer.note"), width: "180px" },
+        { value: "process", text: this.$t("palletTransfer.process"), width: "180px" },
+        { value: "actions", text: this.$t("table.actions"), width: "80px" },
       ],
 			filters: {
         trx_code: [],
@@ -297,6 +313,9 @@ export default {
         });
       });
     },
+    dateRangeText () {
+      return this.downloadRange.join(' ~ ')
+    },
   },
   methods: {
     ...mapActions("palletTransfer", ["getPalletTransfers", "getExportPalletTransfers","deletePalletTransfer"]),
@@ -331,7 +350,9 @@ export default {
       });
     },
     getExportData() {
-      this.getExportPalletTransfers(this.downloadRange);
+      this.getExportPalletTransfers(this.downloadRange).then((result) => {
+        this.totalDataDownload = result.data.length
+      });
     },
   },
 };

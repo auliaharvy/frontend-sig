@@ -37,6 +37,7 @@
                     <v-autocomplete
                       flat
                       hide-details
+                      hide-selected
                       multiple
                       attach
                       chips
@@ -181,6 +182,18 @@
             @change="getExportData()"
             range
           ></v-date-picker>
+          <v-text-field
+            v-model="dateRangeText"
+            label="Date range"
+            prepend-icon="mdi-calendar"
+            readonly
+          ></v-text-field>
+          <v-text-field
+            v-model="totalDataDownload"
+            label="Total Data"
+            prepend-icon="mdi-file-multiple"
+            readonly
+          ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <export-excel
@@ -211,24 +224,25 @@ export default {
   },
   data() {
     return {
+      totalDataDownload: 0,
       dialogExport: false,
       selected: [],
       downloadRange: [],
       selectedItem: 1,
       headers: [
-        { value: "trx_number", text: this.$t("claimPallet.trxNumber"), width: "50%" },
-        { value: "company_name", text: this.$t("claimPallet.company") },
-        { value: "manager_name", text: this.$t("claimPallet.approverManager") },
-        { value: "pic_distributor", text: this.$t("claimPallet.approverDistributor") },
-        { value: "status", text: this.$t("claimPallet.status") },
-        { value: "ber_pallet", text: this.$t("pallet.ber") },
-        { value: "missing_pallet", text: this.$t("pallet.missing") },
-        { value: "price", text: this.$t("claimPallet.price") },
-        { value: "total_price", text: this.$t("claimPallet.totalPrice") },
-        { value: "reason_manager", text: this.$t("claimPallet.reasonManager") },
-        { value: "reason_distributor", text: this.$t("claimPallet.reasonDist") },
-        { value: "tinjau", text: 'Tinjau' },
-        { value: "actions", text: this.$t("table.actions") },
+        { value: "trx_number", text: this.$t("claimPallet.trxNumber"), width: "200px" },
+        { value: "company_name", text: this.$t("claimPallet.company"), width: "180px" },
+        { value: "manager_name", text: this.$t("claimPallet.approverManager"), width: "180px" },
+        { value: "pic_distributor", text: this.$t("claimPallet.approverDistributor"), width: "180px" },
+        { value: "status", text: this.$t("claimPallet.status"), width: "180px" },
+        { value: "ber_pallet", text: this.$t("pallet.ber"), width: "100px" },
+        { value: "missing_pallet", text: this.$t("pallet.missing"), width: "100px" },
+        { value: "price", text: this.$t("claimPallet.price"), width: "150px" },
+        { value: "total_price", text: this.$t("claimPallet.totalPrice"), width: "150px" },
+        { value: "reason_manager", text: this.$t("claimPallet.reasonManager"), width: "180px" },
+        { value: "reason_distributor", text: this.$t("claimPallet.reasonDist"), width: "180px" },
+        { value: "tinjau", text: 'Tinjau', width: "100px" },
+        { value: "actions", text: this.$t("table.actions"), width: "180px" },
       ],
       filters: {
         trx_number: [],
@@ -242,7 +256,7 @@ export default {
         total_price: [],
         reason_manager: [],
         reason_distributor: [],
-        tinjau: [],
+        // tinjau: [],
         // actions: [],
       },
       search: "",
@@ -289,6 +303,9 @@ export default {
         });
       });
     },
+    dateRangeText () {
+      return this.downloadRange.join(' ~ ')
+    },
   },
   methods: {
     ...mapActions("claimPallet", ["getClaimPallets", "getExportClaimPallets","deleteClaimPallet"]),
@@ -318,7 +335,9 @@ export default {
       });
     },
     getExportData() {
-      this.getExportClaimPallets(this.downloadRange);
+      this.getExportClaimPallets(this.downloadRange).then((result) => {
+        this.totalDataDownload = result.data.length
+      });
     },
   },
 };

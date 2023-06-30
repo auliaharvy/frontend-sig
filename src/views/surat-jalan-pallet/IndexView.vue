@@ -195,11 +195,11 @@ export default {
   },
   data() {
     return {
+      totalDataDownload: 0,
       selected: [],
       roleSet: {},
       dialogExport: false,
       downloadRange: [],
-      totalDataDownload: 0,
       selectedItem: 1,
       headers: [
         { value: "trxNumber", text: this.$t("sjp.trxNumber"), width: "180px" },

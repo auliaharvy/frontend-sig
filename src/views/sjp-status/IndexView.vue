@@ -8,8 +8,8 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <v-btn router v-if="$can('add sjp')" :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn>
-            <v-btn router v-if="$can('add sjp status')" :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn>
+            <!-- <v-btn router v-if="$can('create sjp')" :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn> -->
+            <v-btn router v-if="$can('create sjp status')" :to="adds.route">{{ $t("sjpStatus.add") }}</v-btn>
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
@@ -27,18 +27,18 @@
             :headers="headers"
             :search="search"
             :items="FilteredSjpStatuss"
+            mobile
             dense
           >
             <template v-slot:header="{ header }">
               <tr class="grey lighten-3">
-                <th v-for="header in headers" :key="header.text" style="width: 200px;">
+                <th v-for="header in headers" :key="header.text">
                   <div v-if="filters.hasOwnProperty(header.value)">
                     <v-autocomplete
-                      flat
-                      hide-details
+                      hide-selected
                       multiple
                       attach
-                      chips
+                      small-chips
                       dense
                       clearable
                       :items="columnValueList(header.value)"
@@ -59,7 +59,7 @@
                 </th>
               </tr>
             </template>
-            <template v-slot:item.is_sendback="{ item }">
+           <template v-slot:item.is_sendback="{ item }">
               <p class="text-normal" v-if="item.is_sendback == 0">Send</p>
               <p class="text-normal" v-else-if="item.is_sendback == 1">Sendback</p>
             </template>
@@ -137,6 +137,18 @@
             @change="getExportData()"
             range
           ></v-date-picker>
+          <v-text-field
+            v-model="dateRangeText"
+            label="Date range"
+            prepend-icon="mdi-calendar"
+            readonly
+          ></v-text-field>
+          <v-text-field
+            v-model="totalDataDownload"
+            label="Total Data"
+            prepend-icon="mdi-file-multiple"
+            readonly
+          ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <export-excel
@@ -167,20 +179,22 @@ export default {
   },
   data() {
     return {
+      completeTrxNumber: false,
+      totalDataDownload: 0,
       selected: [],
       dialogExport: false,
       downloadRange: [],
       selectedItem: 1,
       headers: [
-        { value: "trx_number", text: this.$t("sjpStatus.trxNumber"), width: "15%" },
-        { value: "sjp_number", text: this.$t("sjpStatus.sjpNumber") },
-        { value: "sender_name", text: this.$t("sjpStatus.sender") },
-        { value: "receiver_name", text: this.$t("sjpStatus.receiver") },
-        { value: "is_sendback", text: this.$t("sjpStatus.sendback") },
-        { value: "status", text: this.$t("sjpStatus.status") },
-        { value: "note", text: this.$t("sjpStatus.note") },
-        { value: "tinjau", text: 'Tinjau'},
-        { value: "actions", text: this.$t("table.actions") },
+        { value: "trx_number", text: this.$t("sjpStatus.trxNumber"), width: "200px"},
+        { value: "sjp_number", text: this.$t("sjpStatus.sjpNumber"), width: "180px"},
+        { value: "sender_name", text: this.$t("sjpStatus.sender"), width: "180px" },
+        { value: "receiver_name", text: this.$t("sjpStatus.receiver"), width: "180px" },
+        { value: "is_sendback", text: this.$t("sjpStatus.sendback"), width: "180px" },
+        { value: "status", text: this.$t("sjpStatus.status"), width: "180px" },
+        { value: "note", text: this.$t("sjpStatus.note"), width: "180px" },
+        { value: "tinjau", text: 'Tinjau', width: "100px"},
+        { value: "actions", text: this.$t("table.actions"), width: "80px" },
       ],
       filters: {
         trx_number: [],
@@ -190,7 +204,7 @@ export default {
         is_sendback: [],
         status: [],
         note: [],
-        tinjau: [],
+        // tinjau: [],
         // actions: [],
       },
       items: [],
@@ -249,6 +263,9 @@ export default {
         });
       });
     },
+    dateRangeText () {
+      return this.downloadRange.join(' ~ ')
+    },
   },
   methods: {
     ...mapActions("sjpStatus", ["getSjpStatuss", "getExportDataSjpStatuss","deleteSjpStatus"]),
@@ -275,7 +292,9 @@ export default {
       });
     },
     getExportData() {
-      this.getExportDataSjpStatuss(this.downloadRange);
+      this.getExportDataSjpStatuss(this.downloadRange).then((result) => {
+        this.totalDataDownload = result.data.length
+      });
     },
   },
 };

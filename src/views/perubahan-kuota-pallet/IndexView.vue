@@ -36,6 +36,7 @@
                     <v-autocomplete
                       flat
                       hide-details
+                      hide-selected
                       multiple
                       attach
                       chips
@@ -128,6 +129,18 @@
             @change="getExportData()"
             range
           ></v-date-picker>
+          <v-text-field
+            v-model="dateRangeText"
+            label="Date range"
+            prepend-icon="mdi-calendar"
+            readonly
+          ></v-text-field>
+          <v-text-field
+            v-model="totalDataDownload"
+            label="Total Data"
+            prepend-icon="mdi-file-multiple"
+            readonly
+          ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <export-excel
@@ -158,21 +171,22 @@ export default {
   },
   data() {
     return {
+      totalDataDownload: 0,
       selected: [],
       dialogExport: false,
       downloadRange: [],
       selectedItem: 1,
       headers: [
-        { value: "trx_number", text: this.$t("changeQuota.trxNumber") },
-        { value: "company_name", text: this.$t("changeQuota.compRequester") },
-        { value: "requester_name", text: this.$t("changeQuota.requester") },
-        { value: "quantity", text: this.$t("changeQuota.requestedQuantity") },
-        { value: "approved_quantity", text: this.$t("changeQuota.approvedQuantity") },
-        { value: "type", text: this.$t("changeQuota.type") },
-        { value: "status", text: this.$t("changeQuota.status") },
-        { value: "reason", text: this.$t("changeQuota.reason") },
-        { value: "note", text: this.$t("changeQuota.note") },
-        { value: "actions", text: this.$t("table.actions") },
+        { value: "trx_number", text: this.$t("changeQuota.trxNumber"), width: "200px" },
+        { value: "company_name", text: this.$t("changeQuota.compRequester"), width: "180px" },
+        { value: "requester_name", text: this.$t("changeQuota.requester"), width: "180px" },
+        { value: "quantity", text: this.$t("changeQuota.requestedQuantity"), width: "100px" },
+        { value: "approved_quantity", text: this.$t("changeQuota.approvedQuantity"), width: "100px" },
+        { value: "type", text: this.$t("changeQuota.type"), width: "150px" },
+        { value: "status", text: this.$t("changeQuota.status"), width: "150px" },
+        { value: "reason", text: this.$t("changeQuota.reason"), width: "180px" },
+        { value: "note", text: this.$t("changeQuota.note"), width: "180px" },
+        { value: "actions", text: this.$t("table.actions"), width: "80px" },
       ],
       filters: {
         trx_number: [],
@@ -221,6 +235,9 @@ export default {
         });
       });
     },
+    dateRangeText () {
+      return this.downloadRange.join(' ~ ')
+    },
   },
   methods: {
     ...mapActions("changeQuota", ["getChangeQuotas", "getExportChangeQuotas","deleteChangeQuota"]),
@@ -249,7 +266,9 @@ export default {
       });
     },
     getExportData() {
-      this.getExportChangeQuotas(this.downloadRange);
+      this.getExportChangeQuotas(this.downloadRange).then((result) => {
+        this.totalDataDownload = result.data.length
+      });
     },
   },
 };
