@@ -263,7 +263,8 @@
     "price": "Biaya",
     "totalPrice": "Total Biaya",
     "approvalManager": "Penyetujuan Manager",
-    "approvalDistributor": "Penyetujuan Distributor"
+    "approvalDistributor": "Penyetujuan Distributor",
+    "show": "TInjau"
   },
   "sewaPallet": {
     "index": "Biaya Sewa Pallet",

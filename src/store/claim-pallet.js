@@ -73,7 +73,6 @@ const actions = {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/claim-pallets?page=${state.page}&q=${search}`)
             .then((response) => {
-              console.log(response);
               const roleSet = JSON.parse(localStorage.getItem("role"));
               if(roleSet.role_name == 'Supervisor' || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
                 commit('ASSIGN_DATA', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS

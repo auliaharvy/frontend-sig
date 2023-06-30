@@ -264,7 +264,8 @@
     "price": "Price",
     "totalPrice": "Total Price",
     "approvalManager": "Manager Approval",
-    "approvalDistributor": "Distributor Approval"
+    "approvalDistributor": "Distributor Approval",
+    "show": "Preview"
   },
   "sewaPallet": {
     "index": "Rental Cost Pallet",

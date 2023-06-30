@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('claimPallet.company')"
-          :items="companies.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="claimPallet.id_company_distributor"
@@ -16,7 +16,7 @@
         </v-autocomplete>
       </v-row>
 
-      <v-row no-gutters>
+      <!-- <v-row no-gutters>
         <v-text-field
           v-model="claimPallet.price"
           :label="$t('claimPallet.price')"
@@ -25,7 +25,7 @@
           type="number"
           outlined
         ></v-text-field>
-      </v-row>
+      </v-row> -->
 
       <v-row no-gutters>
         <v-text-field
@@ -47,7 +47,7 @@
         ></v-text-field>
       </v-row>
 
-      <v-row no-gutters>
+      <!-- <v-row no-gutters>
         <v-text-field
           v-model="claimPallet.total_price"
           :label="$t('claimPallet.totalPrice')"
@@ -56,7 +56,25 @@
           type="number"
           outlined
         ></v-text-field>
-      </v-row>
+      </v-row> -->
+
+      <vuetify-money
+          v-model="claimPallet.price"
+          :rules="idRules"
+          :label="$t('sewaPallet.price')"
+          readonly
+          outlined
+          :options="options"
+        />
+        
+      <vuetify-money
+          v-model="claimPallet.total_price"
+          :label="$t('claimPallet.totalPrice')"
+          :rules="idRules"
+          readonly
+          outlined
+          :options="options"
+        />
 
       <v-row no-gutters>
         <v-autocomplete
@@ -101,6 +119,10 @@ import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "FormApprovalChangePallet",
   data: () => ({
+    options: {
+      prefix:"Rp",
+      precision: 0
+    },
     itemApproval: [
       {
         id: 3,
@@ -121,11 +143,16 @@ export default {
   }),
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesAll();
   },
   computed: {
+    ...mapState(["roleSet"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+    ...mapState("dropdown", {
+      companiesAll: (state) => state.companiesAll, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("claimPallet", {
       claimPallet: (state) => state.claimPallet, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
@@ -136,14 +163,18 @@ export default {
     ...mapMutations("claimPallet", ["CLEAR_FORM"]),
     ...mapActions("claimPallet", ["updateClaimPallet"]),
     ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesAll"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        this.claimPallet.id_user_distributor = 5;
+        this.claimPallet.id_user_distributor = this.roleSet.user_id;
         this.claimPallet.update_type = 'approval_distributor';
-        this.claimPallet.updated_by = 5;
+        this.claimPallet.updated_by = this.roleSet.user_id;
         this.updateClaimPallet(this.claimPallet).then((response) => {
-          console.log(response);
+              this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "claim-pallet" });
           // else {

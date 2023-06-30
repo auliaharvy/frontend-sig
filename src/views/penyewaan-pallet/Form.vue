@@ -23,6 +23,7 @@
           type="number"
           outlined
           @change="totalPrice"
+          readonly
         ></v-text-field>
       </v-row>
 
@@ -33,6 +34,7 @@
           type="number"
           outlined
           @change="totalPrice"
+          readonly
         ></v-text-field>
       </v-row>
 
@@ -43,6 +45,7 @@
           type="number"
           outlined
           @change="totalPrice"
+          readonly
         ></v-text-field>
       </v-row>
 
@@ -53,6 +56,7 @@
           type="number"
           outlined
           @change="totalPrice"
+          readonly
         ></v-text-field>
       </v-row>
 
@@ -61,6 +65,7 @@
         :label="$t('sewaPallet.price')"
         outlined
         :options="options"
+        @change="totalPrice"
       />
 
       <vuetify-money
@@ -68,6 +73,7 @@
         :label="$t('sewaPallet.totalPrice')"
         outlined
         :options="options"
+        readonly
       />
 
       <v-row no-gutters>
@@ -148,7 +154,7 @@ export default {
       // console.log(this.companies)
     },
     totalPrice() {
-      const totalPallet = this.sewaPallet.good_pallet + this.sewaPallet.tbr_pallet + this.sewaPallet.ber_pallet + this.sewaPallet.missing_pallet;
+      const totalPallet = parseInt(this.sewaPallet.good_pallet) + parseInt(this.sewaPallet.tbr_pallet) + parseInt(this.sewaPallet.ber_pallet) + parseInt(this.sewaPallet.missing_pallet);
       this.sewaPallet.total = this.sewaPallet.price * totalPallet;
     },
     validate() {

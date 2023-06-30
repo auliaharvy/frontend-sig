@@ -5,6 +5,8 @@ const state = () => ({
     companiesDeparture: [], //STATE UNTUK MENAMPUNG DATA CUSTOMERS
     companiesTransporter: [], //STATE UNTUK MENAMPUNG DATA CUSTOMERS
     companiesDestination: [], //STATE UNTUK MENAMPUNG DATA CUSTOMERS
+    companiesDistributor: [], //STATE UNTUK MENAMPUNG DATA CUSTOMERS
+    companiesAll: [], //STATE UNTUK MENAMPUNG DATA CUSTOMERS
     page: 1
 })
 
@@ -24,6 +26,12 @@ const mutations = {
     },
     ASSIGN_DATA_TRANSPORTER(state, payload) {
         state.companiesTransporter = payload
+    },
+    ASSIGN_DATA_DISTRIBUTOR(state, payload) {
+        state.companiesDistributor = payload
+    },
+    ASSIGN_DATA_ALL(state, payload) {
+        state.companiesAll = payload
     },
 }
 
@@ -78,6 +86,40 @@ const actions = {
                   data: response.data.data.filter(val => val.name_company_type == 'Transporter'),
                 };  
                 commit('ASSIGN_DATA_TRANSPORTER', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                resolve(response.data)
+          }).finally(() => {
+              commit('doneLoading')
+          })
+      })
+    },
+
+    getCompaniesDistributor({ commit, state }, payload) {
+      commit('isLoading')
+      let search = typeof payload != 'undefined' ? payload:''
+      return new Promise((resolve, reject) => {
+          //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
+          apiClient.get(`/companies?page=${state.page}&q=${search}`)
+          .then((response) => {
+              const roleSet = JSON.parse(localStorage.getItem("role"));
+                const result = {
+                  data: response.data.data.filter(val => val.name_company_type != 'Transporter'),
+                };  
+                commit('ASSIGN_DATA_DISTRIBUTOR', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                resolve(response.data)
+          }).finally(() => {
+              commit('doneLoading')
+          })
+      })
+    },
+
+    getCompaniesAll({ commit, state }, payload) {
+      commit('isLoading')
+      let search = typeof payload != 'undefined' ? payload:''
+      return new Promise((resolve, reject) => {
+          //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
+          apiClient.get(`/companies?page=${state.page}&q=${search}`)
+          .then((response) => {
+                commit('ASSIGN_DATA_ALL', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
           }).finally(() => {
               commit('doneLoading')

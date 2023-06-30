@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('claimPallet.company')"
-          :items="companiesDeparture.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="claimPallet.id_company_distributor"
@@ -17,17 +17,8 @@
 
       <v-row no-gutters>
         <v-text-field
-          v-model="claimPallet.price"
-          :label="$t('claimPallet.price')"
-          :rules="idRules"
-          type="number"
-          outlined
-        ></v-text-field>
-      </v-row>
-
-      <v-row no-gutters>
-        <v-text-field
           v-model="claimPallet.ber_pallet"
+          :rules="palletRules"
           :label="$t('pallet.ber')"
           type="number"
           outlined
@@ -37,11 +28,29 @@
       <v-row no-gutters>
         <v-text-field
           v-model="claimPallet.missing_pallet"
+          :rules="palletRules"
           :label="$t('pallet.missing')"
           type="number"
           outlined
         ></v-text-field>
       </v-row>
+
+        <vuetify-money
+          v-model="price"
+          :rules="idRules"
+          :label="$t('sewaPallet.price')"
+          outlined
+          :options="options"
+        />
+        
+      <vuetify-money
+          v-model="claimPallet.total"
+          :label="$t('sewaPallet.totalPrice')"
+          :rules="idRules"
+          readonly
+          outlined
+          :options="options"
+        />
 
       <v-row no-gutters>
         <v-col :col="24">
@@ -65,12 +74,20 @@ import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "FormAddClaimPallet",
   data: () => ({
+    price: 0,
+    options: {
+      prefix:"Rp",
+      precision: 0
+    },
     idRules: [
       (value) => {
         if (value) return true;
 
         return "this field is required";
       },
+    ],
+    palletRules: [
+      (v) => v > -1 || "cannot input - number",
     ],
     noTruckRules: [
       (v) => !!v || "this field is required",
@@ -84,9 +101,15 @@ export default {
         ) || "E-mail must be valid",
     ],
   }),
+  watch: {
+    price() {
+      this.claimPallet.price = this.price;
+      this.totalPrice()
+    }
+  },
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
-    this.getCompaniesDeparture();
+    this.getCompaniesAll();
     },
   computed: {
     ...mapState(["roleSet"]),
@@ -99,14 +122,21 @@ export default {
       loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("dropdown", {
-      companiesDeparture: (state) => state.companiesDeparture, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      companiesAll: (state) => state.companiesAll, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
     ...mapMutations("claimPallet", ["CLEAR_FORM"]),
     ...mapActions("claimPallet", ["submitClaimPallet"]),
     ...mapActions("company", ["getCompanies"]),
-    ...mapActions("dropdown", ["getCompaniesDeparture"]),
+    ...mapActions("dropdown", ["getCompaniesAll"]),
+    totalPrice() {
+      console.log(this.claimPallet.ber_pallet)
+      const totalPallet = parseInt(this.claimPallet.ber_pallet) + parseInt(this.claimPallet.missing_pallet);
+      console.log(totalPallet)
+      this.claimPallet.total = this.claimPallet.price * totalPallet;
+      console.log(this.claimPallet.total)
+    },
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {

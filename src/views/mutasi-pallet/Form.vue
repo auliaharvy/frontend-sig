@@ -81,7 +81,7 @@
         <v-text-field
           v-model="palletTransfer.good_pallet"
           :label="$t('pallet.good')"
-          :rules="idRules"
+          :rules="palletRules"
           outlined
           required
         ></v-text-field>
@@ -91,7 +91,7 @@
         <v-text-field
           v-model="palletTransfer.tbr_pallet"
           :label="$t('pallet.tbr')"
-          :rules="idRules"
+          :rules="palletRules"
           outlined
           required
         ></v-text-field>
@@ -137,6 +137,9 @@ export default {
         return "this field is required";
       },
     ],
+    palletRules: [
+      (v) => v > -1 || "cannot input - number",
+    ],
     noTruckRules: [
       (v) => !!v || "this field is required",
       (v) => (v && v.length >= 3) || "must be greater than 3 characters",
@@ -153,7 +156,9 @@ export default {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getTrucks(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getDrivers(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
-    this.getCompaniesDeparture();
+    this.getCompaniesDeparture().then((response) => {
+      this.palletTransfer.id_company_departure = this.roleSet.company_id;
+    });
     this.getCompaniesDestination(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getCompaniesTransporter(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },

@@ -60,6 +60,7 @@
         v-model="sewaPallet.price"
         :label="$t('sewaPallet.price')"
         outlined
+        readonly
         :options="options"
       />
 
@@ -67,6 +68,7 @@
         v-model="sewaPallet.total_price"
         :label="$t('sewaPallet.totalPrice')"
         outlined
+        readonly
         :options="options"
       />
 

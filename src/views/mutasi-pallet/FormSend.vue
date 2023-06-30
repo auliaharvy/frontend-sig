@@ -81,7 +81,7 @@
         <v-text-field
           v-model="palletTransfer.good_pallet"
           :label="$t('pallet.good')"
-          :rules="idRules"
+          :rules="palletRules"
           outlined
           readonly
         ></v-text-field>
@@ -91,7 +91,7 @@
         <v-text-field
           v-model="palletTransfer.tbr_pallet"
           :label="$t('pallet.tbr')"
-          :rules="idRules"
+          :rules="palletRules"
           outlined
           readonly
         ></v-text-field>
@@ -154,6 +154,9 @@ export default {
 
         return "this field is required";
       },
+    ],
+    palletRules: [
+      (v) => v > -1 || "cannot input - number",
     ],
     noTruckRules: [
       (v) => !!v || "this field is required",
