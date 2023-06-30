@@ -170,7 +170,10 @@ export default {
         this.claimPallet.update_type = 'approval_manager';
         this.claimPallet.updated_by = this.roleSet.user_id;
         this.updateClaimPallet(this.claimPallet).then((response) => {
-          console.log(response);
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "claim-pallet" });
           // else {

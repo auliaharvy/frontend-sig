@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('sewaPallet.company')"
-          :items="companies.data"
+          :items="companiesDistributor.data"
           :rules="idRules"
           outlined
           v-model="sewaPallet.id_company_distributor"
@@ -138,12 +138,13 @@ export default {
     ],
   }),
   created() {
-    this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesDistributor(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
+    ...mapState(["roleSet"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
-    ...mapState("company", {
-      companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    ...mapState("dropdown", {
+      companiesDistributor: (state) => state.companiesDistributor, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("sewaPallet", {
       sewaPallet: (state) => state.sewaPallet, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
@@ -153,15 +154,18 @@ export default {
   methods: {
     ...mapMutations("sewaPallet", ["CLEAR_FORM"]),
     ...mapActions("sewaPallet", ["updateSewaPallet"]),
-    ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesDistributor"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        this.sewaPallet.id_user_distributor = 5;
+        this.sewaPallet.id_user_distributor = this.roleSet.user_id;
         this.sewaPallet.update_type = 'approval_distributor';
-        this.sewaPallet.updated_by = 5;
+        this.sewaPallet.updated_by = this.roleSet.user_id;
         this.updateSewaPallet(this.sewaPallet).then((response) => {
-          console.log(response);
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "sewa-pallet" });
           // else {

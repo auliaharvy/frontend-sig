@@ -144,7 +144,10 @@ export default {
         this.claimPallet.created_by = this.roleSet.user_id;
         this.claimPallet.updated_by = this.roleSet.user_id;
         this.submitClaimPallet(this.claimPallet).then((response) => {
-          console.log(response);
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "claim-pallet" });
           // else {

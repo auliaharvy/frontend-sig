@@ -90,7 +90,7 @@
                 Approval Distributor
               </v-btn>
               <br>
-              <v-btn @click="hapusData(item)" small text>
+              <v-btn v-if="item.status == 0 || item.status == null && $can('delete claim pallet')" @click="hapusData(item)" small text>
                 <v-icon left>
                   mdi-delete
                 </v-icon>

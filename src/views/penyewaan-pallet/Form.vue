@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('sewaPallet.company')"
-          :items="companies.data"
+          :items="companiesDistributor.data"
           :rules="idRules"
           outlined
           v-model="sewaPallet.id_company_distributor"
@@ -64,6 +64,7 @@
         v-model="price"
         :label="$t('sewaPallet.price')"
         outlined
+        :rules="idRules"
         :options="options"
         @change="totalPrice"
       />
@@ -124,6 +125,7 @@ export default {
   }),
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesDistributor(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   watch: {
     price() {
@@ -132,7 +134,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["setRole"]),
+    ...mapState(["roleSet"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -141,16 +143,20 @@ export default {
       sewaPallet: (state) => state.sewaPallet, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
       loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    ...mapState("dropdown", {
+      companiesDistributor: (state) => state.companiesDistributor, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
   },
   methods: {
     ...mapMutations("sewaPallet", ["CLEAR_FORM"]),
     ...mapActions("sewaPallet", ["submitSewaPallet"]),
     ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesDistributor"]),
     setPallet() {
-      this.sewaPallet.good_pallet = this.companies.data.find(x => x.id === this.sewaPallet.id_company_distributor).good_pallet;
-      this.sewaPallet.tbr_pallet = this.companies.data.find(x => x.id === this.sewaPallet.id_company_distributor).tbr_pallet;
-      this.sewaPallet.ber_pallet = this.companies.data.find(x => x.id === this.sewaPallet.id_company_distributor).ber_pallet;
-      this.sewaPallet.missing_pallet = this.companies.data.find(x => x.id === this.sewaPallet.id_company_distributor).missing_pallet;
+      this.sewaPallet.good_pallet = this.companiesDistributor.data.find(x => x.id === this.sewaPallet.id_company_distributor).good_pallet;
+      this.sewaPallet.tbr_pallet = this.companiesDistributor.data.find(x => x.id === this.sewaPallet.id_company_distributor).tbr_pallet;
+      this.sewaPallet.ber_pallet = this.companiesDistributor.data.find(x => x.id === this.sewaPallet.id_company_distributor).ber_pallet;
+      this.sewaPallet.missing_pallet = this.companiesDistributor.data.find(x => x.id === this.sewaPallet.id_company_distributor).missing_pallet;
       // console.log(this.companies)
     },
     totalPrice() {
@@ -161,10 +167,13 @@ export default {
       const valid = this.$refs.form.validate();
       if (valid) {
         this.sewaPallet.status = 0;
-        this.sewaPallet.created_by = this.setRole.user_id;
-        this.sewaPallet.updated_by = this.setRole.user_id;
+        this.sewaPallet.created_by = this.roleSet.user_id;
+        this.sewaPallet.updated_by = this.roleSet.user_id;
         this.submitSewaPallet(this.sewaPallet).then((response) => {
-          console.log(response);
+            this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "sewa-pallet" });
           // else {

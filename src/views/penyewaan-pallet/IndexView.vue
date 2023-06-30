@@ -63,8 +63,8 @@
 
             <template v-slot:item.status="{ item }">
               <p v-if="item.status == 0 || item.status == null">Draft</p>
-              <p class="text-green" v-else-if="item.status == 1">Manager Approved</p>
-              <p class="text-red" v-else-if="item.status == 2">Manager Rejected</p>
+              <p class="text-green" v-else-if="item.status == 1">SIG Approved</p>
+              <p class="text-red" v-else-if="item.status == 2">SIG Rejected</p>
               <p class="text-green" v-else-if="item.status == 3">Distributor Approved</p>
               <p class="text-red" v-else-if="item.status == 4">Distributor Rejected</p>
             </template>
@@ -72,45 +72,32 @@
               <router-link
                 :to="{ name: 'sewa-pallet.view', params: { id: item.id } }"
               >
-                <v-btn color="info" small>Tinjau</v-btn>
+                <v-btn color="info" small>{{ $t('claimPallet.show') }}</v-btn>
               </router-link>
             </template>
 
             <template v-slot:item.actions="{ item }">
-              <v-menu>
-                <template v-slot:activator="{ on: menu, attrs }">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on: tooltip }">
-                      <v-btn
-                        class="ma-2"
-                        text
-                        icon
-                        v-if="item.status == 0 && $can('update sewa pallet')"
-                        v-bind="attrs"
-                        v-on="{ ...tooltip, ...menu }"
-                      >
-                        <v-icon small class="mr-2">mdi-pencil</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Edit data</span>
-                  </v-tooltip>
-                </template>
-                <v-list>
-                  <v-list-item v-for="(list, i) in listEdit" :key="i">
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        <v-btn router :to="list.href+'/'+item.id" small text>
-                          <v-icon left>
-                            {{ list.icon }}
-                          </v-icon>
-                          {{ list.text }}
-                        </v-btn></v-list-item-title
-                      >
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-              <v-icon v-if="item.status == 0 || item.status == null && $can('delete sewa pallet')" small @click="hapusData(item)"> mdi-delete </v-icon>
+              <v-btn v-if="item.status == 0 || item.status == null && $can('update sewa pallet')" router :to="'/sewa-pallet/approval-manager/'+item.id" small text>
+                <v-icon left>
+                  mdi-pen
+                </v-icon>
+                Approval SIG
+              </v-btn>
+              <br>
+              <v-btn v-if="item.status == 1 && $can('update sewa pallet')" router :to="'/sewa-pallet/approval-distributor/'+item.id" small text>
+                <v-icon left>
+                  mdi-pen
+                </v-icon>
+                Approval Distributor
+              </v-btn>
+              <br>
+              <v-btn v-if="item.status == 0 || item.status == null && $can('delete sewa pallet')" @click="hapusData(item)" small text>
+                <v-icon left>
+                  mdi-delete
+                </v-icon>
+                Delete
+              </v-btn>
+              <!-- <v-icon v-if="item.status == 0 || item.status == null && $can('delete sewa pallet')" small @click="hapusData(item)"> mdi-delete </v-icon> -->
             </template>
           </v-data-table>
         </v-card>
@@ -185,7 +172,7 @@ export default {
         { value: "total_price", text: this.$t("claimPallet.totalPrice"), width: "150px" },
         { value: "reason_manager", text: this.$t("claimPallet.reasonManager"), width: "180px" },
         { value: "reason_distributor", text: this.$t("claimPallet.reasonDist"), width: "180px" },
-        { value: "tinjau", text: 'Tinjau', width: "100" },
+        { value: "tinjau", text: this.$t("claimPallet.reasonDist"), width: "100" },
         { value: "actions", text: this.$t("table.actions"), width: "80px" },
       ],
       filters: {
