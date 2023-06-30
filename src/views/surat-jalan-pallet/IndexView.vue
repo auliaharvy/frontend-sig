@@ -8,7 +8,7 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <v-btn v-if="this.$route.path === '/sjp' && $can('create sjp')" router :to="adds.route">{{ $t("sjp.add") }}</v-btn>
+            <!-- <v-btn v-if="this.$route.path === '/sjp' && $can('create sjp')" router :to="adds.route">{{ $t("sjp.add") }}</v-btn> -->
             <v-btn v-if="$can('create sjp')" router :to="adds.route">{{ $t("sjp.add") }}</v-btn>
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
@@ -153,6 +153,18 @@
             @change="getExportData()"
             range
           ></v-date-picker>
+          <v-text-field
+            v-model="dateRangeText"
+            label="Date range"
+            prepend-icon="mdi-calendar"
+            readonly
+          ></v-text-field>
+          <v-text-field
+            v-model="totalDataDownload"
+            label="Total Data"
+            prepend-icon="mdi-file-multiple"
+            readonly
+          ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <export-excel
@@ -187,18 +199,19 @@ export default {
       roleSet: {},
       dialogExport: false,
       downloadRange: [],
+      totalDataDownload: 0,
       selectedItem: 1,
       headers: [
-        { value: "trxNumber", text: this.$t("sjp.trxNumber"), width: "15%" },
-        { value: "departure", text: this.$t("sjp.departure") },
-        { value: "destination", text: this.$t("sjp.destination") },
-        { value: "transporter", text: this.$t("sjp.transporter") },
-        { value: "licensePlate", text: this.$t("sjp.truck") },
-        { value: "driverName", text: this.$t("sjp.driver") },
-        { value: "noDo", text: this.$t("sjp.noDo") },
-        { value: "trxStatus", text: this.$t("sjp.trxStatus") },
-        { value: "send", text: this.$t("sjp.send") },
-        { value: "actions", text: this.$t("table.actions") },
+        { value: "trxNumber", text: this.$t("sjp.trxNumber"), width: "180px" },
+        { value: "departure", text: this.$t("sjp.departure"), width: "180px"  },
+        { value: "destination", text: this.$t("sjp.destination"), width: "180px"  },
+        { value: "transporter", text: this.$t("sjp.transporter"), width: "180px" },
+        { value: "licensePlate", text: this.$t("sjp.truck"), width: "150px" },
+        { value: "driverName", text: this.$t("sjp.driver"), width: "150px" },
+        { value: "noDo", text: this.$t("sjp.noDo"), width: "150px" },
+        { value: "trxStatus", text: this.$t("sjp.trxStatus"), width: "100px" },
+        { value: "send", text: this.$t("sjp.send"), width: "100px" },
+        { value: "actions", text: this.$t("table.actions"), width: "80px" },
       ],
       filters: {
         trxNumber: [],
@@ -260,6 +273,9 @@ export default {
         });
       });
     },
+    dateRangeText () {
+      return this.downloadRange.join(' ~ ')
+    },
   },
   methods: {
     ...mapActions("sjp", ["getSjps", "getExportDataSjps", "deleteSjp"]),
@@ -292,7 +308,9 @@ export default {
       });
     },
     getExportData() {
-      this.getExportDataSjps(this.downloadRange);
+      this.getExportDataSjps(this.downloadRange).then((result) => {
+        this.totalDataDownload = result.data.length
+      });
     },
   },
 };
