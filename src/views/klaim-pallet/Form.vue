@@ -51,7 +51,16 @@
           outlined
           :options="options"
         />
-
+      <v-row no-gutters>
+        <v-file-input
+          v-model="claimPallet.photo"
+          accept="image/png, image/jpeg"
+          outlined
+          @change="uploadImage"
+          :label="$t('sjpStatus.approval')"
+        ></v-file-input>
+        <small>Max File : 2.5 MB | Tipe file : .png, .jpeg  </small>
+      </v-row>
       <v-row no-gutters>
         <v-col :col="24">
           <div class="d-flex flex-column">
@@ -137,13 +146,30 @@ export default {
       this.claimPallet.total = this.claimPallet.price * totalPallet;
       console.log(this.claimPallet.total)
     },
+    uploadImage(e) {
+      console.log(e);
+      const selectedFile = e;
+      this.claimPallet.photo = selectedFile;
+      console.log(this.claimPallet.photo);
+    },
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
         this.claimPallet.status = 0;
         this.claimPallet.created_by = this.roleSet.user_id;
         this.claimPallet.updated_by = this.roleSet.user_id;
-        this.submitClaimPallet(this.claimPallet).then((response) => {
+
+        let form = new FormData();
+        form.append('id_company_distributor', this.claimPallet.id_company_distributor);
+        form.append('price', this.claimPallet.price);
+        form.append('ber_pallet', this.claimPallet.ber_pallet);
+        form.append('missing_pallet', this.claimPallet.missing_pallet);
+        form.append('photo', this.claimPallet.photo);
+        form.append('created_by', this.claimPallet.created_by);
+        form.append('updated_by', this.claimPallet.updated_by);
+        form.append('status', this.claimPallet.status);
+
+        this.submitClaimPallet(form).then((response) => {
           this.$swal({
                 icon: 'success',
                 title: 'Success',

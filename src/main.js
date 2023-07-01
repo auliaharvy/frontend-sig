@@ -35,7 +35,7 @@ new Vue({
   i18n,
   axios,
   components: {
-      App
+    App
   },
   render: h => h(App),
   computed: {

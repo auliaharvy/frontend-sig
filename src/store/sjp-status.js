@@ -148,11 +148,16 @@ const actions = {
           })
       })
     },
-    submitSjpStatus({ dispatch, commit, state }) {
+    submitSjpStatus({ dispatch, commit, state }, payload) {
         commit('isLoading')
         return new Promise((resolve, reject) => {
             //MENGIRIMKAN REQUEST KE BACKEND DENGAN DATA YANG DIDAPATKAN DARI STATE CUSTOMER
-            apiClient.post(`/sjp-statuss`, state.sjpStatus)
+            // apiClient.post(`/sjp-statuss`, state.sjpStatus)
+            apiClient.post(`/sjp-statuss`, payload, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
             .then((response) => {
                 //APABILA BERHASIL MAKA LOAD DATA CUSTOMER UNTUK MENGAMBIL DATA TERBARU
                 dispatch('getSjpStatuss').then(() => {

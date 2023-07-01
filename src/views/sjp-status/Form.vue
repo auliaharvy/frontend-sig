@@ -66,10 +66,12 @@
       <v-row no-gutters>
         <v-file-input
           v-model="sjpStatus.sending_driver_approval"
+          accept="image/*"
           outlined
+          @change="uploadImage"
           :label="$t('sjpStatus.approval')"
         ></v-file-input>
-        <small></small>
+        <small>Max File : 2.5 MB | Tipe file : image  </small>
       </v-row>
 
       <v-row no-gutters>
@@ -142,6 +144,12 @@ export default {
     ...mapMutations("sjpStatus", ["CLEAR_FORM"]),
     ...mapActions("sjpStatus", ["submitSjpStatus"]),
     ...mapActions("company", ["getCompanies"]),
+    uploadImage(e) {
+      console.log(e);
+      const selectedFile = e;
+      this.sjpStatus.sending_driver_approval = selectedFile;
+      console.log(this.sjpStatus.sending_driver_approval);
+    },
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
@@ -149,7 +157,21 @@ export default {
         this.sjpStatus.status = 0;
         this.sjpStatus.id_user_sender = this.roleSet.user_id;
         this.sjpStatus.sjp_status = "send";
-        this.submitSjpStatus(this.sjpStatus).then((response) => {
+
+        let form = new FormData();
+        form.append('sjp_number', this.sjpStatus.sjp_number);
+        form.append('id_departure_company', this.sjpStatus.id_departure_company);
+        form.append('id_destination_company', this.sjpStatus.id_destination_company);
+        form.append('id_transporter_company', this.sjpStatus.id_transporter_company);
+        form.append('good_pallet', this.sjpStatus.good_pallet);
+        form.append('sending_driver_approval', this.sending_driver_approval);
+        form.append('note',this.sjpStatus.note);
+        form.append('is_sendback',this.sjpStatus.is_sendback);
+        form.append('status',this.sjpStatus.status);
+        form.append('id_user_sender',this.sjpStatus.id_user_sender);
+        form.append('sjp_status',this.sjpStatus.sjp_status);
+
+        this.submitSjpStatus(form).then((response) => {
           console.log(response);
             this.CLEAR_FORM();
             this.$router.push({ name: "sjp-status" });

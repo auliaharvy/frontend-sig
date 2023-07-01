@@ -18,6 +18,7 @@ const state = () => ({
       ber_pallet: '',
       missing_pallet: '',
       total_price: '',
+      photo: '',
       created_at: '',
       updated_at: '',
     },
@@ -102,13 +103,19 @@ const actions = {
           })
       })
     },
-    submitClaimPallet({ dispatch, commit, state }) {
+    submitClaimPallet({ dispatch, commit, state }, payload) {
         commit('isLoading')
         return new Promise((resolve, reject) => {
             //MENGIRIMKAN REQUEST KE BACKEND DENGAN DATA YANG DIDAPATKAN DARI STATE CUSTOMER
-            apiClient.post(`/claim-pallets`, state.claimPallet)
+
+            apiClient.post(`/claim-pallets`, payload,{
+            headers: {
+              'Content-Type' : 'multipart/form-data'
+            }
+            })
             .then((response) => {
                 //APABILA BERHASIL MAKA LOAD DATA CUSTOMER UNTUK MENGAMBIL DATA TERBARU
+                console.log(state.claimPallet.photo);
                 dispatch('getClaimPallets').then(() => {
                     resolve(response.data)
                 })
@@ -119,7 +126,7 @@ const actions = {
                     alert(error.response.data);
                     commit('SET_ERRORS', error.response.data.errors, { root: true })
                 } else {
-                    alert(error.response.data);
+                    alert(error.response.data.message);
                     commit('SET_ERRORS', error.response.data.error, { root: true })
                 }
             }).finally(() => {
