@@ -58,51 +58,6 @@
                 </th>
               </tr>
             </template>
-			    </v-data-table>
-          <!-- <v-data-table
-            :loading="loading"
-            :headers="headers"
-            :search="search"
-            :items="palletTransfers.data"
-            dense
-          >
-          <template v-slot:item.good_pallet="{ item }">
-              <template v-if="item.palletQuantity.length == 0">
-                0
-              </template>
-              <template v-else>
-                {{ getPallet('Good Pallet', item.palletQuantity) }}
-              </template>
-            </template>
-
-            <template v-slot:item.tbr_pallet="{ item }">
-              <template v-if="item.palletQuantity.length == 0">
-                0
-              </template>
-              <template v-else>
-                {{ getPallet('TBR Pallet', item.palletQuantity) }}
-              </template>
-            </template>
-
-            <template v-slot:item.ber_pallet="{ item }">
-              <template v-if="item.palletQuantity.length == 0">
-                0
-              </template>
-              <template v-else>
-                {{ getPallet('BER Pallet', item.palletQuantity) }}
-              </template>
-            </template>
-
-            <template v-slot:item.missing_pallet="{ item }">
-              <template v-if="item.palletQuantity.length == 0">
-                0
-              </template>
-              <template v-else>
-                {{ getPallet('Missing Pallet', item.palletQuantity) }}
-              </template>
-            </template>
-            
-
             <template v-slot:item.status="{ item }">
               <p v-if="item.status == 0">Draft</p>
               <p class="text-green" v-else-if="item.status == 1">Approved</p>
@@ -171,7 +126,7 @@
               </v-menu>
               <v-icon v-if="item.status === 0 && $can('delete pallet transfer')" small @click="hapusData(item)"> mdi-delete </v-icon>
             </template>
-          </v-data-table> -->
+			    </v-data-table>
         </v-card>
       </v-card>
     </v-col>
