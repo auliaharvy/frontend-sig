@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('newPallet.trxNumber')"
-          :items="newPallets.data"
+          :items="newPallets"
           :rules="idRules"
           outlined
           readonly
@@ -57,6 +57,9 @@ import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "FormAddPalletRealization",
   data: () => ({
+    palletRules: [
+      (v) => v > -1 || "cannot input - number",
+    ],
     idRules: [
       (value) => {
         if (value) return true;
@@ -93,10 +96,14 @@ export default {
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        this.palletRealization.created_by = this.roleSet.user_id;
-        this.palletRealization.updated_by = this.roleSet.user_id;
+        var roleData = JSON.parse(localStorage.getItem("role"))
+        this.palletRealization.created_by = roleData.user_id;
+        this.palletRealization.updated_by = roleData.user_id;
         this.submitPalletRealization(this.palletRealization).then((response) => {
-          console.log(response);
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "pallet-realization" });
         });
@@ -105,12 +112,14 @@ export default {
     qtyRules(v, max){
       if (v > max) {
         return "Quantity is greater than requested";  
+      } else if(v < 0) {
+        return "cannot input - number";  
       } else {
         return true;
       }
     },
     reset() {
-      this.$refs.form.reset();
+      this.palletRealization.qty_pallet = 0
     },
   },
   destroyed() {

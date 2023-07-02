@@ -33,10 +33,8 @@ export default {
   },
   created() {
     this.getChangeQuotaDetail(this.$route.params.id).then(() => {
-      console.log(this.changeQuota);
       this.newPallet.id_company_requester = this.changeQuota.id_company_requester;
-      this.newPallet.id_trx_change_quota = this.$route.params.id;
-      this.newPallet.id_trx_change_quota = this.$route.params.id;
+      this.newPallet.id_trx_change_quota = this.changeQuota.id;
       this.newPallet.qty_request_pallet = this.changeQuota.approved_quantity;
       this.newPallet.reason = this.changeQuota.reason;
       this.newPallet.note = this.changeQuota.note;

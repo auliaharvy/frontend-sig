@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('changeQuota.compRequester')"
-          :items="companies.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="changeQuota.id_company_requester"
@@ -42,7 +42,7 @@
         <v-text-field
           v-model="changeQuota.approved_quantity"
           :label="$t('changeQuota.approvedQuantity')"
-          :rules="idRules"
+          :rules="palletRules"
           outlined
         ></v-text-field>
       </v-row>
@@ -97,6 +97,9 @@ export default {
         name: "Pengurangan"
       },
     ],
+    palletRules: [
+      (v) => v > -1 || "cannot input - number",
+    ],
     idRules: [
       (value) => {
         if (value) return true;
@@ -107,6 +110,7 @@ export default {
   }),
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesAll(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
@@ -117,20 +121,35 @@ export default {
       changeQuota: (state) => state.changeQuota, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
       loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
+    ...mapState("dropdown", {
+      companiesAll: (state) => state.companiesAll, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
   },
   methods: {
     ...mapMutations("changeQuota", ["CLEAR_FORM"]),
     ...mapActions("changeQuota", ["updateChangeQuota"]),
     ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesAll"]),
     validate() {
-      const valid = this.$refs.form.validate();
+      if (this.changeQuota.approved_quantity > this.changeQuota.quantity) {
+        this.$swal({
+                icon: 'error',
+                title: 'Error',
+                text: 'Approved quantity cannot greater than request quantity',
+              });
+      } else {
+        const valid = this.$refs.form.validate();
       if (valid) {
+        var roleData = JSON.parse(localStorage.getItem("role"))
         this.changeQuota.status = 1;
-        this.changeQuota.id_approver = 5;
-        this.changeQuota.created_by = 3;
-        this.changeQuota.updated_by = 3;
+        this.changeQuota.id_approver = roleData.user_id;
+        // this.changeQuota.created_by = roleData.user_id;
+        this.changeQuota.updated_by = roleData.user_id;
         this.updateChangeQuota(this.changeQuota).then((response) => {
-          console.log(response);
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "change-quota" });
           // else {
@@ -144,9 +163,12 @@ export default {
           // }
         });
       }
+      }
+      
     },
     reset() {
-      this.$refs.form.reset();
+      this.changeQuota.approved_quantity = 0;
+      this.changeQuota.note = '';
     },
   },
   destroyed() {

@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('changeQuota.trxNumber')"
-          :items="changeQuotas.data"
+          :items="changeQuotas"
           :rules="idRules"
           outlined
           readonly
@@ -19,7 +19,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('newPallet.compRequester')"
-          :items="companies.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           readonly
@@ -33,7 +33,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('newPallet.compSupplier')"
-          :items="companies.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="newPallet.id_company_workshop"
@@ -67,7 +67,7 @@
       <v-row no-gutters>
         <v-textarea
           v-model="newPallet.note"
-          :label="$t('changeQuota.reason')"
+          :label="$t('changeQuota.note')"
           outlined
           readonly
         ></v-textarea>
@@ -115,13 +115,14 @@ export default {
     ],
   }),
   created() {
-    this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesAll(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getChangeQuotas(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
+    ...mapState(["setRole"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
-    ...mapState("company", {
-      companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    ...mapState("dropdown", {
+      companiesAll: (state) => state.companiesAll, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("changeQuota", {
       changeQuotas: (state) => state.changeQuotas, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
@@ -135,16 +136,20 @@ export default {
     ...mapMutations("newPallet", ["CLEAR_FORM"]),
     ...mapActions("changeQuota", ["getChangeQuotas"]),
     ...mapActions("newPallet", ["submitNewPallet"]),
-    ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesAll"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
+        var roleData = JSON.parse(localStorage.getItem("role"))
         this.newPallet.status = '0';
         this.newPallet.qty_ready_pallet = '0';
-        this.newPallet.created_by = 3;
-        this.newPallet.updated_by = 3;
+        this.newPallet.created_by =  roleData.user_id;
+        this.newPallet.updated_by = roleData.user_id;
         this.submitNewPallet(this.newPallet).then((response) => {
-          console.log(response);
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "new-pallet" });
         });

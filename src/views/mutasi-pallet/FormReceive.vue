@@ -214,8 +214,10 @@ export default {
         this.palletTransfer.ber_pallet = '0';
         this.palletTransfer.missing_pallet = '0';
         this.updatePalletTransfer(this.palletTransfer).then((response) => {
-          console.log(response);
-          console.log(this.palletTransfer);
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "pallet-transfer" });
           // else {

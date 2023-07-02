@@ -18,7 +18,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('transporterAdjusment.company')"
-          :items="companies.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="transporterAdjusment.id_company"
@@ -45,6 +45,7 @@
         <v-text-field
           v-model="transporterAdjusment.good_pallet"
           :label="$t('pallet.good')"
+          :rules="palletRules"
           type="number"
           outlined
         ></v-text-field>
@@ -54,6 +55,7 @@
         <v-text-field
           v-model="transporterAdjusment.tbr_pallet"
           :label="$t('pallet.tbr')"
+          :rules="palletRules"
           type="number"
           outlined
         ></v-text-field>
@@ -91,6 +93,9 @@ export default {
         name: 'From Pool'
       }
     ],
+    palletRules: [
+      (v) => v > -1 || "cannot input - number",
+    ],
     idRules: [
       (value) => {
         if (value) return true;
@@ -113,6 +118,7 @@ export default {
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getCompaniesTransporter(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesAll(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
     ...mapState(["setRole"]),
@@ -126,21 +132,26 @@ export default {
     }),
     ...mapState("dropdown", {
       companiesTransporter: (state) => state.companiesTransporter, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      companiesAll: (state) => state.companiesAll, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
     ...mapMutations("transporterAdjusment", ["CLEAR_FORM"]),
     ...mapActions("transporterAdjusment", ["submitTransporterAdjusment"]),
     ...mapActions("company", ["getCompanies"]),
-    ...mapActions("dropdown", ["getCompaniesTransaporter"]),
+    ...mapActions("dropdown", ["getCompaniesTransporter", "getCompaniesAll"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        this.transporterAdjusment.id_user_reporter = this.setRole.user_id;
-        this.transporterAdjusment.created_by = this.setRole.user_id;
-        this.transporterAdjusment.updated_by = this.setRole.user_id;
+        var roleData = JSON.parse(localStorage.getItem("role"))
+        this.transporterAdjusment.id_user_reporter = roleData.user_id;
+        this.transporterAdjusment.created_by = roleData.user_id;
+        this.transporterAdjusment.updated_by = roleData.user_id;
         this.submitTransporterAdjusment(this.transporterAdjusment).then((response) => {
-          console.log(response);
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "transporter-adjusment" });
           // else {

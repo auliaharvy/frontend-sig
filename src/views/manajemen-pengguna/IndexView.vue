@@ -63,6 +63,9 @@
                 <span>{{ i+1 + '. ' + role.role + ' - ' + role.company }}</span>
               </div>
             </template>
+            <template v-slot:item.last_updated="{ item }">
+              <p>{{ item.updated_at | moment('DD-MM-YYYY') }}</p>
+            </template>
             <template v-slot:item.is_deleted="{ item }">
               <v-chip
                 v-if="item.is_deleted == 1"
@@ -116,6 +119,7 @@ export default {
         { value: "username", text: this.$t("manajemenpengguna.username") },
         { value: "email", text: this.$t("manajemenpengguna.email") },
         { value: "roles", text: 'Roles' },
+        { value: "last_updated", text: 'Last Update' },
         { value: "is_deleted", text: 'Status' },
         { value: "actions", text: this.$t("table.actions") },
       ],

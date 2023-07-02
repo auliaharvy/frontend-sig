@@ -78,7 +78,7 @@
                         class="ma-2"
                         text
                         icon
-                        v-if="item.status === 0 || item.status === null && $can('update change quota')"
+                        v-if="item.id_new_pallet == 'belum ada' && $can('update change quota')"
                         v-bind="attrs"
                         v-on="{ ...tooltip, ...menu }"
                       >

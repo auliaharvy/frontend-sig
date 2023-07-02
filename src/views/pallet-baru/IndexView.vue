@@ -75,7 +75,7 @@
                         class="ma-2"
                         text
                         icon
-                        v-if="item.status == 0 && $can('update new pallet')"
+                        v-if="item.status == 0 || item.status == null || item.status == 1 && $can('update new pallet')"
                         v-bind="attrs"
                         v-on="{ ...tooltip, ...menu }"
                       >
@@ -100,7 +100,7 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
-              <v-icon v-if="item.status === 0 && $can('delete new pallet')" small @click="hapusData(item)"> mdi-delete </v-icon>
+              <v-icon v-if="item.status === 0 || item.status == null && $can('delete new pallet')" small @click="hapusData(item)"> mdi-delete </v-icon>
             </template>
           </v-data-table>
         </v-card>

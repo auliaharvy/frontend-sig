@@ -200,7 +200,10 @@ export default {
         this.palletTransfer.created_by = this.roleSet.user_id;
         this.palletTransfer.updated_by = this.roleSet.user_id;
         this.submitPalletTransfer(this.palletTransfer).then((response) => {
-          console.log(response);
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "pallet-transfer" });
           // else {

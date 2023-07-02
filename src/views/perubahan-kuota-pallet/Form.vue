@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('changeQuota.compRequester')"
-          :items="companiesDestination.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="changeQuota.id_company_requester"
@@ -30,7 +30,7 @@
         <v-text-field
           v-model="changeQuota.quantity"
           :label="$t('changeQuota.requestedQuantity')"
-          :rules="idRules"
+          :rules="palletRules"
           outlined
         ></v-text-field>
       </v-row>
@@ -76,6 +76,9 @@ export default {
         name: "Pengurangan"
       },
     ],
+    palletRules: [
+      (v) => v > -1 || "cannot input - number",
+    ],
     idRules: [
       (value) => {
         if (value) return true;
@@ -97,7 +100,7 @@ export default {
   }),
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
-    this.getCompaniesDestination(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesAll(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
     ...mapState["roleSet"],
@@ -110,23 +113,27 @@ export default {
       loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("dropdown", {
-      companiesDestination: (state) => state.companiesDestination, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      companiesAll: (state) => state.companiesAll, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
     ...mapMutations("changeQuota", ["CLEAR_FORM"]),
     ...mapActions("changeQuota", ["submitChangeQuota"]),
     ...mapActions("company", ["getCompanies"]),
-    ...mapActions("dropdown", ["getCompaniesDestination"]),
+    ...mapActions("dropdown", ["getCompaniesAll"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
+        var roleData = JSON.parse(localStorage.getItem("role"))
         this.changeQuota.status = 0;
-        this.changeQuota.id_requester = this.roleSet.user_id;
-        this.changeQuota.created_by = this.roleSet.user_id;
-        this.changeQuota.updated_by = this.roleSet.user_id;
+        this.changeQuota.id_requester = roleData.user_id;
+        this.changeQuota.created_by = roleData.user_id;
+        this.changeQuota.updated_by = roleData.user_id;
         this.submitChangeQuota(this.changeQuota).then((response) => {
-          console.log(response);
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "change-quota" });
           // else {

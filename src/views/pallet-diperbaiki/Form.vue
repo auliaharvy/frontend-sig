@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('repairPallet.company')"
-          :items="companies.data"
+          :items="companies"
           :rules="idRules"
           outlined
           v-model="repairedPallet.id_company"
@@ -19,7 +19,7 @@
         <v-text-field
           v-model="repairedPallet.qty_good_pallet"
           :label="$t('pallet.good')"
-          :rules="idRules"
+          :rules="palletRules"
           outlined
         ></v-text-field>
       </v-row>
@@ -62,6 +62,9 @@ export default {
         return "this field is required";
       },
     ],
+    palletRules: [
+      (v) => v > -1 || "cannot input - number",
+    ],
     noTruckRules: [
       (v) => !!v || "this field is required",
       (v) => (v && v.length >= 3) || "must be greater than 3 characters",
@@ -100,7 +103,10 @@ export default {
         this.repairedPallet.created_by = this.roleSet.user_id;
         this.repairedPallet.updated_by = this.roleSet.user_id;
         this.submitRepairedPallet(this.repairedPallet).then((response) => {
-          console.log(response);
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "repaired-pallet" });
           // else {
