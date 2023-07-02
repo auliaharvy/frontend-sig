@@ -11,6 +11,8 @@ const state = () => ({
     detailPools: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
     detailWarehouse: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
     detailTransporter: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
+    palletSendReceive: {}, //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
+    palletSendBackReceive: {}, //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
     idConditionCompany: 4,
 
 })
@@ -49,6 +51,12 @@ const mutations = {
     },
     ASSIGN_DETAIL_TRANSPORTER(state, payload) {
         state.detailTransporter = payload;
+    },
+    ASSIGN_PALLET_SEND_RECEIVE(state, payload) {
+        state.palletSendReceive = payload;
+    },
+    ASSIGN_PALLET_SEND_BACK(state, payload) {
+        state.palletSendBackReceive = payload;
     },
 }
 
@@ -192,6 +200,19 @@ const actions = {
                   commit('ASSIGN_DETAIL_TRANSPORTER', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                     resolve(result)
                 } 
+            }).finally(() => {
+            })
+        })
+    },
+    getPalletSendReceive({ commit }, payload) {
+        let year = payload.year;
+        let month = payload.month;
+        return new Promise((resolve, reject) => {
+            //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
+            apiClient.get(`/dashboards/pallet-send-receive?year=${year}&month=${month}&distribution=0`)
+            .then((response) => {
+                commit('ASSIGN_PALLET_SEND_RECEIVE', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                resolve(response.data.data)
             }).finally(() => {
             })
         })

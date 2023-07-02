@@ -58,11 +58,36 @@
                 </th>
               </tr>
             </template>
+            <template v-slot:item.roles="{ item }">
+              <div v-for="(role,i) in item.roles" :key="i">
+                <span>{{ i+1 + '. ' + role.role + ' - ' + role.company }}</span>
+              </div>
+            </template>
+            <template v-slot:item.is_deleted="{ item }">
+              <v-chip
+                v-if="item.is_deleted == 1"
+                class="ma-2"
+                color="red"
+                label
+                text-color="white"
+              >
+                Inactive
+              </v-chip>
+              <v-chip
+                v-if="item.is_deleted == 0"
+                class="ma-2"
+                color="green"
+                label
+                text-color="white"
+              >
+                Active
+              </v-chip>
+            </template>
             <template v-slot:item.actions="{ item }">
-              <v-icon small class="mr-2" @click="editData(item)">
+              <v-icon v-if="item.is_deleted == 0" small class="mr-2" @click="editData(item)">
                 mdi-pencil
               </v-icon>
-              <v-icon small @click="hapusData(item)"> mdi-delete </v-icon>
+              <v-icon v-if="item.is_deleted == 0" small @click="hapusData(item)"> mdi-delete </v-icon>
             </template>
           </v-data-table>
         </v-card>
@@ -90,6 +115,8 @@ export default {
         { value: "fullname", text: this.$t("manajemenpengguna.namalengkap") },
         { value: "username", text: this.$t("manajemenpengguna.username") },
         { value: "email", text: this.$t("manajemenpengguna.email") },
+        { value: "roles", text: 'Roles' },
+        { value: "is_deleted", text: 'Status' },
         { value: "actions", text: this.$t("table.actions") },
       ],
       filters: {

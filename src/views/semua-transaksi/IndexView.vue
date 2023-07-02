@@ -56,6 +56,26 @@
               :items="filteredAllTransactions"
               elevation="2"
             >
+            <template #activator="{ on, attrs }">
+                  <v-btn icon v-bind="attrs" v-on="on">
+                    <v-icon>mdi-dots-vertical</v-icon>
+                  </v-btn>
+                </template>
+
+                <v-card>
+                  <v-list>
+                    <v-list-item v-for="item in headers" :key="item.text" v-if="item.value !== 'actions'">
+                      <v-list-item-action>
+                        <v-checkbox
+                          v-model="item.active"
+                        />
+                      </v-list-item-action>
+                      <v-list-item-content style="cursor: default">
+                        <v-list-item-title>{{ item.text }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </v-card>
               <template v-slot:header="{ header }">
                 <tr class="grey lighten-3">
                   <th v-for="header in headers" :key="header.text" style="width: 200px;">

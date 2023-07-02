@@ -118,7 +118,7 @@ export default {
       headers: [
         { value: "transporter_code", text: this.$t("trucks.transporter_code"), width: '40%' },
         { value: "license_plate", text: this.$t("trucks.no"), width: '40%' },
-        { value: "is_deleted", text: this.$t("trucks.status"), width: '40%' },
+        { value: "is_deleted", text: 'Status', width: '40%' },
         { value: "actions", text: this.$t("table.actions"), width: '20%' },
       ],
       filters: {

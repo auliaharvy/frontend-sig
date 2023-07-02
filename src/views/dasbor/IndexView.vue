@@ -228,6 +228,58 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <v-row v-if="roleSet.role_name == 'Supervisor' || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser' || roleSet.company_type == 'Transporter'" no-gutters>
+      <v-col :sm="12" :md="12" :lg="12">
+        <v-card class="ma-1" elevation="5">
+          <v-card-title class="justify-center">
+            <v-autocomplete
+                style="margin-right: 20;"
+                :items="monthData"
+                v-model="palletSend.month"
+                outlined
+                item-text="name"
+                item-value="value"
+                required
+                clearable
+              >
+              </v-autocomplete>
+            <v-autocomplete
+                style="margin-left: 20;"
+                :items="years"
+                v-model="palletSend.year"
+                outlined
+                required
+                clearable
+              >
+              </v-autocomplete>
+          </v-card-title>
+          <v-divider />
+          <v-card-text>
+            <!-- <v-row no-gutters>
+              <v-col style="margin-right: 20;" :sm="6" :md="6" :lg="6">
+                Pallet Send
+                <BarChart
+                  v-if="palletSendReceive"
+                  :data="palletSendData"
+                  :options="barChartOptions"
+                  :labels="labelPalletSend"
+                />
+              </v-col>
+              <v-col style="margin-left: 20;" :sm="6" :md="6" :lg="6">
+                Pallet Receive
+                <BarChart
+                  v-if="palletSendReceive"
+                  :data="palletReceiveData"
+                  :options="barChartOptions"
+                  :labels="labelPalletSend"
+                />
+              </v-col>
+            </v-row> -->
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -238,6 +290,7 @@ import Breadcomp from "@/components/Breadcrumb.vue";
 import BarChart from "./components/BarChart.vue";
 import BarChartPool from "./components/BarChartPool.vue";
 import DoughnutChart from "./components/DoughnutChart.vue";
+import LineChart from "./components/LineChart.vue";
 // @ is an alias to /src
 export default {
   name: "Dashboard",
@@ -246,8 +299,63 @@ export default {
     BarChart,
     BarChartPool,
     DoughnutChart,
+    LineChart,
   },
   data: () => ({
+    palletSend: {
+      year: 2023,
+      month: '06'
+    },
+    monthData: [
+      {
+        value: '01',
+        name: "Januari"
+      },
+      {
+        value: '02',
+        name: "Februari"
+      },
+      {
+        value: '03',
+        name: "Maret"
+      },
+      {
+        value: '04',
+        name: "April"
+      },
+      {
+        value: '05',
+        name: "Mei"
+      },
+      {
+        value: '06',
+        name: "Juni"
+      },
+      {
+        value: '07',
+        name: "Juli"
+      },
+      {
+        value: '08',
+        name: "Agustus"
+      },
+      {
+        value: '09',
+        name: "September"
+      },
+      {
+        value: '10',
+        name: "Oktober"
+      },
+      {
+        value: '11',
+        name: "November"
+      },
+      {
+        value: '12',
+        name: "Desember"
+      },
+    ],
     idConditionCompany: 0,
     idConditionWarehouse: 0,
     idConditionTransporter: 0,
@@ -314,6 +422,7 @@ export default {
     this.getTotalPallets(); //LOAD DATA KETIKA COMPONENT DI-LOAD
     this.getConditionAlls("all"); //LOAD DATA KETIKA COMPONENT DI-LOAD
     this.getConditionTransporters("Transporter"); //LOAD DATA KETIKA COMPONENT DI-LOAD
+    this.getPalletSendReceive(this.palletSend)
     this.getDetailPools().then((response) => {
       this.idConditionCompany = response.data[0].id;
       this.getConditionCompany(response.data[0].id);
@@ -330,7 +439,15 @@ export default {
       this.stopLoading()
     });
   },
+  // watch: {
+  //   palletSend() {
+  //     this.getPalletSendReceive(this.palletSend)
+  //   }
+  // },
   computed: {
+    years() {
+      return _.range(2022, this.$moment().add(1, 'years').format('Y'))
+    },
     ...mapState("dashboard", {
       totalPallets: (state) => state.totalPallets, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
       palletConditionAlls: (state) => state.palletConditionAlls, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -341,6 +458,8 @@ export default {
       detailTransporter: (state) => state.detailTransporter, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
       palletConditionWarehouse: (state) => state.palletConditionWarehouse, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
       palletConditionTransporter: (state) => state.palletConditionTransporter, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      palletSendReceive: (state) => state.palletSendReceive, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      palletSendBackReceive: (state) => state.palletSendBackReceive, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("dashboard", {
       loading: (state) => state.loading, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -465,6 +584,21 @@ export default {
         return o.name;
       });
     },
+    palletSendData() {
+      return _.map(this.palletSendReceive.dataSend, function(o) {
+        return o.total
+      });
+    },
+    palletReceiveData() {
+      return _.map(this.palletSendReceive.dataReceive, function(o) {
+        return o.total
+      });
+    },
+    labelPalletSend() {
+      return _.map(this.palletSendReceive.dataSend, function(o) {
+        return o.date
+      });
+    },
   },
   methods: {
     ...mapActions("dashboard", [
@@ -477,6 +611,7 @@ export default {
       "getConditionCompany",
       "getConditionWarehouse",
       "getConditionTransporter",
+      "getPalletSendReceive",
       "doLoading",
       "stopLoading"
     ]),
