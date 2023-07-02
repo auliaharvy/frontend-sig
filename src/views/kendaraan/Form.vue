@@ -83,6 +83,10 @@ export default {
       const valid = this.$refs.form.validate();
       if (valid){
         this.submitTruck(this.role).then(() => {
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
           this.$router.push({ name: "trucks" });
         });
       }
