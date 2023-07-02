@@ -76,9 +76,11 @@ const actions = {
             .then((response) => {
                 const roleSet = JSON.parse(localStorage.getItem("role"));
               if(roleSet.role_name == 'Supervisor' || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
+                console.log(response.data.data);
                 commit('ASSIGN_DATA', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data);
               } else {
+                console.log(response.data.data);
                 const result = {
                   data: response.data.data.filter(val => val.company_name == roleSet.company_name),
                 };  
@@ -103,7 +105,7 @@ const actions = {
           })
       })
     },
-    submitClaimPallet({ dispatch, commit, state }, payload) {
+    submitClaimPallet({ dispatch, commit }, payload) {
         commit('isLoading')
         return new Promise((resolve, reject) => {
             //MENGIRIMKAN REQUEST KE BACKEND DENGAN DATA YANG DIDAPATKAN DARI STATE CUSTOMER
@@ -115,7 +117,6 @@ const actions = {
             })
             .then((response) => {
                 //APABILA BERHASIL MAKA LOAD DATA CUSTOMER UNTUK MENGAMBIL DATA TERBARU
-                console.log(state.claimPallet.photo);
                 dispatch('getClaimPallets').then(() => {
                     resolve(response.data)
                 })

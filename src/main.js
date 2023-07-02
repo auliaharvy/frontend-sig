@@ -16,6 +16,7 @@ import VuetifyMoney from "vuetify-money";
 import Permissions from './mixins/permission.js'
 import VueMoment from 'vue-moment'
 import { mapGetters, mapState } from 'vuex'
+import { ValidationProvider, extend } from 'vee-validate';
 import excel from 'vue-excel-export'
 
 Vue.use(VueMoment);
@@ -26,6 +27,8 @@ Vue.use(VueSweetalert2);
 Vue.component('loading-overlay', Loading);
 
 Vue.config.productionTip = false
+Vue.prototype.$API_URL = 'http://localhost:3000'
+
 
 new Vue({
   router,

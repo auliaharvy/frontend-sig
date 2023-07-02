@@ -15,20 +15,22 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('sjpStatus.departure')"
-          :items="companies.data"
+          :items="companiesDeparture.data"
           :rules="idRules"
           outlined
-          v-model="sjpStatus.id_departure_company"
+          v-model="sjpStatus.id_company_departure"
           item-text="name"
           item-value="id"
+          readonly
         >
+          <!-- v-model="sjpStatus.id_departure_company" -->
         </v-autocomplete>
       </v-row>
 
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('sjpStatus.destination')"
-          :items="companies.data"
+          :items="companiesDestination.data"
           :rules="idRules"
           outlined
           v-model="sjpStatus.id_destination_company"
@@ -42,7 +44,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('palletTransfer.transporter')"
-          :items="companies.data"
+          :items="companiesTransporter.data"
           :rules="idRules"
           outlined
           v-model="sjpStatus.id_transporter_company"
@@ -64,14 +66,15 @@
       </v-row>
 
       <v-row no-gutters>
+          <!-- v-model="sjpStatus.sending_driver_approval" -->
         <v-file-input
           v-model="sjpStatus.sending_driver_approval"
-          accept="image/*"
+          :rules="fileUploadRules"
+          accept="image/png, image/jpeg"
           outlined
           @change="uploadImage"
           :label="$t('sjpStatus.approval')"
         ></v-file-input>
-        <small>Max File : 2.5 MB | Tipe file : image  </small>
       </v-row>
 
       <v-row no-gutters>
@@ -105,6 +108,10 @@ export default {
   name: "FormAddSJPStatus",
   data: () => ({
     loading: false,
+    fileUploadRules: [
+      value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+      value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+    ],
     idRules: [
       (value) => {
         if (value) return true;
@@ -129,10 +136,24 @@ export default {
   }),
   created() {
     this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getSjpStatusDetail(this.$route.params.id);
+    console.log(this.sjpStatus);
+    console.log(this.roleSet);
+    this.getCompaniesDeparture().then((response) => {
+      this.sjpStatus.id_company_departure = this.roleSet.company_id;
+    });
+    this.getCompaniesDestination(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesTransporter(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+
   },
   computed: {
     ...mapState(["roleSet"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
+    ...mapState("dropdown", {
+      companiesDeparture: (state) => state.companiesDeparture, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      companiesTransporter: (state) => state.companiesTransporter, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      companiesDestination: (state) => state.companiesDestination, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
@@ -142,7 +163,8 @@ export default {
   },
   methods: {
     ...mapMutations("sjpStatus", ["CLEAR_FORM"]),
-    ...mapActions("sjpStatus", ["submitSjpStatus"]),
+    ...mapActions("dropdown", ["getCompaniesDeparture", "getCompaniesDestination", "getCompaniesTransporter"]),
+    ...mapActions("sjpStatus", ["submitSjpStatus", "getSjpStatusDetail"]),
     ...mapActions("company", ["getCompanies"]),
     uploadImage(e) {
       console.log(e);
@@ -159,12 +181,14 @@ export default {
         this.sjpStatus.sjp_status = "send";
 
         let form = new FormData();
+        form.append('id_sjp', this.sjpStatus.id_sjp);
         form.append('sjp_number', this.sjpStatus.sjp_number);
         form.append('id_departure_company', this.sjpStatus.id_departure_company);
         form.append('id_destination_company', this.sjpStatus.id_destination_company);
         form.append('id_transporter_company', this.sjpStatus.id_transporter_company);
         form.append('good_pallet', this.sjpStatus.good_pallet);
-        form.append('sending_driver_approval', this.sending_driver_approval);
+        form.append('sending_driver_approval', this.sjpStatus.sending_driver_approval);
+        form.append('receiving_driver_approval', this.sjpStatus.sending_driver_approval);
         form.append('note',this.sjpStatus.note);
         form.append('is_sendback',this.sjpStatus.is_sendback);
         form.append('status',this.sjpStatus.status);
@@ -172,7 +196,10 @@ export default {
         form.append('sjp_status',this.sjpStatus.sjp_status);
 
         this.submitSjpStatus(form).then((response) => {
-          console.log(response);
+            this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "sjp-status" });
           // else {

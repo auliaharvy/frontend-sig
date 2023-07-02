@@ -9,7 +9,7 @@
         <v-card>
           <v-card-title>
             <!-- <v-btn router v-if="$can('create sjp')" :to="adds.route">{{ $t("palletTransfer.add") }}</v-btn> -->
-            <v-btn router v-if="$can('create sjp status')" :to="adds.route">{{ $t("sjpStatus.add") }}</v-btn>
+            <!-- <v-btn router v-if="$can('create sjp status')" :to="adds.route">{{ $t("sjpStatus.add") }}</v-btn> -->
             <v-btn style="margin-left: 20px" @click="dialogExport = true">{{
               $t("manajemenpengguna.unduh")
             }}</v-btn>
@@ -67,6 +67,22 @@
             <template v-slot:item.status="{ item }">
               <p class="text-normal" v-if="item.status == 0">Sending</p>
               <p class="text-green" v-else-if="item.status == 1">Received</p>
+            </template>
+
+            <template v-slot:item.sending_driver_approval="{ item }">
+              <v-btn v-if="item.sending_driver_approval != 0 || item.sending_driver_approval != '0'" @click="locationToImage($API_URL + item.sending_driver_approval)" color="info" small>
+                <v-icon small class="mr-2">mdi-image</v-icon>
+              </v-btn>
+              <!-- <a v-bind:href="$API_URL + item.sending_driver_approval" target="_blank">
+                <v-icon small class="mr-2">mdi-image</v-icon> 
+              </a>-->
+           </template>
+
+
+            <template v-slot:item.receiving_driver_approval="{ item }">
+              <v-btn v-if="item.receiving_driver_approval != 0 || item.sending_driver_approval != '0'" @click="locationToImage($API_URL + item.sending_driver_approval)" color="info" small>
+                <v-icon small class="mr-2">mdi-image</v-icon>
+              </v-btn>
             </template>
 
             <template v-slot:item.tinjau="{ item }">
@@ -165,12 +181,10 @@
   </v-container>
 </template>
 
-<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
+
 // @ is an alias to /src
 export default {
   name: "SJPStatus",
@@ -193,6 +207,8 @@ export default {
         { value: "is_sendback", text: this.$t("sjpStatus.sendback"), width: "180px" },
         { value: "status", text: this.$t("sjpStatus.status"), width: "180px" },
         { value: "note", text: this.$t("sjpStatus.note"), width: "180px" },
+        { value: "sending_driver_approval", text: this.$t("sjpStatus.sending_driver_approval"), width: "180px" },
+        { value: "receiving_driver_approval", text: this.$t("sjpStatus.receiving_driver_approval"), width: "180px" },
         { value: "tinjau", text: 'Tinjau', width: "100px"},
         { value: "actions", text: this.$t("table.actions"), width: "80px" },
       ],
@@ -204,8 +220,6 @@ export default {
         is_sendback: [],
         status: [],
         note: [],
-        // tinjau: [],
-        // actions: [],
       },
       items: [],
       search: "",
@@ -268,7 +282,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions("sjpStatus", ["getSjpStatuss", "getExportDataSjpStatuss","deleteSjpStatus"]),
+    ...mapActions("sjpStatus", ["getSjpStatuss", "getExportDataSjpStatuss","deleteSjpStatus", "getDownloadImage"]),
+    locationToImage(name) {
+      console.log(name);
+      window.location.href = name;
+    },
     columnValueList(val) {
       return this.sjpStatuss.map((d) => d[val]);
     },

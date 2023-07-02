@@ -78,6 +78,17 @@
       />
 
       <v-row no-gutters>
+        <v-file-input
+          v-model="sewaPallet.photo"
+          :rules="fileUploadRules"
+          accept="image/png, image/jpeg"
+          outlined
+          @change="uploadImage"
+          :label="$t('sjpStatus.approval')"
+        ></v-file-input>
+      </v-row>
+
+      <v-row no-gutters>
         <v-col :col="24">
           <div class="d-flex flex-column">
             <v-btn color="success" class="mt-4" block @click="validate">
@@ -104,6 +115,9 @@ export default {
       prefix:"Rp",
       precision: 0
     },
+    fileUploadRules: [
+      value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+    ],
     idRules: [
       (value) => {
         if (value) return true;
@@ -163,13 +177,33 @@ export default {
       const totalPallet = parseInt(this.sewaPallet.good_pallet) + parseInt(this.sewaPallet.tbr_pallet) + parseInt(this.sewaPallet.ber_pallet) + parseInt(this.sewaPallet.missing_pallet);
       this.sewaPallet.total = this.sewaPallet.price * totalPallet;
     },
+    uploadImage(e) {
+      console.log(e);
+      const selectedFile = e;
+      this.sewaPallet.photo = selectedFile;
+      console.log(this.sewaPallet.photo);
+    },
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
         this.sewaPallet.status = 0;
         this.sewaPallet.created_by = this.roleSet.user_id;
         this.sewaPallet.updated_by = this.roleSet.user_id;
-        this.submitSewaPallet(this.sewaPallet).then((response) => {
+
+        let form = new FormData();
+        form.append('id_company_distributor', this.sewaPallet.id_company_distributor);
+        form.append('good_pallet', this.sewaPallet.good_pallet);
+        form.append('tbr_pallet', this.sewaPallet.tbr_pallet);
+        form.append('ber_pallet', this.sewaPallet.ber_pallet);
+        form.append('missing_pallet', this.sewaPallet.missing_pallet);
+        form.append('price', this.sewaPallet.price);
+        form.append('total', this.sewaPallet.total);
+        form.append('photo', this.sewaPallet.photo);
+        form.append('status', this.sewaPallet.status);
+        form.append('created_by', this.sewaPallet.created_by);
+        form.append('updated_by', this.sewaPallet.updated_by);
+
+        this.submitSewaPallet(form).then((response) => {
             this.$swal({
                 icon: 'success',
                 title: 'Success',

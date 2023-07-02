@@ -61,6 +61,12 @@
                 </th>
               </tr>
             </template>
+            <template v-slot:item.photo="{ item }">
+              <v-btn v-if="item.photo" @click="locationToImage($API_URL + item.photo)" color="info" small>
+                <v-icon small class="mr-2">mdi-image</v-icon>
+              </v-btn>
+            </template>
+
             <template v-slot:item.tinjau="{ item }">
               <router-link
                 :to="{ name: 'claim-pallet.view', params: { id: item.id } }"
@@ -169,6 +175,7 @@ export default {
         { value: "total_price", text: this.$t("claimPallet.totalPrice"), width: "150px" },
         { value: "reason_manager", text: this.$t("claimPallet.reasonManager"), width: "180px" },
         { value: "reason_distributor", text: this.$t("claimPallet.reasonDist"), width: "180px" },
+        { value: "photo", text: this.$t("claimPallet.photo"), width: "100px" },
         { value: "tinjau", text: this.$t("claimPallet.show"), width: "100px" },
         { value: "actions", text: this.$t("table.actions"), width: "180px" },
       ],
@@ -238,6 +245,10 @@ export default {
   },
   methods: {
     ...mapActions("claimPallet", ["getClaimPallets", "getExportClaimPallets","deleteClaimPallet"]),
+    locationToImage(name) {
+      console.log(name);
+      window.location.href = name;
+    },
     columnValueList(val) {
       return this.claimPallets.map((d) => d[val]);
     },

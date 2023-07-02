@@ -7,11 +7,6 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/test',
-    name: 'test',
-    component: () => import('../views/sjp-status/test.vue'),
-  },
-  {
     path: '/login',
     name: 'loginview',
     component: LoginView
@@ -410,7 +405,7 @@ const routes = [
             meta: { title: 'Manage SJP Status' }
         },
         {
-            path: 'add',
+            path: 'add/:id',
             // path: 'add/:id',
             name: 'sjp-status.add',
             component: () => import('../views/sjp-status/AddView.vue'),

@@ -54,12 +54,12 @@
       <v-row no-gutters>
         <v-file-input
           v-model="claimPallet.photo"
+          :rules="fileUploadRules"
           accept="image/png, image/jpeg"
           outlined
           @change="uploadImage"
           :label="$t('sjpStatus.approval')"
         ></v-file-input>
-        <small>Max File : 2.5 MB | Tipe file : .png, .jpeg  </small>
       </v-row>
       <v-row no-gutters>
         <v-col :col="24">
@@ -88,6 +88,9 @@ export default {
       prefix:"Rp",
       precision: 0
     },
+    fileUploadRules: [
+      value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+    ],
     idRules: [
       (value) => {
         if (value) return true;
@@ -139,6 +142,10 @@ export default {
     ...mapActions("claimPallet", ["submitClaimPallet"]),
     ...mapActions("company", ["getCompanies"]),
     ...mapActions("dropdown", ["getCompaniesAll"]),
+    locationToImage(name) {
+      console.log(name);
+      window.location.href = name;
+    },
     totalPrice() {
       console.log(this.claimPallet.ber_pallet)
       const totalPallet = parseInt(this.claimPallet.ber_pallet) + parseInt(this.claimPallet.missing_pallet);

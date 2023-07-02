@@ -127,7 +127,7 @@
         <!-- <v-card class="print-section" style="display: flex; justify-content:center; flex-direction: column; width: 287px; padding: 15px;"></v-card> -->
           <v-simple-table>
             <template v-slot:default>
-              <table class="section-header" style="width: 100%; padding-bottom: 5px; font-size: 20px;">
+              <table class="section-header" style="width: 100%; padding-bottom: 70px; font-size: 20px;">
                 <tr style="width: 100%;">
                   <td class="faktur-tagihan" style="width: 100%; padding-bottom: 15px; text-align: center;">FAKTUR TAGIHAN</td>
                 </tr>
@@ -142,8 +142,14 @@
                       <div>Jakarta Utara 14330</div>
                     </div>
                   </td>
-                  <td style="display: inline-block; width: 50%;">
-                    <qrcode-vue style="display: flex; justify-content: end;" :value="linkQR" :size="100" level="H" />
+                  <td class="container-qr-code" style="display: inline-block; width: 50%;">
+                    <div style="display: inline-block; width: 100%;">
+                      <div style="display: flex; justify-content: end;">
+                        <div id="qr-code-box" style="display: inline-block; width: 100px; height: 100px;">
+                          <qrcode-vue id="qr-code" :value="linkQR" size="100" level="H" />
+                        </div>
+                      </div>
+                    </div>
                   </td>
                 </tr>
               </table>
@@ -151,100 +157,78 @@
           </v-simple-table>
           <v-simple-table class="custom-table">
             <template v-slot:default>
-              <table style="width: 100%;">
-                <tr style="width: 100%;">
-                  <td style="width: 100%;">
-                    <table style="width: 100%; padding: 5px;">
-                      <tr style="width: 100%;">
-                        <td style="width: 12%;">Pembeli</td>
-                        <td style="width: 2%">:</td>
-                        <td style="width: 36%">{{ claimPallet.company_name }}</td>
-                      </tr>
-                      <tr>
-                        <td style="width: 12%;">Nama</td>
-                        <td style="width: 2%">:</td>
-                        <td style="width: 86%" colspan="2">{{ claimPallet.manager_name == null ? '-' : claimPallet.manager_name}}</td>
-                      </tr>
-                      <tr>
-                        <td style="width: 12%;">Alamat</td>
-                        <td style="width: 2%">:</td>
-                        <td style="width: 86%; word-wrap: break-word;" colspan="2">
-                          <div style="display: inline-block; width: 50%;">JL. JENDRAL SUDIRMAN NO.000023 JAKARTA UTARA 14330</div>
-                        </td>
-                      </tr>
-                    </table>
+              <table>
+                <tr>
+                  <td class="td-custom-table">Pembeli</td>
+                  <td>:</td>
+                  <td class="td-custom-table">{{ claimPallet.company_name }}</td>
+                </tr>
+                <tr>
+                  <td class="td-custom-table">Nama</td>
+                  <td>:</td>
+                  <td class="td-custom-table" colspan="2">{{ claimPallet.manager_name == null ? '-' : claimPallet.manager_name}}</td>
+                </tr>
+                <tr>
+                  <td class="td-custom-table">Alamat</td>
+                  <td class="td-custom-table">:</td>
+                  <td class="td-custom-table" style="word-wrap: break-word;" colspan="2">
+                    <div style="display: inline-block; width: 50%;">JL. JENDRAL SUDIRMAN NO.000023 JAKARTA UTARA 14330</div>
                   </td>
-                  <!-- <td style="width: 50%; border: 1px solid red;">hay</td> -->
                 </tr>
               </table>
-              <!-- <div style="display: inline-block; height: 100px; width: 50%; border: 1px solid black;">
-                <div style="display: inline-block; text-align: end; border: 1px solid black;">No. 000032</div>
-              </div> -->
             </template>
           </v-simple-table>
           <v-simple-table class="custom-data-table">
             <template v-slot:default>
               <thead style="padding: 20px;">
-                <tr style="font-size: 18px;">
-                  <td>No</td>
-                  <td>Deskripsi</td>
-                  <td>Unit (Pcs)</td>
-                  <td>Harga</td>
-                  <td>Jumlah</td>
+                <tr>
+                  <td id="td-custom-data-table-1">No</td>
+                  <td id="td-custom-data-table-2">Deskripsi</td>
+                  <td id="td-custom-data-table-3">Unit (Pcs)</td>
+                  <td id="td-custom-data-table-4">Harga</td>
+                  <td id="td-custom-data-table-5">Jumlah</td>
                 </tr>
               </thead>
               <tbody style="padding: 50px;">
-                <!-- <tr
-                  v-for="item in desserts"
-                  :key="item.name"
-                  >
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.calories }}</td>
-                </tr> -->
-                <tr>
-                  <td>01</td>
-                  <td>BER PALLET</td>
-                  <td>{{ claimPallet.ber_pallet }}</td>
-                  <td>{{ claimPallet.ber_pallet == 0 ? '-' : convertToRupiah(claimPallet.price) }}</td> <!-- JIKA 0 MAKA TAMPILKAN STRIP '-'-->
-                  <td>{{ convertToRupiah(claimPallet.price * claimPallet.ber_pallet ) }}</td> <!-- JUMLAH PER DESKRIPSI PALLET, HASIL PERKALIAN DARI HARGA SATUAN PALLET DIKALI JUMLAH PALLET -->
+               <tr>
+                  <td id="td-custom-data-table-6">01</td>
+                  <td id="td-custom-data-table-7">BER PALLET</td>
+                  <td id="td-custom-data-table-8">{{ claimPallet.ber_pallet }}</td>
+                  <td id="td-custom-data-table-9">{{ claimPallet.ber_pallet == 0 ? '-' : convertToRupiah(claimPallet.price) }}</td> <!-- JIKA 0 MAKA TAMPILKAN STRIP '-'-->
+                  <td id="td-custom-data-table-10">{{ convertToRupiah(claimPallet.price * claimPallet.ber_pallet ) }}</td> <!-- JUMLAH PER DESKRIPSI PALLET, HASIL PERKALIAN DARI HARGA SATUAN PALLET DIKALI JUMLAH PALLET -->
                 </tr>
                 <tr>
-                  <td>02</td>
-                  <td>MISSING PALLET</td>
-                  <td>{{ claimPallet.missing_pallet }}</td>
-                  <td>{{ claimPallet.missing_pallet == 0 ? '-' : convertToRupiah(claimPallet.price) }}</td> <!-- JIKA 0 MAKA TAMPILKAN STRIP '-'-->
-                  <td>{{ convertToRupiah(claimPallet.price * claimPallet.missing_pallet ) }}</td> <!-- JUMLAH PER DESKRIPSI PALLET, HASIL PERKALIAN DARI HARGA SATUAN PALLET DIKALI JUMLAH PALLET -->
+                  <td id="td-custom-data-table-11">02</td>
+                  <td id="td-custom-data-table-12">MISSING PALLET</td>
+                  <td id="td-custom-data-table-13">{{ claimPallet.missing_pallet }}</td>
+                  <td id="td-custom-data-table-14">{{ claimPallet.missing_pallet == 0 ? '-' : convertToRupiah(claimPallet.price) }}</td> <!-- JIKA 0 MAKA TAMPILKAN STRIP '-'-->
+                  <td id="td-custom-data-table-15">{{ convertToRupiah(claimPallet.price * claimPallet.missing_pallet ) }}</td> <!-- JUMLAH PER DESKRIPSI PALLET, HASIL PERKALIAN DARI HARGA SATUAN PALLET DIKALI JUMLAH PALLET -->
                 </tr>
                 <tr>
                   <td></td>
                   <td></td>
                   <td></td> 
-                  <td>Total :</td>
-                  <td>{{ convertToRupiah(claimPallet.price * claimPallet.ber_pallet + claimPallet.price * claimPallet.missing_pallet) }}</td><!-- TOTAL BERASAL DARI PENJUMLAHAN SELURUH JUMLAH DARI MASING MASING DESKRIPSI -->
+                  <td id="td-custom-data-table-16">Total :</td>
+                  <td id="td-custom-data-table-17">{{ convertToRupiah(claimPallet.price * claimPallet.ber_pallet + claimPallet.price * claimPallet.missing_pallet) }}</td><!-- TOTAL BERASAL DARI PENJUMLAHAN SELURUH JUMLAH DARI MASING MASING DESKRIPSI -->
                 </tr>
               </tbody>
             </template>
           </v-simple-table>
           <v-simple-table class="v-simple-table-footer">
             <template v-slot:default>
-              <div style="padding: 20px 20px 50px 20px;">
-                <div style="display: inline-block; width: 70px;">Terbilang</div>
-                <div style="display: inline-block; width: 10px;">:</div>
-                <span>{{ convertToRupiah(claimPallet.price * claimPallet.ber_pallet + claimPallet.price * claimPallet.missing_pallet) }}</span>
+              <div style="display: inline-block; width: 50%; padding-top: 20px;">
+                <div class="td-simple-table-footer" style="text-align: center; padding-bottom: 70px;">Diterima Oleh</div>
+                <div style="display: flex; justify-content: center;">
+                  <div class="garis-tanda-tangan" style="width: 120px; height: 1px; background-color: black;"></div>
+                </div>
+                <div class="td-simple-table-footer" style="text-align: center; padding-bottom: 25px;">Tanda tangan / Nama</div>
               </div>
               <div style="display: inline-block; width: 50%;">
-                <div style="text-align: center; padding-bottom: 70px;">Diterima Oleh</div>
+                <div class="td-simple-table-footer" style="text-align: center; padding-bottom: 70px;">Hormat Kami</div>
                 <div style="display: flex; justify-content: center;">
-                  <div style="width: 120px; height: 1px; background-color: black;"></div>
+                  <div class="garis-tanda-tangan" style="width: 120px; height: 1px; background-color: black;"></div>
                 </div>
-                <div style="text-align: center; padding-bottom: 25px;">Tanda tangan / Nama</div>
-              </div>
-              <div style="display: inline-block; width: 50%;">
-                <div style="text-align: center; padding-bottom: 70px;">Hormat Kami</div>
-                <div style="display: flex; justify-content: center;">
-                  <div style="width: 120px; height: 1px; background-color: black;"></div>
-                </div>
-                <div style="text-align: center; padding-bottom: 25px;">Tanda tangan / Nama</div>
+                <div class="td-simple-table-footer" style="text-align: center; padding-bottom: 25px;">Tanda tangan / Nama</div>
               </div>
             </template>
             </v-simple-table>
@@ -382,17 +366,87 @@ export default {
 <style scoped>
 /* Untuk perangkat dengan lebar layar maksimum 600px */
 @media (max-width: 600px) {
-  .print-section{
+
+  .td-custom-table, .td-custom-data-table, 
+  .td-simple-table-footer, .pt-dan-number,
+  .container-alamat{
+    font-size: x-small;
+  }
+
+  .td-custom-data-table{
+    font-size: x-small;
+  }
+
+  .garis-tanda-tangan{
+    width: 100px;
+    height: 1px;
+    background-color: black;
+  }
+  .table-informasi-pembeli{
+    padding: 0px;
+  }
+  .td-informasi-pembeli{
     font-size: small;
   }
 
-  .pt-dan-number{
-    font-size:medium;
+  #qr-code-box{
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    background-color: red;
+  }
+
+  #qr-code{
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    background-color: red;
+  }
+
+  #td-custom-data-table-1,
+  #td-custom-data-table-2,
+  #td-custom-data-table-3,
+  #td-custom-data-table-4,
+  #td-custom-data-table-5,
+  #td-custom-data-table-6,
+  #td-custom-data-table-7,
+  #td-custom-data-table-8,
+  #td-custom-data-table-9,
+  #td-custom-data-table-10,
+  #td-custom-data-table-11,
+  #td-custom-data-table-12,
+  #td-custom-data-table-13,
+  #td-custom-data-table-14,
+  #td-custom-data-table-15,
+  #td-custom-data-table-16,
+  #td-custom-data-table-17
+  {
+    font-size: 10px;
   }
 }
 
 @media (min-width: 601px) {
 
+  #td-custom-data-table-1,
+  #td-custom-data-table-2,
+  #td-custom-data-table-3,
+  #td-custom-data-table-4,
+  #td-custom-data-table-5,
+  #td-custom-data-table-6,
+  #td-custom-data-table-7,
+  #td-custom-data-table-8,
+  #td-custom-data-table-9,
+  #td-custom-data-table-10,
+  #td-custom-data-table-11,
+  #td-custom-data-table-12,
+  #td-custom-data-table-13,
+  #td-custom-data-table-14,
+  #td-custom-data-table-15,
+  #td-custom-data-table-16,
+  #td-custom-data-table-17
+  {
+    font-size: 14px;
+  }
   .container-alamat{
     font-size: 16px;
   }
@@ -425,7 +479,6 @@ export default {
 }
 .custom-table{
   border: 1px solid black;
-  padding: 10px;
   border-radius: 0px;
 }
 

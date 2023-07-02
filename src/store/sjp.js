@@ -88,11 +88,13 @@ const actions = {
                 const roleSet = JSON.parse(localStorage.getItem("role"));
                 if(roleSet.role_name == "Supervisor" || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
                   commit('ASSIGN_DATA', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                  console.log(response.data.data);
                   resolve(response.data)
                 } else {
                   const result = {
                     data: response.data.data.filter(val => val.idDeparture == roleSet.company_id || val.idDestination == roleSet.company_id || val.idTransporter == roleSet.company_id)
                   };  
+                  console.log(result);
                   commit('ASSIGN_DATA', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                   resolve(result)
                 } 

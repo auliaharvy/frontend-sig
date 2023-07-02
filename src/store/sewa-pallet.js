@@ -18,6 +18,7 @@ const state = () => ({
       tbr_pallet: '',
       ber_pallet: '',
       missing_pallet: '',
+      photo: '',
       price: '',
       total: '',
       created_at: '',
@@ -107,11 +108,15 @@ const actions = {
           })
       })
     },
-    submitSewaPallet({ dispatch, commit, state }) {
+    submitSewaPallet({ dispatch, commit }, payload) {
         commit('isLoading')
         return new Promise((resolve, reject) => {
             //MENGIRIMKAN REQUEST KE BACKEND DENGAN DATA YANG DIDAPATKAN DARI STATE CUSTOMER
-            apiClient.post(`/sewa-pallets`, state.sewaPallet)
+            apiClient.post(`/sewa-pallets`, payload,{
+            headers: {
+              'Content-Type' : 'multipart/form-data'
+            }
+            })
             .then((response) => {
                 //APABILA BERHASIL MAKA LOAD DATA CUSTOMER UNTUK MENGAMBIL DATA TERBARU
                 dispatch('getSewaPallets').then(() => {
@@ -120,10 +125,11 @@ const actions = {
             })
             .catch((error) => {
                 //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
-                alert(error.response.data);
                 if (error.response.status == 422) {
+                    alert(error.response.data);
                     commit('SET_ERRORS', error.response.data.errors, { root: true })
                 } else {
+                    alert(error.response.data.message);
                     commit('SET_ERRORS', error.response.data.error, { root: true })
                 }
             }).finally(() => {

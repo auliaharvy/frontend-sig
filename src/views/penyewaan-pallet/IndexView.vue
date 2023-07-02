@@ -68,6 +68,13 @@
               <p class="text-green" v-else-if="item.status == 3">Distributor Approved</p>
               <p class="text-red" v-else-if="item.status == 4">Distributor Rejected</p>
             </template>
+
+            <template v-slot:item.photo="{ item }">
+              <v-btn v-if="item.photo" @click="locationToImage($API_URL + item.photo)" color="info" small>
+                <v-icon small class="mr-2">mdi-image</v-icon>
+              </v-btn>
+            </template>
+
             <template v-slot:item.tinjau="{ item }">
               <router-link
                 :to="{ name: 'sewa-pallet.view', params: { id: item.id } }"
@@ -172,6 +179,7 @@ export default {
         { value: "total_price", text: this.$t("claimPallet.totalPrice"), width: "150px" },
         { value: "reason_manager", text: this.$t("claimPallet.reasonManager"), width: "180px" },
         { value: "reason_distributor", text: this.$t("claimPallet.reasonDist"), width: "180px" },
+        { value: "photo", text: this.$t("claimPallet.photo"), width: "100" },
         { value: "tinjau", text: this.$t("claimPallet.reasonDist"), width: "100" },
         { value: "actions", text: this.$t("table.actions"), width: "80px" },
       ],
@@ -221,7 +229,9 @@ export default {
     };
   },
   created() {
-    this.getSewaPallets(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
+    this.getSewaPallets().then((result) => {
+      console.log(this.sewaPallets);
+    }); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
   },
   computed: {
     ...mapState("sewaPallet", {
@@ -244,6 +254,10 @@ export default {
   },
   methods: {
     ...mapActions("sewaPallet", ["getSewaPallets", "getExportSewaPallets","deleteSewaPallet"]),
+    locationToImage(name) {
+      console.log(name);
+      window.location.href = name;
+    },
     columnValueList(val) {
       return this.sewaPallets.map((d) => d[val]);
     },
