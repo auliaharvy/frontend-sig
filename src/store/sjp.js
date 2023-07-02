@@ -98,6 +98,14 @@ const actions = {
                   commit('ASSIGN_DATA', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                   resolve(result)
                 } 
+            }).catch((error) => {
+              //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+              if (error.response.status == 422) {
+                alert(error.response.data.errors[0]);
+                commit('SET_ERRORS', error.response.data.errors, { root: true })
+              } else {
+                alert(error.response.data.message);
+              }
             }).finally(() => {
                 commit('doneLoading')
             })
@@ -111,6 +119,14 @@ const actions = {
           .then((response) => {
               commit('ASSIGN_DATA_EXPORT', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
               resolve(response.data)
+          }).catch((error) => {
+            //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+            if (error.response.status == 422) {
+              alert(error.response.data.errors[0]);
+              commit('SET_ERRORS', error.response.data.errors, { root: true })
+            } else {
+              alert(error.response.data.message);
+            }
           }).finally(() => {
               commit('doneLoading')
           })
@@ -130,7 +146,7 @@ const actions = {
             .catch((error) => {
                 //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
                 if (error.response.status == 422) {
-                  alert(error.response.data.errors[0].password);
+                  alert(error.response.data.errors[0]);
                   commit('SET_ERRORS', error.response.data.errors, { root: true })
               } else {
                 alert(error.response.data.message);
@@ -149,6 +165,15 @@ const actions = {
             .then((response) => {
               commit("ASSIGN_FORM", response.data.data[0]); //ASSIGN DATA TERSEBUT KE DALAM STATE CUSTOMER
               resolve(response.data.data[0]);
+            })
+            .catch((error) => {
+              //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+              if (error.response.status == 422) {
+                alert(error.response.data.errors[0]);
+                commit('SET_ERRORS', error.response.data.errors, { root: true })
+              } else {
+                alert(error.response.data.message);
+              }
             })
             .finally(() => {
               commit("doneLoading");
@@ -173,6 +198,8 @@ const actions = {
               alert(error.response.data.message);
               if (error.response.status == 422) {
                 commit("SET_ERRORS", error.response.data.errors, { root: true });
+              } else {
+                alert(error.response.data.message);
               }
             })
             .finally(() => {
@@ -190,6 +217,15 @@ const actions = {
               dispatch("getSjps").then(() => {
                 resolve(response.data.data);
               });
+            })
+            .catch((error) => {
+              //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+              alert(error.response.data.message);
+              if (error.response.status == 422) {
+                commit("SET_ERRORS", error.response.data.errors, { root: true });
+              } else {
+                alert(error.response.data.message);
+              }
             })
             .finally(() => {
               commit("doneLoading");

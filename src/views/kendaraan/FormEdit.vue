@@ -2,9 +2,9 @@
   <v-form ref="form">
     <v-container>
       <v-row no-gutters>
-        <v-autocomplete
+        <!-- <v-autocomplete
             :label="$t('perusahaan.perusahaan')"
-            :items="companies.data"
+            :items="companiesAll.data"
             :rules="idRules"
             outlined
             v-model="truck.id_company"
@@ -13,7 +13,14 @@
             required
             clearable
           >
-        </v-autocomplete>
+        </v-autocomplete> -->
+        <v-text-field
+          v-model="truck.transporter_code"
+          outlined
+          :label="$t('trucks.transporter_code')"
+          :rules="nameRules"
+          required
+        ></v-text-field>
       </v-row>
 
       <v-row no-gutters>
@@ -63,25 +70,29 @@ export default {
     ],
   }),
   created() {
-    this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesAll(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("truck", {
       truck: (state) => state.truck, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
-    ...mapState("company", {
-      companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    ...mapState("dropdown", {
+      companiesAll: (state) => state.companiesAll, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
     ...mapMutations("permission", ["CLEAR_FORM"]),
     ...mapActions("truck", ["updateTruck"]),
-    ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesAll"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid){
         this.updateTruck(this.role).then(() => {
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
           this.$router.push({ name: "trucks" });
         });
       }
