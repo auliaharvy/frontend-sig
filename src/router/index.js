@@ -7,6 +7,11 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/codepen',
+    component: () => import('../views/surat-jalan-pallet/codepenview.vue'),
+  },
+
+  {
     path: '/login',
     name: 'loginview',
     component: LoginView

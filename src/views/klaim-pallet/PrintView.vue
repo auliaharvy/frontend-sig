@@ -145,8 +145,8 @@
                   <td class="container-qr-code" style="display: inline-block; width: 50%;">
                     <div style="display: inline-block; width: 100%;">
                       <div style="display: flex; justify-content: end;">
-                        <div id="qr-code-box" style="display: inline-block; width: 100px; height: 100px;">
-                          <qrcode-vue id="qr-code" :value="linkQR" size="100" level="H" />
+                        <div id="qr-code-box" style="display: inline-block;">
+                          <qrcode-vue id="qr-code" :value="linkQR" :size="100" level="H" />
                         </div>
                       </div>
                     </div>
@@ -387,20 +387,6 @@ export default {
   }
   .td-informasi-pembeli{
     font-size: small;
-  }
-
-  #qr-code-box{
-    display: inline-block;
-    width: 70px;
-    height: 70px;
-    background-color: red;
-  }
-
-  #qr-code{
-    display: inline-block;
-    width: 70px;
-    height: 70px;
-    background-color: red;
   }
 
   #td-custom-data-table-1,
