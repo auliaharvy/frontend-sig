@@ -33,9 +33,19 @@ const actions = {
             //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
             apiClient.get(`/pallet-movements?page=${state.page}&q=${search}`)
             .then((response) => {
-                console.log(response);
-                commit('ASSIGN_DATA', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
-                resolve(response.data)
+                const roleSet = JSON.parse(localStorage.getItem("role"));
+                if(roleSet.role_name == 'Supervisor' || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
+                    commit('ASSIGN_DATA', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                    resolve(response.data)
+                  } else {
+                    const result = {
+                      data: response.data.data.filter(val => val.departure == roleSet.company_name || val.destination == roleSet.company_name || val.transporter == roleSet.company_name),
+                    };  
+                    commit('ASSIGN_DATA', result.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                    resolve(response.data)
+                  } 
+                // commit('ASSIGN_DATA', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                // resolve(response.data)
             }).finally(() => {
                 commit('doneLoading')
             })

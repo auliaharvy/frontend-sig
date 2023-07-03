@@ -4,7 +4,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('organisasi.nama')"
-          :items="organizations.data"
+          :items="organizations"
           :rules="idRules"
           outlined
           v-model="company.id_organization"
@@ -153,6 +153,10 @@ export default {
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
+        this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
         this.submitCompany(this.company).then(() => {
           this.$router.push({ name: "company" });
         });

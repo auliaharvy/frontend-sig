@@ -87,7 +87,7 @@ const actions = {
                 const result = {
                   data: response.data.data.filter(val => val.id_company_distributor == roleSet.company_id),
                 };  
-                commit('ASSIGN_DATA', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                commit('ASSIGN_DATA', result.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data);
               } 
             }).finally(() => {

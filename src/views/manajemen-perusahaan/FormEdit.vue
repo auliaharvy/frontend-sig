@@ -4,9 +4,9 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('organisasi.nama')"
-          :items="organizations.data"
+          :items="organizations"
           :rules="idRules"
-          dense
+          outlined
           v-model="company.id_organization"
           item-text="name"
           item-value="id"
@@ -154,6 +154,10 @@ export default {
       const valid = this.$refs.form.validate();
       if (valid) {
         this.updateCompany(this.company).then(() => {
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
           this.$router.push({ name: "company" });
         });
       }

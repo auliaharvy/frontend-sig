@@ -18,7 +18,7 @@
       <v-row no-gutters>
         <v-text-field
           v-model="damagedPallet.qty_tbr_pallet"
-          :label="$t('pallet.ber')"
+          :label="$t('pallet.tbr')"
           :rules="palletRules"
           outlined
         ></v-text-field>

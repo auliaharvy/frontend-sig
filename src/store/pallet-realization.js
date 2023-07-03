@@ -71,7 +71,7 @@ const actions = {
                   const result = {
                     data: response.data.data.filter(val => val.created_by == roleSet.user_id || val.updated_by == roleSet.user_id),
                   };  
-                  commit('ASSIGN_DATA', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                  commit('ASSIGN_DATA', result.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                   resolve(response.data)
                 } 
             }).finally(() => {

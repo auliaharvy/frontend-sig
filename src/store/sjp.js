@@ -94,8 +94,7 @@ const actions = {
                   const result = {
                     data: response.data.data.filter(val => val.idDeparture == roleSet.company_id || val.idDestination == roleSet.company_id || val.idTransporter == roleSet.company_id)
                   };  
-                  console.log(result);
-                  commit('ASSIGN_DATA', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                  commit('ASSIGN_DATA', result.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                   resolve(result)
                 } 
             }).catch((error) => {

@@ -127,7 +127,7 @@ const actions = {
                     data: response.data.data.filter(val => val.id_departure_company == roleSet.company_id || val.id_destination_company == roleSet.company_id || val.id_transporter_company == roleSet.company_id)
                   };  
                   console.log(result);
-                  commit('ASSIGN_DATA', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                  commit('ASSIGN_DATA', result.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                   resolve(result)
                 } 
                 commit('clearError')

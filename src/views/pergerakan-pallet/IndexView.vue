@@ -10,7 +10,7 @@
           <v-card-title>
             <v-btn v-if="$can('create pallet movement')" router :to="adds.route">{{ $t("perusahaan.tambah") }}</v-btn>
             <export-excel
-              :data="palletMovements.data"
+              :data="palletMovements"
               :fields="json_fields"
               worksheet="Sheet Pallet Movement"
               name="data-pallet-movement.xls"
@@ -141,6 +141,7 @@ export default {
   data() {
     return {
       selectedItem: 1,
+      selected: [],
       headers: [
         { value: "trx_number", text: this.$t("palletMovement.trxNumber"), width: "200px" },
         { value: "distribution", text: this.$t("palletMovement.send"), width: "100px" },
@@ -175,8 +176,26 @@ export default {
       },
       json_fields: {
         "Transaction Number": "trx_number",
-        "Send / Sendback": "distribution",
-        "Status": "status",
+        "Send / Sendback": {
+            field: 'distribution',
+            callback: (value) => {
+              if(value == 0) {
+              return `Send`
+            } else {
+              return `Send Back`
+            }
+          }
+        },
+        'Status' : {
+            field: 'status',
+            callback: (value) => {
+              if(value == 0) {
+              return `Send`
+            } else {
+              return `Receive`
+            }
+          }
+        },
         "Departure": "departure",
         "Destination": "destination",
         "Transporter": "transporter",
@@ -187,7 +206,12 @@ export default {
         "Missing Pallet": "missing",
         "Departure Time": "departure_time",
         "ETA": "eta",
-        "Late": "late",
+        "Late (day)": {
+            field: 'eta',
+            callback: (value) => {
+              return this.diffDate(value)
+          }
+        },
       },
       search: "",
       adds: { route: "/pallet-movement/add" },
@@ -218,6 +242,17 @@ export default {
       return this.palletMovements.map((d) => d[val]);
     },
     diffDate(eta) {
+      const todayYear = this.$moment(new Date()).format("YYYY");
+      const todayMonth = this.$moment(new Date()).format("MM");
+      const todayDay = this.$moment(new Date()).format("DD");
+      const today = this.$moment([todayYear, todayMonth, todayDay]);
+      const etaYear = this.$moment(eta).format("YYYY");
+      const etaMonth = this.$moment(eta).format("MM");
+      const etaDay = this.$moment(eta).format("DD");
+      const formattedEta = this.$moment([etaYear, etaMonth, etaDay]);
+      return today.diff(formattedEta, 'days');
+    },
+    beforeDownload(eta) {
       const todayYear = this.$moment(new Date()).format("YYYY");
       const todayMonth = this.$moment(new Date()).format("MM");
       const todayDay = this.$moment(new Date()).format("DD");

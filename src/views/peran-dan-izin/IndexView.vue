@@ -28,7 +28,7 @@
               <v-form>
                 <v-autocomplete
                   :label="$t('perandanizin.pengguna')"
-                  :items="users.data"
+                  :items="users"
                   :rules="idRules"
                   outlined
                   v-model="userRole.user_id"
@@ -42,7 +42,7 @@
               <v-form>
                 <v-autocomplete
                   :label="$t('perandanizin.perusahaan')"
-                  :items="companies.data"
+                  :items="companiesAll.data"
                   :rules="idRules"
                   outlined
                   v-model="userRole.company_id"
@@ -159,7 +159,7 @@ export default {
     this.getRoles();
     this.getAllPermission();
     this.getUsers();
-    this.getCompanies();
+    this.getCompaniesAll();
   },
   computed: {
     ...mapState(["errors"]),
@@ -170,8 +170,8 @@ export default {
       role_permission: (state) => state.role_permission,
       success: (state) => state.success,
     }),
-    ...mapState("company", {
-      companies: (state) => state.companies
+    ...mapState("dropdown", {
+      companiesAll: (state) => state.companiesAll
     }),
   },
   methods: {
@@ -183,7 +183,7 @@ export default {
       "setRolePermission",
       "setRoleUser",
     ]),
-    ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesAll"]),
     ...mapMutations("user", ["CLEAR_ROLE_PERMISSION"]),
     setRole() {
       this.setRoleUser(this.userRole).then(() => {
