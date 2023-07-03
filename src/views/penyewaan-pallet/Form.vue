@@ -80,12 +80,15 @@
       <v-row no-gutters>
         <v-file-input
           v-model="sewaPallet.photo"
-          :rules="fileUploadRules"
+          :rules="imageRules"
           accept="image/png, image/jpeg"
           outlined
           @change="uploadImage"
           :label="$t('sjpStatus.approval')"
         ></v-file-input>
+        <div style="width: 100%; padding-bottom: 35px;">
+          <small>Max File : 2.5 MB | Tipe file : image/png, image/jpeg  </small>
+        </div>
       </v-row>
 
       <v-row no-gutters>
@@ -115,8 +118,9 @@ export default {
       prefix:"Rp",
       precision: 0
     },
-    fileUploadRules: [
-      value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+    imageRules: [
+      (v) => !v || v.size < 2000000 || "Avatar size should be less than 2 MB!",
+      (v) => !v || ['image/png','image/jpeg','image/jpg'].includes(v.type) || "Only jpg/jpeg and png files are allowed!"
     ],
     idRules: [
       (value) => {

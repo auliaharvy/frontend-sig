@@ -566,7 +566,7 @@ const routes = [
             meta: { title: 'Manage Claim Pallet' }
         },
         {
-            path: 'add',
+            path: 'add/:id',
             name: 'claim-pallet.add',
             component: () => import('../views/klaim-pallet/AddView.vue'),
             meta: { title: 'Add New Claim Pallet' }
@@ -642,7 +642,7 @@ const routes = [
             meta: { title: 'Manage Sewa Pallet' }
         },
         {
-            path: 'add',
+            path: 'add/:id',
             name: 'sewa-pallet.add',
             component: () => import('../views/penyewaan-pallet/AddView.vue'),
             meta: { title: 'Add New Sewa Pallet' }

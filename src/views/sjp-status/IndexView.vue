@@ -22,6 +22,116 @@
               hide-details
             ></v-text-field>
           </v-card-title>
+          <!-- <v-simple-table>
+            <template v-slot:default>
+              <tr v-for="(value, index) in sjpStatuss">
+                <td>
+                  <div>
+                    <div style="display: inline-block; width: 50%;">SJP Number</div>
+                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%;">Departure</div>
+                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%;">Destination</div>
+                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%;">Transporter</div>
+                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%;">Truck Number</div>
+                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%;">Driver</div>
+                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%;">DO Number</div>
+                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%;">Status</div>
+                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%;">Send</div>
+                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%;">Actions</div>
+                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
+                  </div>
+                </td>
+              </tr>
+            </template>
+ 
+            <template v-slot:default>
+              {{ selectedColumn }}
+              <tr v-for="(value, index) in sjpStatuss">
+                <td style="border-bottom: 1px solid gainsboro;" >
+                  <div>
+                    <div style="display: inline-block; width: 50%; padding-bottom: 25px; padding-top: 25px;"><strong>SJPS Number</strong></div>
+                    <div style="display: inline-block; width: 50%;">
+                      <div style="display: flex; justify-content: end;">{{ value.trx_number }}</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>SJP Number</strong></div>
+                    <div style="display: inline-block; width: 50%;">
+                      <div style="display: flex; justify-content: end;">{{ value.sjp_number }}</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>Sender</strong></div>
+                    <div style="display: inline-block; width: 50%;">
+                      <div style="display: flex; justify-content: end;">{{ value.sender_name }}</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>Receiver</strong></div>
+                    <div style="display: inline-block; width: 50%;">
+                      <div style="display: flex; justify-content: end;">{{ value.receiver_name }}</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>Sendback</strong></div>
+                    <div style="display: inline-block; width: 50%;">
+                      <div style="display: flex; justify-content: end;">{{ value.is_sendback }}</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>Status</strong></div>
+                    <div style="display: inline-block; width: 50%;">
+                      <div style="display: flex; justify-content: end;">{{ value.status }}</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>Note</strong></div>
+                    <div style="display: inline-block; width: 50%;">
+                      <div style="display: flex; justify-content: end;">{{ value.note }}</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>Tinjau</strong></div>
+                    <div style="display: inline-block; width: 50%;">
+                      <div style="display: flex; justify-content: end;"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>Actions</strong></div>
+                    <div style="display: inline-block; width: 50%;">
+                      <div style="display: flex; justify-content: end;"></div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </template>
+          </v-simple-table> -->
           <v-data-table
             :loading="loading"
             :headers="headers"
@@ -30,7 +140,7 @@
             mobile
             dense
           >
-            <template v-slot:header="{ header }">
+            <!-- <template v-slot:header="{ header }">
               <tr class="grey lighten-3">
                 <th v-for="header in headers" :key="header.text">
                   <div v-if="filters.hasOwnProperty(header.value)">
@@ -58,7 +168,7 @@
                   </div>
                 </th>
               </tr>
-            </template>
+            </template> -->
            <template v-slot:item.is_sendback="{ item }">
               <p class="text-normal" v-if="item.is_sendback == 0">Send</p>
               <p class="text-normal" v-else-if="item.is_sendback == 1">Sendback</p>
@@ -73,9 +183,9 @@
               <v-btn v-if="item.sending_driver_approval != 0 || item.sending_driver_approval != '0'" @click="locationToImage($API_URL + item.sending_driver_approval)" color="info" small>
                 <v-icon small class="mr-2">mdi-image</v-icon>
               </v-btn>
-              <!-- <a v-bind:href="$API_URL + item.sending_driver_approval" target="_blank">
+              <a v-bind:href="$API_URL + item.sending_driver_approval" target="_blank">
                 <v-icon small class="mr-2">mdi-image</v-icon> 
-              </a>-->
+              </a>
            </template>
 
 
@@ -145,6 +255,36 @@
         </v-card>
       </v-card>
     </v-col>
+    <v-dialog v-model="dialogFilter" width="auto">
+      <v-card>
+        <v-card-text>
+          <v-autocomplete
+            clearable
+            chips
+            label="Nama Kolom"
+            :items="headers"
+            v-model="selectedColumn"
+            multiple
+          >
+          <template v-slot:selected="{data}">
+      <v-chip
+        @change="handleItem(selectedValueColumn.title)"
+      >
+        {{ selectedColumn.title }}
+      </v-chip>
+    </template>
+          </v-autocomplete>
+          <v-autocomplete
+            clearable
+            chips
+            label="Nilai kolom"
+            :items="selectedValueColumn.column"
+            multiple
+          ></v-autocomplete>
+        </v-card-text>
+     </v-card>
+    </v-dialog>
+ 
     <v-dialog v-model="dialogExport" width="auto">
       <v-card>
         <v-card-text>
@@ -197,8 +337,13 @@ export default {
       totalDataDownload: 0,
       selected: [],
       dialogExport: false,
+      dialogFilter: true,
+      selectedColumn: [],
+      selectedValueColumn: [],
+      downloadRange: [],
       downloadRange: [],
       selectedItem: 1,
+      name: ['a', 'b', 'c'],
       headers: [
         { value: "trx_number", text: this.$t("sjpStatus.trxNumber"), width: "200px"},
         { value: "sjp_number", text: this.$t("sjpStatus.sjpNumber"), width: "180px"},
@@ -251,7 +396,16 @@ export default {
     };
   },
   created() {
-    this.getSjpStatuss();
+    this.getSjpStatuss().then(() => {
+      console.log(this.sjpStatuss)
+      console.log(this.trx_number());
+      console.log(this.sjp_number());
+      console.log(this.sender_name());
+      console.log(this.receiver_name());
+      console.log(this.is_sendback());
+      console.log(this.status());
+      console.log(this.note());
+    });
   },
   watch: {
     errors(newValue, oldValue) {
@@ -281,8 +435,112 @@ export default {
       return this.downloadRange.join(' ~ ')
     },
   },
+  watch: {
+    selectedColumn: function(val){
+      const nameColumn = val[val.length-1];
+      console.log(nameColumn);
+      if(nameColumn == 'trx_number') this.selectedValueColumn = this.trx_number();
+      if(nameColumn == 'sjp_number') this.selectedValueColumn = this.sjp_number();
+      if(nameColumn == 'sender_name') this.selectedValueColumn = this.sender_name();
+      if(nameColumn == 'receiver_name') this.selectedValueColumn = this.receiver_name();
+      if(nameColumn == 'is_sendback') this.selectedValueColumn = this.is_sendback();
+      if(nameColumn == 'status') this.selectedValueColumn = this.status();
+      if(nameColumn == 'note') this.selectedValueColumn = this.note();
+      // const nameColumn = val[val.length-1];
+      // console.log(nameColumn);
+      // this.selectedValueColumn = this.sjpStatuss
+      // for (var i = 0; i < this.sjpStatuss.length; i++) {
+      //   this.selectedValueColumn.push(this.sjpStatuss[i]);
+      // }
+      // console.log(this.selectedValueColumn)
+    }
+  },
   methods: {
     ...mapActions("sjpStatus", ["getSjpStatuss", "getExportDataSjpStatuss","deleteSjpStatus", "getDownloadImage"]),
+    shouldShowItem(item) {
+      // const filteredList = this.selectedColumn.filter(
+      //   (name) => name.selectedWithAll === false
+      // );
+      // const itemIndex = this.selectedColumn.findIndex((n) => n.text === item.text);
+      // if (itemIndex >= 5) return false;
+
+      // const foundItem = this.selectedNames.find(
+      //   (name) => name.text === item.text
+      // );
+      // return !foundItem.selectedWithAll;
+    },
+    onchange(value){
+      console.log(value);
+    },
+    handleItem(item){
+      // const itemIndex = this.selectedColumn.findIndex((n) => n.text === item);
+      // console.log(itemIndex);
+      // if (itemIndex >= 5) return false;
+
+      // const column = this.selectedValueColumn.column;
+      // const foundItem = column.find(
+      //   (name) => name === item ? item : 'tidak ada'
+      // );
+      // console.log(foundItem);
+
+      // return !foundItem;
+      console.log(item);
+    },
+    filterByColumn(){
+      console.log('filterbycolumn');
+    },
+    trx_number(){
+      const trx_number = [];
+      for (var i = 0; i < this.sjpStatuss.length; i++) {
+        trx_number.push(this.sjpStatuss[i].trx_number);
+      }
+      return { column: trx_number, title: 'SJPS Number' } ;
+    },
+    sjp_number(){
+      const sjp_number = [];
+      for (var i = 0; i < this.sjpStatuss.length; i++) {
+        sjp_number.push(this.sjpStatuss[i].sjp_number);
+      }
+      return { column: sjp_number, title: 'SJP Number' };
+    },
+    sender_name(){
+      const sender_name = [];
+      for (var i = 0; i < this.sjpStatuss.length; i++) {
+        sender_name.push(this.sjpStatuss[i].sender_name);
+      }
+      return { column: sender_name, title: 'Sender' };
+    },
+    receiver_name(){
+      const receiver_name = [];
+      for (var i = 0; i < this.sjpStatuss.length; i++) {
+        receiver_name.push(this.sjpStatuss[i].receiver_name);
+      }
+      return { column: receiver_name, title: 'Receiver' };
+    },
+    is_sendback(){
+      const is_sendback = [];
+      for (var i = 0; i < this.sjpStatuss.length; i++) {
+        if(this.sjpStatuss[i].is_sendback == 0) is_sendback.push('Send');
+        if(this.sjpStatuss[i].is_sendback == 1) is_sendback.push('Sendback');
+      }
+      return { column: is_sendback, title: 'Sendback' };
+    },
+    status(){
+      const status= [];
+      for (var i = 0; i < this.sjpStatuss.length; i++) {
+        if(this.sjpStatuss[i].status == 0) status.push('Sending');
+        if(this.sjpStatuss[i].status == 1) status.push('Received');
+      }
+      return { column: status, title: 'Status' };
+    },
+    note(){
+      const note = [];
+      for (var i = 0; i < this.sjpStatuss.length; i++) {
+        note.push(this.sjpStatuss[i].note);
+      }
+      return { column: note, title: 'Note' };
+    },
+
     locationToImage(name) {
       console.log(name);
       window.location.href = name;
