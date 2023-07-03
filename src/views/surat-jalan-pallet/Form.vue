@@ -189,9 +189,9 @@
               {{ $t("form.submit") }}
             </v-btn>
 
-            <v-btn color="error" class="mt-4" block @click="reset">
+            <!-- <v-btn color="error" class="mt-4" block @click="reset">
               {{ $t("form.reset") }}
-            </v-btn>
+            </v-btn> -->
           </div>
         </v-col>
       </v-row>
@@ -261,9 +261,15 @@ export default {
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        this.sjp.created_by = this.roleSet.user_id;
-        this.sjp.updated_by = this.roleSet.user_id;
+        var roleData = JSON.parse(localStorage.getItem("role"))
+        this.sjp.created_by = roleData.user_id;
+        this.sjp.updated_by = roleData.user_id;
+        this.sjp.id_departure_company = roleData.company_id;
         this.submitSjp(this.sjp).then((response) => {
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "sjp" });
           // else {
@@ -294,6 +300,7 @@ export default {
           const beratIsi = foundDo.BERAT_ISI.split(',')[0]
           const tonnage = beratIsi.replace('.','')
           this.sjp.tonnage = parseInt(tonnage) / 1000;
+          this.sjp.product_quantity = parseInt(tonnage) / 40;
           this.sjp.packaging = 40;
           this.sjp.pallet_quantity = Math.floor((parseInt(tonnage)/ 1000) / 2);
           this.sjp.departure_time = new Date().toISOString().slice(0, 10);
@@ -338,6 +345,7 @@ export default {
             const tonnage = beratIsi.replace('.','')
             this.sjp.tonnage = parseInt(tonnage) / 1000;
             this.sjp.packaging = 40;
+            this.sjp.product_quantity = parseInt(tonnage) / 40;
             this.sjp.pallet_quantity = Math.floor((parseInt(tonnage)/ 1000) / 2);
             this.sjp.departure_time = new Date().toISOString().slice(0, 10);
             var tomorrow = new Date();

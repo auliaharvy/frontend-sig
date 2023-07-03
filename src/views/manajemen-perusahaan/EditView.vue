@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Breadcomp :page-title="$t('perushaan.sunting')"/>
+    <Breadcomp :page-title="$t('perusahaan.sunting')"/>
     <v-spacer></v-spacer>
     <v-col md-12>
       <v-card>

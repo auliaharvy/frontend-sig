@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('sjpStatus.departure')"
-          :items="companies.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="sjpStatus.id_departure_company"
@@ -20,7 +20,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('sjpStatus.destination')"
-          :items="companies.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="sjpStatus.id_destination_company"
@@ -35,7 +35,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('sjpStatus.transporter')"
-          :items="companies.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="sjpStatus.id_transporter_company"
@@ -50,7 +50,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('sjpStatus.truck')"
-          :items="trucks.data"
+          :items="trucks"
           outlined
           v-model="sjpStatus.id_truck"
           item-text="license_plate"
@@ -64,7 +64,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('sjpStatus.driver')"
-          :items="drivers.data"
+          :items="drivers"
           outlined
           v-model="sjpStatus.id_driver"
           item-text="name"
@@ -119,9 +119,9 @@
               {{ $t("form.submit") }}
             </v-btn>
 
-            <v-btn color="error" class="mt-4" block @click="reset">
+            <!-- <v-btn color="error" class="mt-4" block @click="reset">
               {{ $t("form.reset") }}
-            </v-btn>
+            </v-btn> -->
           </div>
         </v-col>
       </v-row>
@@ -134,6 +134,7 @@ import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "FormReceiveSjp",
   data: () => ({
+    roleUser: {},
     tbrPallet: 0,
     idRules: [
       (value) => {
@@ -157,7 +158,8 @@ export default {
     ],
   }),
   created() {
-    this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getRoleSet();
+    this.getCompaniesAll(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getTrucks(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getDrivers(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
@@ -169,8 +171,8 @@ export default {
     },
   },
   computed: {
-    ...mapState("company", {
-      companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    ...mapState("dropdown", {
+      companiesAll: (state) => state.companiesAll, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("truck", {
       trucks: (state) => state.trucks, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -190,9 +192,12 @@ export default {
       "getSjpStatusDetail",
       "submitSjpStatus",
     ]),
-    ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesAll"]),
     ...mapActions("truck", ["getTrucks"]),
     ...mapActions("driver", ["getDrivers"]),
+    getRoleSet() {
+      this.roleUser = JSON.parse(localStorage.getItem("role"));
+    },
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
@@ -235,7 +240,8 @@ export default {
             if (this.sjpStatus.is_sendback == 0) {
               this.sjpStatus.sjp_status = "receive";
               this.sjpStatus.status = 1;
-              this.sjpStatus.id_user_receiver = 1;
+              this.sjpStatus.id_user_receiver = this.roleUser.user_id;
+              this.sjpStatus.updated_by = this.roleUser.user_id;
               this.updateSjpStatus(this.sjpStatus).then((response) => {
                 this.CLEAR_FORM();
                 this.sendbackCheck();
@@ -243,7 +249,7 @@ export default {
             } else {
               this.sjpStatus.sjp_status = "receive_sendback";
               this.sjpStatus.status = 1;
-              this.sjpStatus.id_user_receiver = 1;
+              this.sjpStatus.id_user_receiver = this.roleUser.user_id;
               this.updateSjpStatus(this.sjpStatus).then((response) => {
                 this.CLEAR_FORM();
                 this.$router.push({ name: "sjp-status" });
@@ -290,6 +296,11 @@ export default {
           if (result.value) {
             this.autoSendback(); //JIKA SETUJU MAKA PERMINTAAN SENDBACK AKAN DI EKSEKUSI
           } else {
+            this.$swal({
+                icon: 'success',
+                title: 'Success',
+                text: 'Please sendback Pallet',
+              });
             this.$router.push({
               name: "sjp-status.sendback",
               params: { id: this.sjpStatus.id },
@@ -302,8 +313,13 @@ export default {
       this.sjpStatus.is_sendback = 1;
       this.sjpStatus.sjp_status = "sendback";
       this.sjpStatus.status = 0;
-      this.sjpStatus.id_user_sender = 3;
+      this.sjpStatus.id_user_sender = this.roleUser.user_id;
       this.submitSjpStatus(this.sjpStatus).then((response) => {
+        this.$swal({
+                icon: 'success',
+                title: 'Success',
+                text: 'Please sendback Pallet',
+              });
         this.CLEAR_FORM();
         this.$router.push({ name: "sjp-status" });
       });

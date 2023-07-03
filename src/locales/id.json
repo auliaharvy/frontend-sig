@@ -198,6 +198,8 @@
     "sendbackFrom": "Kirim Kembali dari",
     "receiveFrom": "Terima dari",
     "sendbackSjp": "Sendback SJP",
+    "sending_driver_approval": "Bukti Pengiriman",
+    "receiving_driver_approval": "Bukti Penerimaan",
     "truck": "No Truk",
     "driver": "Pengemudi",
     "status": "Status",

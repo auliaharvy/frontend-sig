@@ -33,7 +33,6 @@ export default {
   },
   created() {
     this.getSjpDetail(this.$route.params.id).then(() => {
-      console.log(this.sjp);
       this.sjpStatus.sjp_number = this.sjp.trxNumber;
       this.sjpStatus.id_sjp = this.$route.params.id;
       this.sjpStatus.id_departure_company = this.sjp.idDeparture;

@@ -148,7 +148,11 @@ const actions = {
                   alert(error.response.data.errors[0]);
                   commit('SET_ERRORS', error.response.data.errors, { root: true })
               } else {
-                alert(error.response.data.message);
+                if(error.response.data.message) {
+                  alert(error.response.data.message);
+                } else {
+                  alert(error.response.data);
+                }
               }
             }).finally(() => {
                 commit('doneLoading')

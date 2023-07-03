@@ -204,6 +204,8 @@
     "sendbackFrom": "Sendback From",
     "receiveFrom": "Receive From",
     "sendbackSjp": "Sendback SJP",
+    "sending_driver_approval": "Sending Driver Approval",
+    "receiving_driver_approval": "Receiving Driver Approval",
     "reason": "Reason",
     "note": "Note",
     "check": "Check"

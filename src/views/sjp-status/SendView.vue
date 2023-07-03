@@ -19,7 +19,7 @@ import Breadcomp from "@/components/Breadcrumb.vue";
 import Form from "./FormSend.vue";
 // @ is an alias to /src
 export default {
-  name: "SendPalletTransfer",
+  name: "SendSjpStatus",
   components: {
     Form,
     Breadcomp,
@@ -32,10 +32,13 @@ export default {
     };
   },
   created() {
-    this.getPalletTransferDetail(this.$route.params.id)
+    this.getSjpDetail(this.$route.params.id).then((response) => {
+      console.log(response)
+      // this.sjpStatus.id_company_departure = this.roleUser.company_id;
+    });
   },
   methods: {
-    ...mapActions("palletTransfer", ["getPalletTransferDetail"]),
+    ...mapActions("sjp", ["getSjpDetail"]),
     handleIcon() {
       this.showPassword = !this.showPassword;
     },

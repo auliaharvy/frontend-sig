@@ -74,9 +74,9 @@
               {{ $t("form.submit") }}
             </v-btn>
 
-            <v-btn color="error" class="mt-4" block @click="reset">
+            <!-- <v-btn color="error" class="mt-4" block @click="reset">
               {{ $t("form.reset") }}
-            </v-btn>
+            </v-btn> -->
           </div>
         </v-col>
       </v-row>

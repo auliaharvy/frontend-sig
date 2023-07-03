@@ -89,7 +89,7 @@
             <template v-slot:item.send="{ item }">
               <router-link
                 :to="{ name: 'sjp-status.add', params: { id: item.id } }"
-                v-if="item.trxStatus == 0 && $can('create sjp status') && item.idDeparture == roleSet.id_company"
+                v-if="item.trxStatus == 0 && $can('create sjp status') && item.idDeparture == roleUser.company_id"
               >
                 <v-btn color="secondary" small>{{ $t("sjp.send") }}</v-btn>
               </router-link>
@@ -105,7 +105,7 @@
                         icon
                         v-bind="attrs"
                         v-on="{ ...tooltip, ...menu }"
-                        v-if="item.trxStatus == 0 && $can('update sjp')"
+                        v-if="item.trxStatus == 0 && $can('update sjp') && item.idDeparture == roleUser.company_id"
                       >
                         <v-icon small class="mr-2">mdi-pencil</v-icon>
                       </v-btn>
@@ -197,7 +197,7 @@ export default {
     return {
       totalDataDownload: 0,
       selected: [],
-      roleSet: {},
+      roleUser: {},
       dialogExport: false,
       downloadRange: [],
       selectedItem: 1,
@@ -284,7 +284,7 @@ export default {
       return this.sjps.map((d) => d[val]);
     },
     getRoleSet() {
-      this.roleSet = JSON.parse(localStorage.getItem("role"));
+      this.roleUser = JSON.parse(localStorage.getItem("role"));
     },
     editData(item) {
       // Logika untuk mengedit data

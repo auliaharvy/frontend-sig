@@ -22,116 +22,6 @@
               hide-details
             ></v-text-field>
           </v-card-title>
-          <!-- <v-simple-table>
-            <template v-slot:default>
-              <tr v-for="(value, index) in sjpStatuss">
-                <td>
-                  <div>
-                    <div style="display: inline-block; width: 50%;">SJP Number</div>
-                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%;">Departure</div>
-                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%;">Destination</div>
-                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%;">Transporter</div>
-                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%;">Truck Number</div>
-                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%;">Driver</div>
-                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%;">DO Number</div>
-                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%;">Status</div>
-                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%;">Send</div>
-                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%;">Actions</div>
-                    <div style="display: inline-block; width: 50%;">{{ value }}</div>
-                  </div>
-                </td>
-              </tr>
-            </template>
- 
-            <template v-slot:default>
-              {{ selectedColumn }}
-              <tr v-for="(value, index) in sjpStatuss">
-                <td style="border-bottom: 1px solid gainsboro;" >
-                  <div>
-                    <div style="display: inline-block; width: 50%; padding-bottom: 25px; padding-top: 25px;"><strong>SJPS Number</strong></div>
-                    <div style="display: inline-block; width: 50%;">
-                      <div style="display: flex; justify-content: end;">{{ value.trx_number }}</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>SJP Number</strong></div>
-                    <div style="display: inline-block; width: 50%;">
-                      <div style="display: flex; justify-content: end;">{{ value.sjp_number }}</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>Sender</strong></div>
-                    <div style="display: inline-block; width: 50%;">
-                      <div style="display: flex; justify-content: end;">{{ value.sender_name }}</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>Receiver</strong></div>
-                    <div style="display: inline-block; width: 50%;">
-                      <div style="display: flex; justify-content: end;">{{ value.receiver_name }}</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>Sendback</strong></div>
-                    <div style="display: inline-block; width: 50%;">
-                      <div style="display: flex; justify-content: end;">{{ value.is_sendback }}</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>Status</strong></div>
-                    <div style="display: inline-block; width: 50%;">
-                      <div style="display: flex; justify-content: end;">{{ value.status }}</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>Note</strong></div>
-                    <div style="display: inline-block; width: 50%;">
-                      <div style="display: flex; justify-content: end;">{{ value.note }}</div>
-                    </div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>Tinjau</strong></div>
-                    <div style="display: inline-block; width: 50%;">
-                      <div style="display: flex; justify-content: end;"></div>
-                    </div>
-                  </div>
-                  <div>
-                    <div style="display: inline-block; width: 50%; padding-bottom: 25px;"><strong>Actions</strong></div>
-                    <div style="display: inline-block; width: 50%;">
-                      <div style="display: flex; justify-content: end;"></div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </template>
-          </v-simple-table> -->
           <v-data-table
             :loading="loading"
             :headers="headers"
@@ -150,7 +40,7 @@
                       attach
                       small-chips
                       dense
-                      clearable
+                      clearable 
                       :items="columnValueList(header.value)"
                       v-model="filters[header.value]"
                     >
@@ -183,11 +73,7 @@
               <v-btn v-if="item.sending_driver_approval != 0 || item.sending_driver_approval != '0'" @click="locationToImage($API_URL + item.sending_driver_approval)" color="info" small>
                 <v-icon small class="mr-2">mdi-image</v-icon>
               </v-btn>
-              <a v-bind:href="$API_URL + item.sending_driver_approval" target="_blank">
-                <v-icon small class="mr-2">mdi-image</v-icon> 
-              </a>
-           </template>
-
+            </template>
 
             <template v-slot:item.receiving_driver_approval="{ item }">
               <v-btn v-if="item.receiving_driver_approval != 0 || item.sending_driver_approval != '0'" @click="locationToImage($API_URL + item.sending_driver_approval)" color="info" small>
@@ -199,20 +85,26 @@
               <router-link
                 :to="{ name: 'sjp-status.view', params: { id: item.id } }"
               >
-                <v-btn color="info" small>Tinjau</v-btn>
+                <v-btn color="info" small><v-icon small class="mr-2">mdi-magnify</v-icon></v-btn>
               </router-link>
             </template>
 
             <template v-slot:item.actions="{ item }">
               <router-link
                 :to="{ name: 'sjp-status.receive', params: { id: item.id } }"
-                v-if="item.status_sjp == 1 && $can('update sjp status')"
+                v-if="item.status_sjp == 1 && item.is_sendback == 0 && $can('update sjp status') && item.id_destination_company == roleUser.company_id"
+              >
+                <v-btn color="secondary" small>{{ $t("sjpStatus.receive") }}</v-btn>
+              </router-link>
+              <router-link
+                :to="{ name: 'sjp-status.receive', params: { id: item.id } }"
+                v-if="item.status_sjp == 3 && item.is_sendback == 1 && $can('update sjp status') && item.id_departure_company == roleUser.company_id"
               >
                 <v-btn color="secondary" small>{{ $t("sjpStatus.receive") }}</v-btn>
               </router-link>
               <router-link
                 :to="{ name: 'sjp-status.sendback', params: { id: item.id } }"
-                v-if="item.status_sjp == 2 && item.is_sendback == 0 && $can('create sjp status') && item.status == 1"
+                v-if="item.status_sjp == 2 && item.is_sendback == 0 && $can('create sjp status') && item.status == 1 && item.id_departure_company == roleUser.company_id"
               >
                 <v-btn color="secondary" small>{{ $t("sjpStatus.sendbackSjp") }}</v-btn>
               </router-link>
@@ -255,35 +147,6 @@
         </v-card>
       </v-card>
     </v-col>
-    <v-dialog v-model="dialogFilter" width="auto">
-      <v-card>
-        <v-card-text>
-          <v-autocomplete
-            clearable
-            chips
-            label="Nama Kolom"
-            :items="headers"
-            v-model="selectedColumn"
-            multiple
-          >
-          <template v-slot:selected="{data}">
-      <v-chip
-        @change="handleItem(selectedValueColumn.title)"
-      >
-        {{ selectedColumn.title }}
-      </v-chip>
-    </template>
-          </v-autocomplete>
-          <v-autocomplete
-            clearable
-            chips
-            label="Nilai kolom"
-            :items="selectedValueColumn.column"
-            multiple
-          ></v-autocomplete>
-        </v-card-text>
-     </v-card>
-    </v-dialog>
  
     <v-dialog v-model="dialogExport" width="auto">
       <v-card>
@@ -333,6 +196,7 @@ export default {
   },
   data() {
     return {
+      roleUser: {},
       completeTrxNumber: false,
       totalDataDownload: 0,
       selected: [],
@@ -352,8 +216,8 @@ export default {
         { value: "is_sendback", text: this.$t("sjpStatus.sendback"), width: "180px" },
         { value: "status", text: this.$t("sjpStatus.status"), width: "180px" },
         { value: "note", text: this.$t("sjpStatus.note"), width: "180px" },
-        { value: "sending_driver_approval", text: this.$t("sjpStatus.sending_driver_approval"), width: "180px" },
-        { value: "receiving_driver_approval", text: this.$t("sjpStatus.receiving_driver_approval"), width: "180px" },
+        { value: "sending_driver_approval", text: this.$t("sjpStatus.sending_driver_approval"), width: "100px" },
+        { value: "receiving_driver_approval", text: this.$t("sjpStatus.receiving_driver_approval"), width: "100px" },
         { value: "tinjau", text: 'Tinjau', width: "100px"},
         { value: "actions", text: this.$t("table.actions"), width: "80px" },
       ],
@@ -396,6 +260,7 @@ export default {
     };
   },
   created() {
+    this.getRoleSet();
     this.getSjpStatuss().then(() => {
       console.log(this.sjpStatuss)
       console.log(this.trx_number());
@@ -406,16 +271,6 @@ export default {
       console.log(this.status());
       console.log(this.note());
     });
-  },
-  watch: {
-    errors(newValue, oldValue) {
-      console.log(`Updating from ${oldValue} to ${newValue}`);
-
-      // Do whatever makes sense now
-      if (newValue === 'success') {
-        
-      }
-    },
   },
   computed: {
     ...mapState(['errors']),
@@ -571,6 +426,9 @@ export default {
       this.getExportDataSjpStatuss(this.downloadRange).then((result) => {
         this.totalDataDownload = result.data.length
       });
+    },
+    getRoleSet() {
+      this.roleUser = JSON.parse(localStorage.getItem("role"));
     },
   },
 };

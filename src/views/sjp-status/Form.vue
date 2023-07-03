@@ -15,10 +15,10 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('sjpStatus.departure')"
-          :items="companiesDeparture.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
-          v-model="sjpStatus.id_company_departure"
+          v-model="sjpStatus.id_departure_company"
           item-text="name"
           item-value="id"
           readonly
@@ -30,7 +30,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('sjpStatus.destination')"
-          :items="companiesDestination.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="sjpStatus.id_destination_company"
@@ -44,7 +44,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('palletTransfer.transporter')"
-          :items="companiesTransporter.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="sjpStatus.id_transporter_company"
@@ -95,9 +95,9 @@
               {{ $t("form.submit") }}
             </v-btn>
 
-            <v-btn color="error" class="mt-4" block @click="reset">
+            <!-- <v-btn color="error" class="mt-4" block @click="reset">
               {{ $t("form.reset") }}
-            </v-btn>
+            </v-btn> -->
           </div>
         </v-col>
       </v-row>
@@ -110,9 +110,10 @@ import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "FormAddSJPStatus",
   data: () => ({
+    roleUser: {},
     loading: false,
     imageRules: [
-      (v) => !v || v.size < 2000000 || "Avatar size should be less than 2 MB!",
+      (v) => !v || v.size < 2000000 || "File size should be less than 2 MB!",
       (v) => !v || ['image/png','image/jpeg','image/jpg'].includes(v.type) || "Only jpg/jpeg and png files are allowed!"
     ],
     idRules: [
@@ -138,15 +139,14 @@ export default {
     ],
   }),
   created() {
-    this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
-    this.getSjpStatusDetail(this.$route.params.id);
-    console.log(this.sjpStatus);
-    console.log(this.roleSet);
-    this.getCompaniesDeparture().then((response) => {
-      this.sjpStatus.id_company_departure = this.roleSet.company_id;
+    this.getRoleSet();
+    // this.getSjpStatusDetail(this.$route.params.id);
+    this.getCompaniesAll().then((response) => {
+      // console.log(this.roleUser)
+      // this.sjpStatus.id_company_departure = this.roleUser.company_id;
     });
-    this.getCompaniesDestination(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
-    this.getCompaniesTransporter(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    // this.getCompaniesDestination(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    // this.getCompaniesTransporter(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
 
   },
   computed: {
@@ -156,6 +156,7 @@ export default {
       companiesDeparture: (state) => state.companiesDeparture, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
       companiesTransporter: (state) => state.companiesTransporter, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
       companiesDestination: (state) => state.companiesDestination, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      companiesAll: (state) => state.companiesAll, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -166,7 +167,7 @@ export default {
   },
   methods: {
     ...mapMutations("sjpStatus", ["CLEAR_FORM"]),
-    ...mapActions("dropdown", ["getCompaniesDeparture", "getCompaniesDestination", "getCompaniesTransporter"]),
+    ...mapActions("dropdown", ["getCompaniesAll", "getCompaniesDestination", "getCompaniesTransporter"]),
     ...mapActions("sjpStatus", ["submitSjpStatus", "getSjpStatusDetail"]),
     ...mapActions("company", ["getCompanies"]),
     uploadImage(e) {
@@ -180,7 +181,9 @@ export default {
       if (valid) {
         this.sjpStatus.is_sendback = 0;
         this.sjpStatus.status = 0;
-        this.sjpStatus.id_user_sender = this.roleSet.user_id;
+        this.sjpStatus.id_user_sender = this.roleUser.user_id;
+        this.sjpStatus.created_by = this.roleUser.user_id;
+        this.sjpStatus.updated_by = this.roleUser.user_id;
         this.sjpStatus.sjp_status = "send";
 
         let form = new FormData();
@@ -196,6 +199,8 @@ export default {
         form.append('is_sendback',this.sjpStatus.is_sendback);
         form.append('status',this.sjpStatus.status);
         form.append('id_user_sender',this.sjpStatus.id_user_sender);
+        form.append('updated_by',this.sjpStatus.updated_by);
+        form.append('created_by',this.sjpStatus.created_by);
         form.append('sjp_status',this.sjpStatus.sjp_status);
 
         this.submitSjpStatus(form).then((response) => {
@@ -220,6 +225,9 @@ export default {
     reset() {
       this.sjpStatus.sending_driver_approval = '';
       this.sjpStatus.note = '';
+    },
+    getRoleSet() {
+      this.roleUser = JSON.parse(localStorage.getItem("role"));
     },
   },
   destroyed() {

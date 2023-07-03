@@ -15,7 +15,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('sjpStatus.sendbackTo')"
-          :items="companies.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="sjpStatus.id_departure_company"
@@ -29,7 +29,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('sjpStatus.sendbackFrom')"
-          :items="companies.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="sjpStatus.id_destination_company"
@@ -43,7 +43,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('palletTransfer.transporter')"
-          :items="companies.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="sjpStatus.id_transporter_company"
@@ -96,9 +96,9 @@
               {{ $t("form.submit") }}
             </v-btn>
 
-            <v-btn color="error" class="mt-4" block @click="reset">
+            <!-- <v-btn color="error" class="mt-4" block @click="reset">
               {{ $t("form.reset") }}
-            </v-btn>
+            </v-btn> -->
           </div>
         </v-col>
       </v-row>
@@ -111,6 +111,7 @@ import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "FormAddSJPStatus",
   data: () => ({
+    roleUser: {},
     tbrPallet: 0,
     idRules: [
       (value) => {
@@ -135,7 +136,8 @@ export default {
     ],
   }),
   created() {
-    this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getRoleSet();
+    this.getCompaniesAll(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   watch: {
     tbrPallet() {
@@ -146,8 +148,8 @@ export default {
   },
   computed: {
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
-    ...mapState("company", {
-      companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    ...mapState("dropdown", {
+      companiesAll: (state) => state.companiesAll, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("sjpStatus", {
       sjpStatus: (state) => state.sjpStatus, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
@@ -157,16 +159,19 @@ export default {
   methods: {
     ...mapMutations("sjpStatus", ["CLEAR_FORM"]),
     ...mapActions("sjpStatus", ["submitSjpStatus"]),
-    ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesAll"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
         this.sjpStatus.is_sendback = 1;
         this.sjpStatus.status = 0;
-        this.sjpStatus.id_user_sender = 3;
+        this.sjpStatus.id_user_sender = this.roleUser.user_id;
         this.sjpStatus.sjp_status = "sendback";
         this.submitSjpStatus(this.sjpStatus).then((response) => {
-          console.log(response);
+          this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
             this.CLEAR_FORM();
             this.$router.push({ name: "sjp-status" });
           // else {
@@ -185,6 +190,9 @@ export default {
       this.tbrPallet = 0;
       this.sjpStatus.receiving_driver_approval = '';
       this.sjpStatus.note = '';
+    },
+    getRoleSet() {
+      this.roleUser = JSON.parse(localStorage.getItem("role"));
     },
   },
   destroyed() {
