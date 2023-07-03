@@ -74,14 +74,14 @@
                   <v-btn color="secondary" small>{{ $t("palletTransfer.approval") }}</v-btn>
                 </router-link>
               </template>
-              <template v-else-if="item.status == 1">
+              <template v-else-if="item.status == 1 && item.id_company_departure == roleUser.company_id">
                 <router-link
                   :to="{ name: 'pallet-transfer.send', params: { id: item.id } }"
                 >
                   <v-btn color="secondary" small>{{ $t("palletTransfer.send") }}</v-btn>
                 </router-link>
               </template>
-              <template v-else-if="item.status == 2">
+              <template v-else-if="item.status == 2 && item.id_company_destination == roleUser.company_id">
                 <router-link
                   :to="{ name: 'pallet-transfer.receive', params: { id: item.id } }"
                 >
@@ -180,6 +180,7 @@ export default {
   },
   data() {
     return {
+      roleUser: {},
       totalDataDownload: 0,
       dialogExport: false,
       downloadRange: [],
@@ -252,6 +253,7 @@ export default {
   },
   created() {
     this.getPalletTransfers();
+    this.getUserRole();
   },
   computed: {
     ...mapState("palletTransfer", {
@@ -288,6 +290,10 @@ export default {
     },
     sumTotal(data) {
       return data.reduce((acc, item) => acc + item.quantity, 0);
+    },
+    getUserRole() {
+      this.roleUser = JSON.parse(localStorage.getItem("role"));
+      console.log(this.roleUser)
     },
     hapusData(item) {
       this.$swal({

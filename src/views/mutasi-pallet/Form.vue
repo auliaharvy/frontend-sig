@@ -50,7 +50,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('palletTransfer.truck')"
-          :items="trucks.data"
+          :items="trucks"
           :rules="idRules"
           outlined
           v-model="palletTransfer.id_truck"
@@ -65,7 +65,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('palletTransfer.driver')"
-          :items="drivers.data"
+          :items="drivers"
           :rules="idRules"
           outlined
           v-model="palletTransfer.id_driver"
@@ -129,7 +129,7 @@ import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "FormPalletTransfer",
   data: () => ({
-    loading: false,
+    roleUser: {},
     idRules: [
       (value) => {
         if (value) return true;
@@ -161,6 +161,7 @@ export default {
     });
     this.getCompaniesDestination(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getCompaniesTransporter(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getUserRole(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
   },
   computed: {
     ...mapState(["roleSet"]),
@@ -181,6 +182,7 @@ export default {
     }),
     ...mapState("palletTransfer", {
       palletTransfer: (state) => state.palletTransfer, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+      loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
@@ -197,8 +199,8 @@ export default {
         this.palletTransfer.ber_pallet = 0;
         this.palletTransfer.missing_pallet = 0;
         // this.palletTransfer.id_company_departure = this.roleSet.company_id;
-        this.palletTransfer.created_by = this.roleSet.user_id;
-        this.palletTransfer.updated_by = this.roleSet.user_id;
+        this.palletTransfer.created_by = this.roleUser.user_id;
+        this.palletTransfer.updated_by = this.roleUser.user_id;
         this.submitPalletTransfer(this.palletTransfer).then((response) => {
           this.$swal({
                 icon: 'success',
@@ -220,6 +222,10 @@ export default {
     },
     reset() {
       this.$refs.form.reset();
+    },
+    getUserRole() {
+      this.roleUser = JSON.parse(localStorage.getItem("role"));
+      console.log(this.roleUser)
     },
   },
   destroyed() {

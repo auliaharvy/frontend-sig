@@ -14,6 +14,8 @@ const state = () => ({
       id_truck: '',
       id_driver: '',
       id_user_checker_sender: '',
+      id_user_checker_receiver: '',
+      id_user_approver: '',
       second_driver: '',
       trx_code: '',
       status: '',
@@ -175,11 +177,11 @@ const actions = {
             })
             .catch((error) => {
                 //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
-                alert(error.response.data);
                 if (error.response.status == 422) {
-                    commit('SET_ERRORS', error.response.data.errors, { root: true })
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
                 } else {
-                    commit('SET_ERRORS', error.response.data.error, { root: true })
+                  alert(error.response.data.message);
                 }
             }).finally(() => {
                 commit('doneLoading')
@@ -221,9 +223,11 @@ const actions = {
             })
             .catch((error) => {
               //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
-              alert(error.response.data);
               if (error.response.status == 422) {
-                commit("SET_ERRORS", error.response.data.errors, { root: true });
+                alert(error.response.data.errors[0]);
+                commit('SET_ERRORS', error.response.data.errors, { root: true })
+              } else {
+                alert(error.response.data.message);
               }
             })
             .finally(() => {

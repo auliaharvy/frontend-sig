@@ -5,7 +5,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('palletTransfer.departure')"
-          :items="companies.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="palletTransfer.id_company_departure"
@@ -20,23 +20,22 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('palletTransfer.destination')"
-          :items="companies.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
-          v-model="palletTransfer.id_company_departure"
+          v-model="palletTransfer.id_company_destination"
           item-text="name"
           item-value="id"
           required
           readonly
         >
         </v-autocomplete>
-        <div>{{ palletTransfer.id_company_destination }}</div>
       </v-row>
 
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('palletTransfer.transporter')"
-          :items="companies.data"
+          :items="companiesAll.data"
           :rules="idRules"
           outlined
           v-model="palletTransfer.id_company_transporter"
@@ -51,7 +50,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('palletTransfer.truck')"
-          :items="trucks.data"
+          :items="trucks"
           :rules="idRules"
           outlined
           v-model="palletTransfer.id_truck"
@@ -66,7 +65,7 @@
       <v-row no-gutters>
         <v-autocomplete
           :label="$t('palletTransfer.driver')"
-          :items="drivers.data"
+          :items="drivers"
           :rules="idRules"
           outlined
           v-model="palletTransfer.id_driver"
@@ -85,7 +84,6 @@
           :label="$t('pallet.good')"
           :rules="palletRules"
           outlined
-          readonly
         ></v-text-field>
       </v-row>
 
@@ -96,7 +94,6 @@
           :label="$t('pallet.tbr')"
           :rules="palletRules"
           outlined
-          readonly
         ></v-text-field>
       </v-row>
 
@@ -135,9 +132,9 @@
               {{ $t("form.submit") }}
             </v-btn>
 
-            <v-btn color="error" class="mt-4" block @click="reset">
+            <!-- <v-btn color="error" class="mt-4" block @click="reset">
               {{ $t("form.reset") }}
-            </v-btn>
+            </v-btn> -->
           </div>
         </v-col>
       </v-row>
@@ -150,7 +147,7 @@ import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "FormPalletTransfer",
   data: () => ({
-    loading: false,
+    roleUser: {},
     idRules: [
       (value) => {
         if (value) return true;
@@ -184,11 +181,15 @@ export default {
     ]
   }),
   created() {
-    this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getTrucks(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getDrivers(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesAll();
+    this.getCompaniesDestination(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
+    this.getCompaniesTransporter(); 
+    this.getUserRole(); 
   },
   computed: {
+    ...mapState(["roleSet"]),
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("company", {
       companies: (state) => state.companies, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -201,12 +202,19 @@ export default {
     }),
     ...mapState("palletTransfer", {
       palletTransfer: (state) => state.palletTransfer, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+      loading: (state) => state.loading, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+    ...mapState("dropdown", {
+      companiesAll: (state) => state.companiesAll, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      companiesTransporter: (state) => state.companiesTransporter, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      companiesDestination: (state) => state.companiesDestination, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
   },
   methods: {
     ...mapMutations("palletTransfer", ["CLEAR_FORM"]),
     ...mapActions("palletTransfer", ["updatePalletTransfer"]),
     ...mapActions("company", ["getCompanies"]),
+    ...mapActions("dropdown", ["getCompaniesAll", "getCompaniesDestination", "getCompaniesTransporter"]),
     ...mapActions("truck", ["getTrucks"]),
     ...mapActions("driver", ["getDrivers"]),
     validate() {
@@ -216,6 +224,11 @@ export default {
         // this.palletTransfer.status = 1;
         this.palletTransfer.ber_pallet = '0';
         this.palletTransfer.missing_pallet = '0';
+        this.palletTransfer.updated_by = this.roleUser.user_id;
+        this.palletTransfer.id_user_approver = this.roleUser.user_id;
+        this.palletTransfer.status = 1;
+        console.log(this.palletTransfer)
+        console.log(this.roleUser.user_id)
         this.updatePalletTransfer(this.palletTransfer).then((response) => {
           this.$swal({
                 icon: 'success',
@@ -237,6 +250,10 @@ export default {
     },
     reset() {
       this.$refs.form.reset();
+    },
+    getUserRole() {
+      this.roleUser = JSON.parse(localStorage.getItem("role"));
+      console.log(this.roleUser)
     },
   },
   destroyed() {

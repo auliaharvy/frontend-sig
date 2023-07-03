@@ -92,6 +92,14 @@ const actions = {
                 commit('ASSIGN_DATA', result.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data);
               }
+            }).catch((error) => {
+              //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+              if (error.response.status == 422) {
+                alert(error.response.data.errors[0]);
+                commit('SET_ERRORS', error.response.data.errors, { root: true })
+              } else {
+                alert(error.response.data.message);
+              }
             }).finally(() => {
                 commit('doneLoading')
             })
@@ -103,8 +111,27 @@ const actions = {
           //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
           apiClient.get(`/change-quotas/export?from=${payload[0]}&to=${payload[1]}`)
           .then((response) => {
-              commit('ASSIGN_DATA_EXPORT', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
-              resolve(response.data)
+            const roleSet = JSON.parse(localStorage.getItem("role"));
+              if(roleSet.role_name == 'Supervisor' || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
+                commit('ASSIGN_DATA_EXPORT', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                resolve(response.data);
+              } else {
+                const result = {
+                  data: response.data.data.filter(val => val.id_company_requester == roleSet.company_id || val.company_name == roleSet.company_name)
+                };  
+                commit('ASSIGN_DATA_EXPORT', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                resolve(response.data);
+              }
+              // commit('ASSIGN_DATA_EXPORT', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+              // resolve(response.data)
+          }).catch((error) => {
+            //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+            if (error.response.status == 422) {
+              alert(error.response.data.errors[0]);
+              commit('SET_ERRORS', error.response.data.errors, { root: true })
+            } else {
+              alert(error.response.data.message);
+            }
           }).finally(() => {
               commit('doneLoading')
           })
@@ -123,11 +150,11 @@ const actions = {
             })
             .catch((error) => {
                 //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
-                alert(error.response.data);
                 if (error.response.status == 422) {
-                    commit('SET_ERRORS', error.response.data.errors, { root: true })
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
                 } else {
-                    commit('SET_ERRORS', error.response.data.error, { root: true })
+                  alert(error.response.data.message);
                 }
             }).finally(() => {
                 commit('doneLoading')
