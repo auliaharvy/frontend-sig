@@ -202,7 +202,7 @@ export default {
       downloadRange: [],
       selectedItem: 1,
       headers: [
-        { value: "trxNumber", text: this.$t("sjp.trxNumber"), width: "180px" },
+        { value: "trxNumber", text: this.$t("sjp.trxNumber"), width: "`180px`" },
         { value: "departure", text: this.$t("sjp.departure"), width: "180px"  },
         { value: "destination", text: this.$t("sjp.destination"), width: "180px"  },
         { value: "transporter", text: this.$t("sjp.transporter"), width: "180px" },
@@ -257,7 +257,6 @@ export default {
   created() {
     this.getRoleSet();
     this.getSjps(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
-    console.log(this.sjps);
   },
   computed: {
     ...mapState("sjp", {

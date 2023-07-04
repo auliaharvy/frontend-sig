@@ -126,7 +126,6 @@ export default {
     }
   },
   created() {
-    this.getCompanies(); //LOAD DATA COMPANY KETIKA COMPONENT DI-LOAD
     this.getCompaniesAll();
     },
   computed: {

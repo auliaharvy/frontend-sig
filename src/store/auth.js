@@ -52,7 +52,7 @@ const actions = {
           })
           .catch((error) => {
               if (error.response.status == 422) {
-                  alert(error.response.data.errors[0].password);
+                  alert(error.response.data.errors[0]);
                   commit('SET_ERRORS', error.response.data.errors, { root: true })
               } else {
                 alert(error.response.data.message);
