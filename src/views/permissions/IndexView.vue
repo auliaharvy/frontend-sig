@@ -9,9 +9,6 @@
         <v-card>
           <v-card-title>
             <v-btn router :to="adds.route">{{ $t("izin.tambah") }}</v-btn>
-            <v-btn style="margin-left: 20px">{{
-              $t("manajemenpengguna.unduh")
-            }}</v-btn>
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -30,7 +27,7 @@
             dense
           >
             <template v-slot:header="{ header }">
-              <tr class="grey lighten-3">
+              <tr class="grey lighten-3 tr-header hidden-sm-and-down">
                 <th v-for="header in headers" :key="header.text" style="width: 200px;">
                   <div v-if="filters.hasOwnProperty(header.value)">
                     <v-autocomplete

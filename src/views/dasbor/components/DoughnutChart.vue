@@ -16,9 +16,8 @@ export default {
   name: "DoughnutChart",
   components: { Doughnut },
   props: ["data", "options", "labels"],
-  data() {
-    return {
-      chartData: {
+  computed: {
+      chartData() { return {
         labels: this.labels,
         datasets: [
           {
@@ -28,8 +27,23 @@ export default {
             borderWidth: 0.5,
           },
         ],
-      },
-      chartOptions: this.options,
+      } },
+      chartOptions() { return this.options}
+    },
+  data() {
+    return {
+      // chartData: {
+      //   labels: this.labels,
+      //   datasets: [
+      //     {
+      //       data: this.data,
+      //       backgroundColor: ['rgba(0, 0, 255, 0.4)', 'rgba(255, 216, 0, 0.4)', 'rgba(255, 70, 0, 0.4)', 'rgba(255, 0, 0, 0.4)'],
+      //       borderColor: ['rgba(0, 0, 255, 1)', 'rgba(255, 216, 0, 1)', 'rgba(255, 70, 0, 1)', 'rgba(255, 0, 0, 1)'],
+      //       borderWidth: 0.5,
+      //     },
+      //   ],
+      // },
+      // chartOptions: this.options,
     };
   },
 };

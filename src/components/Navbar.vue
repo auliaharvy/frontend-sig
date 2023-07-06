@@ -23,6 +23,31 @@
               max-width="400"
             ></v-img>
           </v-flex>
+          <v-flex class="mr-5 ml-5">
+            <v-autocomplete
+              label="Role"
+              :items="dataRole"
+              outlined
+              v-model="role"
+              item-value="role_id"
+              @change="changeRole"
+            >
+            <template slot="item" slot-scope="{ item, selected }">
+                {{item.role_name}} - {{item.company_name}}
+            </template>
+            <template slot="selection" slot-scope="{ item, selected }">
+                {{item.role_name}} - {{item.company_name}}
+            </template>
+            <template slot="item" slot-scope="{ item, tile }">
+                {{item.role_name}} - {{item.company_name}}
+            </template>
+            <!-- <template slot="selection" slot-scope="{ item, tile }">
+              <v-list-tile-content>
+                {{item.role_name}} - {{item.company_name}}
+              </v-list-tile-content>
+            </template> -->
+            </v-autocomplete>
+          </v-flex>
         </v-layout>
       </template>
       <v-divider></v-divider>
@@ -144,6 +169,8 @@ import ProfileMenu from "@/components/ProfileMenu";
 
 export default {
   data: () => ({
+    role: '',
+    dataRole: '',
     drawer: false,
     links: [{ icon: "home", title: "sidebar.halamanutama", route: "/", permission: 'read dashboard' }],
     mgms: [
@@ -193,7 +220,7 @@ export default {
         action: "mdi-file-document-outline",
         title: "sidebar.laporan",
         items: [
-          { title: "sidebar.dasbororganisasi", route: "/",  permission: 'read dashboard organization' },
+          // { title: "sidebar.dasbororganisasi", route: "/",  permission: 'read dashboard organization' },
           { title: "sidebar.pergerakanpallet", route: "/pergerakan-pallet", permission: 'read pallet movement' },
           { title: "sidebar.datatransaksi", route: "/data-transaksi", permission: 'read all transaction' },
         ],
@@ -218,21 +245,26 @@ export default {
     ],
     logouts: [{ icon: "logout", title: "sidebar.keluar", route: "/" }],
   }),
+  created() {
+    this.getRole();
+  },
   methods: {
     ...mapActions("auth", [
       "logout",
+      "setRole",
     ]),
-    logout() {
-      location.reload() 
-      // this.logout().then(() => {
-      //   this.$router.go(0);
-      // });
-      // return new Promise((resolve, reject) => {
-      //   this.logout()
-      //   resolve();
-      // }).then(() => {
-      //   this.$router.push("/login").then(() => { this.$router.go() });
-      // });
+    getRole() {
+      var role = JSON.parse(localStorage.getItem("role"));
+      var roles = JSON.parse(localStorage.getItem("userData"));
+      this.dataRole = roles.data.role;
+      this.role = role.role_id;
+      console.log(this.dataRole)
+      console.log(this.role)
+    },
+    changeRole() {
+      var payload =this.dataRole.find(x => x.role_id === this.role);
+      this.setRole(payload);
+      window.location.reload();
     },
   },
   components: {

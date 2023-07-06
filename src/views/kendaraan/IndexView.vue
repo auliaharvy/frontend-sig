@@ -10,7 +10,7 @@
         <v-card>
           <v-card-title>
             <v-btn @click="sinkronTruk()" >{{ $t("trucks.add") }}</v-btn>
-              <export-excel
+              <!-- <export-excel
                 :data="trucks.data"
                 :fields="json_fields"
                 worksheet="Sheet Truck"
@@ -19,7 +19,7 @@
               <v-btn style="margin-left: 20px">{{
                 $t("manajemenpengguna.unduh")
               }}</v-btn>
-            </export-excel>
+            </export-excel> -->
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"

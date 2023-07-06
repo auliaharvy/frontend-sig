@@ -8,9 +8,11 @@ const state = () => ({
     palletConditionCompany: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
     palletConditionWarehouse: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
     palletConditionTransporter: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
+    palletConditionWorkshop: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
     detailPools: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
     detailWarehouse: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
     detailTransporter: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
+    detailWorkshop: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
     palletSendReceive: {}, //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
     palletSendBackReceive: {}, //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
     idConditionCompany: 4,
@@ -43,6 +45,9 @@ const mutations = {
     ASSIGN_CONDITION_TRANSPORTER(state, payload) {
         state.palletConditionTransporter = payload;
     },
+    ASSIGN_CONDITION_WORKSHOP(state, payload) {
+        state.palletConditionWorkshop = payload;
+    },
     ASSIGN_DETAIL_POOL(state, payload) {
         state.detailPools = payload;
     },
@@ -51,6 +56,9 @@ const mutations = {
     },
     ASSIGN_DETAIL_TRANSPORTER(state, payload) {
         state.detailTransporter = payload;
+    },
+    ASSIGN_DETAIL_WORKSHOP(state, payload) {
+        state.detailWorkshop = payload;
     },
     ASSIGN_PALLET_SEND_RECEIVE(state, payload) {
         state.palletSendReceive = payload;
@@ -141,6 +149,18 @@ const actions = {
             })
         })
     },
+    getConditionWorkshop({ commit }, payload) {
+        let search = typeof payload != 'undefined' ? payload:''
+        return new Promise((resolve, reject) => {
+            //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
+            apiClient.get(`/dashboards/pallet-condition-company?id=${payload}`)
+            .then((response) => {
+                commit('ASSIGN_CONDITION_WORKSHOP', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                resolve(response.data)
+            }).finally(() => {
+            })
+        })
+    },
     getDetailPools({ commit }, payload) {
         let search = typeof payload != 'undefined' ? payload:''
         return new Promise((resolve, reject) => {
@@ -204,6 +224,27 @@ const actions = {
             })
         })
     },
+    getDetailWorkshop({ commit }, payload) {
+        let search = typeof payload != 'undefined' ? payload:''
+        return new Promise((resolve, reject) => {
+            //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
+            apiClient.get(`/dashboards/detail-pallet?type=Workshop`)
+            .then((response) => {
+                const roleSet = JSON.parse(localStorage.getItem("role"));
+                if(roleSet.role_name == "Supervisor" || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
+                    commit('ASSIGN_DETAIL_WORKSHOP', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                    resolve(response.data)
+                } else {
+                    const result = {
+                        data: response.data.data.filter(val => val.id == roleSet.company_id)
+                    };  
+                  commit('ASSIGN_DETAIL_WORKSHOP', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                    resolve(result)
+                } 
+            }).finally(() => {
+            })
+        })
+    },
     getPalletSendReceive({ commit }, payload) {
         let year = payload.year;
         let month = payload.month;
@@ -212,6 +253,19 @@ const actions = {
             apiClient.get(`/dashboards/pallet-send-receive?year=${year}&month=${month}&distribution=0`)
             .then((response) => {
                 commit('ASSIGN_PALLET_SEND_RECEIVE', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                resolve(response.data.data)
+            }).finally(() => {
+            })
+        })
+    },
+    getPalletSendBackReceive({ commit }, payload) {
+        let year = payload.year;
+        let month = payload.month;
+        return new Promise((resolve, reject) => {
+            //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
+            apiClient.get(`/dashboards/pallet-send-receive?year=${year}&month=${month}&distribution=1`)
+            .then((response) => {
+                commit('ASSIGN_PALLET_SEND_BACK', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data.data)
             }).finally(() => {
             })

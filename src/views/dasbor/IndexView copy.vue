@@ -287,7 +287,7 @@
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
             <span class="text-h6 text-center font-weight-normal"
-              >Workshop Detail :
+              >Transporter Detail :
               {{ sumPoolPallet(detailWorkshop.data) }}</span
             >
           </v-card-title>
@@ -300,6 +300,15 @@
               :options="barChartOptions"
               :labels="detailWorkshopLabel"
             />
+            <!-- <BarChartPool
+              v-if="detailTransporter.data"
+              style="height: 350px;"
+              :dataStock="detailTransporterStock"
+              :dataIn="detailTransporterIn"
+              :dataOut="detailPoolOut"
+              :options="barChartDetailOptions"
+              :labels="detailTransporterLabel"
+            /> -->
           </v-card-text>
         </v-card>
       </v-col>
@@ -869,11 +878,9 @@ export default {
       "getDetailPools",
       "getDetailWarehouse",
       "getDetailTransporter",
-      "getDetailWorkshop",
       "getConditionCompany",
       "getConditionWarehouse",
       "getConditionTransporter",
-      "getConditionWorkshop",
       "getPalletSendReceive",
       "getPalletSendBackReceive",
       "doLoading",

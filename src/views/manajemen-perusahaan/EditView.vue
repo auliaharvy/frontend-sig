@@ -5,7 +5,7 @@
     <v-col md-12>
       <v-card>
         <v-card-title style="background: black; color: white">
-          {{ $t("perushaan.sunting") }}
+          {{ $t("perusahaan.sunting") }}
         </v-card-title>
         <Form />
       </v-card>

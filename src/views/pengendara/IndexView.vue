@@ -9,9 +9,6 @@
         <v-card>
           <v-card-title>
             <v-btn router :to="adds.route">{{ $t("driver.add") }}</v-btn>
-            <v-btn style="margin-left: 20px">{{
-              $t("manajemenpengguna.unduh")
-            }}</v-btn>
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"

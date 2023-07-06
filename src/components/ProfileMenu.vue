@@ -27,10 +27,6 @@
               <v-list-item-subtitle>
                 {{ userData.data.email }}
               </v-list-item-subtitle>
-              <v-list-item-subtitle>
-                {{ userData.data.role[0].role_name + " - "  + userData.data.role[0].company_name }}
-              </v-list-item-subtitle>
-
             </v-list-item-content>
           </v-list-item>
         </v-list>

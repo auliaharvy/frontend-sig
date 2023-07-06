@@ -8,7 +8,6 @@
         <v-divider></v-divider>
         <v-card>
           <v-card-title>
-            <v-btn v-if="$can('create pallet movement')" router :to="adds.route">{{ $t("perusahaan.tambah") }}</v-btn>
             <export-excel
               :data="palletMovements"
               :fields="json_fields"
@@ -190,9 +189,9 @@ export default {
             field: 'status',
             callback: (value) => {
               if(value == 0) {
-              return `Send`
+              return `Sending`
             } else {
-              return `Receive`
+              return `Received`
             }
           }
         },

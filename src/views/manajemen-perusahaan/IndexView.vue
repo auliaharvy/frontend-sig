@@ -10,7 +10,7 @@
           <v-card-title>
             <v-btn v-if="$can('create company')" router :to="adds.route">{{ $t("perusahaan.tambah") }}</v-btn>
             <export-excel
-              :data="companies.data"
+              :data="filteredCompanies"
               :fields="json_fields"
               worksheet="Sheet Companies"
               name="data-companies.xls"

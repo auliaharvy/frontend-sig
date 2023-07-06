@@ -1,59 +1,59 @@
-<script>
-    import { Line } from 'vue-chartjs'
-
-    export default {
-        extends: Line,
-        props: ['data', 'options', 'labels'],
-        mounted() {
-            this.lineRenderChart()
-        },
-        watch: {
-            data: {
-                handler() {
-                    this._data._chart.destroy()
-                    this.lineRenderChart()
-                },
-                deep: true
-            }
-        },
-        methods: {
-            lineRenderChart() {
-                this.renderChart({
-                    labels: this.labels,
-                    datasets: [
-                        {
-                        label: 'Pallet Send', 
-                        data: this.data.dataSend,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                        ],
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Pallet Receive', 
-                        data: this.data.dataReceive,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                        ],
-                        borderWidth: 1
-                    }
-                ]
-                }, this.options)
-            }
-        }
-    }
-</script>
+<template>
+    <lineChart id="my-chart-id" :options="chartOptions" :data="chartData" />
+  </template>
+  
+  <script>
+  import { Line } from "vue-chartjs";
+  import {
+    Chart as ChartJS, ArcElement, Tooltip, Legend, LineElement, PointElement
+  } from "chart.js";
+  
+  ChartJS.register(
+    ArcElement, Tooltip, Legend, LineElement, PointElement
+  );
+  
+  export default {
+    name: "LineChart",
+    components: { 'lineChart': Line },
+    props: ["data", "dataReceive","options", "labels"],
+    computed: {
+        chartData() { return {
+          labels: this.labels,
+          datasets: [
+            {
+              label: 'Pallet Send',
+              data: this.data,
+              backgroundColor: ['rgba(255, 0, 0, 0.4)'],
+              borderColor: ['rgba(255, 0, 0, 1)'],
+              borderWidth: 0.5,
+            },
+            {
+              label: 'Pallet Receive',
+              data: this.dataReceive,
+              backgroundColor: ['rgba(0, 0, 255, 0.4)'],
+              borderColor: ['rgba(0, 0, 255, 1)'],
+              borderWidth: 0.5,
+            },
+          ],
+        } },
+        chartOptions() { return this.options}
+      },
+    data() {
+      return {
+        // chartData: {
+        //   labels: this.labels,
+        //   datasets: [
+        //     {
+        //       data: this.data,
+        //       backgroundColor: ['rgba(0, 0, 255, 0.4)', 'rgba(255, 216, 0, 0.4)', 'rgba(255, 70, 0, 0.4)', 'rgba(255, 0, 0, 0.4)'],
+        //       borderColor: ['rgba(0, 0, 255, 1)', 'rgba(255, 216, 0, 1)', 'rgba(255, 70, 0, 1)', 'rgba(255, 0, 0, 1)'],
+        //       borderWidth: 0.5,
+        //     },
+        //   ],
+        // },
+        // chartOptions: this.options,
+      };
+    },
+  };
+  </script>
+  

@@ -9,9 +9,6 @@
         <v-card>
           <v-card-title>
             <v-btn router :to="adds.route">{{ $t("role.tambah") }}</v-btn>
-            <v-btn style="margin-left: 20px">{{
-              $t("manajemenpengguna.unduh")
-            }}</v-btn>
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -86,7 +83,7 @@ export default {
   data() {
     return {
       headers: [
-        { value: "name", text: this.$t("peran.nama") },
+        { value: "name", text: this.$t("perandanizin.peran") },
         { value: "actions", text: this.$t("table.actions") },
       ],
       filters: {

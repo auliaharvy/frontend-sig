@@ -9,9 +9,9 @@
         <v-card>
           <v-card-title>
             <v-btn v-if="$can('create dashboard organization')" router :to="adds.route">{{ $t("organisasi.tambah") }}</v-btn>
-            <v-btn style="margin-left: 20px">{{
+            <!-- <v-btn style="margin-left: 20px">{{
               $t("manajemenpengguna.unduh")
-            }}</v-btn>
+            }}</v-btn> -->
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -97,7 +97,7 @@ export default {
       },
       items: [],
       search: "",
-      adds: { route: "/organization.add" },
+      adds: { route: "/organization/add" },
     };
   },
   created() {

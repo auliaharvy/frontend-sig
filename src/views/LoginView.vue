@@ -203,6 +203,7 @@ export default {
   name: "LoginView",
   data() {
     return {
+      isSso: 0,
       user: {
         username: "",
         password: "",

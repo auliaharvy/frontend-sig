@@ -45,7 +45,6 @@
                 single-line
                 hide-details
               ></v-text-field>
-              <v-btn>Query</v-btn>
             </v-card-title>
             <v-data-table
               class="custom-table"
