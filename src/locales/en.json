@@ -85,6 +85,15 @@
     "dibuat": "Created By",
     "diperbarui": "Updated At"
   },
+  "dashboard": {
+    "allPallet": "All Pallet",
+    "poolPallet": "Pool Pallet",
+    "transporter": "Transporter",
+    "poolPalletDetail": "Pool Pallet Detail",
+    "warehouseDetail": "Warehouse Detail",
+    "transporterDetail": "Tranporter Detail",
+    "workshopDetail": "Workshop Detail"
+  },
   "role": {
     "role": "Role",
     "tambah": "Add Role",

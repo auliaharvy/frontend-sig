@@ -124,28 +124,43 @@ export default {
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        var roleData = JSON.parse(localStorage.getItem("role"))
-        this.changeQuota.status = 0;
-        this.changeQuota.id_requester = roleData.user_id;
-        this.changeQuota.created_by = roleData.user_id;
-        this.changeQuota.updated_by = roleData.user_id;
-        this.submitChangeQuota(this.changeQuota).then((response) => {
-          this.$swal({
-                icon: 'success',
-                title: 'Success',
-              });
-            this.CLEAR_FORM();
-            this.$router.push({ name: "change-quota" });
-          // else {
-          //   if (this.errors) {
-          //     this.$swal({
-          //       icon: 'error',
-          //       title: 'error.status',
-          //       text: this.errors,
-          //     });
-          //   }
-          // }
-        });
+        if (this.changeQuota.type == 0) {
+          var roleData = JSON.parse(localStorage.getItem("role"))
+          this.changeQuota.status = 0;
+          this.changeQuota.id_requester = roleData.user_id;
+          this.changeQuota.created_by = roleData.user_id;
+          this.changeQuota.updated_by = roleData.user_id;
+          this.submitChangeQuota(this.changeQuota).then((response) => {
+            this.$swal({
+                  icon: 'success',
+                  title: 'Success',
+                });
+              this.CLEAR_FORM();
+              this.$router.push({ name: "change-quota" });
+          });
+        } else {
+          const quotaCompany = this.companiesDeparture.data.find(x => x.id === this.changeQuota.id_company_requester).quota;
+          if (this.changeQuota.quantity > quotaCompany) {
+            alert('Approved quantity cannot greater than request quantity')
+
+          } else {
+            var roleData = JSON.parse(localStorage.getItem("role"))
+            this.changeQuota.status = 0;
+            this.changeQuota.id_requester = roleData.user_id;
+            this.changeQuota.created_by = roleData.user_id;
+            this.changeQuota.updated_by = roleData.user_id;
+            this.submitChangeQuota(this.changeQuota).then((response) => {
+              this.$swal({
+                    icon: 'success',
+                    title: 'Success',
+                  });
+                this.CLEAR_FORM();
+                this.$router.push({ name: "change-quota" });
+            });
+          }
+        }
+        
+        
       }
     },
     reset() {

@@ -12,8 +12,8 @@
       <v-col :sm="12" :md="12" :lg="12">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
-            <span class="text-h6 text-center font-weight-normal"
-              >All Pallet : {{ sumTotal(totalPallets.data) }}</span
+            <span v-if="totalPallets.data" class="text-h6 text-center font-weight-normal"
+              >{{ $t("dashboard.allPallet") }} : {{ sumTotal(totalPallets.data) }}</span
             >
           </v-card-title>
         </v-card>
@@ -53,7 +53,7 @@
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
             <span class="text-h6 text-center font-weight-normal"
-              >Pool Pallet</span
+              >{{ $t("dashboard.poolPallet") }}</span
             >
           </v-card-title>
           <v-divider />
@@ -72,7 +72,7 @@
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
             <span class="text-h6 text-center font-weight-normal"
-              >Transporter</span
+              >{{ $t("dashboard.transporter") }}</span
             >
           </v-card-title>
           <v-divider />
@@ -100,8 +100,8 @@
       <v-col :sm="6" :md="6" :lg="6">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
-            <span class="text-h6 text-center font-weight-normal"
-              >Pool Pallet Detail : {{ sumPoolPallet(detailPools.data) }}</span
+            <span v-if="detailPools.data" class="text-h6 text-center font-weight-normal"
+              >{{ $t("dashboard.poolPalletDetail") }} : {{ sumPoolPallet(detailPools.data) }}</span
             >
           </v-card-title>
           <v-divider />
@@ -159,8 +159,8 @@
       <v-col :sm="6" :md="6" :lg="6">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
-            <span class="text-h6 text-center font-weight-normal"
-              >Warehouse Detail :
+            <span v-if="detailWarehouse.data" class="text-h6 text-center font-weight-normal"
+              >{{ $t("dashboard.warehouseDetail") }}
               {{ sumPoolPallet(detailWarehouse.data) }}</span
             >
           </v-card-title>
@@ -219,8 +219,8 @@
       <v-col :sm="6" :md="6" :lg="6">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
-            <span class="text-h6 text-center font-weight-normal"
-              >Transporter Detail :
+            <span v-if="detailTransporter.data" class="text-h6 text-center font-weight-normal"
+              >{{ $t("dashboard.transporterDetail") }}
               {{ sumPoolPallet(detailTransporter.data) }}</span
             >
           </v-card-title>
@@ -286,8 +286,8 @@
       <v-col :sm="6" :md="6" :lg="6">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
-            <span class="text-h6 text-center font-weight-normal"
-              >Workshop Detail :
+            <span v-if="detailWorkshop.data" class="text-h6 text-center font-weight-normal"
+              >{{ $t("dashboard.workshopDetail") }}
               {{ sumPoolPallet(detailWorkshop.data) }}</span
             >
           </v-card-title>
@@ -602,9 +602,9 @@ export default {
           this.idConditionTransporter = response.data[0].id;
           this.getConditionTransporter(response.data[0].id);
         });
-        this.getDetailPools().then((response) => {
-          this.idConditionCompany = response.data[0].id;
-          this.getConditionCompany(response.data[0].id);
+        this.getDetailWorkshop().then((response) => {
+          this.idConditionWorkshop = response.data[0].id;
+          this.getConditionWorkshop(response.data[0].id);
           this.stopLoading();
         });
       } else if(

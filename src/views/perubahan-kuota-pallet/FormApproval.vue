@@ -132,11 +132,7 @@ export default {
     ...mapActions("dropdown", ["getCompaniesAll"]),
     validate() {
       if (this.changeQuota.approved_quantity > this.changeQuota.quantity) {
-        this.$swal({
-                icon: 'error',
-                title: 'Error',
-                text: 'Approved quantity cannot greater than request quantity',
-              });
+        alert('Approved quantity cannot greater than request quantity')
       } else {
         const valid = this.$refs.form.validate();
       if (valid) {

@@ -28,11 +28,10 @@
         ></v-text-field>
       </v-row>
 
-      <!-- <v-row no-gutters>
+      <v-row no-gutters>
         <v-text-field
           v-model="user.password"
           :label="$t('login.katasandi')"
-          :rules="nameRules"
           required
           :type="showPassword ? 'text' : 'password'"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -50,7 +49,7 @@
           :append-icon="showPasswordConfirm ? 'mdi-eye' : 'mdi-eye-off'"
           @click:append="showPasswordConfirm = !showPasswordConfirm"
         ></v-text-field>
-      </v-row> -->
+      </v-row>
 
       <v-row no-gutters>
         <v-col :col="24">

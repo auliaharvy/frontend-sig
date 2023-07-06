@@ -85,6 +85,15 @@
     "dibuat": "Dibuat Oleh",
     "diperbarui": "Diperbarui Saat"
   },
+  "dashboard": {
+    "allPallet": "Semua Palet",
+    "poolPallet": "Pool Pallet",
+    "transporter": "Ekspeditur",
+    "poolPalletDetail": "Detail Pool Pallet",
+    "warehouseDetail": "Detail Gudang",
+    "transporterDetail": "Detail Expeditur",
+    "workshopDetail": "Detail Workshop"
+  },
   "role": {
     "role": "Peran",
     "tambah": "Tambah Peran",

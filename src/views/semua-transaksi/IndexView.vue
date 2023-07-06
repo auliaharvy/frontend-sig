@@ -32,10 +32,16 @@
                   range
                 ></v-date-picker>
               </v-menu>
-              <v-icon v-if="$can('update all transaction')" small class="mr-2" @click="editData(item)">
-                mdi-pencil
-              </v-icon>
-              <v-icon v-if="$can('delete all transaction')" small @click="hapusData(item)"> mdi-delete </v-icon>
+                <export-excel
+                :data="filteredAllTransactions"
+                :fields="json_fields"
+                worksheet="Sheet All Transaction"
+                name="data-all-transaction.xls"
+              >
+              <v-btn style="margin-left: 20px">{{
+                $t("manajemenpengguna.unduh")
+              }}</v-btn>
+            </export-excel>
               <v-btn>{{ $t("manajemenpengguna.unduh") }}</v-btn>
               <v-spacer></v-spacer>
               <v-text-field
