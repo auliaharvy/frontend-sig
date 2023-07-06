@@ -124,12 +124,11 @@ const actions = {
             .catch((error) => {
                 //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
                 if (error.response.status == 422) {
-                    alert(error.response.data);
-                    commit('SET_ERRORS', error.response.data.errors, { root: true })
-                } else {
-                    alert(error.response.data.message);
-                    commit('SET_ERRORS', error.response.data.error, { root: true })
-                }
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+              } else {
+                alert(error.response.data.data);
+              }
             }).finally(() => {
                 commit('doneLoading')
             })

@@ -220,8 +220,15 @@ const actions = {
               console.log(state.sjpStatus);
               resolve(response.data.data[0]);
             }).catch((error) => {
-              //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
-              console.log(error);
+              if (error.response.status == 422) {
+                alert(error.response.data.errors[0]);
+                commit('SET_ERRORS', error.response.data.errors, { root: true })
+              } else if (error.response.status == 400) {
+                alert(error.response.data);
+              }
+              else {
+                alert(error.response.data.message);
+              }
             })
             .finally(() => {
               commit("doneLoading");
@@ -229,12 +236,17 @@ const actions = {
         });
       },
 
-      updateSjpStatus({ dispatch, commit, state }) {
+      updateSjpStatus({ dispatch, commit, state }, payload) {
         commit("isLoading");
         return new Promise((resolve, reject) => {
+          console.log(payload)
           //MENGIRIMKAN REQUEST KE BACKEND DENGAN DATA YANG DIDAPATKAN DARI STATE CUSTOMER
           apiClient
-            .patch(`/sjp-statuss/${state.sjpStatus.id}`, state.sjpStatus)
+            .patch(`/sjp-statuss/${state.sjpStatus.id}`, payload, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
             .then((response) => {
               //APABILA BERHASIL MAKA LOAD DATA CUSTOMER UNTUK MENGAMBIL DATA TERBARU
               dispatch("getSjpStatuss").then(() => {
@@ -245,7 +257,10 @@ const actions = {
               if (error.response.status == 422) {
                 alert(error.response.data.errors[0]);
                 commit('SET_ERRORS', error.response.data.errors, { root: true })
-              } else {
+              } else if (error.response.status == 400) {
+                alert(error.response.data);
+              }
+              else {
                 alert(error.response.data.message);
               }
             })

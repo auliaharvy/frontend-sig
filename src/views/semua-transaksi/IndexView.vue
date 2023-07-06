@@ -56,28 +56,8 @@
               :items="filteredAllTransactions"
               elevation="2"
             >
-            <template #activator="{ on, attrs }">
-                  <v-btn icon v-bind="attrs" v-on="on">
-                    <v-icon>mdi-dots-vertical</v-icon>
-                  </v-btn>
-                </template>
-
-                <v-card>
-                  <v-list>
-                    <v-list-item v-for="item in headers" :key="item.text" v-if="item.value !== 'actions'">
-                      <v-list-item-action>
-                        <v-checkbox
-                          v-model="item.active"
-                        />
-                      </v-list-item-action>
-                      <v-list-item-content style="cursor: default">
-                        <v-list-item-title>{{ item.text }}</v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list>
-                </v-card>
               <template v-slot:header="{ header }">
-                <tr class="grey lighten-3">
+                <tr class="grey lighten-3 tr-header hidden-sm-and-down">
                   <th v-for="header in headers" :key="header.text" style="width: 200px;">
                     <div v-if="filters.hasOwnProperty(header.value)">
                       <v-autocomplete
@@ -114,9 +94,6 @@
     </v-container>
 </template>
 
-<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";

@@ -38,7 +38,7 @@
             dense
           >
             <template v-slot:header="{ header }">
-              <tr class="grey lighten-3">
+              <tr class="grey lighten-3 tr-header hidden-sm-and-down">
                 <th v-for="header in headers" :key="header.text" style="width: 200px;">
                   <div v-if="filters.hasOwnProperty(header.value)">
                     <v-autocomplete

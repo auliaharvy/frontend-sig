@@ -74,11 +74,18 @@
       </v-row>
 
       <v-row no-gutters>
+          <!-- v-model="sjpStatus.sending_driver_approval" -->
         <v-file-input
           v-model="sjpStatus.sending_driver_approval"
+          :rules="imageRules"
+          accept="image/png, image/jpeg"
           outlined
+          @change="uploadImage"
           :label="$t('sjpStatus.approval')"
         ></v-file-input>
+        <div style="width: 100%; padding-bottom: 35px;">
+          <small>Max File : 2.5 MB | Tipe file : image/png, image/jpeg  </small>
+        </div>
       </v-row>
 
       <v-row no-gutters>
@@ -120,6 +127,10 @@ export default {
         return "this field is required";
       },
     ],
+    imageRules: [
+      (v) => !v || v.size < 2500000 || "File size should be less than 2,5 MB!",
+      (v) => !v || ['image/png','image/jpeg','image/jpg'].includes(v.type) || "Only jpg/jpeg and png files are allowed!"
+    ],
     palletRules: [
       (v) => v > -1 || "cannot input - number",
     ],
@@ -160,6 +171,10 @@ export default {
     ...mapMutations("sjpStatus", ["CLEAR_FORM"]),
     ...mapActions("sjpStatus", ["submitSjpStatus"]),
     ...mapActions("dropdown", ["getCompaniesAll"]),
+    uploadImage(e) {
+      const selectedFile = e;
+      this.sjpStatus.sending_driver_approval = selectedFile;
+    },
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {
@@ -167,7 +182,26 @@ export default {
         this.sjpStatus.status = 0;
         this.sjpStatus.id_user_sender = this.roleUser.user_id;
         this.sjpStatus.sjp_status = "sendback";
-        this.submitSjpStatus(this.sjpStatus).then((response) => {
+        let form = new FormData();
+        form.append('id_sjp', this.sjpStatus.id_sjp);
+        form.append('sjp_number', this.sjpStatus.sjp_number);
+        form.append('id_departure_company', this.sjpStatus.id_departure_company);
+        form.append('id_destination_company', this.sjpStatus.id_destination_company);
+        form.append('id_transporter_company', this.sjpStatus.id_transporter_company);
+        form.append('good_pallet', this.sjpStatus.good_pallet);
+        form.append('tbr_pallet', this.sjpStatus.tbr_pallet);
+        form.append('ber_pallet', '0');
+        form.append('missing_pallet', '0');
+        form.append('sending_driver_approval', this.sjpStatus.sending_driver_approval);
+        // form.append('receiving_driver_approval', this.sjpStatus.sending_driver_approval);
+        form.append('note',this.sjpStatus.note);
+        form.append('is_sendback',this.sjpStatus.is_sendback);
+        form.append('status',this.sjpStatus.status);
+        form.append('id_user_sender',this.sjpStatus.id_user_sender);
+        form.append('updated_by',this.sjpStatus.updated_by);
+        form.append('created_by',this.sjpStatus.created_by);
+        form.append('sjp_status',this.sjpStatus.sjp_status);
+        this.submitSjpStatus(form).then((response) => {
           this.$swal({
                 icon: 'success',
                 title: 'Success',

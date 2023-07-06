@@ -207,7 +207,9 @@
     "reason": "Alasan",
     "note": "Catatan",
     "check": "Cek",
-    "approval": "Bukti"
+    "approval": "Bukti",
+    "preview": "Preview"
+    
   },
   "changeQuota": {
     "index": "Change Quota",
@@ -266,7 +268,8 @@
     "totalPrice": "Total Biaya",
     "approvalManager": "Penyetujuan Manager",
     "approvalDistributor": "Penyetujuan Distributor",
-    "show": "TInjau"
+    "show": "Tinjau",
+    "photo": "Foto"
   },
   "sewaPallet": {
     "index": "Biaya Sewa Pallet",
@@ -337,5 +340,28 @@
     "departTime": "Waktu Keberangkatan",
     "eta": "Perikaraan Waktu Sampai",
     "late": "Lama Keterlambatan (hari)" 
+  },
+  "allTransaction": {
+    "log": "Log Number",
+    "trxNumber": "Transaction Number",
+    "transaction": "Transaksi",
+    "status": "Status",
+    "noDo": "No DO",
+    "noDoNew": "No DO Baru",
+    "sender": "Pengirim / Pelapor",
+    "receiver": "Penerima / Penyetuju",
+    "departure": "Keberangkatan",
+    "destination": "Tujuan",
+    "destinationNew": "Tujuan Baru",
+    "company": "Perusahaan",
+    "transporter": "Ekspeditur",
+    "truck": "Nomor Truk",
+    "truckNew": "Nomor Truk Baru",
+    "driver": "Pengemudi",
+    "driverNew": "Pengemudi Baru",
+    "price": "Biaya",
+    "reason": "Alasan",
+    "note": "Catatan",
+    "eta": "Estimated Time Arrival"
   }
 }

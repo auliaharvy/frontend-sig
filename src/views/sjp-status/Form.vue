@@ -111,9 +111,8 @@ export default {
   name: "FormAddSJPStatus",
   data: () => ({
     roleUser: {},
-    loading: false,
     imageRules: [
-      (v) => !v || v.size < 2000000 || "File size should be less than 2 MB!",
+      (v) => !v || v.size < 2500000 || "File size should be less than 2,5 MB!",
       (v) => !v || ['image/png','image/jpeg','image/jpg'].includes(v.type) || "Only jpg/jpeg and png files are allowed!"
     ],
     idRules: [
@@ -163,6 +162,7 @@ export default {
     }),
     ...mapState("sjpStatus", {
       sjpStatus: (state) => state.sjpStatus, //LOAD DATA CUSTOMER DARI STATE CUSTOMER
+      loading: (state) => state.loading, 
     }),
   },
   methods: {
@@ -171,10 +171,8 @@ export default {
     ...mapActions("sjpStatus", ["submitSjpStatus", "getSjpStatusDetail"]),
     ...mapActions("company", ["getCompanies"]),
     uploadImage(e) {
-      console.log(e);
       const selectedFile = e;
       this.sjpStatus.sending_driver_approval = selectedFile;
-      console.log(this.sjpStatus.sending_driver_approval);
     },
     validate() {
       const valid = this.$refs.form.validate();
@@ -193,8 +191,11 @@ export default {
         form.append('id_destination_company', this.sjpStatus.id_destination_company);
         form.append('id_transporter_company', this.sjpStatus.id_transporter_company);
         form.append('good_pallet', this.sjpStatus.good_pallet);
+        form.append('tbr_pallet', '0');
+        form.append('ber_pallet', '0');
+        form.append('missing_pallet', '0');
         form.append('sending_driver_approval', this.sjpStatus.sending_driver_approval);
-        form.append('receiving_driver_approval', this.sjpStatus.sending_driver_approval);
+        // form.append('receiving_driver_approval', this.sjpStatus.sending_driver_approval);
         form.append('note',this.sjpStatus.note);
         form.append('is_sendback',this.sjpStatus.is_sendback);
         form.append('status',this.sjpStatus.status);

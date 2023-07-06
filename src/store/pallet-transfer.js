@@ -180,7 +180,10 @@ const actions = {
                 if (error.response.status == 422) {
                   alert(error.response.data.errors[0]);
                   commit('SET_ERRORS', error.response.data.errors, { root: true })
-                } else {
+                } else if (error.response.status == 400) {
+                  alert(error.response.data);
+                }
+                else {
                   alert(error.response.data.message);
                 }
             }).finally(() => {
@@ -226,7 +229,10 @@ const actions = {
               if (error.response.status == 422) {
                 alert(error.response.data.errors[0]);
                 commit('SET_ERRORS', error.response.data.errors, { root: true })
-              } else {
+              } else if (error.response.status == 400) {
+                alert(error.response.data);
+              }
+              else {
                 alert(error.response.data.message);
               }
             })

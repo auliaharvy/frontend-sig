@@ -31,7 +31,7 @@
 			    >
 
             <template v-slot:header="{ header }">
-              <tr class="grey lighten-3">
+              <tr class="grey lighten-3 tr-header hidden-sm-and-down">
                 <th v-for="header in headers" :key="header.text" style="width: 200px;">
                   <div v-if="filters.hasOwnProperty(header.value)">
                     <v-autocomplete
@@ -62,7 +62,7 @@
               </tr>
             </template>
             <template v-slot:item.photo="{ item }">
-              <v-btn v-if="item.photo" @click="locationToImage($API_URL + item.photo)" color="info" small>
+              <v-btn v-if="item.photo != 0 || item.photo != '0'" @click="locationToImage($API_URL + item.photo)" color="info" small>
                 <v-icon small class="mr-2">mdi-image</v-icon>
               </v-btn>
             </template>
@@ -71,8 +71,14 @@
               <router-link
                 :to="{ name: 'claim-pallet.view', params: { id: item.id } }"
               >
-                <v-btn color="info" small>{{ $t('claimPallet.show') }}</v-btn>
+                <v-btn color="info" small><v-icon small class="mr-2">mdi-magnify</v-icon></v-btn>
               </router-link>
+            </template>
+            <template v-slot:item.price="{ item }">
+              <p>Rp {{ formatPrice(item.price) }}</p>
+            </template>
+            <template v-slot:item.total_price="{ item }">
+              <p>Rp {{ formatPrice(item.total_price) }}</p>
             </template>
             <template v-slot:item.status="{ item }">
               <p v-if="item.status == 0 || item.status == null">Draft</p>
@@ -82,21 +88,21 @@
               <p class="text-red" v-else-if="item.status == 4">Distributor Rejected</p>
             </template>
             <template v-slot:item.actions="{ item }">
-              <v-btn v-if="item.status == 0 || item.status == null && $can('update claim pallet')" router :to="'/claim-pallet/approval-manager/'+item.id" small text>
+              <v-btn v-if="item.status == 0 && $can('delete claim pallet') " router :to="'/claim-pallet/approval-manager/'+item.id" small text>
                 <v-icon left>
                   mdi-pen
                 </v-icon>
                 Approval SIG
               </v-btn>
               <br>
-              <v-btn v-if="item.status == 1 && $can('update claim pallet')" router :to="'/claim-pallet/approval-distributor/'+item.id" small text>
+              <v-btn v-if="item.status == 1 && $can('update claim pallet') && roleUser.company_id == item.id_company_distributor" router :to="'/claim-pallet/approval-distributor/'+item.id" small text>
                 <v-icon left>
                   mdi-pen
                 </v-icon>
                 Approval Distributor
               </v-btn>
               <br>
-              <v-btn v-if="item.status == 0 || item.status == null && $can('delete claim pallet')" @click="hapusData(item)" small text>
+              <v-btn v-if="item.status == 0 && $can('delete claim pallet')" @click="hapusData(item)" small text>
                 <v-icon left>
                   mdi-delete
                 </v-icon>
@@ -143,10 +149,6 @@
     </v-dialog>
   </v-container>
 </template>
-
-<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
@@ -158,6 +160,7 @@ export default {
   },
   data() {
     return {
+      roleUser: {},
       totalDataDownload: 0,
       dialogExport: false,
       selected: [],
@@ -222,6 +225,7 @@ export default {
   },
   created() {
     this.getClaimPallets(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
+    this.getRoleSet(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
   },
   computed: {
     ...mapState(["roleSet"]),
@@ -246,8 +250,13 @@ export default {
   methods: {
     ...mapActions("claimPallet", ["getClaimPallets", "getExportClaimPallets","deleteClaimPallet"]),
     locationToImage(name) {
-      console.log(name);
-      window.location.href = name;
+      console.log(name)
+      window.open(name, '_blank');
+      // window.location.href = name;
+    },
+    formatPrice(value) {
+        let val = (value/1).toFixed(0).replace('.', ',')
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
     columnValueList(val) {
       return this.claimPallets.map((d) => d[val]);
@@ -278,6 +287,9 @@ export default {
       this.getExportClaimPallets(this.downloadRange).then((result) => {
         this.totalDataDownload = result.data.length
       });
+    },
+    getRoleSet() {
+      this.roleUser = JSON.parse(localStorage.getItem("role"));
     },
   },
 };

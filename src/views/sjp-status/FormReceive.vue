@@ -97,11 +97,18 @@
       </v-row>
 
       <v-row no-gutters>
+          <!-- v-model="sjpStatus.sending_driver_approval" -->
         <v-file-input
           v-model="sjpStatus.receiving_driver_approval"
+          :rules="imageRules"
+          accept="image/png, image/jpeg"
           outlined
+          @change="uploadImage"
           :label="$t('sjpStatus.approval')"
         ></v-file-input>
+        <div style="width: 100%; padding-bottom: 35px;">
+          <small>Max File : 2.5 MB | Tipe file : image/png, image/jpeg  </small>
+        </div>
       </v-row>
 
       <v-row no-gutters>
@@ -136,6 +143,10 @@ export default {
   data: () => ({
     roleUser: {},
     tbrPallet: 0,
+    imageRules: [
+      (v) => !v || v.size < 2500000 || "File size should be less than 2.5 MB!",
+      (v) => !v || ['image/png','image/jpeg','image/jpg'].includes(v.type) || "Only jpg/jpeg and png files are allowed!"
+    ],
     idRules: [
       (value) => {
         if (value) return true;
@@ -195,6 +206,10 @@ export default {
     ...mapActions("dropdown", ["getCompaniesAll"]),
     ...mapActions("truck", ["getTrucks"]),
     ...mapActions("driver", ["getDrivers"]),
+    uploadImage(e) {
+      const selectedFile = e;
+      this.sjpStatus.receiving_driver_approval = selectedFile;
+    },
     getRoleSet() {
       this.roleUser = JSON.parse(localStorage.getItem("role"));
     },
@@ -242,15 +257,65 @@ export default {
               this.sjpStatus.status = 1;
               this.sjpStatus.id_user_receiver = this.roleUser.user_id;
               this.sjpStatus.updated_by = this.roleUser.user_id;
-              this.updateSjpStatus(this.sjpStatus).then((response) => {
-                this.CLEAR_FORM();
+              let form = new FormData();
+              form.append('id_sjp', this.sjpStatus.id_sjp);
+              form.append('sjp_number', this.sjpStatus.sjp_number);
+              form.append('id_departure_company', this.sjpStatus.id_departure_company);
+              form.append('id_destination_company', this.sjpStatus.id_destination_company);
+              form.append('id_transporter_company', this.sjpStatus.id_transporter_company);
+              form.append('good_pallet', this.sjpStatus.good_pallet);
+              form.append('tbr_pallet', this.sjpStatus.tbr_pallet);
+              form.append('ber_pallet', '0');
+              form.append('missing_pallet', '0');
+              form.append('send_good_pallet', this.sjpStatus.send_good_pallet);
+              form.append('send_tbr_pallet', this.sjpStatus.send_tbr_pallet);
+              form.append('send_ber_pallet', this.sjpStatus.send_ber_pallet);
+              form.append('send_missing_pallet', this.sjpStatus.send_missing_pallet);
+              // form.append('sending_driver_approval', this.sjpStatus.sending_driver_approval);
+              form.append('receiving_driver_approval', this.sjpStatus.receiving_driver_approval);
+              form.append('note',this.sjpStatus.note);
+              form.append('is_sendback',this.sjpStatus.is_sendback);
+              form.append('status',this.sjpStatus.status);
+              form.append('id_user_receiver',this.sjpStatus.id_user_receiver);
+              form.append('updated_by',this.sjpStatus.updated_by);
+              // form.append('created_by',this.sjpStatus.created_by);
+              form.append('sjp_status',this.sjpStatus.sjp_status);
+              this.updateSjpStatus(form).then((response) => {
+                this.CLEAR_FORM();  
                 this.sendbackCheck();
               });
             } else {
               this.sjpStatus.sjp_status = "receive_sendback";
               this.sjpStatus.status = 1;
               this.sjpStatus.id_user_receiver = this.roleUser.user_id;
+              let form = new FormData();
+              form.append('id_sjp', this.sjpStatus.id_sjp);
+              form.append('sjp_number', this.sjpStatus.sjp_number);
+              form.append('id_departure_company', this.sjpStatus.id_departure_company);
+              form.append('id_destination_company', this.sjpStatus.id_destination_company);
+              form.append('id_transporter_company', this.sjpStatus.id_transporter_company);
+              form.append('good_pallet', this.sjpStatus.good_pallet);
+              form.append('tbr_pallet', this.sjpStatus.tbr_pallet);
+              form.append('ber_pallet', this.sjpStatus.ber_pallet);
+              form.append('missing_pallet', this.sjpStatus.missing_pallet);
+              form.append('send_good_pallet', this.sjpStatus.send_good_pallet);
+              form.append('send_tbr_pallet', this.sjpStatus.send_tbr_pallet);
+              form.append('send_ber_pallet', this.sjpStatus.send_ber_pallet);
+              form.append('send_missing_pallet', this.sjpStatus.send_missing_pallet);
+              // form.append('sending_driver_approval', this.sjpStatus.sending_driver_approval);
+              form.append('receiving_driver_approval', this.sjpStatus.receiving_driver_approval);
+              form.append('note',this.sjpStatus.note);
+              form.append('is_sendback',this.sjpStatus.is_sendback);
+              form.append('status',this.sjpStatus.status);
+              form.append('id_user_receiver',this.sjpStatus.id_user_receiver);
+              form.append('updated_by',this.sjpStatus.updated_by);
+              // form.append('created_by',this.sjpStatus.created_by);
+              form.append('sjp_status',this.sjpStatus.sjp_status);
               this.updateSjpStatus(this.sjpStatus).then((response) => {
+                this.$swal({
+                  icon: 'success',
+                  title: 'Success',
+                });
                 this.CLEAR_FORM();
                 this.$router.push({ name: "sjp-status" });
               });
@@ -318,7 +383,6 @@ export default {
         this.$swal({
                 icon: 'success',
                 title: 'Success',
-                text: 'Please sendback Pallet',
               });
         this.CLEAR_FORM();
         this.$router.push({ name: "sjp-status" });

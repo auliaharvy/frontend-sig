@@ -30,8 +30,8 @@
             mobile
             dense
           >
-            <!-- <template v-slot:header="{ header }">
-              <tr class="grey lighten-3">
+            <template class="hidden-sm-and-down" v-slot:header="{ header }">
+              <tr class="grey lighten-3 tr-header hidden-sm-and-down">
                 <th v-for="header in headers" :key="header.text">
                   <div v-if="filters.hasOwnProperty(header.value)">
                     <v-autocomplete
@@ -40,7 +40,7 @@
                       attach
                       small-chips
                       dense
-                      clearable 
+                      clearable
                       :items="columnValueList(header.value)"
                       v-model="filters[header.value]"
                     >
@@ -58,7 +58,7 @@
                   </div>
                 </th>
               </tr>
-            </template> -->
+            </template>
            <template v-slot:item.is_sendback="{ item }">
               <p class="text-normal" v-if="item.is_sendback == 0">Send</p>
               <p class="text-normal" v-else-if="item.is_sendback == 1">Sendback</p>
@@ -76,7 +76,7 @@
             </template>
 
             <template v-slot:item.receiving_driver_approval="{ item }">
-              <v-btn v-if="item.receiving_driver_approval != 0 || item.sending_driver_approval != '0'" @click="locationToImage($API_URL + item.sending_driver_approval)" color="info" small>
+              <v-btn v-if="item.receiving_driver_approval != 0 || item.receiving_driver_approval != '0'" @click="locationToImage($API_URL + item.receiving_driver_approval)" color="info" small>
                 <v-icon small class="mr-2">mdi-image</v-icon>
               </v-btn>
             </template>
@@ -104,7 +104,7 @@
               </router-link>
               <router-link
                 :to="{ name: 'sjp-status.sendback', params: { id: item.id } }"
-                v-if="item.status_sjp == 2 && item.is_sendback == 0 && $can('create sjp status') && item.status == 1 && item.id_departure_company == roleUser.company_id"
+                v-if="item.status_sjp == 2 && item.is_sendback == 0 && $can('create sjp status') && item.status == 1 && item.id_destination_company == roleUser.company_id"
               >
                 <v-btn color="secondary" small>{{ $t("sjpStatus.sendbackSjp") }}</v-btn>
               </router-link>
@@ -218,7 +218,7 @@ export default {
         { value: "note", text: this.$t("sjpStatus.note"), width: "180px" },
         { value: "sending_driver_approval", text: this.$t("sjpStatus.sending_driver_approval"), width: "100px" },
         { value: "receiving_driver_approval", text: this.$t("sjpStatus.receiving_driver_approval"), width: "100px" },
-        { value: "tinjau", text: 'Tinjau', width: "100px"},
+        { value: "tinjau", text: this.$t("sjpStatus.preview"), width: "100px"},
         { value: "actions", text: this.$t("table.actions"), width: "80px" },
       ],
       filters: {
@@ -397,8 +397,8 @@ export default {
     },
 
     locationToImage(name) {
-      console.log(name);
-      window.location.href = name;
+      window.open(name, '_blank');
+      // window.location.href = name;
     },
     columnValueList(val) {
       return this.sjpStatuss.map((d) => d[val]);

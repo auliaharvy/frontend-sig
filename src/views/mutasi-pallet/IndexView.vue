@@ -28,7 +28,7 @@
             :items="filteredPalletTransfers"
 			    >
             <template v-slot:header="{ header }">
-              <tr class="grey lighten-3">
+              <tr class="grey lighten-3 tr-header hidden-sm-and-down">
                 <th v-for="header in headers" :key="header.text" style="width: 200px;">
                   <div v-if="filters.hasOwnProperty(header.value)">
                     <v-autocomplete
@@ -90,7 +90,7 @@
               </template>
             </template>
 
-            <template v-slot:item.actions="{ item }">
+            <!-- <template v-slot:item.actions="{ item }">
               <v-menu>
                 <template v-slot:activator="{ on: menu, attrs }">
                   <v-tooltip bottom>
@@ -125,7 +125,7 @@
                 </v-list>
               </v-menu>
               <v-icon v-if="item.status === 0 && $can('delete pallet transfer')" small @click="hapusData(item)"> mdi-delete </v-icon>
-            </template>
+            </template> -->
 			    </v-data-table>
         </v-card>
       </v-card>
@@ -165,10 +165,6 @@
     </v-dialog>
   </v-container>
 </template>
-
-<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
@@ -195,8 +191,8 @@ export default {
         { value: "driver_name", text: this.$t("palletTransfer.driver"), width: "180px" },
         { value: "good_pallet", text: this.$t("pallet.good"), width: "100px" },
         { value: "tbr_pallet", text: this.$t("pallet.tbr"), width: "100px" },
-        { value: "ber_pallet", text: this.$t("pallet.ber"), width: "100px" },
-        { value: "missing_pallet", text: this.$t("pallet.missing"), width: "100px" },
+        // { value: "ber_pallet", text: this.$t("pallet.ber"), width: "100px" },
+        // { value: "missing_pallet", text: this.$t("pallet.missing"), width: "100px" },
         { value: "status", text: this.$t("palletTransfer.status"), width: "150px" },
         { value: "reason", text: this.$t("palletTransfer.reason"), width: "150px" },
         { value: "note", text: this.$t("palletTransfer.note"), width: "180px" },

@@ -30,7 +30,7 @@
     "halamanutama": "Home",
     "manajemensjp": "SJP Management",
     "sjpstatus": "Status SJP",
-    "suratjalanpallet": "Pallet Path",
+    "suratjalanpallet": "SJP",
     "manajemenpallet": " Pallet Management",
     "mutasipallet": "Pallet Mutation",
     "klaimpallet": "Pallet Claims",
@@ -208,7 +208,9 @@
     "receiving_driver_approval": "Receiving Driver Approval",
     "reason": "Reason",
     "note": "Note",
-    "check": "Check"
+    "check": "Check",
+    "approval": "Approval",
+    "preview": "Preview"
   },
   "changeQuota": {
     "index": "Change Quota",
@@ -267,7 +269,8 @@
     "totalPrice": "Total Price",
     "approvalManager": "Manager Approval",
     "approvalDistributor": "Distributor Approval",
-    "show": "Preview"
+    "show": "Preview",
+    "photo": "Foto"
   },
   "sewaPallet": {
     "index": "Rental Cost Pallet",
@@ -338,5 +341,28 @@
     "departTime": "Departure Time",
     "eta": "Estimated Time Arrival",
     "late": "Late Time (day)"
+  },
+  "allTransaction": {
+    "log": "Log Number",
+    "trxNumber": "Transaction Number",
+    "transaction": "Transaction",
+    "status": "Status",
+    "noDo": "No DO",
+    "noDoNew": "No DO New",
+    "sender": "Sender / Reporter",
+    "receiver": "Receiver / Approver",
+    "departure": "Departure",
+    "destination": "Destination",
+    "destinationNew": "New Destination",
+    "company": "Company",
+    "transporter": "Transporter",
+    "truck": "Vehicle Number",
+    "truckNew": "New Vehicle Number",
+    "driver": "Driver",
+    "driverNew": "New Driver",
+    "price": "Price",
+    "reason": "Reason",
+    "note": "Note",
+    "eta": "Estimated Time Arrival"
   }
 }

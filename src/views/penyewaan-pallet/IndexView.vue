@@ -30,7 +30,7 @@
             dense
           >
             <template v-slot:header="{ header }">
-              <tr class="grey lighten-3">
+              <tr class="grey lighten-3 tr-header hidden-sm-and-down">
                 <th v-for="header in headers" :key="header.text" style="width: 200px;">
                   <div v-if="filters.hasOwnProperty(header.value)">
                     <v-autocomplete
@@ -60,6 +60,12 @@
                 </th>
               </tr>
             </template>
+            <template v-slot:item.price="{ item }">
+              <p>Rp {{ formatPrice(item.price) }}</p>
+            </template>
+            <template v-slot:item.total_price="{ item }">
+              <p>Rp {{ formatPrice(item.total_price) }}</p>
+            </template>
 
             <template v-slot:item.status="{ item }">
               <p v-if="item.status == 0 || item.status == null">Draft</p>
@@ -79,26 +85,26 @@
               <router-link
                 :to="{ name: 'sewa-pallet.view', params: { id: item.id } }"
               >
-                <v-btn color="info" small>{{ $t('claimPallet.show') }}</v-btn>
+                <v-btn color="info" small><v-icon small class="mr-2">mdi-magnify</v-icon></v-btn>
               </router-link>
             </template>
 
             <template v-slot:item.actions="{ item }">
-              <v-btn v-if="item.status == 0 || item.status == null && $can('update sewa pallet')" router :to="'/sewa-pallet/approval-manager/'+item.id" small text>
+              <v-btn v-if="item.status == 0 && $can('delete sewa pallet')" router :to="'/sewa-pallet/approval-manager/'+item.id" small text>
                 <v-icon left>
                   mdi-pen
                 </v-icon>
                 Approval SIG
               </v-btn>
               <br>
-              <v-btn v-if="item.status == 1 && $can('update sewa pallet')" router :to="'/sewa-pallet/approval-distributor/'+item.id" small text>
+              <v-btn v-if="item.status == 1 && $can('update sewa pallet') && roleUser.company_id == item.id_company_distributor" router :to="'/sewa-pallet/approval-distributor/'+item.id" small text>
                 <v-icon left>
                   mdi-pen
                 </v-icon>
                 Approval Distributor
               </v-btn>
               <br>
-              <v-btn v-if="item.status == 0 || item.status == null && $can('delete sewa pallet')" @click="hapusData(item)" small text>
+              <v-btn v-if="item.status == 0 && $can('delete sewa pallet')" @click="hapusData(item)" small text>
                 <v-icon left>
                   mdi-delete
                 </v-icon>
@@ -145,10 +151,6 @@
     </v-dialog>
   </v-container>
 </template>
-
-<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
@@ -160,6 +162,7 @@ export default {
   },
   data() {
     return {
+      roleUser: {},
       totalDataDownload: 0,
       dialogExport: false,
       downloadRange: [],
@@ -232,6 +235,7 @@ export default {
     this.getSewaPallets().then((result) => {
       console.log(this.sewaPallets);
     }); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
+    this.getUserRole()
   },
   computed: {
     ...mapState("sewaPallet", {
@@ -256,7 +260,12 @@ export default {
     ...mapActions("sewaPallet", ["getSewaPallets", "getExportSewaPallets","deleteSewaPallet"]),
     locationToImage(name) {
       console.log(name);
-      window.location.href = name;
+      // window.location.href = name;
+      window.open(name, '_blank');
+    },
+    formatPrice(value) {
+        let val = (value/1).toFixed(0).replace('.', ',')
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
     columnValueList(val) {
       return this.sewaPallets.map((d) => d[val]);
@@ -287,6 +296,10 @@ export default {
       this.getExportSewaPallets(this.downloadRange).then((result) => {
         this.totalDataDownload = result.data.length
       });
+    },
+    getUserRole() {
+      this.roleUser = JSON.parse(localStorage.getItem("role"));
+      console.log(this.roleUser)
     },
   },
 };

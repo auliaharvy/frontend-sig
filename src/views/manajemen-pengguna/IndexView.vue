@@ -28,16 +28,15 @@
             :items="FilteredUsers"
             dense
           >
-            <template v-slot:header="{ header }">
-              <tr class="grey lighten-3">
-                <th v-for="header in headers" :key="header.text" style="width: 200px;">
+          <template class="hidden-sm-and-down" v-slot:header="{ header }">
+              <tr class="grey lighten-3 tr-header hidden-sm-and-down">
+                <th v-for="header in headers" :key="header.text">
                   <div v-if="filters.hasOwnProperty(header.value)">
                     <v-autocomplete
-                      flat
-                      hide-details
+                      hide-selected
                       multiple
                       attach
-                      chips
+                      small-chips
                       dense
                       clearable
                       :items="columnValueList(header.value)"
@@ -98,10 +97,6 @@
     </v-col>
   </v-container>
 </template>
-
-<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.28/dist/vuetify.min.js"></script>
 <script>
 import { mapActions, mapState } from "vuex";
 import Breadcomp from "@/components/Breadcrumb.vue";
@@ -118,8 +113,8 @@ export default {
         { value: "fullname", text: this.$t("manajemenpengguna.namalengkap") },
         { value: "username", text: this.$t("manajemenpengguna.username") },
         { value: "email", text: this.$t("manajemenpengguna.email") },
-        { value: "roles", text: 'Roles' },
-        { value: "last_updated", text: 'Last Update' },
+        { value: "roles", text: 'Roles', width: '300px' },
+        { value: "last_updated", text: 'Last Update', width: '150px' },
         { value: "is_deleted", text: 'Status' },
         { value: "actions", text: this.$t("table.actions") },
       ],

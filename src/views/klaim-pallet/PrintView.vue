@@ -233,7 +233,7 @@
             </template>
             </v-simple-table>
             <div style="display: flex; justify-content: center; padding-top: 20px;">
-              <v-btn class="btn-print" style="width: 110px; font-size: 12px;" onclick="window.print();">KIRIM TAGIHAN</v-btn>
+              <v-btn class="btn-print" style="width: 110px; font-size: 12px;" onclick="window.print();">PRINT TAGIHAN</v-btn>
             </div>
         </v-card>
       </v-card>
