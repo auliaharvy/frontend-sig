@@ -572,6 +572,12 @@ const routes = [
             meta: { title: 'Add New Claim Pallet' }
         },
         {
+            path: 'edit/:id',
+            name: 'claim-pallet.edit',
+            component: () => import('../views/klaim-pallet/FormEditView.vue'),
+            meta: { title: 'Edit Claim Pallet' }
+        },
+        {
           path: 'approval-manager/:id',
           name: 'claim-pallet.approval-manager',
           component: () => import('../views/klaim-pallet/ApprovalView.vue'),

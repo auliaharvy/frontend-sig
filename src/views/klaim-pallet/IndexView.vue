@@ -94,14 +94,18 @@
                 </v-icon>
                 Approval SIG
               </v-btn>
-              <br>
+              <v-btn v-if="item.status == 0 && $can('update claim pallet') && roleUser.company_id != item.id_company_distributor" router :to="'/claim-pallet/edit/'+item.id" small text>
+                <v-icon left>
+                  mdi-pen
+                </v-icon>
+                Edit Data
+              </v-btn>
               <v-btn v-if="item.status == 1 && $can('update claim pallet') && roleUser.company_id == item.id_company_distributor" router :to="'/claim-pallet/approval-distributor/'+item.id" small text>
                 <v-icon left>
                   mdi-pen
                 </v-icon>
                 Approval Distributor
               </v-btn>
-              <br>
               <v-btn v-if="item.status == 0 && $can('delete claim pallet')" @click="hapusData(item)" small text>
                 <v-icon left>
                   mdi-delete

@@ -72,7 +72,7 @@ export default {
     ...mapActions("lang", ["setLanguage", "setSelectedLanguageOption"]),
     async doLogout() {
       this.logout().then(() => {
-        window.location.reload();
+        this.$router.push({ name: "loginView" }).then(() => { window.location.reload() });
       });
       // return new Promise((resolve, reject) => {
       //   localStorage.removeItem("token");

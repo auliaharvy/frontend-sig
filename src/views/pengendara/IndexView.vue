@@ -56,6 +56,26 @@
                 </th>
               </tr>
             </template>
+            <template v-slot:item.is_deleted="{ item }">
+              <v-chip
+                v-if="item.is_deleted == 1"
+                class="ma-2"
+                color="red"
+                label
+                text-color="white"
+              >
+                Inactive
+              </v-chip>
+              <v-chip
+                v-if="item.is_deleted == 0"
+                class="ma-2"
+                color="green"
+                label
+                text-color="white"
+              >
+                Active
+              </v-chip>
+            </template>
 	
             <template v-slot:item.actions="{ item }">
               <v-icon small class="mr-2" @click="editData(item)">
@@ -86,6 +106,7 @@ export default {
     return {
       headers: [
         { value: "name", text: this.$t("driver.nama") },
+        { value: "is_deleted", text: 'Status' },
         { value: "actions", text: this.$t("table.actions") },
       ],
       filters: {
