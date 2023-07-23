@@ -14,9 +14,8 @@ const state = () => ({
       token: "7OJ4T9GOWQ",
       X_TGL1: "2022-12-08",
       X_TGL2: "2022-12-20",
-      X_WERKS: "79B1",
-      X_VKORG: "7900",
       X_NOPOLISI: "A9003X",
+      X_WERKS: "79B1",
       X_LINE_SO: "000000",
       X_SO: "X"
     },
@@ -37,7 +36,12 @@ const mutations = {
         state.dataTruck = payload;
     },
     ASSIGN_DO(state, payload) {
-        state.dataDo = payload;
+      for (var i = 0; i < payload.length; i++) {
+        state.dataDo.push(payload[i]);
+      } 
+    },
+    CHANGE_DO_PARAMETER(state, payload) {
+      state.paramDo.X_VKORG = payload
     },
 }
 
@@ -60,11 +64,26 @@ const actions = {
     getDataDo({ commit, state }, payload) {
       commit('isLoading')
       return new Promise((resolve, reject) => {
-          //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
+          commit('CHANGE_DO_PARAMETER', '7900')
           apiClient.post(`/api-external/do`, state.paramDo)
           .then((response) => {
-              commit('ASSIGN_DO', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
-              resolve(response.data)
+              if(response.data instanceof Array) {
+                commit('ASSIGN_DO', response.data)
+              }
+              commit('CHANGE_DO_PARAMETER', '7000')
+              apiClient.post(`/api-external/do`, state.paramDo).then((response) => {
+                if(response.data instanceof Array) {
+                  commit('ASSIGN_DO', response.data)
+                }
+                commit('CHANGE_DO_PARAMETER', '5000')
+                apiClient.post(`/api-external/do`, state.paramDo).then((response) => {
+                  if(response.data instanceof Array) {
+                    commit('ASSIGN_DO', response.data)
+                  }
+              })
+                resolve(response.data)
+            })
+            resolve(state.dataDo)
           }).finally(() => {
               commit('doneLoading')
           })

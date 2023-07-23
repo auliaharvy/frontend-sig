@@ -290,12 +290,14 @@ export default {
     async changeDo() {
       const foundDo = this.dataDo.find(x => x.NO_DO === this.sjp.no_do);
       this.sjp.no_do = foundDo.NO_DO
-          this.sjp.destination = foundDo.NAMA_TOKO;
+          this.sjp.destination = foundDo.NAMA_SOLD_TO;
           this.sjp.destination_code = foundDo.SOLD_TO;
           this.sjp.truck_number = foundDo['LICENSE PLATE'];
-          this.sjp.transporter = foundDo.NAMA_EXPEDITUR;
-          this.sjp.transporter_code = foundDo.NO_EXPEDITUR;
-          this.sjp.organization_name = foundDo.NAMA_SOLD_TO;
+          this.sjp.transporter = response[0].NAMA_EXPEDITUR;
+            this.sjp.transporter_code = response[0].NO_EXPEDITUR;
+            this.sjp.id_transporter_company = 70;
+          this.sjp.organization_name = foundDo.NAMA_PLANT;
+          this.sjp.organization_code = foundDo.PLANT;
           this.sjp.driver = foundDo.NAMA_SOPIR;
           const beratIsi = foundDo.BERAT_ISI.split(',')[0]
           const tonnage = beratIsi.replace('.','')
@@ -334,12 +336,14 @@ export default {
             });
           } else {
             this.sjp.no_do = response[0].NO_DO
-            this.sjp.destination = response[0].NAMA_TOKO;
+            this.sjp.destination = response[0].NAMA_SOLD_TO;
             this.sjp.destination_code = response[0].SOLD_TO;
             this.sjp.truck_number = response[0]['LICENSE PLATE'];
             this.sjp.transporter = response[0].NAMA_EXPEDITUR;
             this.sjp.transporter_code = response[0].NO_EXPEDITUR;
-            this.sjp.organization_name = response[0].NAMA_SOLD_TO;
+            this.sjp.id_transporter_company = 70;
+            this.sjp.organization_name = response[0].NAMA_PLANT;
+            this.sjp.organization_code = response[0].PLANT;
             this.sjp.driver = response[0].NAMA_SOPIR;
             const beratIsi = response[0].BERAT_ISI.split(',')[0]
             const tonnage = beratIsi.replace('.','')

@@ -36,7 +36,10 @@ const actions = {
                   if (jsonUser.data.role.length == 0) {
                     alert('User does not have role, please contact administrator');
                   } else {
-                    localStorage.setItem('userData', jsonPayload);
+                    jsonUser.data.role.forEach((element, index) => {
+                      element['index'] = index + 1;
+                    });
+                    localStorage.setItem('userData', JSON.stringify(jsonUser));
                     localStorage.setItem('role', JSON.stringify(jsonUser.data.role[0]));
                     localStorage.setItem('permission', JSON.stringify(jsonUser.data.role[0].permissions));
                     commit('SET_USER_DATA', jsonUser, { root: true })
@@ -87,6 +90,9 @@ const actions = {
                   if (jsonUser.data.role.length == 0) {
                     alert('User does not have role, please contact administrator');
                   } else {
+                    jsonUser.data.role.forEach((element, index) => {
+                      element['index'] = index + 1;
+                    });
                     localStorage.setItem('userData', jsonPayload);
                     localStorage.setItem('role', JSON.stringify(jsonUser.data.role[0]));
                     localStorage.setItem('permission', JSON.stringify(jsonUser.data.role[0].permissions));

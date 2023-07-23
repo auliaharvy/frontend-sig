@@ -84,8 +84,17 @@ const actions = {
                 console.log(response)
                 commit('ASSIGN_TOTAL', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
-            }).finally(() => {
-            })
+            }).catch((error) => {
+                //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                if (error.response.status == 422) {
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else {
+                  alert(error.response.data.message);
+                }
+              }).finally(() => {
+                  commit('doneLoading')
+              })
         })
     },
     getConditionAlls({ commit }, payload) {
@@ -97,8 +106,17 @@ const actions = {
                 console.log(response)
                 commit('ASSIGN_CONDITION_ALL', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
-            }).finally(() => {
-            })
+            }).catch((error) => {
+                //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                if (error.response.status == 422) {
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else {
+                  alert(error.response.data.message);
+                }
+              }).finally(() => {
+                  commit('doneLoading')
+              })
         })
     },
     getConditionTransporters({ commit }, payload) {
@@ -109,8 +127,17 @@ const actions = {
             .then((response) => {
                 commit('ASSIGN_CONDITION_TRANSPORTERS', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
-            }).finally(() => {
-            })
+            }).catch((error) => {
+                //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                if (error.response.status == 422) {
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else {
+                  alert(error.response.data.message);
+                }
+              }).finally(() => {
+                  commit('doneLoading')
+              })
         })
     },
     getConditionCompany({ commit }, payload) {
@@ -121,8 +148,17 @@ const actions = {
             .then((response) => {
                 commit('ASSIGN_CONDITION_COMPANY', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
-            }).finally(() => {
-            })
+            }).catch((error) => {
+                //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                if (error.response.status == 422) {
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else {
+                  alert(error.response.data.message);
+                }
+              }).finally(() => {
+                  commit('doneLoading')
+              })
         })
     },
     getConditionWarehouse({ commit }, payload) {
@@ -133,8 +169,17 @@ const actions = {
             .then((response) => {
                 commit('ASSIGN_CONDITION_WAREHOUSE', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
-            }).finally(() => {
-            })
+            }).catch((error) => {
+                //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                if (error.response.status == 422) {
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else {
+                  alert(error.response.data.message);
+                }
+              }).finally(() => {
+                  commit('doneLoading')
+              })
         })
     },
     getConditionTransporter({ commit }, payload) {
@@ -145,8 +190,17 @@ const actions = {
             .then((response) => {
                 commit('ASSIGN_CONDITION_TRANSPORTER', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
-            }).finally(() => {
-            })
+            }).catch((error) => {
+                //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                if (error.response.status == 422) {
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else {
+                  alert(error.response.data.message);
+                }
+              }).finally(() => {
+                  commit('doneLoading')
+              })
         })
     },
     getConditionWorkshop({ commit }, payload) {
@@ -157,8 +211,17 @@ const actions = {
             .then((response) => {
                 commit('ASSIGN_CONDITION_WORKSHOP', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
-            }).finally(() => {
-            })
+            }).catch((error) => {
+                //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                if (error.response.status == 422) {
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else {
+                  alert(error.response.data.message);
+                }
+              }).finally(() => {
+                  commit('doneLoading')
+              })
         })
     },
     getDetailPools({ commit }, payload) {
@@ -178,8 +241,17 @@ const actions = {
                   commit('ASSIGN_DETAIL_POOL', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                     resolve(result)
                 } 
-            }).finally(() => {
-            })
+            }).catch((error) => {
+                //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                if (error.response.status == 422) {
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else {
+                  alert(error.response.data.message);
+                }
+              }).finally(() => {
+                  commit('doneLoading')
+              })
         })
     },
     getDetailWarehouse({ commit }, payload) {
@@ -199,8 +271,17 @@ const actions = {
                   commit('ASSIGN_DETAIL_WAREHOUSE', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                     resolve(result)
                 } 
-            }).finally(() => {
-            })
+            }).catch((error) => {
+                //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                if (error.response.status == 422) {
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else {
+                  alert(error.response.data.message);
+                }
+              }).finally(() => {
+                  commit('doneLoading')
+              })
         })
     },
     getDetailTransporter({ commit }, payload) {
@@ -220,8 +301,17 @@ const actions = {
                   commit('ASSIGN_DETAIL_TRANSPORTER', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                     resolve(result)
                 } 
-            }).finally(() => {
-            })
+            }).catch((error) => {
+                //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                if (error.response.status == 422) {
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else {
+                  alert(error.response.data.message);
+                }
+              }).finally(() => {
+                  commit('doneLoading')
+              })
         })
     },
     getDetailWorkshop({ commit }, payload) {
@@ -241,8 +331,17 @@ const actions = {
                   commit('ASSIGN_DETAIL_WORKSHOP', result) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                     resolve(result)
                 } 
-            }).finally(() => {
-            })
+            }).catch((error) => {
+                //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                if (error.response.status == 422) {
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else {
+                  alert(error.response.data.message);
+                }
+              }).finally(() => {
+                  commit('doneLoading')
+              })
         })
     },
     getPalletSendReceive({ commit }, payload) {
@@ -254,8 +353,17 @@ const actions = {
             .then((response) => {
                 commit('ASSIGN_PALLET_SEND_RECEIVE', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data.data)
-            }).finally(() => {
-            })
+            }).catch((error) => {
+                //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                if (error.response.status == 422) {
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else {
+                  alert(error.response.data.message);
+                }
+              }).finally(() => {
+                  commit('doneLoading')
+              })
         })
     },
     getPalletSendBackReceive({ commit }, payload) {
@@ -267,8 +375,17 @@ const actions = {
             .then((response) => {
                 commit('ASSIGN_PALLET_SEND_BACK', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data.data)
-            }).finally(() => {
-            })
+            }).catch((error) => {
+                //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                if (error.response.status == 422) {
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else {
+                  alert(error.response.data.message);
+                }
+              }).finally(() => {
+                  commit('doneLoading')
+              })
         })
     },
 }

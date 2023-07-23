@@ -53,19 +53,22 @@
                       v-model="user.password"
                     />
                   </v-card-text>
-                  <v-checkbox
-                    :label="$t('login.ingat')"
-                    class="mt-n1"
-                    color="blue"
-                    style="margin-left: 18px"
-                  >
-                  </v-checkbox>
+                  <v-radio-group style="margin-left: 18px" v-model="isSso" row>
+                    <v-radio
+                      label="Login SSO"
+                      :value="0"
+                    ></v-radio>
+                    <v-radio
+                        label="Login Manual"
+                        :value="1"
+                    ></v-radio>
+                  </v-radio-group>
                   <v-card-actions>
                     <v-btn block type="submit" :disabled="!valid" color="primary">{{
                       $t("login.masuk")
                     }}</v-btn>
                   </v-card-actions>
-                  <p class=" ">{{ $t("login.lupa") }}</p>
+                <!-- <p class=" ">{{ $t("login.lupa") }}</p> -->
                 </v-form>
               </v-card>
             </v-card>
@@ -117,17 +120,20 @@
                       v-model="user.password"
                     />
                   </v-card-text>
-                  <v-checkbox
-                    :label="$t('login.ingat')"
-                    class="mt-n1"
-                    color="blue"
-                    style="margin-left: 18px"
-                  >
-                  </v-checkbox>
+                  <v-radio-group style="margin-left: 18px" v-model="isSso" row>
+                    <v-radio
+                      label="Login SSO"
+                      :value="0"
+                    ></v-radio>
+                    <v-radio
+                        label="Login Manual"
+                        :value="1"
+                    ></v-radio>
+                  </v-radio-group>
                   <v-card-actions>
                     <v-btn block type="submit" color="primary">{{ $t("login.masuk") }}</v-btn>
                   </v-card-actions>
-                  <p class=" ">{{ $t("login.lupa") }}</p>
+                <!-- <p class=" ">{{ $t("login.lupa") }}</p> -->
                 </v-form>
               </v-card>
             </v-card>
@@ -170,13 +176,16 @@
                     v-model="user.password"
                   />
                 </v-card-text>
-                <v-checkbox
-                  :label="$t('login.ingat')"
-                  class="mt-n1"
-                  color="blue"
-                  style="margin-left: 17px"
-                >
-                </v-checkbox>
+                <v-radio-group style="margin-left: 18px" v-model="isSso" row>
+                    <v-radio
+                      label="Login SSO"
+                      :value="0"
+                    ></v-radio>
+                    <v-radio
+                        label="Login Manual"
+                        :value="1"
+                    ></v-radio>
+                  </v-radio-group>
                 <v-card-actions>
                   <v-btn
                     block
@@ -186,7 +195,7 @@
                     >{{ $t("login.masuk") }}</v-btn
                   >
                 </v-card-actions>
-                <p class=" ">{{ $t("login.lupa") }}</p>
+                <!-- <p class=" ">{{ $t("login.lupa") }}</p> -->
               </v-form>
             </v-card>
           </v-col>
@@ -230,21 +239,37 @@ export default {
     }),
   },
   methods: {
-    ...mapActions("auth", ["submit"]),
+    ...mapActions("auth", ["submit", "submitSso"]),
     ...mapMutations("auth", ["CLEAR_ERROR_LOGIN"]),
     ...mapActions("user", ["getUserLogin"]),
     ...mapMutations(["CLEAR_ERRORS"]),
     async postLogin() {
-      await this.submit(this.user).then(() => {
-        if (this.isAuth) {
-          this.CLEAR_ERRORS();
-          this.$router.push({ name: "dashboard" }).then(() => { window.location.reload() });
-        }
-      });
+      if(this.isSso == 1) {
+        await this.submit(this.user).then(() => {
+          if (this.isAuth) {
+            this.CLEAR_ERRORS();
+            this.$router.push({ name: "dashboard" }).then(() => { window.location.reload() });
+          }
+        });
+      } else {
+        await this.submitSso(this.user).then(() => {
+          if (this.isAuth) {
+            this.CLEAR_ERRORS();
+            this.$router.push({ name: "dashboard" }).then(() => { window.location.reload() });
+          }
+        });
+      }
     },
     handleIcon() {
       this.showPassword = !this.showPassword;
     },
+    forgetPassword() {
+      this.$swal({
+                icon: 'success',
+                title: 'Success',
+              });
+    },
+    
   },
   components: {
     LocaleSwitcher,

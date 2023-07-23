@@ -29,7 +29,7 @@
               :items="dataRole"
               outlined
               v-model="role"
-              item-value="role_id"
+              item-value="index"
               @change="changeRole"
             >
             <template slot="item" slot-scope="{ item, selected }">
@@ -257,12 +257,12 @@ export default {
       var role = JSON.parse(localStorage.getItem("role"));
       var roles = JSON.parse(localStorage.getItem("userData"));
       this.dataRole = roles.data.role;
-      this.role = role.role_id;
+      this.role = role.index;
       console.log(this.dataRole)
       console.log(this.role)
     },
     changeRole() {
-      var payload =this.dataRole.find(x => x.role_id === this.role);
+      var payload =this.dataRole.find(x => x.index === this.role);
       this.setRole(payload);
       window.location.reload();
     },
