@@ -159,12 +159,12 @@
             <template v-slot:default>
               <table>
                 <tr>
-                  <td class="td-custom-table">Pembeli</td>
+                  <td class="td-custom-table">Distributor / Transporter</td>
                   <td>:</td>
                   <td class="td-custom-table">{{ claimPallet.company_name }}</td>
                 </tr>
                 <tr>
-                  <td class="td-custom-table">Nama</td>
+                  <td class="td-custom-table">Nama Manager SIG</td>
                   <td>:</td>
                   <td class="td-custom-table" colspan="2">{{ claimPallet.manager_name == null ? '-' : claimPallet.manager_name}}</td>
                 </tr>
@@ -214,7 +214,7 @@
               </tbody>
             </template>
           </v-simple-table>
-          <v-simple-table class="v-simple-table-footer">
+          <!-- <v-simple-table class="v-simple-table-footer">
             <template v-slot:default>
               <div style="display: inline-block; width: 50%; padding-top: 20px;">
                 <div class="td-simple-table-footer" style="text-align: center; padding-bottom: 70px;">Diterima Oleh</div>
@@ -231,7 +231,7 @@
                 <div class="td-simple-table-footer" style="text-align: center; padding-bottom: 25px;">Tanda tangan / Nama</div>
               </div>
             </template>
-            </v-simple-table>
+            </v-simple-table> -->
             <div style="display: flex; justify-content: center; padding-top: 20px;">
               <v-btn class="btn-print" style="width: 110px; font-size: 12px;" onclick="window.print();">PRINT TAGIHAN</v-btn>
             </div>

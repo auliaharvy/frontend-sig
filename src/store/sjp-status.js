@@ -258,7 +258,7 @@ const actions = {
                 alert(error.response.data.errors[0]);
                 commit('SET_ERRORS', error.response.data.errors, { root: true })
               } else if (error.response.status == 400) {
-                alert(error.response.data);
+                alert(error.response.data.error);
               }
               else {
                 alert(error.response.data.message);

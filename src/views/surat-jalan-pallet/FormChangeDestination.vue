@@ -24,7 +24,17 @@
       </v-row>
       <v-row no-gutters>
         <v-text-field
+          v-if="sjp.trxStatus == 1 || sjp.trxStatus == 0"
           v-model="sjp.destination"
+          :label="$t('sjp.originDest')"
+          :rules="idRules"
+          disabled
+          outlined
+          required
+        ></v-text-field>
+        <v-text-field
+          v-else
+          v-model="sjp.departure"
           :label="$t('sjp.originDest')"
           :rules="idRules"
           disabled
@@ -44,8 +54,7 @@
             item-value="id"
             required
             clearable
-          >
-          </v-autocomplete>
+          />
         </v-row>
 
       <v-row no-gutters>

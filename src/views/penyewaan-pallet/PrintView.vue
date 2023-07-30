@@ -130,7 +130,7 @@
             <template v-slot:default>
               <table class="section-header" style="width: 100%; padding-bottom: 70px; font-size: 20px;">
                 <tr style="width: 100%;">
-                  <td class="faktur-tagihan" style="width: 100%; padding-bottom: 15px; text-align: center;">FAKTUR TAGIHAN</td>
+                  <td class="faktur-tagihan" style="width: 100%; padding-bottom: 15px; text-align: center;">ESTIMASI BIAYA TAGIHAN SEWA</td>
                 </tr>
                 <tr style="width: 100%;">
                   <td class="pt-dan-number" style="display: inline-block; width: 50%; text-align: start;"><strong>PT. SEMEN INDONESIA</strong></td>
@@ -160,12 +160,12 @@
             <template v-slot:default>
               <table>
                 <tr>
-                  <td class="td-custom-table">Pembeli</td>
+                  <td class="td-custom-table">Distributor</td>
                   <td>:</td>
                   <td class="td-custom-table">{{ sewaPallet.company_name }}</td>
                 </tr>
                 <tr>
-                  <td class="td-custom-table">Nama</td>
+                  <td class="td-custom-table">Nama Manager SIG</td>
                   <td>:</td>
                   <td class="td-custom-table" colspan="2">{{ sewaPallet.manager_name == null ? '-' : sewaPallet.manager_name}}</td>
                 </tr>
@@ -229,7 +229,7 @@
               </tbody>
             </template>
           </v-simple-table>
-          <v-simple-table class="v-simple-table-footer">
+          <!-- <v-simple-table class="v-simple-table-footer">
             <template v-slot:default>
               <div style="display: inline-block; width: 50%; padding-top: 20px;">
                 <div class="td-simple-table-footer" style="text-align: center; padding-bottom: 70px;">Diterima Oleh</div>
@@ -246,9 +246,9 @@
                 <div class="td-simple-table-footer" style="text-align: center; padding-bottom: 25px;">Tanda tangan / Nama</div>
               </div>
             </template>
-            </v-simple-table>
+            </v-simple-table> -->
             <div style="display: flex; justify-content: center; padding-top: 20px;">
-              <v-btn class="btn-print" style="width: 110px; font-size: 12px;" onclick="window.print();">PRINT TAGIHAN</v-btn>
+              <v-btn class="btn-print" style="width: 110px; font-size: 12px;" onclick="window.print();">PRINT ESTIMASI</v-btn>
             </div>
         </v-card>
       </v-card>

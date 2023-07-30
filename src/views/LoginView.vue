@@ -53,7 +53,7 @@
                       v-model="user.password"
                     />
                   </v-card-text>
-                  <v-radio-group style="margin-left: 18px" v-model="isSso" row>
+                  <!-- <v-radio-group style="margin-left: 18px" v-model="isSso" row>
                     <v-radio
                       label="Login SSO"
                       :value="0"
@@ -62,7 +62,7 @@
                         label="Login Manual"
                         :value="1"
                     ></v-radio>
-                  </v-radio-group>
+                  </v-radio-group> -->
                   <v-card-actions>
                     <v-btn block type="submit" :disabled="!valid" color="primary">{{
                       $t("login.masuk")
@@ -120,7 +120,7 @@
                       v-model="user.password"
                     />
                   </v-card-text>
-                  <v-radio-group style="margin-left: 18px" v-model="isSso" row>
+                  <!-- <v-radio-group style="margin-left: 18px" v-model="isSso" row>
                     <v-radio
                       label="Login SSO"
                       :value="0"
@@ -129,7 +129,7 @@
                         label="Login Manual"
                         :value="1"
                     ></v-radio>
-                  </v-radio-group>
+                  </v-radio-group> -->
                   <v-card-actions>
                     <v-btn block type="submit" color="primary">{{ $t("login.masuk") }}</v-btn>
                   </v-card-actions>
@@ -176,7 +176,7 @@
                     v-model="user.password"
                   />
                 </v-card-text>
-                <v-radio-group style="margin-left: 18px" v-model="isSso" row>
+                <!-- <v-radio-group style="margin-left: 18px" v-model="isSso" row>
                     <v-radio
                       label="Login SSO"
                       :value="0"
@@ -185,7 +185,7 @@
                         label="Login Manual"
                         :value="1"
                     ></v-radio>
-                  </v-radio-group>
+                  </v-radio-group> -->
                 <v-card-actions>
                   <v-btn
                     block
@@ -212,7 +212,7 @@ export default {
   name: "LoginView",
   data() {
     return {
-      isSso: 0,
+      isSso: 1,
       user: {
         username: "",
         password: "",

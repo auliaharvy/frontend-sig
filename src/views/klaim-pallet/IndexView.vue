@@ -88,7 +88,7 @@
               <p class="text-red" v-else-if="item.status == 4">Distributor Rejected</p>
             </template>
             <template v-slot:item.actions="{ item }">
-              <v-btn v-if="item.status == 0 && $can('delete claim pallet') " router :to="'/claim-pallet/approval-manager/'+item.id" small text>
+              <v-btn v-if="item.status == 0 && $can('approve claim pallet') " router :to="'/claim-pallet/approval-manager/'+item.id" small text>
                 <v-icon left>
                   mdi-pen
                 </v-icon>

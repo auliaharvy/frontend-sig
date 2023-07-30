@@ -97,13 +97,13 @@
                 Approval SIG
               </v-btn>
               <br>
-              <v-btn v-if="item.status == 1 && $can('update sewa pallet') && roleUser.company_id == item.id_company_distributor" router :to="'/sewa-pallet/approval-distributor/'+item.id" small text>
+              <!-- <v-btn v-if="item.status == 1 && $can('update sewa pallet') && roleUser.company_id == item.id_company_distributor" router :to="'/sewa-pallet/approval-distributor/'+item.id" small text>
                 <v-icon left>
                   mdi-pen
                 </v-icon>
                 Approval Distributor
-              </v-btn>
-              <br>
+              </v-btn> -->
+              <!-- <br> -->
               <v-btn v-if="item.status == 0 && $can('delete sewa pallet')" @click="hapusData(item)" small text>
                 <v-icon left>
                   mdi-delete

@@ -77,6 +77,7 @@
 
       <v-row no-gutters>
         <v-text-field
+          v-if="sjpStatus.is_sendback == 0"
           v-model="sjpStatus.good_pallet"
           :label="$t('pallet.good')"
           :rules="palletRules"
@@ -88,8 +89,49 @@
 
       <v-row no-gutters>
         <v-text-field
+        v-if="sjpStatus.is_sendback == 1"
+          v-model="sjpStatus.good_pallet"
+          :label="$t('pallet.good')"
+          :rules="palletRules"
+          type="number"
+          outlined
+        ></v-text-field>
+      </v-row>
+
+      <v-row no-gutters v-if="sjpStatus.is_sendback == 0">
+        <v-text-field
           v-model="tbrPallet"
           :label="$t('pallet.tbr')"
+          :rules="palletRules"
+          outlined
+          type="number"
+        ></v-text-field>
+      </v-row>
+
+      <v-row no-gutters v-if="sjpStatus.is_sendback == 1">
+        <v-text-field
+          v-model="sjpStatus.tbr_pallet"
+          :label="$t('pallet.tbr')"
+          :rules="palletRules"
+          outlined
+          type="number"
+        ></v-text-field>
+      </v-row>
+
+      <v-row no-gutters v-if="sjpStatus.is_sendback == 1">
+        <v-text-field
+          v-model="sjpStatus.ber_pallet"
+          :label="$t('pallet.ber')"
+          :rules="palletRules"
+          outlined
+          type="number"
+        ></v-text-field>
+      </v-row>
+
+      <v-row no-gutters v-if="sjpStatus.is_sendback == 1">
+        <v-text-field
+          v-model="sjpStatus.missing_pallet"
+          :label="$t('pallet.missing')"
           :rules="palletRules"
           outlined
           type="number"
@@ -177,8 +219,7 @@ export default {
   watch: {
     tbrPallet() {
       this.sjpStatus.tbr_pallet = this.tbrPallet;
-      this.sjpStatus.good_pallet =
-        this.sjpStatus.send_good_pallet - this.tbrPallet;
+      this.sjpStatus.good_pallet = this.sjpStatus.send_good_pallet - this.tbrPallet;
     },
   },
   computed: {

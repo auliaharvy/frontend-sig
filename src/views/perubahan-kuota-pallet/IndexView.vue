@@ -89,7 +89,7 @@
                   </v-tooltip>
                 </template>
                 <v-list>
-                  <v-list-item v-if="item.id_new_pallet == 'belum ada' && item.status === 0 || item.status === null">
+                  <!-- <v-list-item v-if="item.id_new_pallet == 'belum ada' && item.status === 0 || item.status === null">
                     <v-list-item-content>
                       <v-list-item-title>
                         <v-btn router :to="'/change-quota/approval/'+item.id" small text>
@@ -100,8 +100,8 @@
                         </v-btn></v-list-item-title
                       >
                     </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item v-if="item.id_new_pallet == 'belum ada' && item.type != 1 && item.status === 1">
+                  </v-list-item> -->
+                  <v-list-item v-if="item.id_new_pallet == 'belum ada' && item.type != 1 && item.status === 0">
                     <v-list-item-content>
                       <v-list-item-title>
                         <v-btn router :to="'/new-pallet/add/'+item.id" small text>

@@ -60,7 +60,6 @@
           :label="$t('pallet.good')"
           :rules="palletRules"
           outlined
-          readonly
         ></v-text-field>
       </v-row>
 

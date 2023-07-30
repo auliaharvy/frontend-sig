@@ -76,15 +76,15 @@
             </template>
             <template v-slot:item.trxStatus="{ item }">
               <p v-if="item.trxStatus == 0">Draft</p>
-              <p class="text-green" v-else-if="item.trxStatus == 1">Send</p>
-              <p class="text-blue" v-else-if="item.trxStatus == 2">Received</p>
+              <p class="text-green" v-else-if="item.trxStatus == 1">Dalam Pengiriman</p>
+              <p class="text-blue" v-else-if="item.trxStatus == 2">Pengiriman Diterima</p>
               <p class="text-green" v-else-if="item.trxStatus == 3">
-                Send Back
+                Dalam Pengiriman Kembali
               </p>
               <p class="text-blue" v-else-if="item.trxStatus == 4">
-                Send Back Received
+                Pengiriman Kembali Diterima
               </p>
-              <p class="text-red" v-else-if="item.state == 6">Sending Cancel</p>
+              <p class="text-red" v-else-if="item.state == 6">Pengiriman Di Batalkan</p>
             </template>
             <template v-slot:item.send="{ item }">
               <router-link
@@ -105,7 +105,17 @@
                         icon
                         v-bind="attrs"
                         v-on="{ ...tooltip, ...menu }"
-                        v-if="item.trxStatus == 0 && $can('update sjp') && item.idDeparture == roleUser.company_id"
+                        v-if="item.trxStatus < 4 && $can('update sjp') && item.idDeparture == roleUser.company_id"
+                      >
+                        <v-icon small class="mr-2">mdi-pencil</v-icon>
+                      </v-btn>
+                      <v-btn
+                        class="ma-2"
+                        text
+                        icon
+                        v-bind="attrs"
+                        v-on="{ ...tooltip, ...menu }"
+                        v-if="item.trxStatus < 4 && $can('update sjp') && item.idTransporter == roleUser.company_id"
                       >
                         <v-icon small class="mr-2">mdi-pencil</v-icon>
                       </v-btn>

@@ -86,11 +86,11 @@ export default {
     items: [
       {
         id: '0',
-        name: 'From Transporter'
+        name: 'Dari Ekspeditur'
       },
       {
         id: '1',
-        name: 'From Pool'
+        name: 'Dari Gudang Pallet'
       }
     ],
     palletRules: [
