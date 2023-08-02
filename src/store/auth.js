@@ -32,7 +32,8 @@ const actions = {
                   var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
                       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
                   }).join(''));
-                  var jsonUser = JSON.parse(jsonPayload)
+                  console.log(data.data);
+                  var jsonUser = data;
                   if (jsonUser.data.role.length == 0) {
                     alert('User does not have role, please contact administrator');
                   } else {
