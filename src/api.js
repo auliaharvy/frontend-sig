@@ -2,7 +2,7 @@ import axios from 'axios'
 import store from './store/index.js'
 
 
-const API_URL = 'http://localhost:3000'
+const API_URL = 'https://pallet-backend.sig.id'
 
 const apiClient = axios.create({
   baseURL: API_URL,
