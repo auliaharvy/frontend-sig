@@ -257,7 +257,7 @@ export default {
     ...mapMutations("sjp", ["CLEAR_FORM"]),
     ...mapActions("sjp", ["submitSjp"]),
     ...mapActions("company", ["getCompanies"]),
-    ...mapActions("apiExternal", ["getDataDo", "getDataDoDirect"]),
+    ...mapActions("apiExternal", ["getDataDo"]),
     validate() {
       const valid = this.$refs.form.validate();
       if (valid) {

@@ -90,38 +90,6 @@ const actions = {
       })
     },
 
-    getDataDoDirect({ commit, state }, payload) {
-      commit('isLoading')
-      return new Promise((resolve, reject) => {
-          //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
-          axios({
-            method: 'POST',
-            url: 'http://10.15.5.150/dev/sd/sdonline/service/get_realisasi.php',
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-type': 'application/json',
-            },
-            data: {
-              token: "7OJ4T9GOWQ",
-              X_TGL1: "2022-12-08",
-              X_TGL2: "2022-12-20",
-              X_WERKS: "79B1",
-              X_VKORG: "7900",
-              X_NOPOLISI: "A9003X",
-              X_LINE_SO: "000000",
-              X_SO: "X"
-            },
-          }).then((response) => {
-            console.log(response)
-            // commit('ASSIGN_DO', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
-            // resolve(response.data)
-          }).finally(() => {
-              commit('doneLoading')
-          });
-          
-      })
-    },
-
 }
 
 export default {
