@@ -17,10 +17,17 @@ http {
   server {
     listen       80;
     server_name  localhost;
-    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net  'unsafe-inline'; font-src 'self' data:; frame-src 'self'; connect-src 'self' https://pallet-backend.sig.id; object-src 'none' ";
-    add_header Access-Control-Allow-Origin https://pallet-backend.sig.id;
-    add_header "Access-Control-Allow-Methods" "GET, POST, OPTIONS, HEAD";
-    add_header "Access-Control-Allow-Headers" "Authorization, Origin, X-Requested-With, Content-Type, Accept";
+
+    set $CSP_image  "img-src      'self' 'unsafe-inline' 'unsafe-eval' data: *.printfriendly.com *.w.org *.gravatar.com *.vimeocdn.com *.pallet-backend.sig.id; ";
+    set $CSP_script "script-src   'self' 'unsafe-inline' 'unsafe-eval' *.w.org *.gravatar.com *.googleapis.com *.jsdelivr.net *.printfriendly.com *.kxcdn.com *.vimeocdn.com *.hs-analytics.net *.securitymetrics.com *.google-analytics.com; ";
+    set $CSP_style  "style-src    'self' 'unsafe-inline' *.googleapis.com *.bootstrapcdn.com *.gstatic.com *.vimeocdn.com *.jsdelivr.net; ";
+    set $CSP_font   "font-src     'self' data: *.googleapis.com *.bootstrapcdn.com *.gstatic.com *.googleapis.com *.jsdelivr.net; ";
+    set $CSP_frame  "frame-src    'self' *.vimeocdn.com *.vimeo.com; ";
+    set $CSP_object "object-src   'self' ; ";
+    set $CSP_connect "connect-src 'self' https://pallet-backend.sig.id; ";
+    set $CSP        "default-src  'self' ; ${CSP_image} ${CSP_script} ${CSP_style} ${CSP_font} ${CSP_frame} ${CSP_object} ${CSP_connect}";
+
+    add_header Content-Security-Policy $CSP;
     location / {
       root   /app;
       index  index.html;
@@ -31,4 +38,17 @@ http {
       root   /usr/share/nginx/html;
     }
   }
+
+  server {
+        listen  3000;
+        server_name  localhost;
+        location / {
+            proxy_pass http://127.0.0.1:4000;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "Upgrade";
+            proxy_set_header Host http://127.0.0.1:4000;
+            proxy_buffering off;
+        }
+    }
 }
