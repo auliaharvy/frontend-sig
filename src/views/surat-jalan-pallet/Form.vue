@@ -295,7 +295,7 @@ export default {
           this.sjp.truck_number = foundDo['LICENSE PLATE'];
           this.sjp.transporter = response[0].NAMA_EXPEDITUR;
             this.sjp.transporter_code = response[0].NO_EXPEDITUR;
-            this.sjp.id_transporter_company = 70;
+            this.sjp.id_transporter_company = 91;
           this.sjp.organization_name = foundDo.NAMA_PLANT;
           this.sjp.organization_code = foundDo.PLANT;
           this.sjp.driver = foundDo.NAMA_SOPIR;
@@ -341,7 +341,7 @@ export default {
             this.sjp.truck_number = response[0]['LICENSE PLATE'];
             this.sjp.transporter = response[0].NAMA_EXPEDITUR;
             this.sjp.transporter_code = response[0].NO_EXPEDITUR;
-            this.sjp.id_transporter_company = 70;
+            this.sjp.id_transporter_company = 91;
             this.sjp.organization_name = response[0].NAMA_PLANT;
             this.sjp.organization_code = response[0].PLANT;
             this.sjp.driver = response[0].NAMA_SOPIR;
