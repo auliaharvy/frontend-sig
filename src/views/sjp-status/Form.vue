@@ -112,7 +112,6 @@ export default {
   data: () => ({
     roleUser: {},
     imageRules: [
-      (v) => !v || v.size < 2500000 || "File size should be less than 2,5 MB!",
       (v) => !v || ['image/png','image/jpeg','image/jpg'].includes(v.type) || "Only jpg/jpeg and png files are allowed!"
     ],
     idRules: [

@@ -13,7 +13,7 @@
             <v-text-field
               :value="paramDo.X_TGL1"
               clearable
-              label="query tanggal 1"
+              label="Tanggal Query dari"
               readonly
               outlined
               v-bind="attrs"
@@ -37,7 +37,7 @@
             <v-text-field
               :value="paramDo.X_TGL2"
               clearable
-              label="query tanggal 2"
+              label="Tanggal query ke"
               readonly
               outlined
               v-bind="attrs"

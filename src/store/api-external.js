@@ -11,9 +11,9 @@ const state = () => ({
       plant: "79B1"
     },
     paramDo: {
-      token: "7OJ4T9GOWQ",
-      X_TGL1: "2022-12-08",
-      X_TGL2: "2022-12-20",
+      token: "LITPX1VEQE",
+      X_TGL1: "2023-09-01",
+      X_TGL2: "2023-09-30",
       X_NOPOLISI: "A9003X",
       X_WERKS: "79B1",
       X_LINE_SO: "000000",

@@ -54,7 +54,7 @@ const mutations = {
             city: "",
             phone: "",
             email: "",
-            tag: "",
+            tag: "POOL PALLET",
             palletQuantity: [],
             createdBy: 3,
             updatedBy: 3,
