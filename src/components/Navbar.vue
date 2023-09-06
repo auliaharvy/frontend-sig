@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <v-app-bar color="primary" dark app>
+    <v-app-bar color="primary" dark app class="red darken-4">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <!-- <v-toolbar-title class="text-uppercase">
         PALLET MANAGEMENT SYSTEM

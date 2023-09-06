@@ -126,9 +126,18 @@ const actions = {
                 if (error.response.status == 422) {
                   alert(error.response.data.errors[0]);
                   commit('SET_ERRORS', error.response.data.errors, { root: true })
-              } else {
-                alert(error.response.data.data);
-              }
+                } else if (error.response.status == 400) {
+                  if(error.response.data.error) {
+                    alert(error.response.data.error);
+                  } else if (error.response.data.message) {
+                    alert(error.response.data.message);
+                  } else {
+                    alert(error.response.data);
+                  }
+                }
+                else {
+                  alert(error.response.data.message);
+                }
             }).finally(() => {
                 commit('doneLoading')
             })

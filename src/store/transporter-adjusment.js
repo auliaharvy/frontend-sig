@@ -116,11 +116,19 @@ const actions = {
             .catch((error) => {
                 //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
                 if (error.response.status == 422) {
-                    commit('SET_ERRORS', error.response.data.errors, { root: true })
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else if (error.response.status == 400) {
+                  if(error.response.data.error) {
+                    alert(error.response.data.error);
+                  } else if (error.response.data.message) {
+                    alert(error.response.data.message);
+                  } else {
                     alert(error.response.data);
-                } else {
-                    commit('SET_ERRORS', error.response.data.error, { root: true })
-                    alert(error.response.data);
+                  }
+                }
+                else {
+                  alert(error.response.data.message);
                 }
             }).finally(() => {
                 commit('doneLoading')

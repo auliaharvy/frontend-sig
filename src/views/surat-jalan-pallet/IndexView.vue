@@ -91,7 +91,7 @@
                 :to="{ name: 'sjp-status.add', params: { id: item.id } }"
                 v-if="item.trxStatus == 0 && $can('create sjp status') && item.idDeparture == roleUser.company_id"
               >
-                <v-btn color="secondary" small>{{ $t("sjp.send") }}</v-btn>
+                <v-btn class="blue darken-4" small>{{ $t("sjp.send") }}</v-btn>
               </router-link>
             </template>
             <template v-slot:item.actions="{ item }">
@@ -213,6 +213,7 @@ export default {
       selectedItem: 1,
       headers: [
         { value: "trxNumber", text: this.$t("sjp.trxNumber"), width: "`180px`" },
+        { value: "palletQuantity", text: "Jumlah Pallet", width: "`120px`" },
         { value: "departure", text: this.$t("sjp.departure"), width: "180px"  },
         { value: "destination", text: this.$t("sjp.destination"), width: "180px"  },
         { value: "transporter", text: this.$t("sjp.transporter"), width: "180px" },
@@ -225,6 +226,7 @@ export default {
       ],
       filters: {
         trxNumber: [],
+        palletQuantity: [],
         departure: [],
         destination: [],
         transporter: [],
@@ -250,6 +252,7 @@ export default {
       ],
       json_fields: {
         "SJP Number": "trxNumber",
+        "Jumlah Palet": "palletQuantity",
         "DO Number": "noDo",
         "Departure": "departure",
         "Destination": "destination",

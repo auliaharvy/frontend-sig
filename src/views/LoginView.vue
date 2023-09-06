@@ -64,7 +64,7 @@
                     ></v-radio>
                   </v-radio-group> -->
                   <v-card-actions>
-                    <v-btn block type="submit" :disabled="!valid" color="primary">{{
+                    <v-btn block type="submit" :disabled="!valid" class="red darken-4">{{
                       $t("login.masuk")
                     }}</v-btn>
                   </v-card-actions>
@@ -131,7 +131,7 @@
                     ></v-radio>
                   </v-radio-group> -->
                   <v-card-actions>
-                    <v-btn block type="submit" color="primary">{{ $t("login.masuk") }}</v-btn>
+                    <v-btn block type="submit" class="red darken-4">{{ $t("login.masuk") }}</v-btn>
                   </v-card-actions>
                 <!-- <p class=" ">{{ $t("login.lupa") }}</p> -->
                 </v-form>
@@ -189,7 +189,7 @@
                 <v-card-actions>
                   <v-btn
                     block
-                    color="primary"
+                    class="red darken-4"
                     :disabled="!valid"
                     type="submit"
                     >{{ $t("login.masuk") }}</v-btn
