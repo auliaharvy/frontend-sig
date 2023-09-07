@@ -101,7 +101,7 @@
                       >
                     </v-list-item-content>
                   </v-list-item>
-                  <v-list-item v-if="item.id_new_pallet == 'belum ada' && item.type != 1 && item.status === 0">
+                  <v-list-item v-if="item.id_new_pallet == 'belum ada' && item.type != 1 && item.status === 1">
                     <v-list-item-content>
                       <v-list-item-title>
                         <v-btn router :to="'/new-pallet/add/'+item.id" small text>
