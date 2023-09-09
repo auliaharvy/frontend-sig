@@ -1,20 +1,18 @@
 <template>
   <v-form ref="form">
     <v-container>
-      <v-row no-gutters>
+      <!-- <v-row no-gutters>
         <v-autocomplete
             :label="$t('perusahaan.perusahaan')"
             :items="companies.data"
-            :rules="idRules"
             outlined
             v-model="truck.id_company"
             item-text="name"
             item-value="id"
-            required
             clearable
           >
         </v-autocomplete>
-      </v-row>
+      </v-row> -->
 
       <v-row no-gutters>
         <v-text-field

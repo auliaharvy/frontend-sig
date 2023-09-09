@@ -91,7 +91,7 @@
                 :to="{ name: 'sjp-status.add', params: { id: item.id } }"
                 v-if="item.trxStatus == 0 && $can('create sjp status') && item.idDeparture == roleUser.company_id"
               >
-                <v-btn class="blue darken-4" small>{{ $t("sjp.send") }}</v-btn>
+                <v-btn class="red darken-4 text-white" small>{{ $t("sjp.send") }}</v-btn>
               </router-link>
             </template>
             <template v-slot:item.actions="{ item }">

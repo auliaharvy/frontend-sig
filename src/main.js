@@ -27,7 +27,7 @@ Vue.use(VueSweetalert2);
 Vue.component('loading-overlay', Loading);
 
 Vue.config.productionTip = false
-Vue.prototype.$API_URL = 'http://localhost:3000'
+Vue.prototype.$API_URL = 'https://pallet-backend.sig.id'
 
 
 new Vue({

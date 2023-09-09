@@ -1,7 +1,7 @@
 <template>
   <v-form ref="form">
     <v-container>
-      <v-row no-gutters>
+      <!-- <v-row no-gutters>
         <v-autocomplete
             :label="$t('perusahaan.perusahaan')"
             :items="companies.data"
@@ -14,7 +14,7 @@
             clearable
           >
         </v-autocomplete>
-      </v-row>
+      </v-row> -->
 
       <v-row no-gutters>
         <v-text-field

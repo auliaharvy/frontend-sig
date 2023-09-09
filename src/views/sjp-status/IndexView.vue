@@ -70,13 +70,13 @@
             </template>
 
             <template v-slot:item.sending_driver_approval="{ item }">
-              <v-btn v-if="item.sending_driver_approval != 0 || item.sending_driver_approval != '0'" @click="locationToImage($API_URL + item.sending_driver_approval)" color="info" small>
+              <v-btn v-if="item.sending_driver_approval != 0 || item.sending_driver_approval != '0'" @click="locationToImage($API_URL + item.sending_driver_approval)" class="cyan darken-4" small>
                 <v-icon small class="mr-2">mdi-image</v-icon>
               </v-btn>
             </template>
 
             <template v-slot:item.receiving_driver_approval="{ item }">
-              <v-btn v-if="item.receiving_driver_approval != 0 || item.receiving_driver_approval != '0'" @click="locationToImage($API_URL + item.receiving_driver_approval)" color="info" small>
+              <v-btn v-if="item.receiving_driver_approval != 0 || item.receiving_driver_approval != '0'" @click="locationToImage($API_URL + item.receiving_driver_approval)" class="cyan darken-4" small>
                 <v-icon small class="mr-2">mdi-image</v-icon>
               </v-btn>
             </template>
@@ -85,7 +85,7 @@
               <router-link
                 :to="{ name: 'sjp-status.view', params: { id: item.id } }"
               >
-                <v-btn color="info" small><v-icon small class="mr-2">mdi-magnify</v-icon></v-btn>
+                <v-btn class="cyan darken-4" small><v-icon small class="mr-2">mdi-magnify</v-icon></v-btn>
               </router-link>
             </template>
 
@@ -94,19 +94,19 @@
                 :to="{ name: 'sjp-status.receive', params: { id: item.id } }"
                 v-if="item.status_sjp == 1 && item.is_sendback == 0 && $can('update sjp status') && item.id_destination_company == roleUser.company_id"
               >
-                <v-btn color="secondary" small>{{ $t("sjpStatus.receive") }}</v-btn>
+                <v-btn class="green darken-0" small>{{ $t("sjpStatus.receive") }}</v-btn>
               </router-link>
               <router-link
                 :to="{ name: 'sjp-status.receive', params: { id: item.id } }"
                 v-if="item.status_sjp == 3 && item.is_sendback == 1 && $can('update sjp status') && item.id_departure_company == roleUser.company_id"
               >
-                <v-btn color="secondary" small>{{ $t("sjpStatus.receive") }}</v-btn>
+                <v-btn class="green darken-0" small>{{ $t("sjpStatus.receive") }}</v-btn>
               </router-link>
               <router-link
                 :to="{ name: 'sjp-status.sendback', params: { id: item.id } }"
                 v-if="item.status_sjp == 2 && item.is_sendback == 0 && $can('create sjp status') && item.status == 1 && item.id_destination_company == roleUser.company_id"
               >
-                <v-btn color="secondary" small>{{ $t("sjpStatus.sendbackSjp") }}</v-btn>
+                <v-btn class="green darken-0" small>{{ $t("sjpStatus.sendbackSjp") }}</v-btn>
               </router-link>
               <!-- <v-menu>
                 <template v-slot:activator="{ on: menu, attrs }">
