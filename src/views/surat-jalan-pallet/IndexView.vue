@@ -60,6 +60,15 @@
                 </th>
               </tr>
             </template>
+            <template v-slot:item.destination="{ item }">
+              <template>
+                <p class="text-normal">
+                  {{ item.destinationCode }}
+                </p>
+                <v-spacer />
+                <p class="text-normal">{{ item.destination }}</p>
+              </template>
+            </template>
             <template v-slot:item.driverName="{ item }">
               <template v-if="item.secondDriver === null">
                 <p class="text-normal">
@@ -91,7 +100,7 @@
                 :to="{ name: 'sjp-status.add', params: { id: item.id } }"
                 v-if="item.trxStatus == 0 && $can('create sjp status') && item.idDeparture == roleUser.company_id"
               >
-                <v-btn class="red darken-4 text-white" small>{{ $t("sjp.send") }}</v-btn>
+                <v-btn class="red darken-1 text-white" small>{{ $t("sjp.send") }}</v-btn>
               </router-link>
             </template>
             <template v-slot:item.actions="{ item }">
@@ -183,7 +192,7 @@
               worksheet="Sheet SJP"
               name="data-sjp.xls"
             >
-              <v-btn color="primary" block>Download</v-btn>
+              <v-btn class="red darken-1 text-white" block>Download</v-btn>
             </export-excel>
         </v-card-actions>
       </v-card>
@@ -253,17 +262,35 @@ export default {
       json_fields: {
         "SJP Number": "trxNumber",
         "Jumlah Palet": "palletQuantity",
-        "DO Number": "noDo",
-        "Departure": "departure",
-        "Destination": "destination",
-        "Transporter": "transporter",
-        "Pallet Quantity": "palletQuantity",
-        "Truck": "licensePlate",
-        "Driver": "driverName",
-        "Departure Time": "departureTime",
-        "Estimated Time Arrival": "eta",
+        "No DO": "noDo",
+        "Keberangkatan": "departure",
+        "Kode Shipto": "destinationCode",
+        "Tujuan": "destination",
+        "Ekspeditur": "transporter",
+        "Nopol Truk": "licensePlate",
+        "Pengendara": "driverName",
+        "Waktu Keberangkatan": "departureTime",
+        "ETA": "eta",
         "Status": "trxStatus",
-        "Distribution": "distribution",
+        'Status Name' : {
+            field: 'trxStatus',
+            callback: (value) => {
+              if(value == 0) {
+              return `Draft`
+            } else if(value == 1 ) {
+              return `Dalam Pengiriman`
+            } else if(value == 2 ) {
+              return `Pengiriman Diterima`
+            } else if(value == 3 ) {
+              return `Dalam Pengiriman Kembali`
+            } else if(value == 4 ) {
+              return `Pengiriman Kembali Diterima`
+            } else if(value == 6 ) {
+              return `Pengiriman Di Batalkan`
+            }
+          }
+        },
+        // "Distribution": "distribution",
       },
     };
   },

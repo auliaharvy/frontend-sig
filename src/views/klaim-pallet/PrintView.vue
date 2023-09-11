@@ -14,7 +14,7 @@
         <v-icon right>exit_to_app</v-icon>
       </v-btn> -->
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" dark app class="red darken-4">
+    <v-navigation-drawer v-model="drawer" dark app class="red darken-1">
       <template>
         <v-layout column align-left>
           <v-flex class="mt-5">

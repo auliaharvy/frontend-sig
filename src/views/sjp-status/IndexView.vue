@@ -59,6 +59,33 @@
                 </th>
               </tr>
             </template>
+            <template v-slot:item.departure="{ item }">
+              <template>
+                <p class="text-normal">
+                  {{ item.departure_code }}
+                </p>
+                <v-spacer />
+                <p class="text-normal">{{ item.departure_company }}</p>
+              </template>
+            </template>
+            <template v-slot:item.destination="{ item }">
+              <template>
+                <p class="text-normal">
+                  {{ item.destination_code }}
+                </p>
+                <v-spacer />
+                <p class="text-normal">{{ item.destination_company }}</p>
+              </template>
+            </template>
+            <template v-slot:item.transporter="{ item }">
+              <template>
+                <p class="text-normal">
+                  {{ item.transporter_code }}
+                </p>
+                <v-spacer />
+                <p class="text-normal">{{ item.transporter_company }}</p>
+              </template>
+            </template>
            <template v-slot:item.is_sendback="{ item }">
               <p class="text-normal" v-if="item.is_sendback == 0">Send</p>
               <p class="text-normal" v-else-if="item.is_sendback == 1">Sendback</p>
@@ -70,14 +97,14 @@
             </template>
 
             <template v-slot:item.sending_driver_approval="{ item }">
-              <v-btn v-if="item.sending_driver_approval != 0 || item.sending_driver_approval != '0'" @click="locationToImage($API_URL + item.sending_driver_approval)" class="cyan darken-4" small>
-                <v-icon small class="mr-2">mdi-image</v-icon>
+              <v-btn v-if="item.sending_driver_approval != 0 || item.sending_driver_approval != '0'" @click="locationToImage($API_URL + item.sending_driver_approval)" class="red darken-1" small>
+                <v-icon small class="text-white">mdi-image</v-icon>
               </v-btn>
             </template>
 
             <template v-slot:item.receiving_driver_approval="{ item }">
-              <v-btn v-if="item.receiving_driver_approval != 0 || item.receiving_driver_approval != '0'" @click="locationToImage($API_URL + item.receiving_driver_approval)" class="cyan darken-4" small>
-                <v-icon small class="mr-2">mdi-image</v-icon>
+              <v-btn v-if="item.receiving_driver_approval != 0 || item.receiving_driver_approval != '0'" @click="locationToImage($API_URL + item.receiving_driver_approval)" class="red darken-1" small>
+                <v-icon small class="text-white">mdi-image</v-icon>
               </v-btn>
             </template>
 
@@ -85,7 +112,7 @@
               <router-link
                 :to="{ name: 'sjp-status.view', params: { id: item.id } }"
               >
-                <v-btn class="cyan darken-4" small><v-icon small class="mr-2">mdi-magnify</v-icon></v-btn>
+                <v-btn class="red darken-1 text-white" small><v-icon small class="text-white">mdi-magnify</v-icon></v-btn>
               </router-link>
             </template>
 
@@ -94,19 +121,19 @@
                 :to="{ name: 'sjp-status.receive', params: { id: item.id } }"
                 v-if="item.status_sjp == 1 && item.is_sendback == 0 && $can('update sjp status') && item.id_destination_company == roleUser.company_id"
               >
-                <v-btn class="green darken-0" small>{{ $t("sjpStatus.receive") }}</v-btn>
+                <v-btn class="red darken-1 text-white" small>{{ $t("sjpStatus.receive") }}</v-btn>
               </router-link>
               <router-link
                 :to="{ name: 'sjp-status.receive', params: { id: item.id } }"
                 v-if="item.status_sjp == 3 && item.is_sendback == 1 && $can('update sjp status') && item.id_departure_company == roleUser.company_id"
               >
-                <v-btn class="green darken-0" small>{{ $t("sjpStatus.receive") }}</v-btn>
+                <v-btn class="red darken-1 text-white" small>{{ $t("sjpStatus.receive") }}</v-btn>
               </router-link>
               <router-link
                 :to="{ name: 'sjp-status.sendback', params: { id: item.id } }"
                 v-if="item.status_sjp == 2 && item.is_sendback == 0 && $can('create sjp status') && item.status == 1 && item.id_destination_company == roleUser.company_id"
               >
-                <v-btn class="green darken-0" small>{{ $t("sjpStatus.sendbackSjp") }}</v-btn>
+                <v-btn class="red darken-1 text-white" small>{{ $t("sjpStatus.sendbackSjp") }}</v-btn>
               </router-link>
               <!-- <v-menu>
                 <template v-slot:activator="{ on: menu, attrs }">
@@ -176,7 +203,7 @@
               worksheet="Sheet SJP Status"
               name="data-sjp-status.xls"
             >
-              <v-btn color="primary" block>Download</v-btn>
+              <v-btn class="red darken-1 text-white" block>Download</v-btn>
             </export-excel>
         </v-card-actions>
       </v-card>
@@ -211,6 +238,14 @@ export default {
       headers: [
         { value: "trx_number", text: this.$t("sjpStatus.trxNumber"), width: "200px"},
         { value: "sjp_number", text: this.$t("sjpStatus.sjpNumber"), width: "180px"},
+        { value: "departure", text: "Keberangkatan", width: "180px"},
+        { value: "destination", text: "Tujuan", width: "180px"},
+        { value: "transporter", text: "Ekspeditur", width: "180px"},
+        { value: "nopol", text: "Nopol Truck", width: "180px"},
+        { value: "good_pallet", text: "Good Pallet", width: "`70px`" },
+        { value: "tbr_pallet", text: "TBR Pallet", width: "`70px`" },
+        { value: "ber_pallet", text: "BER Pallet", width: "`70px`" },
+        { value: "missing_pallet", text: "Missing Pallet", width: "`70px`" },
         { value: "sender_name", text: this.$t("sjpStatus.sender"), width: "180px" },
         { value: "receiver_name", text: this.$t("sjpStatus.receiver"), width: "180px" },
         { value: "is_sendback", text: this.$t("sjpStatus.sendback"), width: "180px" },
@@ -244,17 +279,44 @@ export default {
       json_fields: {
         "SJPS Number": "trx_number",
         "SJP Number": "sjp_number",
-        "Departure": "departure_company",
-        "Destination": "destination_company",
-        "Transporter": "transporter_company",
-        "Checker Sender": "sender_name",
-        "Checker Receiver": "receiver_name",
+        "Kode Keberangkatan": "departure_code",
+        "Keberangkatan": "departure_company",
+        "Kode Shipto": "destination_code",
+        "Tujuan": "destination_company",
+        "Kode Ekspeditur": "transporter_code",
+        "Ekspeditur": "transporter_company",
+        "Nopol": "nopol",
+        "Pengirim": "sender_name",
+        "Penerima": "receiver_name",
         "Good Pallet": "good_pallet",
         "TBR Pallet": "tbr_pallet",
         "BER Pallet": "ber_pallet",
         "Missing Pallet": "missing_pallet",
         "Status": "status",
-        "is_sendback": "is_sendback",
+        'Status Name' : {
+            field: 'status',
+            callback: (value) => {
+              if(value == 0) {
+              return `Sending`
+            } else if(value == 1 ) {
+              return `Received`
+            } else {
+              return `-`
+            }
+          }
+        },
+        'Send / Sendback' : {
+            field: 'is_sendback',
+            callback: (value) => {
+              if(value == 0) {
+              return `Send`
+            } else if(value == 1 ) {
+              return `Send Back`
+            } else {
+              return `-`
+            }
+          }
+        },
         "note": "note",
       },
     };
@@ -262,14 +324,14 @@ export default {
   created() {
     this.getRoleSet();
     this.getSjpStatuss().then(() => {
-      console.log(this.sjpStatuss)
-      console.log(this.trx_number());
-      console.log(this.sjp_number());
-      console.log(this.sender_name());
-      console.log(this.receiver_name());
-      console.log(this.is_sendback());
-      console.log(this.status());
-      console.log(this.note());
+      // console.log(this.sjpStatuss)
+      // console.log(this.trx_number());
+      // console.log(this.sjp_number());
+      // console.log(this.sender_name());
+      // console.log(this.receiver_name());
+      // console.log(this.is_sendback());
+      // console.log(this.status());
+      // console.log(this.note());
     });
   },
   computed: {

@@ -14,7 +14,7 @@
         <v-icon right>exit_to_app</v-icon>
       </v-btn> -->
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" dark app class="red darken-4">
+    <v-navigation-drawer v-model="drawer" dark app class="red darken-1">
       <template>
         <v-layout column align-left>
           <v-flex class="mt-5">
@@ -151,22 +151,27 @@
                 <td style="width: 2%">:</td>
                 <td style="width: 62%; font-size: 12px; text-align: end;">{{ sjpStatus.ber_pallet }}</td>
               </tr>
+              <tr style="width: 100%;">
+                <td style="width: 36%; font-size: 12px;">Missing Pallet</td>
+                <td style="width: 2%">:</td>
+                <td style="width: 62%; font-size: 12px; text-align: end;">{{ sjpStatus.missing_pallet }}</td>
+              </tr>
             </table>
           <div style="text-align: center; font-size: 12px; font-weight: bold; padding-top: 18px;"><strong>Pool Pallet</strong></div>
             <table style="width: 100%;">
               <tr style="width: 100%;">
                 <td style="width: 36%; font-size: 12px;">Keberangkatan</td>
                 <td style="width: 2%">:</td>
-                <td style="width: 62%; font-size: 12px; text-align: end;">{{ sjpStatus.is_sendback == 1 ? sjpStatus.destination_company : sjpStatus.departure_company }}</td>
+                <td style="width: 62%; font-size: 12px; text-align: end;">{{ sjpStatus.is_sendback == 1 ? sjpStatus.destination_code + ' ' + sjpStatus.destination_company : sjpStatus.departure_code + ' ' + sjpStatus.departure_company }}</td>
               </tr>
               <tr style="width: 100%;">
                 <td style="width: 36%; font-size: 12px;">Tujuan</td>
                 <td style="width: 2%">:</td>
-                <td style="width: 62%; font-size: 12px; text-align: end;">{{ sjpStatus.is_sendback == 1 ? sjpStatus.departure_company : sjpStatus.destination_company}}</td>
+                <td style="width: 62%; font-size: 12px; text-align: end;">{{ sjpStatus.is_sendback == 1 ? sjpStatus.departure_code + ' ' + sjpStatus.departure_company : sjpStatus.destination_code + ' ' + sjpStatus.destination_company}}</td>
               </tr>
             </table>
-          <div style="text-align: center; font-size: 12px; font-weight: bold; padding-top: 18px;"><strong>Ekspeditur</strong></div>
-          <div style="text-align: center; font-size: 12px;">{{ sjpStatus.transporter_company }}</div>
+          <div style="text-align: center; font-size: 12px; font-weight: bold; padding-top: 18px;"><strong>Nopol | Ekspeditur</strong></div>
+          <div style="text-align: center; font-size: 12px;">{{ sjpStatus.nopol }} | {{ sjpStatus.transporter_company }}</div>
           <div style="text-align: center; font-size: 12px; font-weight: bold; padding-top: 18px;"><strong>Note</strong></div>
           <div style="text-align: center; font-size: 12px;">{{ sjpStatus.note }}</div>
           <div style="text-align: center; font-size: 12px; font-weight: bold; padding-top: 18px;"><strong>Waktu Pengiriman</strong></div>

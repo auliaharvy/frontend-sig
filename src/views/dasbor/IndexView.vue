@@ -53,7 +53,7 @@
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
             <span class="text-h6 text-center font-weight-normal"
-              >{{ $t("dashboard.poolPallet") }}</span
+              >Pool Palet + Warehouse + Workshop</span
             >
           </v-card-title>
           <v-divider />
