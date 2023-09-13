@@ -291,7 +291,7 @@ export default {
     },
     async changeDo() {
       const foundDo = this.dataDo.find(x => x.NO_DO === this.sjp.no_do);
-      this.sjp.no_do = foundDo.NO_DO
+      this.sjp.no_do = foundDo.NO_DO;
           this.sjp.destination = foundDo.NAMA_TOKO;
           this.sjp.destination_code = foundDo.KODE_DA;
           this.sjp.destination_dist = foundDo.NAMA_SOLD_TO;
@@ -339,7 +339,7 @@ export default {
               confirmButtonText: "Ok!",
             });
           } else {
-            this.sjp.no_do = response[0].NO_DO
+            this.sjp.no_do = response[0].NO_DO;
             this.sjp.destination = foundDo.NAMA_TOKO;
             this.sjp.destination_code = foundDo.KODE_DA;
             this.sjp.destination_dist = foundDo.NAMA_SOLD_TO;
