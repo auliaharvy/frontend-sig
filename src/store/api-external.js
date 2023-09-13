@@ -15,7 +15,7 @@ const state = () => ({
       X_TGL1: "2023-09-01",
       X_TGL2: "2023-09-30",
       X_NOPOLISI: "",
-      X_WERKS: "",
+      X_WERKS: "79B1",
       X_LINE_SO: "000000",
       X_SO: "X"
     },
@@ -67,28 +67,26 @@ const actions = {
           commit('CHANGE_DO_PARAMETER', '7900')
           apiClient.post(`/api-external/do`, state.paramDo)
           .then((response) => {
-            commit('ASSIGN_DO', response.data)
-            resolve(state.dataDo)
-          }).catch((error) => {
-            //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
-            if (error.response.status == 422) {
-              alert(error.response.data.errors[0]);
-              commit('SET_ERRORS', error.response.data.errors, { root: true })
-            } else if (error.response.status == 400) {
-              if(error.response.data.error) {
-                alert(error.response.data.error);
-              } else if (error.response.data.message) {
-                alert(error.response.data.message);
-              } else {
-                alert(error.response.data.error);
+              if(response.data instanceof Array) {
+                commit('ASSIGN_DO', response.data)
               }
-            }
-            else {
-              alert(error.response.data.message);
-            }
-        }).finally(() => {
-            commit('doneLoading')
-        })
+              commit('CHANGE_DO_PARAMETER', '7000')
+              apiClient.post(`/api-external/do`, state.paramDo).then((response) => {
+                if(response.data instanceof Array) {
+                  commit('ASSIGN_DO', response.data)
+                }
+                commit('CHANGE_DO_PARAMETER', '5000')
+                apiClient.post(`/api-external/do`, state.paramDo).then((response) => {
+                  if(response.data instanceof Array) {
+                    commit('ASSIGN_DO', response.data)
+                  }
+              })
+                resolve(response.data)
+            })
+            resolve(state.dataDo)
+          }).finally(() => {
+              commit('doneLoading')
+          })
       })
     },
 

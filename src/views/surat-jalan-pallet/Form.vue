@@ -51,22 +51,13 @@
           ></v-date-picker>
         </v-menu>
       </v-row>
-      <v-row no-gutters>
-        <v-text-field
-          v-model="paramDo.X_WERKS"
-          label="Kode Plant"
-          :rules="noTruckRules"
-          placeholder="79B1"
-          outlined
-          required
-        ></v-text-field>
-      </v-row>
+      
       <v-row no-gutters>
         <v-text-field
           v-model="paramDo.X_NOPOLISI"
           :label="$t('sjp.truck')"
           :rules="noTruckRules"
-          placeholder="B6672HI"
+          placeholder="B66762HH"
           outlined
           required
           append-icon="mdi-reload"
