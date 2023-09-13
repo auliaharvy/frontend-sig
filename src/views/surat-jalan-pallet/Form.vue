@@ -297,8 +297,8 @@ export default {
           this.sjp.destination_dist = foundDo.NAMA_SOLD_TO;
           this.sjp.destination_dist_code = foundDo.SOLD_TO;
           this.sjp.truck_number = foundDo['LICENSE PLATE'];
-          this.sjp.transporter = response[0].NAMA_EXPEDITUR;
-          this.sjp.transporter_code = response[0].NO_EXPEDITUR;
+          this.sjp.transporter = foundDo.NAMA_EXPEDITUR;
+          this.sjp.transporter_code = foundDo.NO_EXPEDITUR;
           this.sjp.id_transporter_company = 91;
           this.sjp.organization_name = foundDo.NAMA_PLANT;
           this.sjp.organization_code = foundDo.PLANT;
@@ -340,10 +340,10 @@ export default {
             });
           } else {
             this.sjp.no_do = response[0].NO_DO;
-            this.sjp.destination = foundDo.NAMA_TOKO;
-            this.sjp.destination_code = foundDo.KODE_DA;
-            this.sjp.destination_dist = foundDo.NAMA_SOLD_TO;
-            this.sjp.destination_dist_code = foundDo.SOLD_TO;
+            this.sjp.destination = response[0].NAMA_TOKO;
+            this.sjp.destination_code = response[0].KODE_DA;
+            this.sjp.destination_dist = response[0].NAMA_SOLD_TO;
+            this.sjp.destination_dist_code = response[0].SOLD_TO;
             this.sjp.truck_number = response[0]['LICENSE PLATE'];
             this.sjp.transporter = response[0].NAMA_EXPEDITUR;
             this.sjp.transporter_code = response[0].NO_EXPEDITUR;
