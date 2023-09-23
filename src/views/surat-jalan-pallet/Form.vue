@@ -51,6 +51,16 @@
           ></v-date-picker>
         </v-menu>
       </v-row>
+
+      <v-row no-gutters>
+        <v-text-field
+          v-model="paramDo.X_WERKS"
+          label="Kode Plant"
+          placeholder="79B1"
+          outlined
+          required
+        ></v-text-field>
+      </v-row>
       
       <v-row no-gutters>
         <v-text-field
