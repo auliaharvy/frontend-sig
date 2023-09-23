@@ -64,31 +64,46 @@ const actions = {
     getDataDo({ commit, state }, payload) {
       commit('isLoading')
       return new Promise((resolve, reject) => {
-          commit('CHANGE_DO_PARAMETER', '7900')
           apiClient.post(`/api-external/do`, state.paramDo)
           .then((response) => {
               if(response.data instanceof Array) {
                 commit('ASSIGN_DO', response.data)
               }
-              commit('CHANGE_DO_PARAMETER', '7000')
-              apiClient.post(`/api-external/do`, state.paramDo).then((response) => {
-                if(response.data instanceof Array) {
-                  commit('ASSIGN_DO', response.data)
-                }
-                commit('CHANGE_DO_PARAMETER', '5000')
-                apiClient.post(`/api-external/do`, state.paramDo).then((response) => {
-                  if(response.data instanceof Array) {
-                    commit('ASSIGN_DO', response.data)
-                  }
-              })
-                resolve(response.data)
-            })
             resolve(state.dataDo)
           }).finally(() => {
               commit('doneLoading')
           })
       })
     },
+
+    // getDataDo({ commit, state }, payload) {
+    //   commit('isLoading')
+    //   return new Promise((resolve, reject) => {
+    //       commit('CHANGE_DO_PARAMETER', '7900')
+    //       apiClient.post(`/api-external/do`, state.paramDo)
+    //       .then((response) => {
+    //           if(response.data instanceof Array) {
+    //             commit('ASSIGN_DO', response.data)
+    //           }
+    //           commit('CHANGE_DO_PARAMETER', '7000')
+    //           apiClient.post(`/api-external/do`, state.paramDo).then((response) => {
+    //             if(response.data instanceof Array) {
+    //               commit('ASSIGN_DO', response.data)
+    //             }
+    //             commit('CHANGE_DO_PARAMETER', '5000')
+    //             apiClient.post(`/api-external/do`, state.paramDo).then((response) => {
+    //               if(response.data instanceof Array) {
+    //                 commit('ASSIGN_DO', response.data)
+    //               }
+    //           })
+    //             resolve(response.data)
+    //         })
+    //         resolve(state.dataDo)
+    //       }).finally(() => {
+    //           commit('doneLoading')
+    //       })
+    //   })
+    // },
 
 }
 
