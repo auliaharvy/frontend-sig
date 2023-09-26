@@ -130,11 +130,12 @@ export default {
   data() {
     return {
       headers: [
-        { value: "code", text: this.$t("perusahaan.nomor"), width: "200px" },
-        { value: "name", text: this.$t("perusahaan.nama"), width: "180px" },
-        { value: "name_company_type", text: this.$t("perusahaan.tipe"), width: "180px" },
+        { value: "code_organization", text: "Kode Organisasi", width: "80px" },
         { value: "name_organization", text: this.$t("organisasi.nama"), width: "180px" },
-        { value: "address", text: this.$t("perusahaan.alamat"), width: "180px" },
+        { value: "code", text: "Kode Perusahaan", width: "200px" },
+        { value: "name", text: "Nama Perusahaan", width: "180px" },
+        { value: "name_company_type", text: this.$t("perusahaan.tipe"), width: "180px" },
+        // { value: "address", text: this.$t("perusahaan.alamat"), width: "180px" },
         { value: "city", text: this.$t("perusahaan.kota"), width: "180px" },
         { value: "phone", text: this.$t("perusahaan.hp"), width: "180px" },
         { value: "email", text: this.$t("perusahaan.email"), width: "180px" },
@@ -144,6 +145,7 @@ export default {
         { value: "missing_pallet", text: this.$t("pallet.missing"), width: "100px" },
         { value: "total_pallet", text: this.$t("pallet.total"), width: "100px" },
         { value: "quota", text: this.$t("pallet.quota"), width: "100px" },
+        { value: "percent_quota", text: "%"+this.$t("pallet.quota"), width: "100px" },
         { value: "actions", text: this.$t("table.actions"), width: "180px" },
       ],
       filters: {

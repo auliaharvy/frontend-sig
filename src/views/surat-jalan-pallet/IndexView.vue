@@ -60,7 +60,7 @@
                 </th>
               </tr>
             </template>
-            <template v-slot:item.destination="{ item }">
+            <!-- <template v-slot:item.destination="{ item }">
               <template>
                 <p class="text-normal">
                   {{ item.destinationCode }}
@@ -68,8 +68,8 @@
                 <v-spacer />
                 <p class="text-normal">{{ item.destination }}</p>
               </template>
-            </template>
-            <template v-slot:item.driverName="{ item }">
+            </template> -->
+            <!-- <template v-slot:item.driverName="{ item }">
               <template v-if="item.secondDriver === null">
                 <p class="text-normal">
                   {{ item.driverName }}
@@ -82,6 +82,12 @@
                 <v-spacer />
                 <p class="text-normal">({{ item.secondDriver }})</p>
               </template>
+            </template> -->
+            <template v-slot:item.tanggal="{ item }">
+              <p class="text-normal">{{ item.createdAt | moment('DD-MM-YYYY') }}</p>
+            </template>
+            <template v-slot:item.jam="{ item }">
+              <p class="text-normal">{{ item.createdAt | moment('HH:mm') }}</p>
             </template>
             <template v-slot:item.trxStatus="{ item }">
               <p v-if="item.trxStatus == 0">Draft</p>
@@ -221,14 +227,17 @@ export default {
       downloadRange: [],
       selectedItem: 1,
       headers: [
-        { value: "trxNumber", text: this.$t("sjp.trxNumber"), width: "`180px`" },
-        { value: "palletQuantity", text: "Jumlah Pallet", width: "`120px`" },
-        { value: "departure", text: this.$t("sjp.departure"), width: "180px"  },
-        { value: "destination", text: this.$t("sjp.destination"), width: "180px"  },
-        { value: "transporter", text: this.$t("sjp.transporter"), width: "180px" },
-        { value: "licensePlate", text: this.$t("sjp.truck"), width: "150px" },
-        { value: "driverName", text: this.$t("sjp.driver"), width: "150px" },
-        { value: "noDo", text: this.$t("sjp.noDo"), width: "150px" },
+        { value: "trxNumber", text: "Nomor SJP", width: "180px" },
+        { value: "noDo", text: "Nomor DO", width: "80px" },
+        { value: "tanggal", text: "Tanggal", width: "120px" },
+        { value: "jam", text: "Jam", width: "80px" },
+        { value: "departure", text: "Keberangkatan", width: "180px"  },
+        { value: "destinationCode", text: "Kode Tujuan", width: "80px"  },
+        { value: "destination", text: "Tujuan", width: "180px"  },
+        { value: "transporter", text: "Angkutan", width: "180px" },
+        { value: "licensePlate", text: "Nomor Polisi", width: "80px" },
+        { value: "palletQuantity", text: "Jumlah Pallet", width: "80px" },
+        // { value: "driverName", text: this.$t("sjp.driver"), width: "150px" },
         { value: "trxStatus", text: this.$t("sjp.trxStatus"), width: "100px" },
         { value: "send", text: this.$t("sjp.send"), width: "100px" },
         { value: "actions", text: this.$t("table.actions"), width: "80px" },

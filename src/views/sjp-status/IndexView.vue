@@ -59,30 +59,24 @@
                 </th>
               </tr>
             </template>
+            <template v-slot:item.tanggal="{ item }">
+              <p class="text-normal">{{ item.created_at | moment('DD-MM-YYYY') }}</p>
+            </template>
+            <template v-slot:item.jam="{ item }">
+              <p class="text-normal">{{ item.created_at | moment('HH:mm') }}</p>
+            </template>
             <template v-slot:item.departure="{ item }">
               <template>
-                <p class="text-normal">
-                  {{ item.departure_code }}
-                </p>
-                <v-spacer />
                 <p class="text-normal">{{ item.departure_company }}</p>
               </template>
             </template>
             <template v-slot:item.destination="{ item }">
               <template>
-                <p class="text-normal">
-                  {{ item.destination_code }}
-                </p>
-                <v-spacer />
                 <p class="text-normal">{{ item.destination_company }}</p>
               </template>
             </template>
             <template v-slot:item.transporter="{ item }">
               <template>
-                <p class="text-normal">
-                  {{ item.transporter_code }}
-                </p>
-                <v-spacer />
                 <p class="text-normal">{{ item.transporter_company }}</p>
               </template>
             </template>
@@ -236,19 +230,23 @@ export default {
       selectedItem: 1,
       name: ['a', 'b', 'c'],
       headers: [
-        { value: "trx_number", text: this.$t("sjpStatus.trxNumber"), width: "200px"},
-        { value: "sjp_number", text: this.$t("sjpStatus.sjpNumber"), width: "180px"},
-        { value: "departure", text: "Keberangkatan", width: "180px"},
-        { value: "destination", text: "Tujuan", width: "180px"},
+        // { value: "trx_number", text: this.$t("sjpStatus.trxNumber"), width: "200px"},
+        { value: "sjp_number", text: "Nomor SJP", width: "180px"},
+        { value: "tanggal", text: "Tanggal", width: "120px" },
+        { value: "jam", text: "Jam", width: "70px" },
+        { value: "departure_code", text: "Kode Pengirim", width: "80px"},
+        { value: "departure", text: "Nama Pengirim", width: "180px"},
+        { value: "destination_code", text: "Kode Penerima", width: "80px"},
+        { value: "destination", text: "Nama Penerima", width: "180px"},
         { value: "transporter", text: "Ekspeditur", width: "180px"},
-        { value: "nopol", text: "Nopol Truck", width: "180px"},
+        { value: "nopol", text: "Nomor Polisi", width: "80px"},
         { value: "good_pallet", text: "Good Pallet", width: "`70px`" },
         { value: "tbr_pallet", text: "TBR Pallet", width: "`70px`" },
         { value: "ber_pallet", text: "BER Pallet", width: "`70px`" },
         { value: "missing_pallet", text: "Missing Pallet", width: "`70px`" },
-        { value: "sender_name", text: this.$t("sjpStatus.sender"), width: "180px" },
-        { value: "receiver_name", text: this.$t("sjpStatus.receiver"), width: "180px" },
-        { value: "is_sendback", text: this.$t("sjpStatus.sendback"), width: "180px" },
+        // { value: "sender_name", text: this.$t("sjpStatus.sender"), width: "180px" },
+        // { value: "receiver_name", text: this.$t("sjpStatus.receiver"), width: "180px" },
+        // { value: "is_sendback", text: this.$t("sjpStatus.sendback"), width: "180px" },
         { value: "status", text: this.$t("sjpStatus.status"), width: "180px" },
         { value: "note", text: this.$t("sjpStatus.note"), width: "180px" },
         { value: "sending_driver_approval", text: this.$t("sjpStatus.sending_driver_approval"), width: "100px" },
