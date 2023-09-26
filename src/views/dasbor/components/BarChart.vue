@@ -37,8 +37,8 @@ export default {
           {
             label: "Total Pallet",
             data: this.data,
-            backgroundColor: "rgba(255, 0, 0, 0.6)",
-            borderColor: "rgba(255,0,0,1)",
+            backgroundColor: "rgba(39, 106, 245, 0.6)",
+            borderColor: "rgba(39, 106, 245,1)",
             borderWidth: 1,
           },
         ],

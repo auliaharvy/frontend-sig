@@ -12,9 +12,9 @@
       <v-col :sm="12" :md="12" :lg="12">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
-            <span v-if="totalPallets.data" class="text-h6 text-center font-weight-normal"
-              >{{ $t("dashboard.allPallet") }} : {{ sumTotal(totalPallets.data) }}</span
-            >
+            <span v-if="totalPallets.data" class="text-h6 text-center font-weight-normal">
+              {{ $t("dashboard.allPallet") }} : {{ sumTotal(totalPallets.data) }}
+            </span>
           </v-card-title>
         </v-card>
       </v-col>
@@ -28,20 +28,44 @@
       "
       no-gutters
     >
-      <v-col :sm="12" :md="12" :lg="12">
+      <v-col :sm="12" :md="8" :lg="8">
         <v-card class="ma-1" elevation="5">
-          <BarChart
+          <BarChartGlobal
             v-if="totalPallets.data"
             style="height: 500px"
-            :data="dataTotalPallet"
+            :total="dataTotalPallet"
+            :good="dataTotalPalletGood"
+            :tbr="dataTotalPalletTbr"
+            :ber="dataTotalPalletBer"
+            :missing="dataTotalPalletMissing"
+            :quota="dataTotalQuota"
             :options="barChartOptions"
             :labels="labelTotalPallet"
           />
         </v-card>
       </v-col>
+
+      <v-col :sm="12" :md="4" :lg="4">
+        <v-card class="ma-1" elevation="5">
+          <!-- <v-card-title class="justify-center">
+            <span class="text-h6 text-center font-weight-normal"
+              >Percentage</span
+            >
+          </v-card-title> -->
+          <!-- <v-divider /> -->
+          <v-card-text>
+            <DoughnutChart
+              v-if="palletConditionAlls.data"
+              :data="dataPercentageTotal"
+              :options="percentageChartOption"
+              :labels="labelTotalPallet"
+            />
+          </v-card-text>
+        </v-card>
+      </v-col>
     </v-row>
 
-    <v-row
+    <!-- <v-row
       v-if="
         roleUser.role_name == 'Supervisor' ||
         roleUser.role_name == 'Manager' ||
@@ -86,7 +110,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-    </v-row>
+    </v-row> -->
 
     <v-row
       v-if="
@@ -97,7 +121,7 @@
       "
       no-gutters
     >
-      <v-col :sm="6" :md="6" :lg="6">
+      <v-col :sm="12" :md="12" :lg="12">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
             <span v-if="detailPools.data" class="text-h6 text-center font-weight-normal"
@@ -106,20 +130,23 @@
           </v-card-title>
           <v-divider />
           <v-card-text>
-            <BarChartPool
+            <BarChartGlobal
               v-if="detailPools.data"
               style="height: 500px"
-              :dataStock="detailPoolStock"
-              :dataIn="detailPoolIn"
-              :dataOut="detailPoolOut"
-              :options="barChartDetailOptions"
+              :total="detailPoolStock"
+              :good="dataPoolPalletGood"
+              :tbr="dataPoolPalletTbr"
+              :ber="dataPoolPalletBer"
+              :missing="dataPoolPalletMissing"
+              :quota="dataPoolQuota"
+              :options="barChartOptions"
               :labels="detailPoolLabel"
             />
           </v-card-text>
         </v-card>
       </v-col>
 
-      <v-col :sm="6" :md="6" :lg="6">
+      <!-- <v-col :sm="6" :md="6" :lg="6">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
             <v-autocomplete
@@ -144,7 +171,7 @@
             />
           </v-card-text>
         </v-card>
-      </v-col>
+      </v-col> -->
     </v-row>
 
     <v-row
@@ -156,7 +183,7 @@
       "
       no-gutters
     >
-      <v-col :sm="6" :md="6" :lg="6">
+      <v-col :sm="12" :md="12" :lg="12">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
             <span v-if="detailWarehouse.data" class="text-h6 text-center font-weight-normal"
@@ -166,12 +193,15 @@
           </v-card-title>
           <v-divider />
           <v-card-text>
-            <BarChartPool
+            <BarChartGlobal
               v-if="detailWarehouse.data"
               style="height: 500px"
-              :dataStock="detailWarehouseStock"
-              :dataIn="detailWarehouseIn"
-              :dataOut="detailWarehouseOut"
+              :total="detailWarehouseStock"
+              :good="dataWarehousePalletGood"
+              :tbr="dataWarehousePalletTbr"
+              :ber="dataWarehousePalletBer"
+              :missing="dataWarehousePalletMissing"
+              :quota="dataWarehouseQuota"
               :options="barChartDetailOptions"
               :labels="detailWarehouseLabel"
             />
@@ -179,7 +209,7 @@
         </v-card>
       </v-col>
 
-      <v-col :sm="6" :md="6" :lg="6">
+      <!-- <v-col :sm="6" :md="6" :lg="6">
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
             <v-autocomplete
@@ -204,10 +234,10 @@
             />
           </v-card-text>
         </v-card>
-      </v-col>
+      </v-col> -->
     </v-row>
 
-    <v-row
+    <!-- <v-row
       v-if="
         roleUser.role_name == 'Supervisor' ||
         roleUser.role_name == 'Manager' ||
@@ -233,7 +263,7 @@
               :options="barChartOptions"
               :labels="detailTransporterLabel"
             />
-            <!-- <BarChartPool
+            <BarChartPool
               v-if="detailTransporter.data"
               style="height: 350px;"
               :dataStock="detailTransporterStock"
@@ -241,7 +271,7 @@
               :dataOut="detailPoolOut"
               :options="barChartDetailOptions"
               :labels="detailTransporterLabel"
-            /> -->
+            />
           </v-card-text>
         </v-card>
       </v-col>
@@ -272,9 +302,9 @@
           </v-card-text>
         </v-card>
       </v-col>
-    </v-row>
+    </v-row> -->
 
-    <v-row
+    <!-- <v-row
       v-if="
         roleUser.role_name == 'Supervisor' ||
         roleUser.role_name == 'Manager' ||
@@ -330,7 +360,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-    </v-row>
+    </v-row> -->
 
     <v-row
       v-if="
@@ -426,6 +456,7 @@ import { mapActions, mapState } from "vuex";
 import _ from "lodash";
 import Breadcomp from "@/components/Breadcrumb.vue";
 import BarChart from "./components/BarChart.vue";
+import BarChartGlobal from "./components/BarChartGlobal.vue";
 import BarChartPool from "./components/BarChartPool.vue";
 import DoughnutChart from "./components/DoughnutChart.vue";
 import LineChart from "./components/LineChart.vue";
@@ -435,6 +466,7 @@ export default {
   components: {
     Breadcomp,
     BarChart,
+    BarChartGlobal,
     BarChartPool,
     DoughnutChart,
     LineChart,
@@ -523,7 +555,7 @@ export default {
         },
       },
       responsive: true,
-      maintainAspectRatio: false,
+      maintainAspectRatio: true,
     },
     barChartOptions: {
       scales: {
@@ -550,7 +582,7 @@ export default {
         },
       },
       responsive: true,
-      maintainAspectRatio: false,
+      maintainAspectRatio: true,
     },
     lineChartOptions: {
       plugins: {
@@ -566,7 +598,23 @@ export default {
         },
       },
       responsive: true,
-      maintainAspectRatio: false,
+      maintainAspectRatio: true,
+    },
+    percentageChartOption: {
+      plugins: {
+        datalabels: {
+          color: "#000000",
+          formatter: function (value) {
+            return Math.round(value)+"%";
+          },
+          font: {
+            weight: "bold",
+            size: 12,
+          },
+        },
+      },
+      responsive: true,
+      maintainAspectRatio: true,
     },
     team: [
       { name: "Iyad", role: "web developer", avatar: "/img1.png" },
@@ -695,9 +743,40 @@ export default {
     }),
     // ...mapState(["roleUser"]),
     // data total pallet barchart
+    dataPercentageTotal() {
+      const totalPallet = this.totalPallets.data.reduce((acc, item) => acc + parseInt(item.jumlah_pallet), 0);
+      return _.map(this.totalPallets.data, function (o) {
+        return o.jumlah_pallet / totalPallet * 100;
+      });
+    },
     dataTotalPallet() {
       return _.map(this.totalPallets.data, function (o) {
         return o.jumlah_pallet;
+      });
+    },
+    dataTotalPalletGood() {
+      return _.map(this.totalPallets.data, function (o) {
+        return o.good_pallet;
+      });
+    },
+    dataTotalPalletTbr() {
+      return _.map(this.totalPallets.data, function (o) {
+        return o.tbr_pallet;
+      });
+    },
+    dataTotalPalletBer() {
+      return _.map(this.totalPallets.data, function (o) {
+        return o.ber_pallet;
+      });
+    },
+    dataTotalPalletMissing() {
+      return _.map(this.totalPallets.data, function (o) {
+        return o.missing_pallet;
+      });
+    },
+    dataTotalQuota() {
+      return _.map(this.totalPallets.data, function (o) {
+        return o.pallet_quota;
       });
     },
     labelTotalPallet() {
@@ -744,6 +823,31 @@ export default {
         return o.stock;
       });
     },
+    dataPoolPalletGood() {
+      return _.map(this.detailPools.data, function (o) {
+        return o.good_pallet;
+      });
+    },
+    dataPoolPalletTbr() {
+      return _.map(this.detailPools.data, function (o) {
+        return o.tbr_pallet;
+      });
+    },
+    dataPoolPalletBer() {
+      return _.map(this.detailPools.data, function (o) {
+        return o.ber_pallet;
+      });
+    },
+    dataPoolPalletMissing() {
+      return _.map(this.detailPools.data, function (o) {
+        return o.missing_pallet;
+      });
+    },
+    dataPoolQuota() {
+      return _.map(this.detailPools.data, function (o) {
+        return o.pallet_quota;
+      });
+    },
     detailPoolIn() {
       return _.map(this.detailPools.data, function (o) {
         return o.pallet_in;
@@ -763,6 +867,31 @@ export default {
     detailWarehouseStock() {
       return _.map(this.detailWarehouse.data, function (o) {
         return o.stock;
+      });
+    },
+    dataWarehousePalletGood() {
+      return _.map(this.detailWarehouse.data, function (o) {
+        return o.good_pallet;
+      });
+    },
+    dataWarehousePalletTbr() {
+      return _.map(this.detailWarehouse.data, function (o) {
+        return o.tbr_pallet;
+      });
+    },
+    dataWarehousePalletBer() {
+      return _.map(this.detailWarehouse.data, function (o) {
+        return o.ber_pallet;
+      });
+    },
+    dataWarehousePalletMissing() {
+      return _.map(this.detailWarehouse.data, function (o) {
+        return o.missing_pallet;
+      });
+    },
+    dataWarehouseQuota() {
+      return _.map(this.detailWarehouse.data, function (o) {
+        return o.pallet_quota;
       });
     },
     detailWarehouseIn() {
