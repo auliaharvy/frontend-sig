@@ -32,7 +32,7 @@
         <v-card class="ma-1" elevation="5">
           <BarChartGlobal
             v-if="totalPallets.data"
-            style="height: 500px"
+            style="height: 630px"
             :total="dataTotalPallet"
             :good="dataTotalPalletGood"
             :tbr="dataTotalPalletTbr"
@@ -55,6 +55,7 @@
           <!-- <v-divider /> -->
           <v-card-text>
             <DoughnutChart
+              style="height: 600px"
               v-if="palletConditionAlls.data"
               :data="dataPercentageTotal"
               :options="percentageChartOption"
@@ -132,7 +133,7 @@
           <v-card-text>
             <BarChartGlobal
               v-if="detailPools.data"
-              style="height: 500px"
+              style="height: 630px"
               :total="detailPoolStock"
               :good="dataPoolPalletGood"
               :tbr="dataPoolPalletTbr"
@@ -195,7 +196,7 @@
           <v-card-text>
             <BarChartGlobal
               v-if="detailWarehouse.data"
-              style="height: 500px"
+              style="height: 630px"
               :total="detailWarehouseStock"
               :good="dataWarehousePalletGood"
               :tbr="dataWarehousePalletTbr"
@@ -400,7 +401,7 @@
               <v-col :sm="12" :md="12" :lg="12">
                 <LineChart
                   v-if="palletSendReceive"
-                  style="height: 500px"
+                  style="height: 630px"
                   :label1="'Pallet Send'"
                   :label2="'Pallet Receive'"
                   :data="palletSendData"
@@ -424,7 +425,7 @@
               <v-col :sm="12" :md="12" :lg="12">
                 <LineChart
                   v-if="palletSendBackReceive"
-                  style="height: 500px"
+                  style="height: 630px"
                   :label1="'Pallet Send Back'"
                   :label2="'Pallet Receive Send Back'"
                   :data="palletSendBackData"
@@ -593,12 +594,12 @@ export default {
           },
           font: {
             weight: "bold",
-            size: 12,
+            size: 10,
           },
         },
       },
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
     },
     percentageChartOption: {
       plugins: {
@@ -609,12 +610,12 @@ export default {
           },
           font: {
             weight: "bold",
-            size: 12,
+            size: 10,
           },
         },
       },
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
     },
     team: [
       { name: "Iyad", role: "web developer", avatar: "/img1.png" },
