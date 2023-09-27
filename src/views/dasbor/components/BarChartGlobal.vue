@@ -32,26 +32,22 @@ export default {
       chartData: {
         labels: this.labels,
         datasets: [
-        {
+          {
             label: "Quota",
             data: this.quota,
             backgroundColor: "rgba(1, 151, 127, 0.6)",
             borderColor: "rgba(1, 151, 127, 1)",
+            stack: 'Stack 0',
             borderWidth: 0.5,
           },
-          {
-            label: "Total",
-            data: this.total,
-            backgroundColor: "rgba(39, 106, 245, 0.6)",
-            borderColor: "rgba(39, 106, 245,1)",
-            borderWidth: 0.5,
-          },
+          
           {
             label: "Good",
             data: this.good,
             backgroundColor: "rgba(0, 149, 45, 0.6)",
             borderColor: "rgba(0, 149, 45,1)",
             borderWidth: 0.5,
+            stack: 'Stack 2',
           },
           {
             label: "TBR",
@@ -59,6 +55,7 @@ export default {
             backgroundColor: "rgba(241, 234, 11, 0.6)",
             borderColor: "rgba(241, 234, 11, 1)",
             borderWidth: 0.5,
+            stack: 'Stack 2',
           },
           {
             label: "BER",
@@ -66,6 +63,7 @@ export default {
             backgroundColor: "rgba(225, 157, 2, 0.6)",
             borderColor: "rgba(225, 157, 2, 1)",
             borderWidth: 0.5,
+            stack: 'Stack 2',
           },
           {
             label: "Missing",
@@ -73,29 +71,65 @@ export default {
             backgroundColor: "rgba(151, 1, 1, 0.6)",
             borderColor: "rgba(151, 1, 1, 1)",
             borderWidth: 0.5,
+            stack: 'Stack 2',
           },
+          // {
+          //   label: "Total",
+          //   data: this.total,
+          //   backgroundColor: "rgba(39, 106, 245, 0.6)",
+          //   borderColor: "rgba(39, 106, 245,1)",
+          //   borderWidth: 0.5,
+          //   stack: 'Stack 2',
+          // },
         ],
       },
       chartOptions:  {
         plugins: {
           datalabels: {
-          color: '#000000',
-          formatter: function (value) {
-            return Math.round(value);
+            // anchor: 'end',
+            // align: 'end',
+            color: '#000000',
+            formatter: function (value, context) {
+              const datasetArray = [];
+              context.chart.data.datasets.forEach((dataset) => {
+                if(dataset.data[context.dataIndex] != undefined && dataset.label != "Total" && dataset.label != "Quota"){
+                  datasetArray.push(dataset.data[context.dataIndex]);
+                }
+              });
+
+              function totalSum(total, datapoint) {
+                return parseInt(total) + parseInt(datapoint)
+              }
+
+              let sum = datasetArray.reduce(totalSum, 0);
+              // context.font = "bold 12px sans-serif";
+              // context.fillStyle = chart.data.datasets[0].borderColor[index];
+              // context.textAlign = 'center';
+              // context.fillText(sum, x.getPixelForValue(index), chart.getDataSetMeta(1).data[index].y - 10);
+              if(context.datasetIndex != 0) {
+                return `${value} dari ${sum}`;
+              } else {
+                return value;
+              }
+            },
+            font: {
+              weight: 'bold',
+              size: 8,
+            }
           },
-          font: {
-            weight: 'bold',
-            size: 12,
-          }
-        }
+          // topLabels: {
+          //   afterDataset
+          // }
         },
         responsive: true,
         scales: {
           x: {
-            stacked: false,
+            stacked: true,
           },
           y: {
-            stacked: false
+            stacked: true,
+            beginAtZero: true,
+            grace: 50
           }
         }
       },
@@ -103,3 +137,5 @@ export default {
   },
 };
 </script>
+
+
