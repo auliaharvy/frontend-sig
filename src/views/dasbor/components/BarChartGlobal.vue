@@ -114,7 +114,7 @@ export default {
             },
             font: {
               weight: 'bold',
-              size: 8,
+              size: 10,
             }
           },
           // topLabels: {
@@ -122,6 +122,7 @@ export default {
           // }
         },
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
           x: {
             stacked: true,
