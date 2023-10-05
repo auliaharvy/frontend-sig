@@ -186,7 +186,7 @@ export default {
     roleUser: {},
     tbrPallet: 0,
     imageRules: [
-      (v) => !v || ['image/png','image/jpeg','image/jpg'].includes(v.type) || "Only jpg/jpeg and png files are allowed!"
+      (v) => ['image/png','image/jpeg','image/jpg'].includes(v.type) || "Only jpg/jpeg and png files are allowed!"
     ],
     idRules: [
       (value) => {
