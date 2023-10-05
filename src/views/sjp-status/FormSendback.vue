@@ -127,7 +127,7 @@ export default {
       },
     ],
     imageRules: [
-      (v) => !v || ['image/png','image/jpeg','image/jpg'].includes(v.type) || "Only jpg/jpeg and png files are allowed!"
+      (v) => ['image/png','image/jpeg','image/jpg'].includes(v.type) || "Only jpg/jpeg and png files are allowed!"
     ],
     palletRules: [
       (v) => v > -1 || "cannot input - number",
