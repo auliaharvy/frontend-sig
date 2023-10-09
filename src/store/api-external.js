@@ -8,14 +8,14 @@ const state = () => ({
     paramTruck: {
       token: "4565b5695f91cf522515f9a6b1ddd631",
       org: "7900",
-      plant: "79B1"
+      plant: ""
     },
     paramDo: {
       token: "LITPX1VEQE",
       X_TGL1: "2023-09-01",
       X_TGL2: "2023-09-30",
       X_NOPOLISI: "",
-      X_WERKS: "79B1",
+      X_WERKS: "",
       X_LINE_SO: "000000",
       X_SO: "X"
     },
@@ -80,24 +80,24 @@ const actions = {
       commit('isLoading')
       return new Promise((resolve, reject) => {
           commit('CHANGE_DO_PARAMETER', '7900')
+          var firstTwoPlantNumber = state.paramDo.X_WERKS.slice(0, 2);
+          if (firstTwoPlantNumber == "79") {
+            commit('CHANGE_DO_PARAMETER', '7900')
+          } else {
+            var firstPlantNumber = state.paramDo.X_WERKS.slice(0, 1);
+            if (firstPlantNumber == "7") {
+              commit('CHANGE_DO_PARAMETER', '7000')
+            } if (firstPlantNumber == "5") {
+              commit('CHANGE_DO_PARAMETER', '5000')
+            }
+          }
+          console.log(state.paramDo.X_VKORG);
           apiClient.post(`/api-external/do`, state.paramDo)
           .then((response) => {
-              if(response.data instanceof Array) {
-                commit('ASSIGN_DO', response.data)
-              }
-              commit('CHANGE_DO_PARAMETER', '7000')
-              apiClient.post(`/api-external/do`, state.paramDo).then((response) => {
-                if(response.data instanceof Array) {
-                  commit('ASSIGN_DO', response.data)
-                }
-                commit('CHANGE_DO_PARAMETER', '5000')
-                apiClient.post(`/api-external/do`, state.paramDo).then((response) => {
-                  if(response.data instanceof Array) {
-                    commit('ASSIGN_DO', response.data)
-                  }
-              })
-                resolve(response.data)
-            })
+            if(response.data instanceof Array) {
+              commit('ASSIGN_DO', response.data)
+              resolve(response.data)
+            }  
             resolve(state.dataDo)
           }).finally(() => {
               commit('doneLoading')
