@@ -9,7 +9,7 @@
           :rules="idRules"
           outlined
           v-model="palletTransfer.id_company_departure"
-          item-text="name"
+          :item-text="item => `${item.code} - ${item.name}`"
           item-value="id"
           required
           clearable
@@ -24,7 +24,7 @@
           :rules="idRules"
           outlined
           v-model="palletTransfer.id_company_destination"
-          item-text="name"
+          :item-text="item => `${item.code} - ${item.name}`"
           item-value="id"
           required
           clearable

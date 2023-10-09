@@ -24,7 +24,7 @@
           :rules="idRules"
           outlined
           v-model="palletTransfer.id_company_destination"
-          item-text="name"
+          :item-text="item => `${item.code} - ${item.name}`"
           item-value="id"
           required
           readonly

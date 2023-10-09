@@ -301,6 +301,10 @@ export default {
     },
     async changeDo() {
       const foundDo = this.dataDo.find(x => x.NO_DO === this.sjp.no_do);
+      // data do
+      this.sjp.dataDo = foundDo;
+
+
       this.sjp.no_do = foundDo.NO_DO;
           this.sjp.destination = foundDo.NAMA_TOKO;
           this.sjp.destination_code = foundDo.KODE_DA;
@@ -349,6 +353,10 @@ export default {
               confirmButtonText: "Ok!",
             });
           } else {
+            // data do
+            this.sjp.dataDo = response[0];
+            
+
             this.sjp.no_do = response[0].NO_DO;
             this.sjp.destination = response[0].NAMA_TOKO;
             this.sjp.destination_code = response[0].KODE_DA;

@@ -184,8 +184,11 @@ export default {
       selectedItem: 1,
       headers: [
         { value: "trx_code", text: this.$t("palletTransfer.trxNumber"), width: "200px" },
+        { value: "departure_code", text: "Kode Keberangkatan", width: "120px" },
         { value: "departure_company", text: this.$t("palletTransfer.departure"), width: "180px" },
+        { value: "destination_code", text: "Kode Tujuan", width: "120px" },
         { value: "destination_company", text: this.$t("palletTransfer.destination"), width: "180px" },
+        { value: "transporter_code", text: "Kode Ekspeditur", width: "120px" },
         { value: "transporter_company", text: this.$t("palletTransfer.transporter"), width: "180px" },
         { value: "license_plate", text: this.$t("palletTransfer.truck"), width: "180px" },
         { value: "driver_name", text: this.$t("palletTransfer.driver"), width: "180px" },

@@ -42,7 +42,6 @@
                 $t("manajemenpengguna.unduh")
               }}</v-btn>
             </export-excel>
-              <v-btn>{{ $t("manajemenpengguna.unduh") }}</v-btn>
               <v-spacer></v-spacer>
               <v-text-field
                 v-model="search"
