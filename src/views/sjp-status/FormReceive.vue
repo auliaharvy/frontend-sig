@@ -142,7 +142,6 @@
           <!-- v-model="sjpStatus.sending_driver_approval" -->
         <v-file-input
           v-model="sjpStatus.receiving_driver_approval"
-          :rules="imageRules"
           accept="image/png, image/jpeg"
           outlined
           @change="uploadImage"

@@ -85,9 +85,22 @@
               <p class="text-normal" v-else-if="item.is_sendback == 1">Sendback</p>
             </template>
 
-            <template v-slot:item.status="{ item }">
+            <!-- <template v-slot:item.status="{ item }">
               <p class="text-normal" v-if="item.status == 0">Sending</p>
               <p class="text-green" v-else-if="item.status == 1">Received</p>
+            </template> -->
+
+            <template v-slot:item.status="{ item }">
+              <p v-if="item.status_sjp == 0">Draft</p>
+              <p class="text-green" v-else-if="item.status_sjp == 1">Dalam Pengiriman</p>
+              <p class="text-blue" v-else-if="item.status_sjp == 2">Pengiriman Diterima</p>
+              <p class="text-green" v-else-if="item.status_sjp == 3">
+                Dalam Pengiriman Kembali
+              </p>
+              <p class="text-blue" v-else-if="item.status_sjp == 4">
+                Pengiriman Kembali Diterima
+              </p>
+              <!-- <p class="text-red" v-else-if="item.state == 6">Pengiriman Di Batalkan</p> -->
             </template>
 
             <template v-slot:item.sending_driver_approval="{ item }">
