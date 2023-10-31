@@ -35,8 +35,11 @@
 
 
         <v-card-actions>
+          <v-btn variant="text" @click="editProfile()">
+            Profile
+          </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="primary" variant="text" @click="doLogout()">
+          <v-btn variant="text" @click="doLogout()">
             Logout
           </v-btn>
         </v-card-actions>
@@ -69,6 +72,14 @@ export default {
     ...mapActions("auth", [
       "logout",
     ]),
+    editProfile() {
+      // console.log("Mengedit data:", item);
+      var userData = JSON.parse(localStorage.getItem("userData"));
+      this.$router.push({
+        name: 'user.edit',
+        params: { id: userData.data.id}
+      });
+    },
     ...mapActions("lang", ["setLanguage", "setSelectedLanguageOption"]),
     async doLogout() {
       this.logout().then(() => {
