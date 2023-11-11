@@ -58,6 +58,14 @@
                 </th>
               </tr>
             </template>
+
+            <template v-slot:item.tanggal="{ item }">
+              <p class="text-normal">{{ item.created_at | moment('DD-MM-YYYY') }}</p>
+            </template>
+            <template v-slot:item.jam="{ item }">
+              <p class="text-normal">{{ item.created_at | moment('HH:mm') }}</p>
+            </template>
+
             <template v-slot:item.status="{ item }">
               <p v-if="item.status == 0">Draft</p>
               <p class="text-green" v-else-if="item.status == 1">Approved</p>
@@ -184,6 +192,8 @@ export default {
       selectedItem: 1,
       headers: [
         { value: "trx_code", text: this.$t("palletTransfer.trxNumber"), width: "200px" },
+        { value: "tanggal", text: "Tanggal", width: "120px" },
+        { value: "jam", text: "Jam", width: "70px" },
         { value: "departure_code", text: "Kode Keberangkatan", width: "120px" },
         { value: "departure_company", text: this.$t("palletTransfer.departure"), width: "180px" },
         { value: "destination_code", text: "Kode Tujuan", width: "120px" },

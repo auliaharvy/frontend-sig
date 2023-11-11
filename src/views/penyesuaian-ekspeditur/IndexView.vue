@@ -86,6 +86,12 @@
               </v-menu>
               <v-icon v-if="item.status === 0 && $can('delete transporter adjustment')" small @click="hapusData(item)"> mdi-delete </v-icon>
             </template>
+            <template v-slot:item.tanggal="{ item }">
+              <p class="text-normal">{{ item.created_at | moment('DD-MM-YYYY') }}</p>
+            </template>
+            <template v-slot:item.jam="{ item }">
+              <p class="text-normal">{{ item.created_at | moment('HH:mm') }}</p>
+            </template>
           </v-data-table>
         </v-card>
       </v-card>

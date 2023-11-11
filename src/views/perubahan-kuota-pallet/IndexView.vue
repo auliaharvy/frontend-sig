@@ -60,6 +60,14 @@
                 </th>
               </tr>
             </template>
+
+            <template v-slot:item.tanggal="{ item }">
+              <p class="text-normal">{{ item.created_at | moment('DD-MM-YYYY') }}</p>
+            </template>
+            <template v-slot:item.jam="{ item }">
+              <p class="text-normal">{{ item.created_at | moment('HH:mm') }}</p>
+            </template>
+
             <template v-slot:item.type="{ item }">
               <p class="text-green" v-if="item.type == 0 || item.type == null">Penambahan</p>
               <p class="text-red" v-else-if="item.type == 1">Pengurangan</p>
@@ -178,6 +186,8 @@ export default {
       selectedItem: 1,
       headers: [
         { value: "trx_number", text: this.$t("changeQuota.trxNumber"), width: "200px" },
+        { value: "tanggal", text: "Tanggal", width: "120px" },
+        { value: "jam", text: "Jam", width: "70px" },
         { value: "company_name", text: this.$t("changeQuota.compRequester"), width: "180px" },
         { value: "requester_name", text: this.$t("changeQuota.requester"), width: "180px" },
         { value: "quantity", text: this.$t("changeQuota.requestedQuantity"), width: "100px" },

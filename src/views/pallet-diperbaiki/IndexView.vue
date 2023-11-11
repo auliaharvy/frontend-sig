@@ -60,6 +60,13 @@
                 </th>
               </tr>
             </template>
+
+            <template v-slot:item.tanggal="{ item }">
+              <p class="text-normal">{{ item.created_at | moment('DD-MM-YYYY') }}</p>
+            </template>
+            <template v-slot:item.jam="{ item }">
+              <p class="text-normal">{{ item.created_at | moment('HH:mm') }}</p>
+            </template>
 			    </v-data-table>
             <!-- <template v-slot:item.actions="{ item }">
               <v-menu>
@@ -157,6 +164,8 @@ export default {
       selectedItem: 1,
       headers: [
         { value: "trx_number", text: this.$t("repairPallet.trxNumber") },
+        { value: "tanggal", text: "Tanggal", width: "120px" },
+        { value: "jam", text: "Jam", width: "70px" },
         { value: "company_name", text: this.$t("repairPallet.company") },
         { value: "reporter_name", text: this.$t("repairPallet.reporter") },
         { value: "qty_good_pallet", text: this.$t("pallet.good") },

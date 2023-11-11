@@ -67,6 +67,13 @@
               </v-btn>
             </template>
 
+            <template v-slot:item.tanggal="{ item }">
+              <p class="text-normal">{{ item.created_at | moment('DD-MM-YYYY') }}</p>
+            </template>
+            <template v-slot:item.jam="{ item }">
+              <p class="text-normal">{{ item.created_at | moment('HH:mm') }}</p>
+            </template>
+
             <template v-slot:item.tinjau="{ item }">
               <router-link
                 :to="{ name: 'claim-pallet.view', params: { id: item.id } }"
@@ -172,6 +179,8 @@ export default {
       selectedItem: 1,
       headers: [
         { value: "trx_number", text: this.$t("claimPallet.trxNumber"), width: "200px" },
+        { value: "tanggal", text: "Tanggal", width: "120px" },
+        { value: "jam", text: "Jam", width: "70px" },
         { value: "company_name", text: this.$t("claimPallet.company"), width: "180px" },
         { value: "manager_name", text: this.$t("claimPallet.approverManager"), width: "180px" },
         { value: "pic_distributor", text: this.$t("claimPallet.approverDistributor"), width: "180px" },
