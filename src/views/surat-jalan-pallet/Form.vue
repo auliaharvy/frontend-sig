@@ -4,193 +4,81 @@
     <loading-overlay :active="loadingApi" :is-full-page="true" loader="bars" />
     <v-container>
       <v-row no-gutters>
-        <v-menu
-          v-model="tanggal1"
-          :close-on-content-click="false"
-          max-width="290"
-        >
+        <v-menu v-model="tanggal1" :close-on-content-click="false" max-width="290">
           <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              :value="paramDo.X_TGL1"
-              clearable
-              label="Tanggal Query dari"
-              readonly
-              outlined
-              v-bind="attrs"
-              v-on="on"
-              @click:clear="date = null"
-            ></v-text-field>
+            <v-text-field :value="paramDo.X_TGL1" clearable label="Tanggal Query dari" readonly outlined v-bind="attrs"
+              v-on="on" @click:clear="date = null"></v-text-field>
           </template>
-          <v-date-picker
-            v-model="paramDo.X_TGL1"
-            @change="tanggal1 = false"
-          ></v-date-picker>
+          <v-date-picker v-model="paramDo.X_TGL1" @change="tanggal1 = false"></v-date-picker>
         </v-menu>
       </v-row>
       <v-row no-gutters>
-        <v-menu
-          v-model="tanggal2"
-          :close-on-content-click="false"
-          max-width="290"
-        >
+        <v-menu v-model="tanggal2" :close-on-content-click="false" max-width="290">
           <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              :value="paramDo.X_TGL2"
-              clearable
-              label="Tanggal query ke"
-              readonly
-              outlined
-              v-bind="attrs"
-              v-on="on"
-              @click:clear="date = null"
-            ></v-text-field>
+            <v-text-field :value="paramDo.X_TGL2" clearable label="Tanggal query ke" readonly outlined v-bind="attrs"
+              v-on="on" @click:clear="date = null"></v-text-field>
           </template>
-          <v-date-picker
-            v-model="paramDo.X_TGL2"
-            @change="tanggal2 = false"
-          ></v-date-picker>
+          <v-date-picker v-model="paramDo.X_TGL2" @change="tanggal2 = false"></v-date-picker>
         </v-menu>
       </v-row>
 
       <v-row no-gutters>
-        <v-text-field
-          v-model="paramDo.X_WERKS"
-          label="Kode Plant"
-          placeholder="79B1"
-          outlined
-          required
-        ></v-text-field>
-      </v-row>
-      
-      <v-row no-gutters>
-        <v-text-field
-          v-model="paramDo.X_NOPOLISI"
-          :label="$t('sjp.truck')"
-          :rules="noTruckRules"
-          placeholder="B66762HH"
-          outlined
-          required
-          append-icon="mdi-reload"
-          @click:append="fetchDo"
-          @keyup.enter.native="fetchDo"
-        ></v-text-field>
+        <v-text-field v-model="paramDo.X_WERKS" label="Kode Plant" placeholder="79B1" outlined required></v-text-field>
       </v-row>
 
       <v-row no-gutters>
-          <v-autocomplete
-            :label="$t('sjp.noDo')"
-            :items="dataDo"
-            :rules="idRules"
-            outlined
-            v-model="sjp.no_do"
-            item-text="NO_DO"
-            item-value="NO_DO"
-            @change="changeDo()"
-            required
-            clearable
-          >
-          </v-autocomplete>
-        </v-row>
-        <v-row no-gutters>
-          <v-autocomplete
-            label="Multiple SPJ"
-            :items="[{id: '0', label: 'Single'}, {id: '1', label: 'Multiple'}]"
-            outlined
-            v-model="sjp.is_multiple"
-            item-text="label"
-            item-value="id"
-          >
-          </v-autocomplete>
-        </v-row>
-
-      
-      <v-row no-gutters>
-        <v-text-field
-          v-model="sjp.destination"
-          :label="$t('sjp.destination')"
-          :rules="idRules"
-          outlined
-          required
-        ></v-text-field>
+        <v-text-field v-model="paramDo.X_NOPOLISI" :label="$t('sjp.truck')" :rules="noTruckRules" placeholder="B66762HH"
+          outlined required append-icon="mdi-reload" @click:append="fetchDo" @keyup.enter.native="fetchDo"></v-text-field>
       </v-row>
 
       <v-row no-gutters>
-        <v-text-field
-          v-model="sjp.transporter"
-          :label="$t('sjp.transporter')"
-          :rules="idRules"
-          outlined
-          required
-        ></v-text-field>
+        <v-autocomplete :label="$t('sjp.noDo')" :items="dataDo" :rules="idRules" outlined v-model="sjp.no_do"
+          item-text="NO_DO" item-value="NO_DO" @change="changeDo()" required clearable>
+        </v-autocomplete>
+      </v-row>
+      <v-row no-gutters>
+        <v-autocomplete label="Multiple SPJ" :items="[{ id: '0', label: 'Single' }, { id: '1', label: 'Multiple' }]" outlined
+          v-model="sjp.is_multiple" item-text="label" item-value="id">
+        </v-autocomplete>
+      </v-row>
+
+
+      <v-row no-gutters>
+        <v-text-field v-model="sjp.destination" :label="$t('sjp.destination')" :rules="idRules" outlined
+          required></v-text-field>
       </v-row>
 
       <v-row no-gutters>
-        <v-text-field
-          v-model="sjp.driver"
-          :label="$t('sjp.driver')"
-          :rules="idRules"
-          outlined
-          required
-        ></v-text-field>
+        <v-text-field v-model="sjp.transporter" :label="$t('sjp.transporter')" :rules="idRules" outlined
+          required></v-text-field>
       </v-row>
 
       <v-row no-gutters>
-        <v-text-field
-          v-model="sjp.pallet_quantity"
-          :label="$t('sjp.palletQuantity')"
-          :rules="palletRules"
-          outlined
-          required
-        ></v-text-field>
+        <v-text-field v-model="sjp.driver" :label="$t('sjp.driver')" :rules="idRules" outlined required></v-text-field>
       </v-row>
 
       <v-row no-gutters>
-        <v-menu
-          v-model="departureForm"
-          :close-on-content-click="false"
-          max-width="290"
-        >
+        <v-text-field v-model="sjp.pallet_quantity" :label="$t('sjp.palletQuantity')" :rules="palletRules" outlined
+          required></v-text-field>
+      </v-row>
+
+      <v-row no-gutters>
+        <v-menu v-model="departureForm" :close-on-content-click="false" max-width="290">
           <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              :value="sjp.departure_time"
-              clearable
-              :label="$t('sjp.depart')"
-              readonly
-              outlined
-              v-bind="attrs"
-              v-on="on"
-              @click:clear="date = null"
-            ></v-text-field>
+            <v-text-field :value="sjp.departure_time" clearable :label="$t('sjp.depart')" readonly outlined v-bind="attrs"
+              v-on="on" @click:clear="date = null"></v-text-field>
           </template>
-          <v-date-picker
-            v-model="sjp.departure_time"
-            @change="etaForm = false"
-          ></v-date-picker>
+          <v-date-picker v-model="sjp.departure_time" @change="etaForm = false"></v-date-picker>
         </v-menu>
       </v-row>
 
       <v-row no-gutters>
-        <v-menu
-          v-model="etaForm"
-          :close-on-content-click="false"
-          max-width="290"
-        >
+        <v-menu v-model="etaForm" :close-on-content-click="false" max-width="290">
           <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              :value="sjp.eta"
-              clearable
-              :label="$t('sjp.eta')"
-              readonly
-              outlined
-              v-bind="attrs"
-              v-on="on"
-              @click:clear="date = null"
-            ></v-text-field>
+            <v-text-field :value="sjp.eta" clearable :label="$t('sjp.eta')" readonly outlined v-bind="attrs" v-on="on"
+              @click:clear="date = null"></v-text-field>
           </template>
-          <v-date-picker
-            v-model="sjp.eta"
-            @change="etaForm = false"
-          ></v-date-picker>
+          <v-date-picker v-model="sjp.eta" @change="etaForm = false"></v-date-picker>
         </v-menu>
       </v-row>
 
@@ -212,6 +100,7 @@
 </template>
 
 <script>
+import role from "@/store/role";
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "FormOrganization",
@@ -279,11 +168,11 @@ export default {
         this.sjp.id_departure_company = roleData.company_id;
         this.submitSjp(this.sjp).then((response) => {
           this.$swal({
-                icon: 'success',
-                title: 'Success',
-              });
-            this.CLEAR_FORM();
-            this.$router.push({ name: "sjp" });
+            icon: 'success',
+            title: 'Success',
+          });
+          this.CLEAR_FORM();
+          this.$router.push({ name: "sjp" });
           // else {
           //   if (this.errors) {
           //     this.$swal({
@@ -306,33 +195,60 @@ export default {
 
 
       this.sjp.no_do = foundDo.NO_DO;
-          this.sjp.destination = foundDo.NAMA_TOKO;
-          this.sjp.destination_code = foundDo.KODE_DA;
-          this.sjp.destination_dist = foundDo.NAMA_SOLD_TO;
-          this.sjp.destination_dist_code = foundDo.SOLD_TO;
-          this.sjp.truck_number = foundDo['LICENSE PLATE'];
-          this.sjp.transporter = foundDo.NAMA_EXPEDITUR;
-          this.sjp.transporter_code = foundDo.NO_EXPEDITUR;
-          this.sjp.id_transporter_company = 91;
-          this.sjp.organization_name = foundDo.NAMA_PLANT;
-          this.sjp.organization_code = foundDo.PLANT;
-          this.sjp.driver = foundDo.NAMA_SOPIR;
-          const beratIsi = foundDo.BERAT_ISI.split(',')[0]
-          const tonnage = beratIsi.replace('.','')
-          this.sjp.tonnage = parseInt(tonnage) / 1000;
-          this.sjp.product_quantity = parseInt(tonnage) / 40;
-          this.sjp.packaging = 40;
-          this.sjp.pallet_quantity = Math.floor((parseInt(tonnage)/ 1000) / 2);
-          this.sjp.departure_time = new Date().toISOString().slice(0, 10);
-          var tomorrow = new Date();
-          tomorrow.setDate(tomorrow.getDate() + 1);
-          this.sjp.eta = tomorrow.toISOString().slice(0, 10);
+      this.sjp.destination = foundDo.NAMA_TOKO;
+      this.sjp.destination_code = foundDo.KODE_DA;
+      this.sjp.destination_dist = foundDo.NAMA_SOLD_TO;
+      this.sjp.destination_dist_code = foundDo.SOLD_TO;
+      this.sjp.truck_number = foundDo['LICENSE PLATE'];
+      this.sjp.transporter = foundDo.NAMA_EXPEDITUR;
+      this.sjp.transporter_code = foundDo.NO_EXPEDITUR;
+      this.sjp.id_transporter_company = 91;
+      this.sjp.organization_name = foundDo.NAMA_PLANT;
+      this.sjp.organization_code = foundDo.PLANT;
+      this.sjp.driver = foundDo.NAMA_SOPIR;
+      const beratIsi = foundDo.BERAT_ISI.split(',')[0]
+      const tonnage = beratIsi.replace('.', '')
+      this.sjp.tonnage = parseInt(tonnage) / 1000;
+      this.sjp.product_quantity = parseInt(tonnage) / 40;
+      this.sjp.packaging = 40;
+      this.sjp.pallet_quantity = Math.floor((parseInt(tonnage) / 1000) / 2);
+      this.sjp.departure_time = new Date().toISOString().slice(0, 10);
+      var tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      this.sjp.eta = tomorrow.toISOString().slice(0, 10);
     },
     async setDate() {
       this.paramDo.X_TGL1 = new Date().toISOString().slice(0, 10);
       this.paramDo.X_TGL2 = new Date().toISOString().slice(0, 10);
+      var role = JSON.parse(localStorage.getItem("role"));
+      this.paramDo.X_WERKS = role.company_code;
     },
     async fetchDo() {
+      // //dev data
+      // this.sjp.dataDo = {};
+      // this.sjp.no_do = "1111";
+      // this.sjp.destination = "Gudang berkat";
+      // this.sjp.destination_code = "14045";
+      // this.sjp.destination_dist = "Distributor gudang berkat";
+      // this.sjp.destination_dist_code = "01_14045";
+      // this.sjp.truck_number = this.paramDo.X_NOPOLISI;
+      // this.sjp.transporter = "Transporter pengangkut";
+      // this.sjp.transporter_code = "14044";
+      // this.sjp.id_transporter_company = 91;
+      // this.sjp.organization_name = "SIG TUBAN";
+      // this.sjp.organization_code = "00112312";
+      // this.sjp.driver = "Helmi Yahya";
+      // const beratIsi = "1.000"
+      // const tonnage = beratIsi.replace('.', '')
+      // this.sjp.tonnage = parseInt(tonnage) / 1000;
+      // this.sjp.packaging = 40;
+      // this.sjp.product_quantity = parseInt(tonnage) / 40;
+      // this.sjp.pallet_quantity = Math.floor((parseInt(tonnage) / 1000) / 2);
+      // this.sjp.departure_time = new Date().toISOString().slice(0, 10);
+      // var tomorrow = new Date();
+      // tomorrow.setDate(tomorrow.getDate() + 1);
+      // this.sjp.eta = tomorrow.toISOString().slice(0, 10);
+
       if (!this.paramDo.X_NOPOLISI) {
         this.$swal({
           title: "Truck Number Empty",
@@ -344,7 +260,7 @@ export default {
       } else {
         // this.loading = true;
         await this.getDataDo().then((response) => {
-          if(response === 'No Data Found') {
+          if (response === 'No Data Found') {
             this.$swal({
               title: "No data found",
               text: "No DO Data found",
@@ -353,10 +269,9 @@ export default {
               confirmButtonText: "Ok!",
             });
           } else {
-            // data do
-            this.sjp.dataDo = response[0];
-            
 
+            // prod data do
+            this.sjp.dataDo = response[0];
             this.sjp.no_do = response[0].NO_DO;
             this.sjp.destination = response[0].NAMA_TOKO;
             this.sjp.destination_code = response[0].KODE_DA;
@@ -370,35 +285,17 @@ export default {
             this.sjp.organization_code = response[0].PLANT;
             this.sjp.driver = response[0].NAMA_SOPIR;
             const beratIsi = response[0].BERAT_ISI.split(',')[0]
-            const tonnage = beratIsi.replace('.','')
+            const tonnage = beratIsi.replace('.', '')
             this.sjp.tonnage = parseInt(tonnage) / 1000;
             this.sjp.packaging = 40;
             this.sjp.product_quantity = parseInt(tonnage) / 40;
-            this.sjp.pallet_quantity = Math.floor((parseInt(tonnage)/ 1000) / 2);
+            this.sjp.pallet_quantity = Math.floor((parseInt(tonnage) / 1000) / 2);
             this.sjp.departure_time = new Date().toISOString().slice(0, 10);
             var tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             this.sjp.eta = tomorrow.toISOString().slice(0, 10);
           }
         });
-        // this.sjp.departure_time = new Date().toISOString().slice(0, 10);
-        // var tomorrow = new Date();
-        // tomorrow.setDate(tomorrow.getDate() + 1);
-        // this.sjp.eta = tomorrow.toISOString().slice(0, 10);
-        // this.sjp.destination = "Distributor 1";
-        // this.sjp.transporter = "Transporter 1";
-        // this.sjp.driver = "Budi";
-        // this.sjp.id_departure_company = 4;
-        // this.sjp.id_destination_company = 10;
-        // this.sjp.id_transporter_company = 51;
-        // this.sjp.id_truck = 4;
-        // this.sjp.id_driver = 3;
-        // this.sjp.no_do = "DO-202305-0010";
-        // this.sjp.tonnage = 100;
-        // this.sjp.packaging = 60;
-        // this.sjp.product_quantity = 80;
-        // this.sjp.pallet_quantity = 10;
-        // this.loading = false;
       }
     },
   },
