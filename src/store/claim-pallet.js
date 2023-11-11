@@ -75,7 +75,7 @@ const actions = {
             apiClient.get(`/claim-pallets?page=${state.page}&q=${search}`)
             .then((response) => {
                 const roleSet = JSON.parse(localStorage.getItem("role"));
-              if(roleSet.role_name == 'Supervisor' || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
+              if( roleSet.role_name == 'Superuser') {
                 console.log(response.data.data);
                 commit('ASSIGN_DATA', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data);

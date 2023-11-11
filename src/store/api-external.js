@@ -91,7 +91,6 @@ const actions = {
               commit('CHANGE_DO_PARAMETER', '5000')
             }
           }
-          console.log(state.paramDo.X_VKORG);
           apiClient.post(`/api-external/do`, state.paramDo)
           .then((response) => {
             if(response.data instanceof Array) {
