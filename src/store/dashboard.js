@@ -231,7 +231,7 @@ const actions = {
             apiClient.get(`/dashboards/detail-pallet?type=Pool Pallet`)
             .then((response) => {
                 const roleSet = JSON.parse(localStorage.getItem("role"));
-                if(roleSet.role_name == "Supervisor" || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
+                if(roleSet.role_name == 'Superuser') {
                     commit('ASSIGN_DETAIL_POOL', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                     resolve(response.data)
                 } else {
@@ -261,7 +261,7 @@ const actions = {
             apiClient.get(`/dashboards/detail-pallet?type=Warehouse`)
             .then((response) => {
                 const roleSet = JSON.parse(localStorage.getItem("role"));
-                if(roleSet.role_name == "Supervisor" || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
+                if(roleSet.role_name == 'Superuser') {
                     commit('ASSIGN_DETAIL_WAREHOUSE', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                     resolve(response.data)
                 } else {
@@ -291,7 +291,7 @@ const actions = {
             apiClient.get(`/dashboards/detail-pallet?type=Transporter`)
             .then((response) => {
                 const roleSet = JSON.parse(localStorage.getItem("role"));
-                if(roleSet.role_name == "Supervisor" || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
+                if(roleSet.role_name == 'Superuser') {
                     commit('ASSIGN_DETAIL_TRANSPORTER', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                     resolve(response.data)
                 } else {
@@ -321,7 +321,7 @@ const actions = {
             apiClient.get(`/dashboards/detail-pallet?type=Workshop`)
             .then((response) => {
                 const roleSet = JSON.parse(localStorage.getItem("role"));
-                if(roleSet.role_name == "Supervisor" || roleSet.role_name == 'Manager' || roleSet.role_name == 'Superuser') {
+                if(roleSet.role_name == 'Superuser') {
                     commit('ASSIGN_DETAIL_WORKSHOP', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                     resolve(response.data)
                 } else {
