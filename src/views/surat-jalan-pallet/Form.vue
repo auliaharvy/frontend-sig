@@ -101,7 +101,6 @@
 
 <script>
 import role from "@/store/role";
-import dummy from "./dummyData.json"
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "FormOrganization",
@@ -326,7 +325,7 @@ export default {
             this.sjp.driver = response[0].NAMA_SOPIR;
             const beratIsi = response[0].BERAT_ISI.split(',')[0]
             const tonnage = beratIsi.replace('.', '')
-            this.sjp.tonnage = parseInt(tonnage) / 1000;
+            this.sjp.tonnage = Math.round(parseInt(tonnage) / 1000);
             this.sjp.packaging = 40;
             this.sjp.product_quantity = parseInt(tonnage) / 40;
             this.sjp.pallet_quantity = Math.floor((parseInt(tonnage) / 1000) / 2);
