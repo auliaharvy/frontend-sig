@@ -101,6 +101,7 @@
 
 <script>
 import role from "@/store/role";
+import dummy from "./dummyData.json"
 import { mapActions, mapState, mapMutations } from "vuex";
 export default {
   name: "FormOrganization",
@@ -225,7 +226,46 @@ export default {
     },
     async fetchDo() {
       // //dev data
-      // this.sjp.dataDo = {};
+      // this.sjp.dataDo = {
+      //   NO_SPJ: "2009978908",
+      //   NO_BOOKING: "",
+      //   NO_DO: "0710238613",
+      //   TGL_SPJ: "10/10/2023",
+      //   TGL_DO: "10/10/2023",
+      //   TGL_MINTA: "06/10/2023",
+      //   KWANTUM: "800,000",
+      //   KWANTUMX: "32,000",
+      //   NO_SPPS: "PJ/23241567",
+      //   NAMA_SOPIR: "BUDIANTO",
+      //   KODE_DA: "3727015000",
+      //   NAMA_TOKO: "GUD BAM KAPEDI",
+      //   ALAMAT_DA: "JL TALANG SIRING,DSN BIYAN-KAP",
+      //   PROPINSI: "1025",
+      //   NAMA_PROP: "JAWA TIMUR",
+      //   AREA: "258004",
+      //   NAMA_AREA: "SUMENEP",
+      //   SOLD_TO: "0000003808",
+      //   NAMA_SOLD_TO: "Plant ICS Tuban SP",
+      //   PLANT: "7403",
+      //   NAMA_PLANT: "CP Tuban",
+      //   NO_EXPEDITUR: "0000410092",
+      //   NAMA_EXPEDITUR: "SEMEN INDONESIA LOGISTIK.PT",
+      //   PRODUK: "SEMEN PCC ZAK 40KG",
+      //   ITEM_NO: "121-301-0050",
+      //   UOM: "ZAK",
+      //   UOMX: "",
+      //   HARGA: "56.675.200,000",
+      //   NAMA_KAPAL: "",
+      //   NO_SO: "0012887729",
+      //   NO_PO: "",
+      //   BERAT_ISI: "43.460,000",
+      //   PTGS_ISI: "AMS7093118K",
+      //   PTGS_MASUK: "SWA907304",
+      //   NO_SO_REF: "",
+      //   NO_DO_REFF: "",
+      //   NO_SPJ_REF: "",
+      //   SPP: "PJ/23241567",
+      // };
       // this.sjp.no_do = "1111";
       // this.sjp.destination = "Gudang berkat";
       // this.sjp.destination_code = "14045";
