@@ -194,6 +194,24 @@ const actions = {
     });
   },
 
+  deleteRoleUser({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+      commit("CLEAR_ERRORS", "", { root: true });
+      apiClient
+        .post(`/userhasrole/delete`, payload)
+        .then((response) => {
+          alert(response.data.message);
+          resolve(response.data);
+        })
+        .catch((error) => {
+            alert(error.response.data);
+          if (error.response.status == 422) {
+            commit("SET_ERRORS", error.response.data.errors, { root: true });
+          }
+        });
+    });
+  },
+
   setRolePermission({ commit }, payload) {
     commit("isLoading");
     return new Promise((resolve, reject) => {

@@ -56,7 +56,7 @@
             </template>
             <template v-slot:item.roles="{ item }">
               <div v-for="(role,i) in item.roles" :key="i">
-                <span>{{ i+1 + '. ' + role.role + ' - ' + role.company }}</span>
+                <span>{{ i+1 + '. ' + role.role + ' - ' + role.company + ' '}} <v-icon small @click="hapusRole(role)"> mdi-delete </v-icon></span>
               </div>
             </template>
             <template v-slot:item.last_updated="{ item }">
@@ -105,7 +105,13 @@ export default {
   },
   data() {
     return {
+      expanded: [],
       selected: [],
+      headersRoles: [
+        { value: "role", text: "Role", width: '300px'},
+        { value: "company", text: "Perusahaan", width: '300px' },
+        { value: "actions", text: this.$t("table.actions") },
+      ],
       headers: [
         { value: "fullname", text: this.$t("manajemenpengguna.namalengkap") },
         { value: "username", text: this.$t("manajemenpengguna.username") },
@@ -113,6 +119,7 @@ export default {
         { value: "roles", text: 'Roles', width: '300px' },
         { value: "last_updated", text: 'Last Update', width: '150px' },
         { value: "is_deleted", text: 'Status' },
+        { text: '', value: 'data-table-expand' },
         { value: "actions", text: this.$t("table.actions") },
       ],
       filters: {
@@ -146,7 +153,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("user", ["getUsers", "deleteUser"]),
+    ...mapActions("user", ["getUsers", "deleteUser", "deleteRoleUser"]),
     columnValueList(val) {
       return this.users.map((d) => d[val]);
     },
@@ -155,6 +162,21 @@ export default {
       this.$router.push({
         name: 'user.edit',
         params: { id: item.id}
+      });
+    },
+    hapusRole(data) {
+      this.$swal({
+        title: "Are you sure?",
+        text: "This will delete record Permanently!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes!",
+      }).then((result) => {
+        if (result.value) {
+          this.deleteRoleUser(data); //JIKA SETUJU MAKA PERMINTAAN HAPUS AKAN DI EKSEKUSI
+        }
       });
     },
     hapusData(item) {
