@@ -327,7 +327,7 @@ export default {
             const tonnage = beratIsi.replace('.', '')
             this.sjp.tonnage = Math.round(parseInt(tonnage) / 1000);
             this.sjp.packaging = 40;
-            this.sjp.product_quantity = parseInt(tonnage) / 40;
+            this.sjp.product_quantity = Math.round(parseInt(tonnage) / 40);
             this.sjp.pallet_quantity = Math.floor((parseInt(tonnage) / 1000) / 2);
             this.sjp.departure_time = new Date().toISOString().slice(0, 10);
             var tomorrow = new Date();
