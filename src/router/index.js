@@ -744,6 +744,32 @@ const routes = [
     ]
   },
 
+  {
+    path: '/distributor',
+    component: () => import('../views/distributor/index.vue'),
+    meta: { requiresAuth: true },
+    children: [
+        {
+            path: '',
+            name: 'distributor',
+            component: () => import('../views/distributor/IndexView.vue'),
+            meta: { title: 'Manage distributor' }
+        },
+        {
+            path: 'add',
+            name: 'distributor.add',
+            component: () => import('../views/distributor/AddView.vue'),
+            meta: { title: 'Add New distributor' }
+        },
+        {
+          path: 'edit/:id',
+          name: 'distributor.edit',
+          component: () => import('../views/distributor/EditView.vue'),
+          meta: { title: 'Edit distributor' }
+        },
+    ]
+  },
+
   // Roles
   {
     path: '/roles',

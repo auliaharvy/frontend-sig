@@ -6,6 +6,7 @@ import lang from "./lang.js";
 import auth from "./auth.js";
 import user from "./user.js";
 import organization from "./organization.js";
+import distributor from "./distributor.js";
 import company from "./company.js";
 import companyType from "./company-type.js";
 import sjp from "./sjp.js";
@@ -37,6 +38,7 @@ const store = new Vuex.Store({
     auth,
     user,
     organization,
+    distributor,
     company,
     companyType,
     sjp,

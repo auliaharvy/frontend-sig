@@ -235,6 +235,7 @@ export default {
         title: "sidebar.pengaturan",
         items: [
           { title: "sidebar.organisasi", route: "/organization"  },
+          { title: "Distributor", route: "/distributor"  },
           { title: "sidebar.perandanizin", route: "/peran-dan-izin" },
           { title: "sidebar.peran", route: "/roles" },
           { title: "sidebar.izin", route: "/permissions" },
@@ -260,8 +261,6 @@ export default {
       var roles = JSON.parse(localStorage.getItem("userData"));
       this.dataRole = roles.data.role;
       this.role = role.index;
-      console.log(this.dataRole)
-      console.log(this.role)
     },
     changeRole() {
       var payload =this.dataRole.find(x => x.index === this.role);

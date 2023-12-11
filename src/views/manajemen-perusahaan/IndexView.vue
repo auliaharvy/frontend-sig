@@ -130,9 +130,10 @@ export default {
   data() {
     return {
       headers: [
-        { value: "code_organization", text: "Kode Organisasi", width: "80px" },
+        // { value: "code_organization", text: "Kode Organisasi", width: "80px" },
         { value: "name_organization", text: this.$t("organisasi.nama"), width: "180px" },
-        { value: "code", text: "Kode Perusahaan", width: "200px" },
+        { value: "dist_code", text: "Kode Distributor", width: "180px" },
+        { value: "code", text: "Kode Perusahaan", width: "180px" },
         { value: "name", text: "Nama Perusahaan", width: "180px" },
         { value: "name_company_type", text: this.$t("perusahaan.tipe"), width: "180px" },
         // { value: "address", text: this.$t("perusahaan.alamat"), width: "180px" },
@@ -149,6 +150,7 @@ export default {
         { value: "actions", text: this.$t("table.actions"), width: "180px" },
       ],
       filters: {
+        dist_code: [],
         code: [],
         name: [],
         name_company_type: [],
@@ -166,6 +168,7 @@ export default {
         // actions: [],
       },
       json_fields: {
+        "Distributor Code": "dist_code",
         "Code": "code",
         "Name": "name",
         "Type": "name_company_type",

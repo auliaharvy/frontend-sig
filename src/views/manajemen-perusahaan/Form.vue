@@ -18,6 +18,21 @@
 
       <v-row no-gutters>
         <v-autocomplete
+          label="Distributor"
+          :items="distributors"
+          :rules="idRules"
+          outlined
+          v-model="company.dist_code"
+          item-text="name"
+          item-value="code"
+          required
+          clearable
+        >
+        </v-autocomplete>
+      </v-row>
+
+      <v-row no-gutters>
+        <v-autocomplete
           :label="$t('perusahaan.tipe')"
           :items="company_types.data"
           :rules="idRules"
@@ -127,12 +142,16 @@ export default {
   }),
   created() {
     this.getOrganization(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
+    this.getDistributor(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
     this.getCompanyTypes(); //LOAD DATA SJP KETIKA COMPONENT DI-LOAD
   },
   computed: {
     ...mapState(["errors"]), //LOAD STATE ERROR UNTUK DITAMPILKAN KETIKA TERJADI ERROR VALIDASI
     ...mapState("organization", {
       organizations: (state) => state.organizations, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+    }),
+    ...mapState("distributor", {
+      distributors: (state) => state.distributors, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
     }),
     ...mapState("companyType", {
       company_types: (state) => state.company_types, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -145,6 +164,7 @@ export default {
     ...mapMutations("company", ["CLEAR_FORM"]),
     ...mapActions("company", ["submitCompany"]),
     ...mapActions("organization", ["getOrganization"]),
+    ...mapActions("distributor", ["getDistributor"]),
     ...mapActions("companyType", ["getCompanyTypes"]),
     validate() {
       const valid = this.$refs.form.validate();
