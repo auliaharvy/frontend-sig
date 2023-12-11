@@ -75,6 +75,12 @@ const actions = {
               if( roleSet.role_name == 'Superuser') {
                 commit('ASSIGN_DATA', response.data.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
+              } else if(roleSet.role_name == 'User Distributor') {
+                const result = {
+                  data: response.data.data.filter(val => val.dist_code == roleSet.dist_code),
+                };  
+                commit('ASSIGN_DATA', result.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                resolve(response.data)
               } else {
                 const result = {
                   data: response.data.data.filter(val => val.id == roleSet.company_id),
