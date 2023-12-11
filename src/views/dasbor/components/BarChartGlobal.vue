@@ -107,7 +107,7 @@ export default {
               // context.textAlign = 'center';
               // context.fillText(sum, x.getPixelForValue(index), chart.getDataSetMeta(1).data[index].y - 10);
               if(context.datasetIndex != 0) {
-                return `${value} dari ${sum}`;
+                return `${value}`;
               } else {
                 return value;
               }
