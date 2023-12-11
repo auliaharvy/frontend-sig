@@ -166,7 +166,7 @@
               worksheet="Sheet Pallet Transfers"
               name="data-pallet-transfers.xls"
             >
-              <v-btn color="primary" block>Download</v-btn>
+              <v-btn class="red darken-1 text-white" block>Download</v-btn>
             </export-excel>
         </v-card-actions>
       </v-card>

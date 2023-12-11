@@ -137,7 +137,7 @@
               worksheet="Sheet Damaged Pallet"
               name="data-damaged-pallet.xls"
             >
-              <v-btn color="primary" block>Download</v-btn>
+            <v-btn class="red darken-1 text-white mt-4" block>Download</v-btn>
             </export-excel>
         </v-card-actions>
       </v-card>

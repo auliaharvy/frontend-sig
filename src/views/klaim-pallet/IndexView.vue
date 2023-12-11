@@ -62,7 +62,7 @@
               </tr>
             </template>
             <template v-slot:item.photo="{ item }">
-              <v-btn v-if="item.photo != 0 || item.photo != '0'" @click="locationToImage($API_URL + item.photo)" color="info" small>
+              <v-btn v-if="item.photo != 0 || item.photo != '0'" @click="locationToImage($API_URL + item.photo)" class="red darken-1 text-white" small>
                 <v-icon small class="mr-2">mdi-image</v-icon>
               </v-btn>
             </template>
@@ -78,7 +78,7 @@
               <router-link
                 :to="{ name: 'claim-pallet.view', params: { id: item.id } }"
               >
-                <v-btn color="info" small><v-icon small class="mr-2">mdi-magnify</v-icon></v-btn>
+                <v-btn class="red darken-1 text-white" small><v-icon small >mdi-magnify</v-icon></v-btn>
               </router-link>
             </template>
             <template v-slot:item.price="{ item }">
@@ -153,7 +153,7 @@
               worksheet="Sheet Claim Pallet"
               name="data-claim-pallet.xls"
             >
-              <v-btn color="primary" block>Download</v-btn>
+              <v-btn class="red darken-1 text-white" block>Download</v-btn>
             </export-excel>
         </v-card-actions>
       </v-card>

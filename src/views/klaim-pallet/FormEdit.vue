@@ -86,9 +86,13 @@
       <v-row no-gutters>
         <v-col :col="24">
           <div class="d-flex flex-column">
-            <v-btn color="success" class="mt-4" block @click="validate">
+            <v-btn class="green darken-1 text-white mt-4" block @click="validate">
               {{ $t("form.submit") }}
             </v-btn>
+
+            <!-- <v-btn class="red darken-1 text-white mt-4" block @click="reset">
+              {{ $t("form.reset") }}
+            </v-btn> -->
 
           </div>
         </v-col>

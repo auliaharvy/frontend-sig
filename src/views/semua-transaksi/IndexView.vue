@@ -222,6 +222,10 @@ export default {
 };
 </script>
 <style scoped>
+div.v-picker__body.v-picker__body--no-title {
+  background-color: red !important;
+  color: white;
+}
 .warna-font {
   color: white;
 }

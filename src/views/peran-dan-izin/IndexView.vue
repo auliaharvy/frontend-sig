@@ -54,7 +54,8 @@
                 </v-autocomplete>
               </v-form>
               <v-form>
-                <v-btn class="success" @click="setRole()">
+                
+                <v-btn class="red darken-1 text-white" @click="setRole()">
                   {{ $t("perandanizin.aturperan") }}
                 </v-btn>
               </v-form>
@@ -81,7 +82,7 @@
                 </v-autocomplete>
               </v-form>
               <v-form>
-                <v-btn color="secondary" @click="checkPermission">
+                <v-btn class="red darken-1 text-white" @click="checkPermission">
                   {{ $t("perandanizin.cek") }} 
                 </v-btn>
               </v-form>
@@ -120,7 +121,7 @@
                 </v-card>
               </v-form>
               <v-form style="margin-top: 20px">
-                <v-btn class="success" @click="setPermission">
+                <v-btn class="red darken-1 text-white" @click="setPermission">
                   {{ $t("perandanizin.aturizin") }}
                 </v-btn>
               </v-form>
