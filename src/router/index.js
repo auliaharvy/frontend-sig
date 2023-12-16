@@ -238,6 +238,31 @@ const routes = [
         // },
     ]
   },
+  {
+    path: '/ber-missing-pallet',
+    component: () => import('../views/ber-missing-pallet/index.vue'),
+    meta: { requiresAuth: true },
+    children: [
+        {
+            path: '',
+            name: 'ber-missing-pallet',
+            component: () => import('../views/ber-missing-pallet/IndexView.vue'),
+            meta: { title: 'Manage BER Missing Pallet' }
+        },
+        {
+            path: 'add',
+            name: 'ber-missing-pallet.add',
+            component: () => import('../views/ber-missing-pallet/AddView.vue'),
+            meta: { title: 'Add BER Missing Pallet' }
+        },
+        // {
+        //   path: 'edit/:id',
+        //   name: 'company.edit',
+        //   component: () => import('../views/manajemen-perusahaan/EditView.vue'),
+        //   meta: { title: 'Edit Company' }
+        // },
+    ]
+  },
   // {
   //   path: '/pallet-rusak',
   //   name: 'pallet-rusak',

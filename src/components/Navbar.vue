@@ -196,6 +196,7 @@ export default {
           // { title: "sidebar.palletbaru", route: "/new-pallet", permission: 'read new pallet' },
           // { title: "sidebar.realisasiPallet", route: "/pallet-realization", permission: 'read pallet realization' },
           { title: "sidebar.palletrusak", route: "/damaged-pallet", permission: 'read damaged pallet' },
+          { title: "sidebar.berMissingPallet", route: "/ber-missing-pallet", permission: 'read damaged pallet' },
           { title: "sidebar.palletdiperbaiki", route: "/repaired-pallet", permission: 'read repaired pallet' },
           { title: "sidebar.penyewaanpallet", route: "/sewa-pallet", permission: 'read sewa pallet' },
         ],

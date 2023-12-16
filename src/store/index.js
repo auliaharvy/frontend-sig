@@ -18,6 +18,7 @@ import palletTransfer from "./pallet-transfer";
 import sjpStatus from "./sjp-status";
 import changeQuota from "./change-quota";
 import damagedPallet from "./damaged-pallet";
+import berMissingPallet from "./ber-missing-pallet";
 import repairedPallet from "./repaired-pallet";
 import newPallet from "./new-pallet";
 import palletRealization from "./pallet-realization";
@@ -50,6 +51,7 @@ const store = new Vuex.Store({
     sjpStatus,
     changeQuota,
     damagedPallet,
+    berMissingPallet,
     repairedPallet,
     newPallet,
     palletRealization,
