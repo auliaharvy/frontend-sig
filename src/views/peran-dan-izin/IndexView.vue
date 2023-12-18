@@ -108,7 +108,7 @@
                             <input type="checkbox" 
                             class="minimal-red" 
                             :key="index"
-                            :value="row.name"
+                            :value="row.id"
                             :checked="role_permission.findIndex(x => x.id_permission == row.id) != -1"
                             @click="addPermission(row.id)"
                             > {{ row.name }} <br :key="'row' + index">
@@ -201,12 +201,12 @@ export default {
     },
     addPermission(name) {
       // console.log(this.new_permission);
-      const record = this.new_permission.find((el) => el.name == name);
+      const record = this.new_permission.find((el) => el.id_permission == name);
       if (record) {
         this.new_permission.splice(this.new_permission.indexOf(record), 1);
       } else {
         this.new_permission.push({
-          name,
+          id_permission: name,
         });
       }
     },
@@ -215,8 +215,10 @@ export default {
       // console.log(this.role_permission);
       this.loading = true;
       this.getRolePermission(this.role_selected).then(() => {
+        console.log(this.role_permission);
         this.loading = false;
         this.new_permission = this.role_permission;
+        console.log(this.new_permission);
       });
     },
     setPermission() {
@@ -227,11 +229,11 @@ export default {
       for(var i = 0; i < this.new_permission.length; i++) {
           var obj = {}; // <---- Move declaration inside loop
 
-          obj['id_permission'] = this.new_permission[i].name;
+          obj['id_permission'] = this.new_permission[i].id_permission;
           obj['id_role'] = this.role_selected;
           dataRolePermissions.push(obj);
       }
-      console.log(dataRolePermissions);
+      console.log(this.new_permission);
       this.setRolePermission({
         dataRolePermissions
       }).then((res) => {
