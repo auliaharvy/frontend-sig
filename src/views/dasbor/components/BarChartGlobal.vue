@@ -31,16 +31,7 @@ export default {
     return {
       chartData: {
         labels: this.labels,
-        datasets: [
-          {
-            label: "Quota",
-            data: this.quota,
-            backgroundColor: "rgba(1, 151, 127, 0.6)",
-            borderColor: "rgba(1, 151, 127, 1)",
-            stack: 'Stack 0',
-            borderWidth: 0.5,
-          },
-          
+        datasets: [     
           {
             label: "Good",
             data: this.good,
