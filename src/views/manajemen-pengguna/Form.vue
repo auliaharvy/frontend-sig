@@ -32,7 +32,7 @@
         <v-text-field
           v-model="user.password"
           :label="$t('login.katasandi')"
-          :rules="nameRules"
+          :rules="passwordRules"
           required
           :type="showPassword ? 'text' : 'password'"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -72,6 +72,40 @@ export default {
   data: () => ({
     showPassword: false,
     showPasswordConfirm: false,
+    passwordRules: [
+      (value) => {
+        if (value) return true;
+
+        return "This field is required";
+      },
+      (value) => {
+        if (value.length >= 8) return true;
+
+        return "Password must be at least 8 characters long";
+      },
+      (value) => {
+        if (/[a-z]/.test(value) && /[A-Z]/.test(value)) return true;
+
+        return "Password must contain both uppercase and lowercase letters";
+      },
+      (value) => {
+        if (/[0-9]/.test(value)) return true;
+
+        return "Password must contain at least one number";
+      },
+      (value) => {
+        if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(value)) return true;
+
+        return "Password must contain at least one special character";
+      },
+      // Optional: Disallow common passwords
+      (value) => {
+        const commonPasswords = ["password", "123456", "qwerty", /* ... */];
+        if (!commonPasswords.includes(value.toLowerCase())) return true;
+
+        return "Password is too common. Please choose a more unique password.";
+      }
+    ],
     idRules: [
       (value) => {
         if (value) return true;

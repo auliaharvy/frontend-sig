@@ -33,6 +33,7 @@
           v-model="user.password"
           :label="$t('login.katasandi')"
           required
+          :rules="passwordRules"
           :type="showPassword ? 'text' : 'password'"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           @click:append="showPassword = !showPassword"
