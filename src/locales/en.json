@@ -54,7 +54,9 @@
     "manajemenpengguna": "User Management",
     "kendaraan": "Car",
     "pengendara": "Driver",
-    "keluar": "Log Out"
+    "keluar": "Log Out",
+    "berMissingPallet": "BER Missing Pallet"
+    
   },
   "menu": {
     "menu": "Transaction Menu"
@@ -312,6 +314,14 @@
     "index": "Damaged Pallet",
     "trxNumber": "DP Number",
     "add": "Add Damaged Pallet",
+    "company": "Company",
+    "reporter": "Reporter",
+    "note": "Note"
+  },
+  "berMissingPallet": {
+    "index": "BER Missing Pallet",
+    "trxNumber": "BMP Number",
+    "add": "Add BER Missing Pallet",
     "company": "Company",
     "reporter": "Reporter",
     "note": "Note"

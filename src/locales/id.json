@@ -54,7 +54,8 @@
     "manajemenpengguna": "Manajemen Pengguna",
     "kendaraan": "Kendaraan",
     "pengendara": "Pengendara",
-    "keluar": "Keluar"
+    "keluar": "Keluar",
+    "berMissingPallet": "Pallet BER / Hilang"
   },
   "menu": {
     "menu": "Menu Transaksi"
@@ -314,6 +315,14 @@
     "company": "Perusahaan",
     "reporter": "Pelapor",
     "note": "Catatan"
+  },
+  "berMissingPallet": {
+    "index": "BER Missing Pallet",
+    "trxNumber": "BMP Number",
+    "add": "Tambah BER Missing Pallet",
+    "company": "Perusahaan",
+    "reporter": "Pembuat",
+    "note": "Note"
   },
   "repairPallet": {
     "index": "Pallet Diperbaiki",

@@ -3,6 +3,68 @@
     <loading-overlay :active="loading" :is-full-page="true" loader="bars" />
     <v-row
       v-if="
+        roleUser.role_name == 'Manager' ||
+        roleUser.role_name == 'Superuser'
+      "
+      no-gutters
+    >
+      <v-col :sm="12" :md="12" :lg="12">
+        <v-card class="ma-1" elevation="5">
+          <v-card-title class="justify-center">
+            <span v-if="totalPallets.data" class="text-h6 text-center font-weight-normal">
+              Total Pallet Semua Plant : {{ sumTotalPlant(totalPalletPlants.data) }}
+            </span>
+          </v-card-title>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row
+      v-if="
+        roleUser.role_name == 'Manager' ||
+        roleUser.role_name == 'Superuser'
+      "
+      no-gutters
+    >
+      <v-col :sm="12" :md="8" :lg="8">
+        <v-card class="ma-1" elevation="5">
+          <BarChartGlobalPlant
+            v-if="totalPallets.data"
+            style="height: 630px"
+            :bufferPz="dataTotalPalletPlantBufferPz"
+            :pool="dataTotalPalletPlantPoolPallet"
+            :warehouse="dataTotalPalletPlantWarehouse"
+            :transporter="dataTotalPalletPlantTransporter"
+            :workshop="dataTotalPalletPlantWorkshop"
+            :options="barChartOptions"
+            :labels="labelTotalPalletPlant"
+          />
+        </v-card>
+      </v-col>
+
+      <v-col :sm="12" :md="4" :lg="4">
+        <v-card class="ma-1" elevation="5">
+          <!-- <v-card-title class="justify-center">
+            <span class="text-h6 text-center font-weight-normal"
+              >Percentage</span
+            >
+          </v-card-title> -->
+          <!-- <v-divider /> -->
+          <v-card-text>
+            <DoughnutChart
+              style="height: 600px"
+              v-if="palletConditionAlls.data"
+              :type="'totalPlant'"
+              :data="dataTotalPalletPlant"
+              :options="doughnutChartOption"
+              :labels="labelTotalPalletPlant"
+            />
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row
+      v-if="
         roleUser.role_name == 'Supervisor' ||
         roleUser.role_name == 'Manager' ||
         roleUser.role_name == 'Superuser'
@@ -13,7 +75,7 @@
         <v-card class="ma-1" elevation="5">
           <v-card-title class="justify-center">
             <span v-if="totalPallets.data" class="text-h6 text-center font-weight-normal">
-              {{ $t("dashboard.allPallet") }} : {{ sumTotal(totalPallets.data) }}
+              Detail Kondisi Pallet : {{ sumTotal(totalPallets.data) }}
             </span>
           </v-card-title>
         </v-card>
@@ -459,6 +521,7 @@ import Breadcomp from "@/components/Breadcrumb.vue";
 import BarChart from "./components/BarChart.vue";
 import BarChartGlobal from "./components/BarChartGlobal.vue";
 import BarChartPool from "./components/BarChartPool.vue";
+import BarChartGlobalPlant from "./components/BarChartGlobalPlant.vue";
 import DoughnutChart from "./components/DoughnutChart.vue";
 import LineChart from "./components/LineChart.vue";
 // @ is an alias to /src
@@ -468,6 +531,7 @@ export default {
     Breadcomp,
     BarChart,
     BarChartGlobal,
+    BarChartGlobalPlant,
     BarChartPool,
     DoughnutChart,
     LineChart,
@@ -601,6 +665,22 @@ export default {
       responsive: true,
       maintainAspectRatio: false,
     },
+    doughnutChartOption: {
+      plugins: {
+        datalabels: {
+          color: "#000000",
+          formatter: function (value) {
+            return Math.round(value);
+          },
+          font: {
+            weight: "bold",
+            size: 10,
+          },
+        },
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+    },
     percentageChartOption: {
       plugins: {
         datalabels: {
@@ -630,6 +710,7 @@ export default {
     this.getroleUser().then((response) => {
       this.doLoading();
       this.getTotalPallets(); //LOAD DATA KETIKA COMPONENT DI-LOAD
+      this.getTotalPalletPlants(); //LOAD DATA KETIKA COMPONENT DI-LOAD
       this.getConditionAlls("all"); //LOAD DATA KETIKA COMPONENT DI-LOAD
       this.getConditionTransporters("Transporter"); //LOAD DATA KETIKA COMPONENT DI-LOAD
       this.getPalletSendReceive(this.palletSend);
@@ -726,6 +807,7 @@ export default {
     },
     ...mapState("dashboard", {
       totalPallets: (state) => state.totalPallets, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
+      totalPalletPlants: (state) => state.totalPalletPlants, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
       palletConditionAlls: (state) => state.palletConditionAlls, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
       palletConditionTransporters: (state) => state.palletConditionTransporters, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
       palletConditionCompany: (state) => state.palletConditionCompany, //MENGAMBIL DATA CUSTOMER DARI STATE CUSTOMER
@@ -753,6 +835,41 @@ export default {
     dataTotalPallet() {
       return _.map(this.totalPallets.data, function (o) {
         return o.jumlah_pallet;
+      });
+    },
+    dataTotalPalletPlant() {
+      return _.map(this.totalPalletPlants.data, function (o) {
+        return o.total;
+      });
+    },
+    dataTotalPalletPlantBufferPz() {
+      return _.map(this.totalPalletPlants.data, (organization) => {
+        const warehouseType = organization.companyTypesByID.find((type) => type.type === "1"); // Find the Warehouse type
+        return warehouseType?.totalPallet || 0; // Return totalPallet or 0 if not found
+      });
+    },
+    dataTotalPalletPlantPoolPallet() {
+      return _.map(this.totalPalletPlants.data, (organization) => {
+        const warehouseType = organization.companyTypesByID.find((type) => type.type === "2"); // Find the Warehouse type
+        return warehouseType?.totalPallet || 0; // Return totalPallet or 0 if not found
+      });
+    },
+    dataTotalPalletPlantWarehouse() {
+      return _.map(this.totalPalletPlants.data, (organization) => {
+        const warehouseType = organization.companyTypesByID.find((type) => type.type === "3"); // Find the Warehouse type
+        return warehouseType?.totalPallet || 0; // Return totalPallet or 0 if not found
+      });
+    },
+    dataTotalPalletPlantTransporter() {
+      return _.map(this.totalPalletPlants.data, (organization) => {
+        const warehouseType = organization.companyTypesByID.find((type) => type.type === "5"); // Find the Warehouse type
+        return warehouseType?.totalPallet || 0; // Return totalPallet or 0 if not found
+      });
+    },
+    dataTotalPalletPlantWorkshop() {
+      return _.map(this.totalPalletPlants.data, (organization) => {
+        const warehouseType = organization.companyTypesByID.find((type) => type.type === "5"); // Find the Warehouse type
+        return warehouseType?.totalPallet || 0; // Return totalPallet or 0 if not found
       });
     },
     dataTotalPalletGood() {
@@ -783,6 +900,11 @@ export default {
     labelTotalPallet() {
       return _.map(this.totalPallets.data, function (o) {
         return o.name;
+      });
+    },
+    labelTotalPalletPlant() {
+      return _.map(this.totalPalletPlants.data, function (o) {
+        return o.nama;
       });
     },
     // data pallet condition all
@@ -994,6 +1116,7 @@ export default {
   methods: {
     ...mapActions("dashboard", [
       "getTotalPallets",
+      "getTotalPalletPlants",
       "getConditionAlls",
       "getConditionTransporters",
       "getDetailPools",
@@ -1011,6 +1134,9 @@ export default {
     ]),
     sumPoolPallet(data) {
       return data.reduce((acc, o) => acc + parseInt(o.stock), 0);
+    },
+    sumTotalPlant(data) {
+      return data.reduce((acc, item) => acc + parseInt(item.total), 0);
     },
     sumTotal(data) {
       return data.reduce((acc, item) => acc + parseInt(item.jumlah_pallet), 0);

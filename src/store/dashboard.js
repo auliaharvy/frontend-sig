@@ -3,6 +3,7 @@ import apiClient from '../api.js'
 const state = () => ({
     loading: false,
     totalPallets: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
+    totalPalletPlants: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
     palletConditionAlls: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
     palletConditionTransporters: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
     palletConditionCompany: [], //STATE UNTUK MENAMPUNG DATA TOTAL PALLET
@@ -29,6 +30,9 @@ const mutations = {
     //MUTATIONS UNTUK ASSIGN DATA CUSTOMER KE DALAM STATE CUSTOMER
     ASSIGN_TOTAL(state, payload) {
         state.totalPallets = payload;
+    },
+    ASSIGN_TOTAL_PLANT(state, payload) {
+        state.totalPalletPlants = payload;
     },
     ASSIGN_CONDITION_ALL(state, payload) {
         state.palletConditionAlls = payload;
@@ -83,6 +87,28 @@ const actions = {
             .then((response) => {
                 console.log(response)
                 commit('ASSIGN_TOTAL', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
+                resolve(response.data)
+            }).catch((error) => {
+                //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
+                if (error.response.status == 422) {
+                  alert(error.response.data.errors[0]);
+                  commit('SET_ERRORS', error.response.data.errors, { root: true })
+                } else {
+                  alert(error.response.data.message);
+                }
+              }).finally(() => {
+                  commit('doneLoading')
+              })
+        })
+    },
+    getTotalPalletPlants({ commit, state }, payload) {
+        let search = typeof payload != 'undefined' ? payload:''
+        return new Promise((resolve, reject) => {
+            //REQUEST DATA COMPANY  DENGAN MENGIRIMKAN PARAMETER PAGE YG SEDANG AKTIF DAN VALUE PENCARIAN
+            apiClient.get(`/dashboards/total-pallet-plant`)
+            .then((response) => {
+                console.log(response)
+                commit('ASSIGN_TOTAL_PLANT', response.data) //JIKA DATA DITERIMA, SIMPAN DATA KEDALMA MUTATIONS
                 resolve(response.data)
             }).catch((error) => {
                 //JIKA TERJADI ERROR VALIDASI, ASSIGN ERROR TERSEBUT KE DALAM STATE ERRORS
