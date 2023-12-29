@@ -225,117 +225,117 @@ export default {
     },
     async fetchDo() {
       //dev data
-      this.sjp.dataDo = {
-        NO_SPJ: "2009978908",
-        NO_BOOKING: "",
-        NO_DO: "0710238613",
-        TGL_SPJ: "10/10/2023",
-        TGL_DO: "10/10/2023",
-        TGL_MINTA: "06/10/2023",
-        KWANTUM: "800,000",
-        KWANTUMX: "32,000",
-        NO_SPPS: "PJ/23241567",
-        NAMA_SOPIR: "BUDIANTO",
-        KODE_DA: "3727015000",
-        NAMA_TOKO: "GUD BAM KAPEDI",
-        ALAMAT_DA: "JL TALANG SIRING,DSN BIYAN-KAP",
-        PROPINSI: "1025",
-        NAMA_PROP: "JAWA TIMUR",
-        AREA: "258004",
-        NAMA_AREA: "SUMENEP",
-        SOLD_TO: "0000003808",
-        NAMA_SOLD_TO: "Plant ICS Tuban SP",
-        PLANT: "7403",
-        NAMA_PLANT: "CP Tuban",
-        NO_EXPEDITUR: "0000410092",
-        NAMA_EXPEDITUR: "SEMEN INDONESIA LOGISTIK.PT",
-        PRODUK: "SEMEN PCC ZAK 40KG",
-        ITEM_NO: "121-301-0050",
-        UOM: "ZAK",
-        UOMX: "",
-        HARGA: "56.675.200,000",
-        NAMA_KAPAL: "",
-        NO_SO: "0012887729",
-        NO_PO: "",
-        BERAT_ISI: "43.460,000",
-        PTGS_ISI: "AMS7093118K",
-        PTGS_MASUK: "SWA907304",
-        NO_SO_REF: "",
-        NO_DO_REFF: "",
-        NO_SPJ_REF: "",
-        SPP: "PJ/23241567",
-      };
-      this.sjp.no_do = "1111";
-      this.sjp.destination = "Gudang berkat";
-      this.sjp.destination_code = "14045";
-      this.sjp.destination_dist = "Distributor gudang berkat";
-      this.sjp.destination_dist_code = "01_14045";
-      this.sjp.truck_number = this.paramDo.X_NOPOLISI;
-      this.sjp.transporter = "Transporter pengangkut";
-      this.sjp.transporter_code = "14044";
-      this.sjp.id_transporter_company = 91;
-      this.sjp.organization_name = "SIG TUBAN";
-      this.sjp.organization_code = "00112312";
-      this.sjp.driver = "Helmi Yahya";
-      const beratIsi = "1.000"
-      const tonnage = beratIsi.replace('.', '')
-      this.sjp.tonnage = parseInt(tonnage) / 1000;
-      this.sjp.packaging = 40;
-      this.sjp.product_quantity = parseInt(tonnage) / 40;
-      this.sjp.pallet_quantity = Math.floor((parseInt(tonnage) / 1000) / 2);
-      this.sjp.departure_time = new Date().toISOString().slice(0, 10);
-      var tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      this.sjp.eta = tomorrow.toISOString().slice(0, 10);
+      // this.sjp.dataDo = {
+      //   NO_SPJ: "2009978908",
+      //   NO_BOOKING: "",
+      //   NO_DO: "0710238613",
+      //   TGL_SPJ: "10/10/2023",
+      //   TGL_DO: "10/10/2023",
+      //   TGL_MINTA: "06/10/2023",
+      //   KWANTUM: "800,000",
+      //   KWANTUMX: "32,000",
+      //   NO_SPPS: "PJ/23241567",
+      //   NAMA_SOPIR: "BUDIANTO",
+      //   KODE_DA: "3727015000",
+      //   NAMA_TOKO: "GUD BAM KAPEDI",
+      //   ALAMAT_DA: "JL TALANG SIRING,DSN BIYAN-KAP",
+      //   PROPINSI: "1025",
+      //   NAMA_PROP: "JAWA TIMUR",
+      //   AREA: "258004",
+      //   NAMA_AREA: "SUMENEP",
+      //   SOLD_TO: "0000003808",
+      //   NAMA_SOLD_TO: "Plant ICS Tuban SP",
+      //   PLANT: "7403",
+      //   NAMA_PLANT: "CP Tuban",
+      //   NO_EXPEDITUR: "0000410092",
+      //   NAMA_EXPEDITUR: "SEMEN INDONESIA LOGISTIK.PT",
+      //   PRODUK: "SEMEN PCC ZAK 40KG",
+      //   ITEM_NO: "121-301-0050",
+      //   UOM: "ZAK",
+      //   UOMX: "",
+      //   HARGA: "56.675.200,000",
+      //   NAMA_KAPAL: "",
+      //   NO_SO: "0012887729",
+      //   NO_PO: "",
+      //   BERAT_ISI: "43.460,000",
+      //   PTGS_ISI: "AMS7093118K",
+      //   PTGS_MASUK: "SWA907304",
+      //   NO_SO_REF: "",
+      //   NO_DO_REFF: "",
+      //   NO_SPJ_REF: "",
+      //   SPP: "PJ/23241567",
+      // };
+      // this.sjp.no_do = "1111";
+      // this.sjp.destination = "Gudang berkat";
+      // this.sjp.destination_code = "14045";
+      // this.sjp.destination_dist = "Distributor gudang berkat";
+      // this.sjp.destination_dist_code = "01_14045";
+      // this.sjp.truck_number = this.paramDo.X_NOPOLISI;
+      // this.sjp.transporter = "Transporter pengangkut";
+      // this.sjp.transporter_code = "14044";
+      // this.sjp.id_transporter_company = 91;
+      // this.sjp.organization_name = "SIG TUBAN";
+      // this.sjp.organization_code = "00112312";
+      // this.sjp.driver = "Helmi Yahya";
+      // const beratIsi = "1.000"
+      // const tonnage = beratIsi.replace('.', '')
+      // this.sjp.tonnage = parseInt(tonnage) / 1000;
+      // this.sjp.packaging = 40;
+      // this.sjp.product_quantity = parseInt(tonnage) / 40;
+      // this.sjp.pallet_quantity = Math.floor((parseInt(tonnage) / 1000) / 2);
+      // this.sjp.departure_time = new Date().toISOString().slice(0, 10);
+      // var tomorrow = new Date();
+      // tomorrow.setDate(tomorrow.getDate() + 1);
+      // this.sjp.eta = tomorrow.toISOString().slice(0, 10);
 
-      // if (!this.paramDo.X_NOPOLISI) {
-      //   this.$swal({
-      //     title: "Truck Number Empty",
-      //     text: "Please Fill Truck Number",
-      //     type: "danger",
-      //     confirmButtonColor: "#3085d6",
-      //     confirmButtonText: "Ok!",
-      //   });
-      // } else {
-      //   // this.loading = true;
-      //   await this.getDataDo().then((response) => {
-      //     if (response === 'No Data Found') {
-      //       this.$swal({
-      //         title: "No data found",
-      //         text: "No DO Data found",
-      //         type: "danger",
-      //         confirmButtonColor: "#3085d6",
-      //         confirmButtonText: "Ok!",
-      //       });
-      //     } else {
+      if (!this.paramDo.X_NOPOLISI) {
+        this.$swal({
+          title: "Truck Number Empty",
+          text: "Please Fill Truck Number",
+          type: "danger",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Ok!",
+        });
+      } else {
+        // this.loading = true;
+        await this.getDataDo().then((response) => {
+          if (response === 'No Data Found') {
+            this.$swal({
+              title: "No data found",
+              text: "No DO Data found",
+              type: "danger",
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Ok!",
+            });
+          } else {
 
-      //       // prod data do
-      //       this.sjp.dataDo = response[0];
-      //       this.sjp.no_do = response[0].NO_DO;
-      //       this.sjp.destination = response[0].NAMA_TOKO;
-      //       this.sjp.destination_code = response[0].KODE_DA;
-      //       this.sjp.destination_dist = response[0].NAMA_SOLD_TO;
-      //       this.sjp.destination_dist_code = response[0].SOLD_TO;
-      //       this.sjp.truck_number = response[0]['LICENSE PLATE'];
-      //       this.sjp.transporter = response[0].NAMA_EXPEDITUR;
-      //       this.sjp.transporter_code = response[0].NO_EXPEDITUR;
-      //       this.sjp.id_transporter_company = 91;
-      //       this.sjp.organization_name = response[0].NAMA_PLANT;
-      //       this.sjp.organization_code = response[0].PLANT;
-      //       this.sjp.driver = response[0].NAMA_SOPIR;
-      //       const beratIsi = response[0].BERAT_ISI.split(',')[0]
-      //       const tonnage = beratIsi.replace('.', '')
-      //       this.sjp.tonnage = Math.round(parseInt(tonnage) / 1000);
-      //       this.sjp.packaging = 40;
-      //       this.sjp.product_quantity = Math.round(parseInt(tonnage) / 40);
-      //       this.sjp.pallet_quantity = Math.floor((parseInt(tonnage) / 1000) / 2);
-      //       this.sjp.departure_time = new Date().toISOString().slice(0, 10);
-      //       var tomorrow = new Date();
-      //       tomorrow.setDate(tomorrow.getDate() + 1);
-      //       this.sjp.eta = tomorrow.toISOString().slice(0, 10);
-      //     }
-      //   });
-      // }
+            // prod data do
+            this.sjp.dataDo = response[0];
+            this.sjp.no_do = response[0].NO_DO;
+            this.sjp.destination = response[0].NAMA_TOKO;
+            this.sjp.destination_code = response[0].KODE_DA;
+            this.sjp.destination_dist = response[0].NAMA_SOLD_TO;
+            this.sjp.destination_dist_code = response[0].SOLD_TO;
+            this.sjp.truck_number = response[0]['LICENSE PLATE'];
+            this.sjp.transporter = response[0].NAMA_EXPEDITUR;
+            this.sjp.transporter_code = response[0].NO_EXPEDITUR;
+            this.sjp.id_transporter_company = 91;
+            this.sjp.organization_name = response[0].NAMA_PLANT;
+            this.sjp.organization_code = response[0].PLANT;
+            this.sjp.driver = response[0].NAMA_SOPIR;
+            const beratIsi = response[0].BERAT_ISI.split(',')[0]
+            const tonnage = beratIsi.replace('.', '')
+            this.sjp.tonnage = Math.round(parseInt(tonnage) / 1000);
+            this.sjp.packaging = 40;
+            this.sjp.product_quantity = Math.round(parseInt(tonnage) / 40);
+            this.sjp.pallet_quantity = Math.floor((parseInt(tonnage) / 1000) / 2);
+            this.sjp.departure_time = new Date().toISOString().slice(0, 10);
+            var tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            this.sjp.eta = tomorrow.toISOString().slice(0, 10);
+          }
+        });
+      }
     },
   },
   timeLoad() {
